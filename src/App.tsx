@@ -1,25 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import Login from './pages/login/Login';
+import ProtectedRoute from './components/shared/ProtectedRoute';
+import Home from './pages/home/Home';
+import { ROUTES } from './constants/navigation/routes';
+import ProtectedRoutes from './components/shared/ProtectedRoutes';
+import RecoveryPass from './pages/recovery/RecoveryPass';
+import RecoveryPassConfirm from './pages/recovery/RecoveryPassConfirm';
+import CreateCompany from './pages/createCompany/CreateCompany';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path={ROUTES.LOGIN} element={<Login />} />
+        <Route path={ROUTES.RECOVERY_PASS} element={<RecoveryPass />} />
+        <Route
+          path={ROUTES.RECOVERY_PASS_CONFIRM}
+          element={<RecoveryPassConfirm />}
+        />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedRoutes />}>
+            <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
+          </Route>
+        </Route>
+        <Route
+          path={ROUTES.REDIRECT}
+          element={<Navigate to={ROUTES.LOGIN} />}
+        />
+      </Routes>
+    </Router>
   );
 }
 
