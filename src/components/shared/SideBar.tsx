@@ -287,8 +287,8 @@ function SideBar({ children }: { children: React.ReactNode }) {
           </a>
         </div>
 
-        <main className="py-10 lg:pl-72">
-          <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+        <main className="py-10 lg:pl-72 max-lg:py-0">
+          <div className="px-4 max-lg:px-0">{children}</div>
         </main>
       </div>
     </>

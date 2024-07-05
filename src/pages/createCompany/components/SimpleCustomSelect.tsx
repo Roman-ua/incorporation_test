@@ -36,7 +36,7 @@ export default function SimpleCustomSelect({
   return (
     <Listbox value={selected} onChange={setSelected}>
       {() => (
-        <div className="w-full">
+        <div className="w-full max-lg:mb-2">
           <Label className="block text-sm font-medium leading-6 text-gray-900">
             {title}
           </Label>

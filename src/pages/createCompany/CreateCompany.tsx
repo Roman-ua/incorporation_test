@@ -177,12 +177,14 @@ const CreateCompany = () => {
 
   return (
     <>
-      <h1 className="mb-8 text-xl font-bold">Create new company</h1>
-      <div className="container m-auto flex items-start justify-start w-full">
-        <div className="w-1/5 pr-2">
+      <div className="m-auto flex items-start justify-start w-full max-lg:flex-col">
+        <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <StepsProgress currentStep={currentStep} />
         </div>
-        <div className="w-1/2">
+        <div className="w-1/2 max-xl:w-full px-4 max-lg:px-36 max-sm:px-6">
+          <h1 className="mb-8 text-md font-bold max-lg:mb-6">
+            Create new company
+          </h1>
           {currentStep === 0 && (
             <form onSubmit={stepOneForm.handleSubmit(handleStepOneSubmit)}>
               <div>
@@ -213,12 +215,17 @@ const CreateCompany = () => {
                   )}
                 />
               </div>
-              <button
-                type="submit"
-                className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Next Step
-              </button>
+              <div className="py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
+                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-1/2 max-xl:w-full flex justify-end max-xl:pr-8 max-lg:pr-0">
+                  <button
+                    type="submit"
+                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Next Step
+                  </button>
+                </div>
+              </div>
             </form>
           )}
 
@@ -246,19 +253,24 @@ const CreateCompany = () => {
                   }}
                 />
               </div>
-              <button
-                type="button"
-                onClick={() => setCurrentStep(0)}
-                className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Next Step
-              </button>
+              <div className="py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
+                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-1/2 max-xl:w-full flex justify-end max-xl:pr-8 max-lg:pr-0">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(0)}
+                    className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Next Step
+                  </button>
+                </div>
+              </div>
             </form>
           )}
 
@@ -267,7 +279,7 @@ const CreateCompany = () => {
               <div>
                 {stepThreeData.addresses.map((address, index: number) => (
                   <div key={index}>
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-6 max-lg:flex-col">
                       <Controller
                         name={`addresses.${index}.street`}
                         control={stepThreeForm.control}
@@ -294,7 +306,7 @@ const CreateCompany = () => {
                         )}
                       />
                     </div>
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-6 max-lg:flex-col">
                       <Controller
                         name={`addresses.${index}.state`}
                         control={stepThreeForm.control}
@@ -320,7 +332,7 @@ const CreateCompany = () => {
                         )}
                       />
                     </div>
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-6 max-lg:flex-col">
                       <Controller
                         name={`addresses.${index}.postalCode`}
                         control={stepThreeForm.control}
@@ -356,19 +368,24 @@ const CreateCompany = () => {
                   </button>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setCurrentStep(1)}
-                className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Submit
-              </button>
+              <div className="py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
+                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-1/2 max-xl:w-full flex justify-end max-xl:pr-8 max-lg:pr-0">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(1)}
+                    className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
             </form>
           )}
         </div>

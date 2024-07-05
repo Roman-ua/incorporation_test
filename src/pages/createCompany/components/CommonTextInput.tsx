@@ -19,7 +19,9 @@ const CommonTextInput = ({
   readonly,
 }: IProps) => {
   return (
-    <div className={`w-full ${extraStyles}`}>
+    <div
+      className={`w-full ${extraStyles} max-lg:ml-0 max-lg:mr-0 max-lg:mb-2`}
+    >
       <label
         htmlFor={id}
         className="block text-sm font-medium leading-6 text-gray-900"
