@@ -6,6 +6,7 @@ import StepsProgress from './components/StepsProgress';
 import SimpleCustomSelect from './components/SimpleCustomSelect';
 import CommonTextInput from './components/CommonTextInput';
 import DatePicker from './components/DatePicker';
+import { XCircleIcon } from '@heroicons/react/20/solid';
 
 const companyType = [
   { id: 1, name: 'Corporation' },
@@ -175,13 +176,20 @@ const CreateCompany = () => {
     });
   };
 
+  const removeAddress = (index: number) => {
+    const updatedAddresses = stepThreeData.addresses.filter(
+      (_, i) => i !== index
+    );
+    setStepThreeData({ ...stepThreeData, addresses: updatedAddresses });
+  };
+
   return (
     <>
       <div className="m-auto flex items-start justify-start w-full max-lg:flex-col">
         <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <StepsProgress currentStep={currentStep} />
         </div>
-        <div className="w-1/2 max-xl:w-full px-4 max-lg:px-36 max-sm:px-6">
+        <div className="w-1/2 max-xl:w-full px-4 max-lg:px-36 max-sm:px-6 pb-16">
           <h1 className="mb-8 text-md font-bold max-lg:mb-6">
             Create new company
           </h1>
@@ -278,97 +286,112 @@ const CreateCompany = () => {
             <form onSubmit={stepThreeForm.handleSubmit(handleStepThreeSubmit)}>
               <div>
                 {stepThreeData.addresses.map((address, index: number) => (
-                  <div key={index}>
-                    <div className="flex items-center justify-between mb-6 max-lg:flex-col">
-                      <Controller
-                        name={`addresses.${index}.street`}
-                        control={stepThreeForm.control}
-                        render={({ field }) => (
-                          <CommonTextInput
-                            id="street"
-                            name="street"
-                            field={field}
-                            title="Street"
-                          />
-                        )}
-                      />
-                      <Controller
-                        name={`addresses.${index}.street2`}
-                        control={stepThreeForm.control}
-                        render={({ field }) => (
-                          <CommonTextInput
-                            id="street2"
-                            name="street2"
-                            field={field}
-                            title="Street 2"
-                            extraStyles="ml-3"
-                          />
-                        )}
-                      />
+                  <>
+                    {index !== 0 && (
+                      <div className="mt-6 flex items-center justify-between w-full">
+                        <div className="font-bold">Address #{index + 1}</div>
+                        <div onClick={() => removeAddress(index)}>
+                          <XCircleIcon className="w-5 h-5 hover:cursor-pointer text-gray-500" />
+                        </div>
+                      </div>
+                    )}
+                    <div key={index} className={`${index !== 0 ? 'mt-4' : ''}`}>
+                      <div className="flex items-center justify-between mb-6 flex-col">
+                        <Controller
+                          name={`addresses.${index}.street`}
+                          control={stepThreeForm.control}
+                          render={({ field }) => (
+                            <CommonTextInput
+                              id="street"
+                              name="street"
+                              field={field}
+                              title="Street address"
+                              extraStyles="mb-4"
+                            />
+                          )}
+                        />
+                        <Controller
+                          name={`addresses.${index}.street2`}
+                          control={stepThreeForm.control}
+                          render={({ field }) => (
+                            <CommonTextInput
+                              id="street2"
+                              name="street2"
+                              field={field}
+                              title="Floor, suite, etc."
+                            />
+                          )}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between mb-6 max-lg:flex-col">
+                        <Controller
+                          name={`addresses.${index}.city`}
+                          control={stepThreeForm.control}
+                          render={({ field }) => (
+                            <CommonTextInput
+                              id="city"
+                              name="city"
+                              field={field}
+                              title="City"
+                            />
+                          )}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between mb-6 max-lg:flex-col">
+                        <Controller
+                          name={`addresses.${index}.state`}
+                          control={stepThreeForm.control}
+                          render={({ field }) => (
+                            <SimpleCustomSelect
+                              changeEvent={field.onChange}
+                              list={stateList}
+                              title="State"
+                            />
+                          )}
+                        />
+                        <Controller
+                          name={`addresses.${index}.postalCode`}
+                          control={stepThreeForm.control}
+                          render={({ field }) => (
+                            <CommonTextInput
+                              id="postCode"
+                              name="postCode"
+                              field={field}
+                              title="Zip"
+                              extraStyles="ml-3"
+                            />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <Controller
+                          name={`addresses.${index}.country`}
+                          control={stepThreeForm.control}
+                          render={({ field }) => (
+                            <CommonTextInput
+                              id="country"
+                              name="country"
+                              field={field}
+                              title="Country"
+                              readonly
+                            />
+                          )}
+                        />
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between mb-6 max-lg:flex-col">
-                      <Controller
-                        name={`addresses.${index}.state`}
-                        control={stepThreeForm.control}
-                        render={({ field }) => (
-                          <SimpleCustomSelect
-                            changeEvent={field.onChange}
-                            list={stateList}
-                            title="State"
-                          />
-                        )}
-                      />
-                      <Controller
-                        name={`addresses.${index}.city`}
-                        control={stepThreeForm.control}
-                        render={({ field }) => (
-                          <CommonTextInput
-                            id="city"
-                            name="city"
-                            field={field}
-                            title="City"
-                            extraStyles="ml-3"
-                          />
-                        )}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between mb-6 max-lg:flex-col">
-                      <Controller
-                        name={`addresses.${index}.postalCode`}
-                        control={stepThreeForm.control}
-                        render={({ field }) => (
-                          <CommonTextInput
-                            id="postCode"
-                            name="postCode"
-                            field={field}
-                            title="Postal Code"
-                          />
-                        )}
-                      />
-                      <Controller
-                        name={`addresses.${index}.country`}
-                        control={stepThreeForm.control}
-                        render={({ field }) => (
-                          <CommonTextInput
-                            id="country"
-                            name="country"
-                            field={field}
-                            title="Country"
-                            extraStyles="ml-3"
-                            readonly
-                          />
-                        )}
-                      />
-                    </div>
-                  </div>
+                  </>
                 ))}
                 <div className="w-full flex items-center justify-end mb-6">
-                  <button type="button" onClick={addAddress}>
+                  <button
+                    type="button"
+                    onClick={addAddress}
+                    className="text-sm mt-6 text-gray-500"
+                  >
                     One more Address
                   </button>
                 </div>
               </div>
-              <div className="py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
+              <div className="bg-white py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex justify-end max-xl:pr-8 max-lg:pr-0">
                   <button
