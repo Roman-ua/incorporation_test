@@ -21,13 +21,16 @@ interface IProps {
   changeEvent: (value: string) => void;
   list: ListItem[];
   title: string;
+  value: string;
 }
 export default function SimpleCustomSelect({
   changeEvent,
   list,
   title,
+  value,
 }: IProps) {
-  const [selected, setSelected] = useState(list[0]);
+  const prevValue = list.find((item) => item.name === value);
+  const [selected, setSelected] = useState(prevValue || list[0]);
 
   useEffect(() => {
     changeEvent(selected.name);

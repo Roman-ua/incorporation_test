@@ -41,6 +41,7 @@ const addressSchema = yup.object().shape({
 });
 
 const localStorageKey = 'multistep-form-data';
+type Step = 'stepOneData' | 'stepTwoData' | 'stepThreeData';
 
 type Address = {
   street: string;
@@ -91,13 +92,18 @@ const defaultStepThreeValues: StepThreeData = {
 };
 
 const CreateCompany = () => {
-  const [currentStep, setCurrentStep] = useState<number>(0);
-  const [stepOneData, setStepOneData] =
-    useState<StepOneData>(defaultStepOneValues);
-  const [stepTwoData, setStepTwoData] =
-    useState<StepTwoData>(defaultStepTwoValues);
+  const parsedData = JSON.parse(
+    localStorage.getItem(localStorageKey) as string
+  );
+  const [currentStep, setCurrentStep] = useState<number>(parsedData.step || 0);
+  const [stepOneData, setStepOneData] = useState<StepOneData>(
+    parsedData.stepOneData || defaultStepOneValues
+  );
+  const [stepTwoData, setStepTwoData] = useState<StepTwoData>(
+    parsedData.stepTwoData || defaultStepTwoValues
+  );
   const [stepThreeData, setStepThreeData] = useState<StepThreeData>(
-    defaultStepThreeValues
+    parsedData.stepThreeData || defaultStepThreeValues
   );
 
   useEffect(() => {
@@ -112,17 +118,23 @@ const CreateCompany = () => {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem(
-      localStorageKey,
-      JSON.stringify({
-        step: currentStep,
-        stepOneData,
-        stepTwoData,
-        stepThreeData,
-      })
-    );
-  }, [currentStep, stepOneData, stepTwoData, stepThreeData]);
+  const setStepToLocalStorage = (
+    step: Step,
+    data: StepOneData | StepTwoData | StepThreeData
+  ) => {
+    const initData = {
+      step: currentStep,
+      stepOneData,
+      stepTwoData,
+      stepThreeData,
+    };
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    initData[step] = data;
+
+    localStorage.setItem(localStorageKey, JSON.stringify(initData));
+  };
 
   const stepOneForm = useForm<StepOneData>({
     defaultValues: stepOneData,
@@ -146,15 +158,19 @@ const CreateCompany = () => {
   const handleStepOneSubmit: SubmitHandler<StepOneData> = (data) => {
     setStepOneData(data);
     setCurrentStep(1);
+    setStepToLocalStorage('stepOneData', data);
   };
 
   const handleStepTwoSubmit: SubmitHandler<StepTwoData> = (data) => {
     setStepTwoData(data);
     setCurrentStep(2);
+    setStepToLocalStorage('stepTwoData', data);
   };
 
   const handleStepThreeSubmit: SubmitHandler<StepThreeData> = (data) => {
     setStepThreeData(data);
+    setStepToLocalStorage('stepThreeData', data);
+
     const finalData: FormData = { ...stepOneData, ...stepTwoData, ...data };
     console.log('Final form data:', finalData);
   };
@@ -212,15 +228,19 @@ const CreateCompany = () => {
                 <Controller
                   name="companyType"
                   control={stepOneForm.control}
-                  render={({ field }) => (
-                    <div className="mb-10">
-                      <SimpleCustomSelect
-                        changeEvent={field.onChange}
-                        list={companyType}
-                        title="Company Type"
-                      />
-                    </div>
-                  )}
+                  render={({ field }) => {
+                    console.log(field, 'field');
+                    return (
+                      <div className="mb-10">
+                        <SimpleCustomSelect
+                          value={field.value}
+                          changeEvent={field.onChange}
+                          list={companyType}
+                          title="Company Type"
+                        />
+                      </div>
+                    );
+                  }}
                 />
               </div>
               <div className="py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
@@ -246,6 +266,7 @@ const CreateCompany = () => {
                   render={({ field }) => (
                     <div className="mb-6">
                       <SimpleCustomSelect
+                        value={field.value}
                         changeEvent={field.onChange}
                         list={stateList}
                         title="Registered In"
@@ -343,6 +364,7 @@ const CreateCompany = () => {
                           control={stepThreeForm.control}
                           render={({ field }) => (
                             <SimpleCustomSelect
+                              value={field.value}
                               changeEvent={field.onChange}
                               list={stateList}
                               title="State"

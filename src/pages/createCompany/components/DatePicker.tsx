@@ -13,8 +13,8 @@ interface IProps {
 
 const DatePicker = ({ field }: IProps) => {
   const [value, setValue] = useState<DatePickerValue>({
-    startDate: null,
-    endDate: null,
+    startDate: field.value || null,
+    endDate: field.value || null,
   });
 
   const handleValueChange = (value: DateValueType) => {
