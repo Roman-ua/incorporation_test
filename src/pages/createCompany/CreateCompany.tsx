@@ -98,15 +98,15 @@ const CreateCompany = () => {
   const parsedData = JSON.parse(
     localStorage.getItem(localStorageKey) as string
   );
-  const [currentStep, setCurrentStep] = useState<number>(parsedData.step || 0);
+  const [currentStep, setCurrentStep] = useState<number>(parsedData?.step || 0);
   const [stepOneData, setStepOneData] = useState<StepOneData>(
-    parsedData.stepOneData || defaultStepOneValues
+    parsedData?.stepOneData || defaultStepOneValues
   );
   const [stepTwoData, setStepTwoData] = useState<StepTwoData>(
-    parsedData.stepTwoData || defaultStepTwoValues
+    parsedData?.stepTwoData || defaultStepTwoValues
   );
   const [stepThreeData, setStepThreeData] = useState<StepThreeData>(
-    parsedData.stepThreeData || defaultStepThreeValues
+    parsedData?.stepThreeData || defaultStepThreeValues
   );
 
   useEffect(() => {
