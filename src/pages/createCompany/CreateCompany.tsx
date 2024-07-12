@@ -7,6 +7,9 @@ import SimpleCustomSelect from './components/SimpleCustomSelect';
 import CommonTextInput from './components/CommonTextInput';
 import DatePicker from './components/DatePicker';
 import { XCircleIcon } from '@heroicons/react/20/solid';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ROUTES } from '../../constants/navigation/routes';
+import { Link } from 'react-router-dom';
 
 const companyType = [
   { id: 1, name: 'Corporation' },
@@ -201,11 +204,16 @@ const CreateCompany = () => {
 
   return (
     <>
-      <div className="m-auto flex items-start justify-start w-full max-lg:flex-col">
+      <div className="m-auto flex items-start justify-between w-full max-lg:flex-col p-6">
+        <div className="fixed top-4 right-10 p-2 hover:cursor-pointer max-lg:top-2 max-lg:right-5 z-20">
+          <Link to={ROUTES.HOME}>
+            <XMarkIcon className="w-6 h-6" />
+          </Link>
+        </div>
         <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <StepsProgress currentStep={currentStep} />
         </div>
-        <div className="w-1/2 max-xl:w-full px-4 max-lg:px-36 max-sm:px-6 pb-16">
+        <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
           <h1 className="mb-8 text-md font-bold max-lg:mb-6">
             Create new company
           </h1>
@@ -243,9 +251,9 @@ const CreateCompany = () => {
                   }}
                 />
               </div>
-              <div className="py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
+              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex justify-end max-xl:pr-8 max-lg:pr-0">
+                <div className="w-1/2 max-xl:w-full flex items-center justify-end">
                   <button
                     type="submit"
                     className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -253,6 +261,7 @@ const CreateCompany = () => {
                     Next Step
                   </button>
                 </div>
+                <div className="w-1/5 pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
@@ -282,9 +291,9 @@ const CreateCompany = () => {
                   }}
                 />
               </div>
-              <div className="py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
+              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex justify-end max-xl:pr-8 max-lg:pr-0">
+                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(0)}
@@ -299,6 +308,7 @@ const CreateCompany = () => {
                     Next Step
                   </button>
                 </div>
+                <div className="w-1/5 pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
@@ -413,9 +423,9 @@ const CreateCompany = () => {
                   </button>
                 </div>
               </div>
-              <div className="bg-white py-3 fixed left-0 pl-72 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-start max-lg:px-36 max-lg:pl-0 max-sm:px-6">
+              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex justify-end max-xl:pr-8 max-lg:pr-0">
+                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(1)}
@@ -430,10 +440,12 @@ const CreateCompany = () => {
                     Submit
                   </button>
                 </div>
+                <div className="w-1/5 pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
         </div>
+        <div className="w-1/5" />
       </div>
     </>
   );

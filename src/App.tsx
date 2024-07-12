@@ -25,9 +25,9 @@ function App() {
           element={<RecoveryPassConfirm />}
         />
         <Route element={<ProtectedRoute />}>
+          <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
           <Route element={<ProtectedRoutes />}>
             <Route path={ROUTES.HOME} element={<Home />} />
-            <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
           </Route>
         </Route>
         <Route
