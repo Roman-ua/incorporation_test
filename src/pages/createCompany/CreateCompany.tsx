@@ -5,11 +5,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import StepsProgress from './components/StepsProgress';
 import SimpleCustomSelect from './components/SimpleCustomSelect';
 import CommonTextInput from './components/CommonTextInput';
-import DatePicker from './components/DatePicker';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ROUTES } from '../../constants/navigation/routes';
 import { Link } from 'react-router-dom';
+import CustomCalendar from './components/CustomCalendar';
+import StateCards from './components/StateCards';
 
 const companyType = [
   { id: 1, name: 'Corporation' },
@@ -210,11 +211,11 @@ const CreateCompany = () => {
             <XMarkIcon className="w-6 h-6" />
           </Link>
         </div>
-        <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
+        <div className="w-1/5 pr-2 pl-8 pt-10 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <StepsProgress currentStep={currentStep} />
         </div>
         <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
-          <h1 className="mb-8 text-md font-bold max-lg:mb-6">
+          <h1 className="mb-8 text-3xl text-md font-bold max-lg:mb-6">
             Create new company
           </h1>
           {currentStep === 0 && (
@@ -270,25 +271,23 @@ const CreateCompany = () => {
             <form onSubmit={stepTwoForm.handleSubmit(handleStepTwoSubmit)}>
               <div>
                 <Controller
-                  name="registeredIn"
-                  control={stepTwoForm.control}
-                  render={({ field }) => (
-                    <div className="mb-6">
-                      <SimpleCustomSelect
-                        value={field.value}
-                        changeEvent={field.onChange}
-                        list={stateList}
-                        title="Registered In"
-                      />
-                    </div>
-                  )}
-                />
-                <Controller
                   name="registrationDate"
                   control={stepTwoForm.control}
                   render={({ field }) => {
-                    return <DatePicker field={field} />;
+                    return <CustomCalendar field={field} />;
                   }}
+                />
+                <Controller
+                  name="registeredIn"
+                  control={stepTwoForm.control}
+                  render={({ field }) => (
+                    <div className="mt-6">
+                      <StateCards
+                        value={field.value}
+                        changeEvent={field.onChange}
+                      />
+                    </div>
+                  )}
                 />
               </div>
               <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">

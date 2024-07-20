@@ -18,7 +18,6 @@ const CommonTextInput = ({
   extraStyles,
   readonly,
 }: IProps) => {
-  console.log(field, 'field');
   return (
     <div
       className={`w-full ${extraStyles} max-lg:ml-0 max-lg:mr-0 max-lg:mb-2`}
@@ -39,6 +38,7 @@ const CommonTextInput = ({
           placeholder={title}
           data-1p-ignore={true}
           readOnly={readonly}
+          disabled={readonly}
         />
       </div>
     </div>

@@ -54,7 +54,7 @@ const StepsProgress = ({ currentStep }: { currentStep: number }) => {
   }, [currentStep]);
 
   return (
-    <nav aria-label="Progress">
+    <nav aria-label="Progress" className="pt-8">
       <ol
         role="list"
         className="bg-white overflow-hidden flex flex-col max-lg:flex-row max-lg:py-3 max-lg:border-b max-lg:px-2 max-lg:fixed max-lg:z-10 max-lg:left-0 max-lg:right-0 max-lg:top-0 max-lg:overflow-scroll"
