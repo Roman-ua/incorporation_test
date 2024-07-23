@@ -205,19 +205,19 @@ const CreateCompany = () => {
 
   return (
     <>
-      <div className="m-auto flex items-start justify-between w-full max-lg:flex-col p-6">
-        <div className="fixed top-4 right-10 p-2 hover:cursor-pointer max-lg:top-2 max-lg:right-5 z-20">
-          <Link to={ROUTES.HOME}>
-            <XMarkIcon className="w-6 h-6" />
-          </Link>
-        </div>
-        <div className="w-1/5 pr-2 pl-8 pt-10 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
+      <div className="w-full border-b py-4 px-14 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:bg-white max-lg:z-10">
+        <h1 className="text-3xl text-md font-bold max-lg:text-xl">
+          Create new company
+        </h1>
+        <Link to={ROUTES.HOME}>
+          <XMarkIcon className="w-6 h-6" />
+        </Link>
+      </div>
+      <div className="m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-20 max-lg:pt-32 max-lg:pb-20">
+        <div className="w-1/5 pr-2 pl-8 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <StepsProgress currentStep={currentStep} />
         </div>
         <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
-          <h1 className="mb-8 text-3xl text-md font-bold max-lg:mb-6">
-            Create new company
-          </h1>
           {currentStep === 0 && (
             <form onSubmit={stepOneForm.handleSubmit(handleStepOneSubmit)}>
               <div>

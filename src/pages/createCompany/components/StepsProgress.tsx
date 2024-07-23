@@ -20,6 +20,37 @@ const stepsData = [
     status: 'upcoming',
     id: 2,
   },
+  {
+    name: 'Directors',
+    href: '#',
+    status: 'upcoming',
+    id: 3,
+  },
+
+  {
+    name: 'Representatives',
+    href: '#',
+    status: 'upcoming',
+    id: 4,
+  },
+  {
+    name: 'Registered Agent',
+    href: '#',
+    status: 'upcoming',
+    id: 5,
+  },
+  {
+    name: 'Review',
+    href: '#',
+    status: 'upcoming',
+    id: 6,
+  },
+  {
+    name: 'Complete',
+    href: '#',
+    status: 'upcoming',
+    id: 7,
+  },
 ];
 
 function classNames(...classes: string[]) {
@@ -54,10 +85,10 @@ const StepsProgress = ({ currentStep }: { currentStep: number }) => {
   }, [currentStep]);
 
   return (
-    <nav aria-label="Progress" className="pt-8">
+    <nav aria-label="Progress" className="max-lg:overflow-scroll">
       <ol
         role="list"
-        className="bg-white overflow-hidden flex flex-col max-lg:flex-row max-lg:py-3 max-lg:border-b max-lg:px-2 max-lg:fixed max-lg:z-10 max-lg:left-0 max-lg:right-0 max-lg:top-0 max-lg:overflow-scroll"
+        className="bg-white overflow-hidden flex flex-col max-lg:flex-row max-lg:py-3 max-lg:border-b max-lg:px-2 max-lg:fixed max-lg:z-10 max-lg:left-0 max-lg:right-0 max-lg:top-14 max-lg:border-t max-lg:overflow-scroll"
       >
         {steps.map((step, stepIdx) => (
           <li
@@ -71,7 +102,7 @@ const StepsProgress = ({ currentStep }: { currentStep: number }) => {
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-3 top-7 h-4 -ml-px mt-0.5 w-0.5 bg-mainBlue
+                    className="absolute left-3 top-7 h-4 -ml-px mt-0.5 w-0.5 bg-green-500
                       max-lg:-right-4 max-lg:top-3 max-lg:left-auto max-lg:h-0.5 max-lg:w-2"
                     aria-hidden="true"
                   />
@@ -81,15 +112,17 @@ const StepsProgress = ({ currentStep }: { currentStep: number }) => {
                   className="group relative flex items-center"
                 >
                   <span className="flex h-7 items-center">
-                    <span className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full bg-mainBlue group-hover:bg-mainBlue">
+                    <span className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 group-hover:bg-mainBlue">
                       <CheckIcon
                         className="h-4 w-4 text-white"
                         aria-hidden="true"
                       />
                     </span>
                   </span>
-                  <span className="ml-2 flex min-w-0 flex-col">
-                    <span className="text-base font-medium">{step.name}</span>
+                  <span className="ml-2 flex min-w-0 w-fit flex-col">
+                    <span className="text-base font-medium text-nowrap">
+                      {step.name}
+                    </span>
                   </span>
                 </a>
               </>
@@ -113,7 +146,7 @@ const StepsProgress = ({ currentStep }: { currentStep: number }) => {
                     </span>
                   </span>
                   <span className="ml-2 flex min-w-0 flex-col">
-                    <span className="text-base font-medium text-mainBlue">
+                    <span className="text-base font-medium text-mainBlue text-nowrap">
                       {step.name}
                     </span>
                   </span>
@@ -138,7 +171,7 @@ const StepsProgress = ({ currentStep }: { currentStep: number }) => {
                     </span>
                   </span>
                   <span className="ml-2 flex min-w-0 flex-col">
-                    <span className="text-base font-medium text-gray-500">
+                    <span className="text-base font-medium text-gray-500 text-nowrap">
                       {step.name}
                     </span>
                   </span>

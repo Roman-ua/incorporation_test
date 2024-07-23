@@ -56,109 +56,117 @@ const CustomCalendar = ({ field }: IProps) => {
   }
 
   return (
-    <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1">
-      <div>
-        <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-          <dt className="truncate text-sm font-medium text-gray-500">
-            {'Registration date'}
-          </dt>
-          <dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
-            {format(selectedDay, 'MMMM dd,yyyy')}
-          </dd>
-        </div>
-      </div>
-      <div className="max-lg:mt-4 text-center">
-        <div className="flex items-center text-gray-900">
-          <button
-            type="button"
-            onClick={previousMonth}
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-          >
-            <span className="sr-only">Previous month</span>
-            <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-          </button>
-          <div className="flex-auto text-sm font-semibold">
-            {format(firstDayCurrentMonth, 'MMMM yyyy')}
+    <>
+      <h2 className="text-xl font-semibold mb-4">Select Registration Date</h2>
+      <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1 pb-16">
+        <div>
+          <div className="overflow-hidden rounded-lg bg-white max-sm:py-6">
+            <dt className="truncate text-sm font-medium text-gray-500">
+              {'Registration date'}
+            </dt>
+            <dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
+              {format(selectedDay, 'MMMM dd, yyyy')}
+            </dd>
           </div>
-          <button
-            type="button"
-            onClick={nextMonth}
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-          >
-            <span className="sr-only">Next month</span>
-            <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-          </button>
         </div>
-        <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
-          <div>M</div>
-          <div>T</div>
-          <div>W</div>
-          <div>T</div>
-          <div>F</div>
-          <div>S</div>
-          <div>S</div>
-        </div>
-        <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
-          {days.map((day, dayIdx) => {
-            console.log(getDay(day), day, 'getDay(day)');
-            return (
-              <div
-                key={day.toString()}
-                className={classNames(
-                  dayIdx === 0 && colStartClasses[getDay(day)]
-                )}
+        <div className="relative min-h-72">
+          <div className="max-lg:mt-4 text-center absolute left-0 top-0 right-0">
+            <div className="flex items-center text-gray-900">
+              <button
+                type="button"
+                onClick={previousMonth}
+                className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
               >
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (isSameMonth(day, firstDayCurrentMonth)) {
-                      setSelectedDay(day);
-                      field.onChange(day);
-                    }
-                  }}
-                  className={classNames(
-                    isEqual(day, selectedDay) &&
-                      'bg-mainBlue hover:bg-sideBarBlue',
-                    isEqual(day, selectedDay) && 'text-white',
-                    !isEqual(day, selectedDay) &&
-                      isToday(day) &&
-                      'text-red-500',
-                    !isEqual(day, selectedDay) &&
-                      !isToday(day) &&
-                      isSameMonth(day, firstDayCurrentMonth)
-                      ? 'bg-white'
-                      : 'bg-gray-50',
-                    !isEqual(day, selectedDay) &&
-                      !isToday(day) &&
-                      !isSameMonth(day, firstDayCurrentMonth) &&
-                      'text-gray-400',
-                    isEqual(day, selectedDay) && isToday(day) && 'bg-mainBlue',
-                    isEqual(day, selectedDay) && !isToday(day) && 'bg-gray-900',
-                    !isEqual(day, selectedDay) && 'hover:bg-gray-200',
-                    (isEqual(day, selectedDay) || isToday(day)) &&
-                      'font-semibold',
-                    dayIdx === 0 && 'rounded-tl-lg',
-                    dayIdx === 6 && 'rounded-tr-lg',
-                    dayIdx === days.length - 7 && 'rounded-bl-lg',
-                    dayIdx === days.length - 1 && 'rounded-br-lg',
-                    'hover:bg-gray-100 focus:z-10 w-full'
-                  )}
-                >
-                  <time
-                    className={
-                      'mx-auto flex h-7 w-7 items-center justify-center rounded-full'
-                    }
-                    dateTime={format(day, 'yyyy-MM-dd')}
-                  >
-                    {format(day, 'd')}
-                  </time>
-                </button>
+                <span className="sr-only">Previous month</span>
+                <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <div className="flex-auto text-sm font-semibold">
+                {format(firstDayCurrentMonth, 'MMMM yyyy')}
               </div>
-            );
-          })}
+              <button
+                type="button"
+                onClick={nextMonth}
+                className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+              >
+                <span className="sr-only">Next month</span>
+                <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+            <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
+              <div>M</div>
+              <div>T</div>
+              <div>W</div>
+              <div>T</div>
+              <div>F</div>
+              <div>S</div>
+              <div>S</div>
+            </div>
+            <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+              {days.map((day, dayIdx) => {
+                console.log(getDay(day), day, 'getDay(day)');
+                return (
+                  <div
+                    key={day.toString()}
+                    className={classNames(
+                      dayIdx === 0 && colStartClasses[getDay(day)]
+                    )}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (isSameMonth(day, firstDayCurrentMonth)) {
+                          setSelectedDay(day);
+                          field.onChange(day);
+                        }
+                      }}
+                      className={classNames(
+                        // isEqual(day, selectedDay) &&
+                        //   'bg-mainBlue hover:bg-sideBarBlue',
+                        isEqual(day, selectedDay) && 'text-white',
+                        !isEqual(day, selectedDay) &&
+                          isToday(day) &&
+                          'text-red-500',
+                        !isEqual(day, selectedDay) &&
+                          !isToday(day) &&
+                          isSameMonth(day, firstDayCurrentMonth)
+                          ? 'bg-white'
+                          : 'bg-gray-50',
+                        !isEqual(day, selectedDay) &&
+                          !isToday(day) &&
+                          !isSameMonth(day, firstDayCurrentMonth) &&
+                          'text-gray-400',
+                        // isEqual(day, selectedDay) && isToday(day) && 'bg-mainBlue',
+                        isEqual(day, selectedDay) &&
+                          !isToday(day) &&
+                          'bg-gray-900',
+                        !isEqual(day, selectedDay) && 'hover:bg-gray-200',
+                        (isEqual(day, selectedDay) || isToday(day)) &&
+                          'font-semibold',
+                        dayIdx === 0 && 'rounded-tl-lg',
+                        dayIdx === 6 && 'rounded-tr-lg',
+                        dayIdx === days.length - 7 && 'rounded-bl-lg',
+                        dayIdx === days.length - 1 && 'rounded-br-lg',
+                        'py-1.5 bg-white hover:bg-gray-100 focus:z-10 w-full'
+                      )}
+                    >
+                      <time
+                        className={classNames(
+                          'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
+                          isEqual(day, selectedDay) && 'bg-black'
+                        )}
+                        dateTime={format(day, 'yyyy-MM-dd')}
+                      >
+                        {format(day, 'd')}
+                      </time>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
