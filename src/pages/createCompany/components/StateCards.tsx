@@ -11,6 +11,7 @@ interface IProps {
   state: string[];
   title: string;
   extraStyles?: string;
+  secondTitle?: string;
 }
 const StateCards = ({
   changeEvent,
@@ -18,6 +19,7 @@ const StateCards = ({
   state,
   title,
   extraStyles,
+  secondTitle,
 }: IProps) => {
   const [selectedState, setSelectedState] = useState(value || state[0]);
 
@@ -43,7 +45,7 @@ const StateCards = ({
             >
               <dt>
                 <p className="truncate text-sm font-medium text-gray-500">
-                  Registration state
+                  {secondTitle}
                 </p>
               </dt>
               <dd className="flex items-end justify-between w-full">
@@ -56,7 +58,7 @@ const StateCards = ({
                   {item}
                 </p>
                 {selectedState === item && (
-                  <span className="inline-flex items-center gap-x-1.5 rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+                  <span className="absolute top-2 right-2 inline-flex items-center gap-x-1.5 rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
                     <CheckIcon className="w-3 h-3" />
                     Selected
                   </span>
