@@ -227,14 +227,19 @@ const CreateCompany = () => {
 
   return (
     <>
-      <div className="w-full border-b py-4 px-14 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:bg-white max-lg:z-10">
-        <h1 className="text-3xl text-md font-bold max-lg:text-xl">
-          {currentStep === 0 && 'Company Name'}
-          {currentStep === 1 && 'Registration Information'}
-        </h1>
-        <Link to={ROUTES.HOME}>
-          <XMarkIcon className="w-6 h-6" />
-        </Link>
+      <div className="w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:bg-white max-lg:z-10">
+        <div className="w-1/5 pr-2 max-lg:hidden" />
+        <div className="w-1/2">
+          <h1 className="text-3xl text-md font-bold max-lg:text-xl">
+            {currentStep === 0 && 'Company Name'}
+            {currentStep === 1 && 'Registration Information'}
+          </h1>
+        </div>
+        <div className="w-1/5 pr-2 flex items-end justify-end">
+          <Link to={ROUTES.HOME}>
+            <XMarkIcon className="w-6 h-6" />
+          </Link>
+        </div>
       </div>
       <div className="m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-20 max-lg:pt-32 max-lg:pb-20">
         <div className="w-1/5 pr-2 pl-8 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
