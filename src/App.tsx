@@ -13,6 +13,7 @@ import ProtectedRoutes from './components/shared/ProtectedRoutes';
 import RecoveryPass from './pages/recovery/RecoveryPass';
 import RecoveryPassConfirm from './pages/recovery/RecoveryPassConfirm';
 import CreateCompany from './pages/createCompany/CreateCompany';
+import Account from './pages/account/Account';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
           <Route element={<ProtectedRoutes />}>
             <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.ACCOUNT} element={<Account />} />
           </Route>
         </Route>
         <Route
