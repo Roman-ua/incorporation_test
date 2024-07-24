@@ -57,7 +57,7 @@ const CustomCalendar = ({ field }: IProps) => {
 
   return (
     <>
-      <h2 className="text-xl font-semibold mb-4">Select Registration Date</h2>
+      <h2 className="text-3xl font-semibold mb-8">Select Registration Date</h2>
       <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1 pb-16">
         <div>
           <div className="overflow-hidden rounded-lg bg-white max-sm:py-6">

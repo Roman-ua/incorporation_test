@@ -3,54 +3,54 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 
 const stepsData = [
   {
-    name: 'General Info',
+    name: 'Company Name',
     href: '#',
     status: 'current',
     id: 0,
   },
   {
-    name: 'Registration Info',
+    name: 'Registration Information',
     href: '#',
     status: 'upcoming',
     id: 1,
   },
-  {
-    name: 'Address',
-    href: '#',
-    status: 'upcoming',
-    id: 2,
-  },
-  {
-    name: 'Directors',
-    href: '#',
-    status: 'upcoming',
-    id: 3,
-  },
-
-  {
-    name: 'Representatives',
-    href: '#',
-    status: 'upcoming',
-    id: 4,
-  },
-  {
-    name: 'Registered Agent',
-    href: '#',
-    status: 'upcoming',
-    id: 5,
-  },
-  {
-    name: 'Review',
-    href: '#',
-    status: 'upcoming',
-    id: 6,
-  },
-  {
-    name: 'Complete',
-    href: '#',
-    status: 'upcoming',
-    id: 7,
-  },
+  // {
+  //   name: 'Address',
+  //   href: '#',
+  //   status: 'upcoming',
+  //   id: 2,
+  // },
+  // {
+  //   name: 'Directors',
+  //   href: '#',
+  //   status: 'upcoming',
+  //   id: 3,
+  // },
+  //
+  // {
+  //   name: 'Representatives',
+  //   href: '#',
+  //   status: 'upcoming',
+  //   id: 4,
+  // },
+  // {
+  //   name: 'Registered Agent',
+  //   href: '#',
+  //   status: 'upcoming',
+  //   id: 5,
+  // },
+  // {
+  //   name: 'Review',
+  //   href: '#',
+  //   status: 'upcoming',
+  //   id: 6,
+  // },
+  // {
+  //   name: 'Complete',
+  //   href: '#',
+  //   status: 'upcoming',
+  //   id: 7,
+  // },
 ];
 
 function classNames(...classes: string[]) {
