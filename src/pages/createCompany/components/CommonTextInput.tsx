@@ -24,6 +24,21 @@ const CommonTextInput = ({
   heading,
   removeLabel,
 }: IProps) => {
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (id !== 'number') {
+      field.onChange(e.target.value);
+      return;
+    }
+
+    const validPattern = /^[a-zA-Z0-9-]+$/;
+
+    if (validPattern.test(e.target.value)) {
+      return field.onChange(e.target.value);
+    } else {
+      return;
+    }
+  };
+
   return (
     <>
       <h2 className="text-3xl font-semibold mb-8">{heading}</h2>
@@ -37,6 +52,7 @@ const CommonTextInput = ({
         <div className="mt-1">
           <input
             {...field}
+            onChange={changeHandler}
             type="text"
             name={name}
             id={id}

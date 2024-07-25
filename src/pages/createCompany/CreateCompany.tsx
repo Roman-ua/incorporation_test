@@ -9,12 +9,13 @@ import { ROUTES } from '../../constants/navigation/routes';
 import { Link } from 'react-router-dom';
 import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
+import JoinedCard from './components/JoinedCard';
 
 const states = ['Florida', 'Texas', 'Delaware', 'California'];
 const companyTypes = [
-  'Corporation (Inc)',
-  'Limited Liability Company (LLC)',
-  'Non-profit',
+  { fullName: 'Corporation', shortName: 'C-corp' },
+  { fullName: 'Limited Liability Company', shortName: 'LLC' },
+  { fullName: 'Non-profit', shortName: 'Non-profit' },
 ];
 
 const status = [
@@ -179,13 +180,13 @@ const CreateCompany = () => {
                   control={stepOneForm.control}
                   render={({ field }) => (
                     <div className="mb-16">
-                      <StateCards
-                        extraStyles="text-lg"
+                      <JoinedCard
+                        // extraStyles="text-lg"
                         state={companyTypes}
                         title={'Select Company Type'}
                         value={field.value}
                         changeEvent={field.onChange}
-                        secondTitle={'Company type'}
+                        // secondTitle={'Company type'}
                       />
                     </div>
                   )}
@@ -245,8 +246,8 @@ const CreateCompany = () => {
                   render={({ field }) => (
                     <>
                       <CommonTextInput
-                        id="name"
-                        name="name"
+                        id="number"
+                        name="number"
                         field={field}
                         title="Number"
                         heading="Registration Number"
