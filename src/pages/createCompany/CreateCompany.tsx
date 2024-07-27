@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
+import Separator from './components/Separator';
 
 const states = ['Florida', 'Texas', 'Delaware', 'California'];
 const companyTypes = [
@@ -134,13 +135,13 @@ const CreateCompany = () => {
     <>
       <div className="w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:bg-white max-lg:z-10">
         <div className="w-1/5 pr-2 max-lg:hidden" />
-        <div className="w-1/2">
+        <div className="w-2/3">
           <h1 className="text-3xl text-md font-bold max-lg:text-xl">
             {currentStep === 0 && 'Company Name and Type'}
             {currentStep === 1 && 'Registration Information'}
           </h1>
         </div>
-        <div className="w-1/5 pr-2 flex items-end justify-end">
+        <div className="w-1/6 pr-2 flex items-end justify-end">
           <Link to={ROUTES.HOME}>
             <XMarkIcon className="w-6 h-6" />
           </Link>
@@ -148,9 +149,12 @@ const CreateCompany = () => {
       </div>
       <div className="m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-20 max-lg:pt-32 max-lg:pb-20">
         <div className="w-1/5 pr-2 pl-8 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
-          <StepsProgress currentStep={currentStep} />
+          <StepsProgress
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+          />
         </div>
-        <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
+        <div className="w-2/3 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
           {currentStep === 0 && (
             <form onSubmit={stepOneForm.handleSubmit(handleStepOneSubmit)}>
               <div>
@@ -159,9 +163,6 @@ const CreateCompany = () => {
                   control={stepOneForm.control}
                   render={({ field }) => (
                     <>
-                      <h2 className="text-3xl font-semibold mb-8">
-                        Company Name
-                      </h2>
                       <CommonTextInput
                         id="name"
                         name="name"
@@ -170,8 +171,9 @@ const CreateCompany = () => {
                         extraInputStyles="text-3xl font-bold"
                         removeLabel={true}
                         extraStyles="mb-16"
+                        heading="Company Name"
                       />
-                      <div className="w-full border-b mb-16" />
+                      <Separator />
                     </>
                   )}
                 />
@@ -194,7 +196,7 @@ const CreateCompany = () => {
               </div>
               <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex items-center justify-end">
+                <div className="w-2/3 max-xl:w-full flex items-center justify-end">
                   <button
                     type="submit"
                     className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -202,7 +204,7 @@ const CreateCompany = () => {
                     Next Step
                   </button>
                 </div>
-                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-1/6 pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
@@ -224,7 +226,7 @@ const CreateCompany = () => {
                           secondTitle={'Registration state'}
                         />
                       </div>
-                      <div className="w-full border-b mb-16" />
+                      <Separator />
                     </>
                   )}
                 />
@@ -235,7 +237,7 @@ const CreateCompany = () => {
                     return (
                       <>
                         <CustomCalendar field={field} />
-                        <div className="w-full border-b mb-16" />
+                        <Separator />
                       </>
                     );
                   }}
@@ -253,7 +255,7 @@ const CreateCompany = () => {
                         heading="Registration Number"
                         extraStyles="mb-16"
                       />
-                      <div className="w-full border-b mb-16" />
+                      <Separator />
                     </>
                   )}
                 />
@@ -263,7 +265,6 @@ const CreateCompany = () => {
                   render={({ field }) => (
                     <div className="mb-16">
                       <StateCards
-                        extraStyles="text-lg"
                         state={status}
                         title={'Select Company Status'}
                         value={field.value}
@@ -276,7 +277,7 @@ const CreateCompany = () => {
               </div>
               <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
+                <div className="w-2/3 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(0)}
@@ -291,12 +292,12 @@ const CreateCompany = () => {
                     Submit
                   </button>
                 </div>
-                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-1/6 pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
         </div>
-        <div className="w-1/5" />
+        <div className="w-1/6" />
       </div>
     </>
   );

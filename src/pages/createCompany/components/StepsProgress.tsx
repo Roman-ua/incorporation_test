@@ -14,50 +14,19 @@ const stepsData = [
     status: 'upcoming',
     id: 1,
   },
-  // {
-  //   name: 'Address',
-  //   href: '#',
-  //   status: 'upcoming',
-  //   id: 2,
-  // },
-  // {
-  //   name: 'Directors',
-  //   href: '#',
-  //   status: 'upcoming',
-  //   id: 3,
-  // },
-  //
-  // {
-  //   name: 'Representatives',
-  //   href: '#',
-  //   status: 'upcoming',
-  //   id: 4,
-  // },
-  // {
-  //   name: 'Registered Agent',
-  //   href: '#',
-  //   status: 'upcoming',
-  //   id: 5,
-  // },
-  // {
-  //   name: 'Review',
-  //   href: '#',
-  //   status: 'upcoming',
-  //   id: 6,
-  // },
-  // {
-  //   name: 'Complete',
-  //   href: '#',
-  //   status: 'upcoming',
-  //   id: 7,
-  // },
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const StepsProgress = ({ currentStep }: { currentStep: number }) => {
+const StepsProgress = ({
+  currentStep,
+  setCurrentStep,
+}: {
+  currentStep: number;
+  setCurrentStep: (value: number) => void;
+}) => {
   const [steps, setSteps] = useState(stepsData);
 
   const stepHandler = () => {
@@ -93,6 +62,7 @@ const StepsProgress = ({ currentStep }: { currentStep: number }) => {
         {steps.map((step, stepIdx) => (
           <li
             key={step.name}
+            onClick={() => setCurrentStep(step.id)}
             className={classNames(
               stepIdx !== steps.length - 1 ? 'pb-5' : '',
               'relative max-lg:mr-6 max-lg:pb-0'

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SectionHeading from './SectionHeading';
 import { CheckIcon } from '@heroicons/react/20/solid';
 
 function classNames(...classes: string[]) {
@@ -10,7 +11,6 @@ interface IProps {
   value: string;
   state: string[];
   title: string;
-  extraStyles?: string;
   secondTitle?: string;
 }
 const StateCards = ({
@@ -18,14 +18,13 @@ const StateCards = ({
   value,
   state,
   title,
-  extraStyles,
   secondTitle,
 }: IProps) => {
-  const [selectedState, setSelectedState] = useState(value || state[0]);
+  const [selectedState, setSelectedState] = useState(value);
 
   return (
     <>
-      <h2 className="text-3xl font-semibold mb-8">{title}</h2>
+      <SectionHeading text={title} status={!!value} />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
         {state.map((item) => {
           return (
@@ -36,33 +35,30 @@ const StateCards = ({
                 changeEvent(item);
               }}
               className={classNames(
-                'relative overflow-hidden rounded-lg px-4 py-5 shadow-[0_0.5px_4px_rgb(0,0,0,0.2)] sm:px-6 sm:py-5',
+                'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-6 py-8 bg-white hover:bg-gray-100 hover:cursor-pointer',
                 'hover:cursor-pointer',
-                selectedState === item
-                  ? 'border-2 border-green-500 bg-white'
-                  : 'border-2 border-gray-100 bg-gray-100'
+                selectedState === item ? 'bg-green-50' : ''
               )}
             >
-              <dt>
-                <p className="truncate text-sm font-medium text-gray-500">
+              <dt className="flex items-center justify-start">
+                <span
+                  className={classNames(
+                    'w-4 h-4 border rounded flex items-center justify-center',
+                    selectedState === item ? 'bg-green-500' : ''
+                  )}
+                >
+                  {selectedState === item && (
+                    <CheckIcon className="w-3 h-3 text-white" />
+                  )}
+                </span>
+                <p className="truncate text-sm font-medium text-gray-500 ml-2">
                   {secondTitle}
                 </p>
               </dt>
               <dd className="flex items-end justify-between w-full">
-                <p
-                  className={classNames(
-                    'text-2xl font-semibold text-gray-900',
-                    extraStyles || ''
-                  )}
-                >
+                <p className={classNames('text-2xl font-bold text-gray-900')}>
                   {item}
                 </p>
-                {selectedState === item && (
-                  <span className="absolute top-2 right-2 inline-flex items-center gap-x-1.5 rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
-                    <CheckIcon className="w-3 h-3" />
-                    Selected
-                  </span>
-                )}
               </dd>
             </div>
           );

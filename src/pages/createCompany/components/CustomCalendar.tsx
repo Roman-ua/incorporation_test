@@ -15,6 +15,7 @@ import {
 } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { FieldValues } from 'react-hook-form';
+import SectionHeading from './SectionHeading';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -57,14 +58,14 @@ const CustomCalendar = ({ field }: IProps) => {
 
   return (
     <>
-      <h2 className="text-3xl font-semibold mb-8">Select Registration Date</h2>
+      <SectionHeading text={'Select Registration Date'} status={field.value} />
       <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1 pb-16">
         <div>
           <div className="overflow-hidden rounded-lg bg-white max-sm:py-6">
             <dt className="truncate text-sm font-medium text-gray-500">
               {'Registration date'}
             </dt>
-            <dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
+            <dd className="mt-1 text-2xl font-bold tracking-tight text-gray-900">
               {format(selectedDay, 'MMMM dd, yyyy')}
             </dd>
           </div>
@@ -103,7 +104,6 @@ const CustomCalendar = ({ field }: IProps) => {
             </div>
             <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
               {days.map((day, dayIdx) => {
-                console.log(getDay(day), day, 'getDay(day)');
                 return (
                   <div
                     key={day.toString()}
