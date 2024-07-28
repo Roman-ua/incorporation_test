@@ -42,7 +42,7 @@ const stepTwoSchema = yup.object().shape({
 const localStorageKey = 'multistep-form-data';
 type Step = 'stepOneData' | 'stepTwoData';
 
-type StepOneData = {
+export type StepOneData = {
   companyName: string;
   companyType: string;
 };
@@ -111,11 +111,13 @@ const CreateCompany = () => {
     defaultValues: stepOneData,
     resolver: yupResolver(stepOneSchema),
   });
+  const stepOneFormObserver = stepOneForm.watch();
 
   const stepTwoForm = useForm<StepTwoData>({
     defaultValues: stepTwoData,
     resolver: yupResolver(stepTwoSchema),
   });
+  const stepTwoFormObserver = stepTwoForm.watch();
 
   const handleStepOneSubmit: SubmitHandler<StepOneData> = (data) => {
     setStepOneData(data);
@@ -152,6 +154,8 @@ const CreateCompany = () => {
           <StepsProgress
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
+            firstStepData={Object.values(stepOneFormObserver)}
+            secondStepData={Object.values(stepTwoFormObserver)}
           />
         </div>
         <div className="w-2/3 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">

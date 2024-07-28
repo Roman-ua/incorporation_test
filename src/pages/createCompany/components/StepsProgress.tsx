@@ -23,9 +23,13 @@ function classNames(...classes: string[]) {
 const StepsProgress = ({
   currentStep,
   setCurrentStep,
+  firstStepData,
+  secondStepData,
 }: {
   currentStep: number;
   setCurrentStep: (value: number) => void;
+  firstStepData: string[];
+  secondStepData: string[];
 }) => {
   const [steps, setSteps] = useState(stepsData);
 
@@ -36,13 +40,13 @@ const StepsProgress = ({
     const prevItem = data.findIndex((item) => item.id === currentStep - 1);
     const nextItem = data.findIndex((item) => item.id === currentStep + 1);
 
-    if (currentItem !== -1) {
+    if (currentItem !== -1 && data[currentItem].status !== 'complete') {
       data[currentItem].status = 'current';
     }
-    if (prevItem !== -1) {
-      data[prevItem].status = 'complete';
+    if (prevItem !== -1 && data[prevItem].status !== 'complete') {
+      data[prevItem].status = 'upcoming';
     }
-    if (nextItem !== -1) {
+    if (nextItem !== -1 && data[nextItem].status !== 'complete') {
       data[nextItem].status = 'upcoming';
     }
 
@@ -52,6 +56,32 @@ const StepsProgress = ({
   useEffect(() => {
     stepHandler();
   }, [currentStep]);
+
+  useEffect(() => {
+    const data = [...steps];
+    const existsEmptyFieldFirstStep = firstStepData.findIndex(
+      (item) => item === ''
+    );
+    const existsEmptyFieldSecondStep = secondStepData.findIndex(
+      (item) => item === ''
+    );
+
+    if (existsEmptyFieldFirstStep === -1) {
+      data[0].status = 'complete';
+    }
+    if (existsEmptyFieldFirstStep > -1 && currentStep === 0) {
+      data[0].status = 'current';
+    }
+
+    if (existsEmptyFieldSecondStep === -1) {
+      data[1].status = 'complete';
+    }
+    if (existsEmptyFieldSecondStep > -1 && currentStep === 1) {
+      data[1].status = 'current';
+    }
+
+    setSteps(data);
+  }, [firstStepData, secondStepData]);
 
   return (
     <nav aria-label="Progress" className="max-lg:overflow-scroll">
