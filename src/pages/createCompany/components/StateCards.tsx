@@ -13,13 +13,7 @@ interface IProps {
   title: string;
   secondTitle?: string;
 }
-const StateCards = ({
-  changeEvent,
-  value,
-  state,
-  title,
-  secondTitle,
-}: IProps) => {
+const StateCards = ({ changeEvent, value, state, title }: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
 
   return (
@@ -43,23 +37,22 @@ const StateCards = ({
               <dt className="flex items-center justify-start">
                 <span
                   className={classNames(
-                    'w-4 h-4 border rounded flex items-center justify-center',
+                    'w-5 h-5 border rounded flex items-center justify-center',
                     selectedState === item ? 'bg-green-500' : ''
                   )}
                 >
                   {selectedState === item && (
-                    <CheckIcon className="w-3 h-3 text-white" />
+                    <CheckIcon className="w-4 h-4 text-white" />
                   )}
                 </span>
-                <p className="truncate text-sm font-medium text-gray-500 ml-2">
-                  {secondTitle}
-                </p>
-              </dt>
-              <dd className="flex items-end justify-between w-full">
-                <p className={classNames('text-2xl font-bold text-gray-900')}>
+                <p
+                  className={classNames(
+                    'text-2xl font-bold text-gray-900 ml-2'
+                  )}
+                >
                   {item}
                 </p>
-              </dd>
+              </dt>
             </div>
           );
         })}

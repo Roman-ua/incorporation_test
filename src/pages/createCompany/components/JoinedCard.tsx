@@ -57,12 +57,12 @@ const JoinedCard = ({
                     <CheckIcon className="w-3 h-3 text-white" />
                   )}
                 </span>
-                <dt className="text-sm font-medium leading-6 text-gray-500 ml-2">
+                <dt className="text-base font-medium leading-6 text-gray-500 ml-2">
                   {stat.fullName}
                 </dt>
               </div>
 
-              <dd className="w-full flex-none text-2xl font-bold leading-10 tracking-tight text-gray-900">
+              <dd className="w-full pl-6 flex-none text-2xl font-bold leading-10 tracking-tight text-gray-900">
                 {stat.shortName}
               </dd>
             </div>

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import SectionHeading from './SectionHeading';
+import { ERRORS } from '../../../constants/errors';
+import { VALIDATORS } from '../../../constants/regexs';
 
 interface IProps {
   id: string;
@@ -25,24 +27,45 @@ const CommonTextInput = ({
   heading,
   removeLabel,
 }: IProps) => {
+  const [done, setDone] = React.useState(false);
+  const [error, setError] = React.useState('');
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (id !== 'number') {
-      field.onChange(e.target.value);
-      return;
+    const validPattern =
+      id === 'number' ? VALIDATORS.COMPANY_NUMBER : VALIDATORS.NAME;
+    const errorMsg =
+      id === 'number' ? ERRORS.INVALID_NUMBER_VALUE : ERRORS.INVALID_NAME_VALUE;
+
+    if (id === 'number' || id === 'name') {
+      if (validPattern.test(e.target.value) || e.target.value === '') {
+        setError('');
+        return field.onChange(e.target.value);
+      } else {
+        setError(errorMsg);
+        return;
+      }
     }
 
-    const validPattern = /^[a-zA-Z0-9-]+$/;
+    field.onChange(e.target.value);
+  };
 
-    if (validPattern.test(e.target.value) || e.target.value === '') {
-      return field.onChange(e.target.value);
+  const saveHandler = () => {
+    if (field.value && !error) {
+      setDone(true);
     } else {
-      return;
+      setDone(false);
     }
   };
 
+  useEffect(() => {
+    if (field.value && !done) {
+      setDone(true);
+    }
+  }, []);
+
   return (
     <>
-      <SectionHeading text={heading || ''} status={field.value} />
+      <SectionHeading text={heading || ''} status={done} />
       <div className={`w-full ${extraStyles} max-lg:ml-0 max-lg:mr-0`}>
         <label
           htmlFor={id}
@@ -62,13 +85,20 @@ const CommonTextInput = ({
             data-1p-ignore={true}
             readOnly={readonly}
             disabled={readonly}
+            onBlur={saveHandler}
           />
           <button
             type={'button'}
-            className="absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-mainBlue hover:bg-sideBarBlue transition rounded-md text-white"
+            onClick={saveHandler}
+            className="absolute right-3 top-3 bottom-3 px-4 bg-mainBlue hover:bg-sideBarBlue transition rounded-md text-white"
           >
             Save
           </button>
+          {error && (
+            <div className="absolute text-xs text-red-500 -bottom-5">
+              {error}
+            </div>
+          )}
         </div>
       </div>
     </>

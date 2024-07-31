@@ -11,6 +11,7 @@ import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
 import Separator from './components/Separator';
+import { VALIDATORS } from '../../constants/regexs';
 
 const states = ['Florida', 'Texas', 'Delaware', 'California'];
 const companyTypes = [
@@ -28,14 +29,20 @@ const status = [
 ];
 
 const stepOneSchema = yup.object().shape({
-  companyName: yup.string().required('Company Name is required'),
+  companyName: yup
+    .string()
+    .required('Company Name is required')
+    .matches(VALIDATORS.NAME),
   companyType: yup.string().required('State of Registration is required'),
 });
 
 const stepTwoSchema = yup.object().shape({
   registeredIn: yup.string().required('State of Registration is required'),
   registrationDate: yup.string().required('Registration Date is required'),
-  registrationNumber: yup.string().required('Registration Date is required'),
+  registrationNumber: yup
+    .string()
+    .required('Registration Date is required')
+    .matches(VALIDATORS.COMPANY_NUMBER),
   status: yup.string().required('State of Registration is required'),
 });
 
@@ -189,7 +196,7 @@ const CreateCompany = () => {
                       <JoinedCard
                         // extraStyles="text-lg"
                         state={companyTypes}
-                        title={'Select Company Type'}
+                        title={'Company Type'}
                         value={field.value}
                         changeEvent={field.onChange}
                         // secondTitle={'Company type'}
@@ -270,7 +277,7 @@ const CreateCompany = () => {
                     <div className="mb-16">
                       <StateCards
                         state={status}
-                        title={'Select Company Status'}
+                        title={'Company Status'}
                         value={field.value}
                         changeEvent={field.onChange}
                         secondTitle={'Company status'}

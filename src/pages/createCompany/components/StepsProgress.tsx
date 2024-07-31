@@ -66,14 +66,14 @@ const StepsProgress = ({
       (item) => item === ''
     );
 
-    if (existsEmptyFieldFirstStep === -1) {
+    if (existsEmptyFieldFirstStep === -1 && currentStep !== 0) {
       data[0].status = 'complete';
     }
     if (existsEmptyFieldFirstStep > -1 && currentStep === 0) {
       data[0].status = 'current';
     }
 
-    if (existsEmptyFieldSecondStep === -1) {
+    if (existsEmptyFieldSecondStep === -1 && currentStep !== 1) {
       data[1].status = 'complete';
     }
     if (existsEmptyFieldSecondStep > -1 && currentStep === 1) {
@@ -112,7 +112,7 @@ const StepsProgress = ({
                   className="group relative flex items-center"
                 >
                   <span className="flex h-7 items-center">
-                    <span className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 group-hover:bg-mainBlue">
+                    <span className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full bg-green-500">
                       <CheckIcon
                         className="h-4 w-4 text-white"
                         aria-hidden="true"
