@@ -231,7 +231,7 @@ const CreateCompany = () => {
                       <div className="mb-16">
                         <StateCards
                           state={states}
-                          title={'Select Registration State'}
+                          title={'Registration State'}
                           value={field.value}
                           changeEvent={field.onChange}
                           secondTitle={'Registration state'}

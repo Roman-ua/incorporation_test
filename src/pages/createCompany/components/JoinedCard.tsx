@@ -49,7 +49,7 @@ const JoinedCard = ({
               <div className="flex items-center justify-start">
                 <span
                   className={classNames(
-                    'w-4 h-4 border rounded flex items-center justify-center',
+                    'w-5 h-5 border rounded-full flex items-center justify-center',
                     selectedState === stat.shortName ? 'bg-green-500' : ''
                   )}
                 >

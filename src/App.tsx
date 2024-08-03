@@ -14,6 +14,7 @@ import RecoveryPass from './pages/recovery/RecoveryPass';
 import RecoveryPassConfirm from './pages/recovery/RecoveryPassConfirm';
 import CreateCompany from './pages/createCompany/CreateCompany';
 import Account from './pages/account/Account';
+import Elements from './pages/elements/Elements';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           element={<RecoveryPassConfirm />}
         />
         <Route element={<ProtectedRoute />}>
+          <Route path="/elements" element={<Elements />} />
           <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
           <Route element={<ProtectedRoutes />}>
             <Route path={ROUTES.HOME} element={<Home />} />

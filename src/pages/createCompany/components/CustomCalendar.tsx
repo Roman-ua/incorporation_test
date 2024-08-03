@@ -58,7 +58,7 @@ const CustomCalendar = ({ field }: IProps) => {
 
   return (
     <>
-      <SectionHeading text={'Select Registration Date'} status={selectedDay} />
+      <SectionHeading text={'Registration Date'} status={selectedDay} />
       <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1 pb-16">
         <div>
           <div className="overflow-hidden rounded-lg bg-white max-sm:py-6">

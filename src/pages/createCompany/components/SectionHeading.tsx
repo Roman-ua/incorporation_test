@@ -22,7 +22,7 @@ const SectionHeading = ({
             : 'bg-red-50 text-red-700 ring-red-600/20'
         )}
       >
-        {status ? 'Done' : 'Required'}
+        {status ? 'Saved' : 'Required'}
       </span>
     </div>
   );
