@@ -38,12 +38,12 @@ const JoinedCard = ({
                 changeEvent(stat.shortName);
               }}
               className={classNames(
-                'flex relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-6 py-8 bg-white hover:bg-gray-100 hover:cursor-pointer',
+                'flex relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-6 py-8 hover:bg-gray-100 hover:cursor-pointer',
                 index === 0 &&
                   'rounded-tl-lg lg:rounded-bl-lg max-lg:rounded-tr-lg',
                 index === 2 &&
                   'lg:rounded-tr-lg rounded-br-lg max-lg:rounded-bl-lg',
-                selectedState === stat.shortName ? 'bg-green-50' : ''
+                selectedState === stat.shortName ? 'bg-green-50' : 'bg-white'
               )}
             >
               <div className="flex items-center justify-start">
