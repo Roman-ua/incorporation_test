@@ -29,9 +29,9 @@ const StateCards = ({ changeEvent, value, state, title }: IProps) => {
                 changeEvent(item);
               }}
               className={classNames(
-                'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-6 py-8 bg-white hover:bg-gray-100 hover:cursor-pointer',
+                'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-6 py-8 hover:bg-gray-100 hover:cursor-pointer',
                 'hover:cursor-pointer',
-                selectedState === item ? 'bg-green-50' : ''
+                selectedState === item ? 'bg-green-50' : 'bg-gray-50'
               )}
             >
               <dt className="flex items-center justify-start">
