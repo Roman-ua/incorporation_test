@@ -50,7 +50,9 @@ const JoinedCard = ({
                 <span
                   className={classNames(
                     'w-5 h-5 border rounded-full flex items-center justify-center',
-                    selectedState === stat.shortName ? 'bg-green-500' : ''
+                    selectedState === stat.shortName
+                      ? 'bg-green-500 border-green-500'
+                      : ''
                   )}
                 >
                   {selectedState === stat.shortName && (
@@ -62,7 +64,7 @@ const JoinedCard = ({
                 </dt>
               </div>
 
-              <dd className="w-full pl-6 flex-none text-2xl font-bold leading-10 tracking-tight text-gray-900">
+              <dd className="w-full pl-7 flex-none text-2xl font-bold leading-10 tracking-tight text-gray-900">
                 {stat.shortName}
               </dd>
             </div>

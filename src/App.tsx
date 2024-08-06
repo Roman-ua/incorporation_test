@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -17,6 +17,10 @@ import Account from './pages/account/Account';
 import Elements from './pages/elements/Elements';
 
 function App() {
+  useEffect(() => {
+    localStorage.removeItem('multistep-form-data');
+  }, []);
+
   return (
     <Router>
       <Routes>
