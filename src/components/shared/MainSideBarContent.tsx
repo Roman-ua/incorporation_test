@@ -5,22 +5,34 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
+  RectangleGroupIcon,
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 
 const navigation = [
-  { name: 'Company', href: '#', icon: HomeIcon, current: true },
-  { name: 'Notices', href: '#', icon: UsersIcon, current: false },
-  { name: 'Domains', href: '#', icon: FolderIcon, current: false },
-  { name: 'Orders', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Senders', href: '#', icon: DocumentDuplicateIcon, current: false },
+  { name: 'Company', href: '/home', icon: HomeIcon, current: true },
+  { name: 'Notices', href: '/home', icon: UsersIcon, current: false },
+  { name: 'Domains', href: '/home', icon: FolderIcon, current: false },
+  { name: 'Orders', href: '/home', icon: CalendarIcon, current: false },
+  {
+    name: 'Senders',
+    href: '/home',
+    icon: DocumentDuplicateIcon,
+    current: false,
+  },
+  {
+    name: 'Elements',
+    href: '/elements',
+    icon: RectangleGroupIcon,
+    current: false,
+  },
 ];
 const teams = [
-  { id: 1, name: 'Companies', href: '#', initial: 'C', current: false },
-  { id: 2, name: 'Users', href: '#', initial: 'U', current: false },
-  { id: 3, name: 'Rules', href: '#', initial: 'R', current: false },
-  { id: 4, name: 'Ignored Links', href: '#', initial: 'I', current: false },
+  { id: 1, name: 'Companies', href: '/home', initial: 'C', current: false },
+  { id: 2, name: 'Users', href: '/home', initial: 'U', current: false },
+  { id: 3, name: 'Rules', href: '/home', initial: 'R', current: false },
+  { id: 4, name: 'Ignored Links', href: '/home', initial: 'I', current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -41,7 +53,7 @@ const MainSideBarContent = ({
           {navigation.map((item) => (
             <li key={item.name}>
               <Link
-                to={ROUTES.HOME}
+                to={item.href}
                 onClick={() => currentMenuItemHandler(item.name)}
                 className={classNames(
                   item.name === currentMenuItem
