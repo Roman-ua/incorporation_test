@@ -5,7 +5,6 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
-  RectangleGroupIcon,
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
@@ -21,18 +20,15 @@ const navigation = [
     icon: DocumentDuplicateIcon,
     current: false,
   },
-  {
-    name: 'Elements',
-    href: '/elements',
-    icon: RectangleGroupIcon,
-    current: false,
-  },
 ];
 const teams = [
-  { id: 1, name: 'Companies', href: '/home', initial: 'C', current: false },
-  { id: 2, name: 'Users', href: '/home', initial: 'U', current: false },
-  { id: 3, name: 'Rules', href: '/home', initial: 'R', current: false },
-  { id: 4, name: 'Ignored Links', href: '/home', initial: 'I', current: false },
+  {
+    id: 1,
+    name: 'Elements',
+    href: '/elements',
+    initial: 'C',
+    current: false,
+  },
 ];
 
 function classNames(...classes: string[]) {
@@ -85,7 +81,7 @@ const MainSideBarContent = ({
           {teams.map((team) => (
             <li key={team.name}>
               <Link
-                to={ROUTES.HOME}
+                to={team.href}
                 onClick={() => currentMenuItemHandler(team.name)}
                 className={classNames(
                   team.name === currentMenuItem
