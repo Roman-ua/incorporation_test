@@ -62,7 +62,7 @@ const CustomCalendar = ({ field }: IProps) => {
       <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1 pb-16">
         <div>
           <div className="overflow-hidden rounded-lg bg-white max-sm:py-6">
-            <dd className="text-3xl font-bold tracking-tight text-gray-900">
+            <dd className="text-xl font-bold tracking-tight text-gray-900">
               {format(selectedDay, 'MMMM dd, yyyy')}
             </dd>
           </div>

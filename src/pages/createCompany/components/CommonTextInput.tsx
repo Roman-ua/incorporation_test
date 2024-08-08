@@ -22,7 +22,7 @@ const CommonTextInput = ({
   field,
   title,
   extraStyles,
-  extraInputStyles,
+  // extraInputStyles,
   readonly,
   heading,
   removeLabel,
@@ -80,7 +80,7 @@ const CommonTextInput = ({
             type="text"
             name={name}
             id={id}
-            className={`outline-0 block w-full ${extraInputStyles ? 'text-2xl' : 'text-xl'} rounded-md font-bold border-0 py-3.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6`}
+            className={`outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6`}
             placeholder={title}
             data-1p-ignore={true}
             readOnly={readonly}
@@ -90,7 +90,7 @@ const CommonTextInput = ({
           <button
             type={'button'}
             onClick={saveHandler}
-            className="absolute right-3 top-3 bottom-3 px-4 bg-mainBlue hover:bg-sideBarBlue transition rounded-md text-white"
+            className="absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-mainBlue hover:bg-sideBarBlue transition rounded-md text-white"
           >
             Save
           </button>

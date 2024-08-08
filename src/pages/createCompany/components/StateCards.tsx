@@ -15,6 +15,7 @@ interface IProps {
 }
 const StateCards = ({ changeEvent, value, state, title }: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
+  const [hoveredItem, setHoveredItem] = useState('');
 
   return (
     <>
@@ -24,12 +25,14 @@ const StateCards = ({ changeEvent, value, state, title }: IProps) => {
           return (
             <div
               key={item}
+              onMouseEnter={() => setHoveredItem(item)}
+              onMouseLeave={() => setHoveredItem('')}
               onClick={() => {
                 setSelectedState(item);
                 changeEvent(item);
               }}
               className={classNames(
-                'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-6 py-8 hover:bg-gray-100 hover:cursor-pointer',
+                'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-5 hover:cursor-pointer',
                 'hover:cursor-pointer',
                 selectedState === item ? 'bg-green-50' : 'bg-gray-50'
               )}
@@ -37,18 +40,24 @@ const StateCards = ({ changeEvent, value, state, title }: IProps) => {
               <dt className="flex items-center justify-start">
                 <span
                   className={classNames(
-                    'w-5 h-5 border rounded-full flex items-center justify-center',
-                    selectedState === item ? 'bg-green-500' : ''
+                    'w-4 h-4 border rounded-full flex items-center justify-center',
+                    selectedState === item
+                      ? 'bg-green-500 border-green-500'
+                      : '',
+                    hoveredItem === item && selectedState !== item
+                      ? 'bg-gray-200'
+                      : ''
                   )}
                 >
+                  {hoveredItem === item && selectedState !== item && (
+                    <CheckIcon className="w-3 h-3 text-gray-900" />
+                  )}
                   {selectedState === item && (
                     <CheckIcon className="w-3 h-3 text-white" />
                   )}
                 </span>
                 <p
-                  className={classNames(
-                    'text-2xl font-bold text-gray-900 ml-2'
-                  )}
+                  className={classNames('text-xl font-bold text-gray-900 ml-2')}
                 >
                   {item}
                 </p>

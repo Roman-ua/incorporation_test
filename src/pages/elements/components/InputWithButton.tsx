@@ -69,14 +69,14 @@ const InputWithButton = () => {
             value={value}
             type="text"
             id={'input'}
-            className={`outline-0 block w-full text-xl rounded-md font-bold border-0 py-3.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6`}
+            className={`outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6`}
             placeholder={'Placeholder'}
             data-1p-ignore={true}
             onBlur={saveHandler}
           />
 
           {done && value && !loader ? (
-            <div className="bg-gray-100 absolute right-3 top-3 bottom-3 rounded-full w-7 flex items-center justify-center">
+            <div className="bg-gray-100 absolute right-3 top-1.5 bottom-1.5 rounded-full w-7 flex items-center justify-center">
               <CheckIcon className="w-5 h-4 text-gray-900 font-bold" />
             </div>
           ) : (
@@ -84,7 +84,7 @@ const InputWithButton = () => {
               type={'button'}
               onClick={saveHandler}
               disabled={!value}
-              className="min-w-20 flex items-center justify-center text-sm font-semibold absolute right-3 top-3 bottom-3 px-4 bg-mainBlue transition rounded-md text-white disabled:bg-gray-500"
+              className="absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-mainBlue hover:bg-sideBarBlue transition rounded-md text-white"
             >
               {loader ? (
                 <svg

@@ -24,6 +24,7 @@ const JoinedCard = ({
   // secondTitle,
 }: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
+  const [hoveredItem, setHoveredItem] = useState('');
 
   return (
     <>
@@ -37,8 +38,10 @@ const JoinedCard = ({
                 setSelectedState(stat.shortName);
                 changeEvent(stat.shortName);
               }}
+              onMouseEnter={() => setHoveredItem(stat.shortName)}
+              onMouseLeave={() => setHoveredItem('')}
               className={classNames(
-                'flex relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-6 py-8 hover:bg-gray-100 hover:cursor-pointer',
+                'flex relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-4 hover:cursor-pointer',
                 index === 0 &&
                   'rounded-tl-lg lg:rounded-bl-lg max-lg:rounded-tr-lg',
                 index === 2 &&
@@ -49,23 +52,30 @@ const JoinedCard = ({
               <div className="flex items-center justify-start">
                 <span
                   className={classNames(
-                    'w-5 h-5 border rounded-full flex items-center justify-center',
+                    'w-4 h-4 border rounded-full flex items-center justify-center',
                     selectedState === stat.shortName
                       ? 'bg-green-500 border-green-500'
-                      : ''
+                      : '',
+                    hoveredItem === stat.shortName &&
+                      selectedState !== stat.shortName &&
+                      'bg-gray-200'
                   )}
                 >
+                  {hoveredItem === stat.shortName &&
+                    selectedState !== stat.shortName && (
+                      <CheckIcon className="w-3 h-3 text-gray-900" />
+                    )}
                   {selectedState === stat.shortName && (
                     <CheckIcon className="w-3 h-3 text-white" />
                   )}
                 </span>
-                <dt className="text-base font-medium leading-6 text-gray-500 ml-2">
-                  {stat.fullName}
+                <dt className=" text-xl font-bold text-gray-800 ml-2">
+                  {stat.shortName}
                 </dt>
               </div>
 
-              <dd className="w-full pl-7 flex-none text-2xl font-bold leading-10 tracking-tight text-gray-900">
-                {stat.shortName}
+              <dd className="w-full flex-none text-sm font-medium tracking-tight text-gray-500">
+                {stat.fullName}
               </dd>
             </div>
           ))}

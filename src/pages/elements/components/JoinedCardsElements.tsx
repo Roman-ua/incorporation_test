@@ -9,8 +9,7 @@ const companyTypes = [
 const JoinedCardsElements = () => {
   const [state, setState] = React.useState('');
   return (
-    <div className="w-3/4">
-      <h2 className="mb-4 font-bold">Joined cards</h2>
+    <div className="w-1/2 mb-10">
       <JoinedCard
         value={state}
         changeEvent={setState}
