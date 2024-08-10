@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SectionHeading from './SectionHeading';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -41,19 +41,17 @@ const StateCards = ({ changeEvent, value, state, title }: IProps) => {
                 <span
                   className={classNames(
                     'w-4 h-4 border rounded-full flex items-center justify-center',
-                    selectedState === item
-                      ? 'bg-green-500 border-green-500'
-                      : '',
+                    selectedState === item ? 'bg-green-500 border-white' : '',
                     hoveredItem === item && selectedState !== item
                       ? 'bg-gray-200'
                       : ''
                   )}
                 >
                   {hoveredItem === item && selectedState !== item && (
-                    <CheckIcon className="w-3 h-3 text-gray-900" />
+                    <CheckCircleIcon className="w-6 h-6 text-gray-900" />
                   )}
                   {selectedState === item && (
-                    <CheckIcon className="w-3 h-3 text-white" />
+                    <CheckCircleIcon className="w-6 h-6 text-white" />
                   )}
                 </span>
                 <p

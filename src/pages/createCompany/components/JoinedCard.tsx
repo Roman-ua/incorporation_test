@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { CheckIcon } from '@heroicons/react/20/solid';
 import SectionHeading from './SectionHeading';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 interface IProps {
   changeEvent: (value: string) => void;
@@ -54,7 +54,7 @@ const JoinedCard = ({
                   className={classNames(
                     'w-4 h-4 border rounded-full flex items-center justify-center',
                     selectedState === stat.shortName
-                      ? 'bg-green-500 border-green-500'
+                      ? 'bg-green-500 border-white'
                       : '',
                     hoveredItem === stat.shortName &&
                       selectedState !== stat.shortName &&
@@ -63,18 +63,18 @@ const JoinedCard = ({
                 >
                   {hoveredItem === stat.shortName &&
                     selectedState !== stat.shortName && (
-                      <CheckIcon className="w-3 h-3 text-gray-900" />
+                      <CheckCircleIcon className="w-6 h-6 text-gray-900" />
                     )}
                   {selectedState === stat.shortName && (
-                    <CheckIcon className="w-3 h-3 text-white" />
+                    <CheckCircleIcon className="w-6 h-6 text-white" />
                   )}
                 </span>
-                <dt className=" text-xl font-bold text-gray-800 ml-2">
+                <dt className="text-xl font-bold text-gray-800 ml-2">
                   {stat.shortName}
                 </dt>
               </div>
 
-              <dd className="w-full flex-none text-sm font-medium tracking-tight text-gray-500">
+              <dd className="pl-6 w-full flex-none text-sm font-medium tracking-tight text-gray-500">
                 {stat.fullName}
               </dd>
             </div>

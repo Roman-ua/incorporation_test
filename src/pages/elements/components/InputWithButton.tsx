@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import SectionHeading from '../../createCompany/components/SectionHeading';
 import { VALIDATORS } from '../../../constants/regexs';
 import { ERRORS } from '../../../constants/errors';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 
 const InputWithButton = () => {
   const [loader, setLoader] = React.useState(false);
@@ -28,7 +28,7 @@ const InputWithButton = () => {
   };
 
   const saveHandler = () => {
-    if (value && !done) {
+    if (value && !done && !error) {
       setLoader(true);
     }
 
@@ -44,6 +44,15 @@ const InputWithButton = () => {
     }
   };
 
+  const handleEnterKey = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      saveHandler();
+    }
+  };
+
   useEffect(() => {
     if (value && !done) {
       setDone(true);
@@ -51,7 +60,7 @@ const InputWithButton = () => {
   }, []);
 
   return (
-    <div className="mb-10 w-1/2">
+    <div className="mb-32 w-1/2">
       <SectionHeading
         text={'Heading Input Field with Save Button'}
         status={done}
@@ -72,19 +81,20 @@ const InputWithButton = () => {
             className={`outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6`}
             placeholder={'Placeholder'}
             data-1p-ignore={true}
+            onKeyDown={handleEnterKey}
             onBlur={saveHandler}
           />
 
           {done && value && !loader ? (
             <div className="bg-gray-100 absolute right-3 top-1.5 bottom-1.5 rounded-full w-7 flex items-center justify-center">
-              <CheckIcon className="w-5 h-4 text-gray-900 font-bold" />
+              <CheckCircleIcon className="w-6 h-6 text-gray-900 font-bold" />
             </div>
           ) : (
             <button
               type={'button'}
               onClick={saveHandler}
-              disabled={!value}
-              className="absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-mainBlue hover:bg-sideBarBlue transition rounded-md text-white"
+              disabled={!value || !!error}
+              className="w-16 flex items-center justify-center text-sm font-semibold absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-mainBlue rounded-md text-white disabled:bg-gray-500"
             >
               {loader ? (
                 <svg
@@ -109,7 +119,7 @@ const InputWithButton = () => {
             </button>
           )}
           {error && (
-            <div className="absolute font-bold text-red-500 -bottom-7">
+            <div className="absolute text-sm text-red-700 -bottom-7">
               {error}
             </div>
           )}

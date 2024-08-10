@@ -4,6 +4,7 @@ import {
   DocumentDuplicateIcon,
   FolderIcon,
   HomeIcon,
+  Squares2X2Icon,
   UsersIcon,
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
@@ -28,6 +29,7 @@ const teams = [
     href: '/elements',
     initial: 'C',
     current: false,
+    icon: Squares2X2Icon,
   },
 ];
 
@@ -90,16 +92,15 @@ const MainSideBarContent = ({
                   'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
                 )}
               >
-                <span
+                <team.icon
                   className={classNames(
                     team.name === currentMenuItem
-                      ? 'border-sideBarBlue text-sideBarBlue'
-                      : 'border-gray-200 text-gray-400 group-hover:border-mainBlue group-hover:text-mainBlue',
-                    'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium'
+                      ? 'text-sideBarBlue'
+                      : 'text-gray-400 group-hover:text-mainBlue',
+                    'h-6 w-6 shrink-0'
                   )}
-                >
-                  {team.initial}
-                </span>
+                  aria-hidden="true"
+                />
                 <span className="truncate">{team.name}</span>
               </Link>
             </li>

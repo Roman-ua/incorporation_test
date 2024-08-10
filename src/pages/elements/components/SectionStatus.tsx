@@ -4,7 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const SectionStatus = () => {
   return (
-    <div className="mb-10">
+    <div className="mb-32">
       <h2 className="mb-4 font-bold">Status Labels</h2>
       <div className="flex gap-3">
         <div className="flex flex-col gap-2 mr-2">
