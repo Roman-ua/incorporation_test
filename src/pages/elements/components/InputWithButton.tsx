@@ -119,7 +119,12 @@ const InputWithButton = () => {
             </button>
           )}
           {error && (
-            <div className="absolute text-sm text-red-700 -bottom-7">
+            <div className="absolute text-sm font-bold text-red-700 -bottom-7">
+              {error}
+            </div>
+          )}
+          {error && (
+            <div className="absolute text-sm text-red-700 -bottom-12">
               {error}
             </div>
           )}
