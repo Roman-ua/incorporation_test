@@ -6,7 +6,7 @@ const states = ['Florida', 'Texas', 'Delaware', 'California'];
 const StateCardsElements = () => {
   const [state, setState] = React.useState('');
   return (
-    <div className="w-1/2">
+    <div className="w-1/2 mb-20">
       <StateCards
         value={state}
         changeEvent={setState}

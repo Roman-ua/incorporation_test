@@ -1,14 +1,11 @@
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import SectionHeading from '../../createCompany/components/SectionHeading';
 import darkCheck from '../../../images/checkIcons/check.png';
-import whiteCheck from '../../../images/checkIcons/checkWhite.png';
+import greenCheck from '../../../images/checkIcons/checkDarkGreen.png';
 import checkMark from '../../../images/checkIcons/checking-mark.png';
-import whiteCheckMark from '../../../images/checkIcons/checking-mark-white.png';
+import greenCheckMark from '../../../images/checkIcons/checking-mark-dark-green.png';
 
-import { CheckIcon } from '@heroicons/react/20/solid';
-
-const items = [1, 2, 3, 4];
+const items = [1, 2];
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -27,7 +24,7 @@ const CustomCheckBox = () => {
           )}
           {selectedState === item && (
             <img
-              src={whiteCheck}
+              src={greenCheck}
               alt="check"
               className="w-3 h-3 inline-block"
             />
@@ -40,37 +37,11 @@ const CustomCheckBox = () => {
       return (
         <>
           {hoveredItem === item && selectedState !== item && (
-            <CheckCircleIcon className="w-6 h-6 text-gray-900" />
-          )}
-          {selectedState === item && (
-            <CheckCircleIcon className="w-6 h-6 text-xl text-white" />
-          )}
-        </>
-      );
-    }
-
-    if (item === 3) {
-      return (
-        <>
-          {hoveredItem === item && selectedState !== item && (
-            <CheckIcon className="w-4 h-4 text-gray-900" />
-          )}
-          {selectedState === item && (
-            <CheckIcon className="w-4 h-4 text-white" />
-          )}
-        </>
-      );
-    }
-
-    if (item === 4) {
-      return (
-        <>
-          {hoveredItem === item && selectedState !== item && (
             <img src={checkMark} alt="check" className="w-3 h-3 inline-block" />
           )}
           {selectedState === item && (
             <img
-              src={whiteCheckMark}
+              src={greenCheckMark}
               alt="check"
               className="w-3 h-3 inline-block"
             />
@@ -80,24 +51,30 @@ const CustomCheckBox = () => {
     }
   };
   return (
-    <div className="mb-32">
-      <SectionHeading text={'Check-box'} status={!!selectedState} />
+    <div className="mb-20">
+      <SectionHeading text={'Check-box'} status={!!selectedState} hideStatus />
       <div className="flex items-center justify-start gap-2">
         {items.map((item) => {
           return (
-            <span
-              key={item}
-              onClick={() => setSelectedState(item)}
-              onMouseEnter={() => setHoveredItem(item)}
-              onMouseLeave={() => setHoveredItem(0)}
-              className={classNames(
-                'w-6 h-6 border rounded-full flex items-center justify-center hover:cursor-pointer',
-                selectedState === item && 'bg-green-500 border-white',
-                hoveredItem === item && selectedState !== item && 'bg-gray-200'
-              )}
-            >
-              {iconsHandler(item)}
-            </span>
+            <div key={item} className="flex flex-col items-center">
+              <span className="text-xs font-bold mb-2 text-gray-700">
+                {item}
+              </span>
+              <span
+                onClick={() => setSelectedState(item)}
+                onMouseEnter={() => setHoveredItem(item)}
+                onMouseLeave={() => setHoveredItem(0)}
+                className={classNames(
+                  'w-6 h-6 border rounded-full flex items-center justify-center hover:cursor-pointer',
+                  selectedState === item && 'bg-green-300 border-white',
+                  hoveredItem === item &&
+                    selectedState !== item &&
+                    'bg-gray-200'
+                )}
+              >
+                {iconsHandler(item)}
+              </span>
+            </div>
           );
         })}
       </div>

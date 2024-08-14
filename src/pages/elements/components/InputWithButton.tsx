@@ -60,7 +60,7 @@ const InputWithButton = () => {
   }, []);
 
   return (
-    <div className="mb-32 w-1/2">
+    <div className="mb-20 w-1/2">
       <SectionHeading
         text={'Heading Input Field with Save Button'}
         status={done}
@@ -120,11 +120,6 @@ const InputWithButton = () => {
           )}
           {error && (
             <div className="absolute text-sm font-bold text-red-700 -bottom-7">
-              {error}
-            </div>
-          )}
-          {error && (
-            <div className="absolute text-sm text-red-700 -bottom-12">
               {error}
             </div>
           )}
