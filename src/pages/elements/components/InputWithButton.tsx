@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import SectionHeading from '../../createCompany/components/SectionHeading';
 import { VALIDATORS } from '../../../constants/regexs';
 import { ERRORS } from '../../../constants/errors';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import CheckBox from '../../../components/shared/CheckBox';
 
 const InputWithButton = () => {
   const [loader, setLoader] = React.useState(false);
@@ -86,8 +86,13 @@ const InputWithButton = () => {
           />
 
           {done && value && !loader ? (
-            <div className="bg-gray-100 absolute right-3 top-1.5 bottom-1.5 rounded-full w-7 flex items-center justify-center">
-              <CheckCircleIcon className="w-6 h-6 text-gray-900 font-bold" />
+            <div className="absolute right-1.5 top-1.5 bottom-1.5 rounded-full w-7 flex items-center justify-center">
+              <CheckBox
+                wrapperSize={'w-5 h-5'}
+                iconSize={'w-2.5 h-2.5'}
+                isItemHovered={true}
+                isItemSelected={false}
+              />
             </div>
           ) : (
             <button
