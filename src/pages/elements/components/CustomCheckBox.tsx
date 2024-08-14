@@ -12,17 +12,27 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const CustomCheckBox = () => {
-  const [selectedState, setSelectedState] = React.useState(0);
+  const [selectedState, setSelectedState] = React.useState<number[]>([]);
   const [hoveredItem, setHoveredItem] = React.useState(0);
+
+  const handleToggleNumber = (number: number) => {
+    setSelectedState((prevState) => {
+      if (prevState.includes(number)) {
+        return prevState.filter((item) => item !== number);
+      } else {
+        return [...prevState, number];
+      }
+    });
+  };
 
   const iconsHandler = (item: number) => {
     if (item === 1) {
       return (
         <>
-          {hoveredItem === item && selectedState !== item && (
+          {hoveredItem === item && !selectedState.includes(item) && (
             <img src={darkCheck} alt="check" className="w-3 h-3 inline-block" />
           )}
-          {selectedState === item && (
+          {selectedState.includes(item) && (
             <img
               src={greenCheck}
               alt="check"
@@ -36,10 +46,10 @@ const CustomCheckBox = () => {
     if (item === 2) {
       return (
         <>
-          {hoveredItem === item && selectedState !== item && (
+          {hoveredItem === item && !selectedState.includes(item) && (
             <img src={checkMark} alt="check" className="w-3 h-3 inline-block" />
           )}
-          {selectedState === item && (
+          {selectedState.includes(item) && (
             <img
               src={greenCheckMark}
               alt="check"
@@ -54,21 +64,21 @@ const CustomCheckBox = () => {
     <div className="mb-20">
       <SectionHeading text={'Check-box'} status={!!selectedState} hideStatus />
       <div className="flex items-center justify-start gap-2">
-        {items.map((item) => {
+        {items.map((item: number) => {
           return (
             <div key={item} className="flex flex-col items-center">
               <span className="text-xs font-bold mb-2 text-gray-700">
                 {item}
               </span>
               <span
-                onClick={() => setSelectedState(item)}
+                onClick={() => handleToggleNumber(item)}
                 onMouseEnter={() => setHoveredItem(item)}
                 onMouseLeave={() => setHoveredItem(0)}
                 className={classNames(
                   'w-6 h-6 border rounded-full flex items-center justify-center hover:cursor-pointer',
-                  selectedState === item && 'bg-green-300 border-white',
+                  selectedState.includes(item) && 'bg-green-300 border-white',
                   hoveredItem === item &&
-                    selectedState !== item &&
+                    !selectedState.includes(item) &&
                     'bg-gray-200'
                 )}
               >
