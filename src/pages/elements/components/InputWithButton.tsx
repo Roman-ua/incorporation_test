@@ -90,8 +90,8 @@ const InputWithButton = () => {
               <CheckBox
                 wrapperSize={'w-5 h-5'}
                 iconSize={'w-2.5 h-2.5'}
-                isItemHovered={true}
-                isItemSelected={false}
+                isItemHovered={false}
+                isItemSelected={true}
               />
             </div>
           ) : (
