@@ -6,7 +6,7 @@ import StepsProgress from './components/StepsProgress';
 import CommonTextInput from './components/CommonTextInput';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ROUTES } from '../../constants/navigation/routes';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
@@ -75,11 +75,26 @@ const defaultStepTwoValues: StepTwoData = {
   status: '',
 };
 
+const queryKeyHandler = (location: Location, key: string) => {
+  const searchParams = new URLSearchParams(location.search);
+  const myParam = searchParams.get(key);
+
+  return myParam || '';
+};
+
 const CreateCompany = () => {
   const parsedData = JSON.parse(
     localStorage.getItem(localStorageKey) as string
   );
-  const [currentStep, setCurrentStep] = useState<number>(parsedData?.step || 0);
+  const location = useLocation();
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const stepFormQuery = queryKeyHandler(location, 'step');
+
+  const [currentStep, setCurrentStep] = useState<number>(
+    +stepFormQuery || parsedData?.step || 0
+  );
   const [stepOneData, setStepOneData] = useState<StepOneData>(
     parsedData?.stepOneData || defaultStepOneValues
   );
