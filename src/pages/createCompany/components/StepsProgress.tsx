@@ -4,13 +4,11 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 const stepsData = [
   {
     name: 'Company Name',
-    href: '#',
     status: 'current',
     id: 0,
   },
   {
     name: 'Registration Information',
-    href: '#',
     status: 'upcoming',
     id: 1,
   },
@@ -107,10 +105,7 @@ const StepsProgress = ({
                     aria-hidden="true"
                   />
                 ) : null}
-                <a
-                  href={step.href}
-                  className="group relative flex items-center"
-                >
+                <span className="group relative flex items-center hover:cursor-pointer">
                   <span className="flex h-5 items-center">
                     <span className="relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-green-500">
                       <CheckIcon
@@ -124,7 +119,7 @@ const StepsProgress = ({
                       {step.name}
                     </span>
                   </span>
-                </a>
+                </span>
               </>
             ) : step.status === 'current' ? (
               <>
@@ -135,9 +130,8 @@ const StepsProgress = ({
                     aria-hidden="true"
                   />
                 ) : null}
-                <a
-                  href={step.href}
-                  className="group relative flex items-center"
+                <span
+                  className="group relative flex items-center hover:cursor-pointer"
                   aria-current="step"
                 >
                   <span className="flex h-5 items-center" aria-hidden="true">
@@ -150,7 +144,7 @@ const StepsProgress = ({
                       {step.name}
                     </span>
                   </span>
-                </a>
+                </span>
               </>
             ) : (
               <>
@@ -161,10 +155,7 @@ const StepsProgress = ({
                     aria-hidden="true"
                   />
                 ) : null}
-                <a
-                  href={step.href}
-                  className="group relative flex items-center"
-                >
+                <span className="group relative flex items-center hover:cursor-pointer">
                   <span className="flex h-5 items-center" aria-hidden="true">
                     <span className="relative z-10 flex h-4 w-4 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400">
                       <span className="h-2 w-2 rounded-full bg-transparent group-hover:bg-gray-300" />
@@ -175,7 +166,7 @@ const StepsProgress = ({
                       {step.name}
                     </span>
                   </span>
-                </a>
+                </span>
               </>
             )}
           </li>

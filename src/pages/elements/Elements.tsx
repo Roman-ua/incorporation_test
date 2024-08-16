@@ -4,6 +4,7 @@ import InputWithButton from './components/InputWithButton';
 import JoinedCardsElements from './components/JoinedCardsElements';
 import StateCardsElements from './components/StateCardsElements';
 import CustomCheckBox from './components/CustomCheckBox';
+import SeparatedCardsElements from './components/SeparatedCardsElements';
 
 const Elements = () => {
   return (
@@ -12,6 +13,7 @@ const Elements = () => {
       <CustomCheckBox />
       <InputWithButton />
       <JoinedCardsElements />
+      <SeparatedCardsElements />
       <StateCardsElements />
     </div>
   );

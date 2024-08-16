@@ -75,9 +75,15 @@ const defaultStepTwoValues: StepTwoData = {
   status: '',
 };
 
-const queryKeyHandler = (location: Location, key: string) => {
+const queryKeyHandler = (location: Location, key: string, value?: string) => {
   const searchParams = new URLSearchParams(location.search);
   const myParam = searchParams.get(key);
+
+  if (value) {
+    searchParams.set(key, value);
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.replaceState(null, '', newUrl);
+  }
 
   return myParam || '';
 };
@@ -111,6 +117,12 @@ const CreateCompany = () => {
       setStepTwoData(stepTwoData);
     }
   }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    queryKeyHandler(location, 'step', `${currentStep}`);
+  }, [currentStep]);
 
   const setStepToLocalStorage = (
     step: Step,
