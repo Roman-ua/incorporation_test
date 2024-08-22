@@ -12,12 +12,19 @@ import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
 import Separator from './components/Separator';
 import { VALIDATORS } from '../../constants/regexs';
+import SeparatedCards from './components/SeparatedCards';
 
-const states = ['Florida', 'Texas', 'Delaware', 'California'];
 const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
   { fullName: 'Limited Liability Company', shortName: 'LLC' },
   { fullName: 'Non-profit', shortName: 'Non-profit' },
+];
+
+const registrationStates = [
+  { fullName: 'State of Florida', shortName: 'FL' },
+  { fullName: 'State of Delaware', shortName: 'DE' },
+  { fullName: 'State of Texas', shortName: 'TX' },
+  { fullName: 'State of California', shortName: 'CA' },
 ];
 
 const status = [
@@ -33,11 +40,11 @@ const stepOneSchema = yup.object().shape({
     .string()
     .required('Company Name is required')
     .matches(VALIDATORS.NAME),
+  registeredIn: yup.string().required('State of Registration is required'),
   companyType: yup.string().required('State of Registration is required'),
 });
 
 const stepTwoSchema = yup.object().shape({
-  registeredIn: yup.string().required('State of Registration is required'),
   registrationDate: yup.string().required('Registration Date is required'),
   registrationNumber: yup
     .string()
@@ -50,12 +57,12 @@ const localStorageKey = 'multistep-form-data';
 type Step = 'stepOneData' | 'stepTwoData';
 
 export type StepOneData = {
+  registeredIn: string;
   companyName: string;
   companyType: string;
 };
 
 type StepTwoData = {
-  registeredIn: string;
   registrationDate: string;
   registrationNumber: string;
   status: string;
@@ -64,12 +71,12 @@ type StepTwoData = {
 type FormData = StepOneData & StepTwoData;
 
 const defaultStepOneValues: StepOneData = {
+  registeredIn: '',
   companyName: '',
   companyType: '',
 };
 
 const defaultStepTwoValues: StepTwoData = {
-  registeredIn: '',
   registrationDate: '',
   registrationNumber: '',
   status: '',
@@ -221,12 +228,24 @@ const CreateCompany = () => {
                   render={({ field }) => (
                     <div className="mb-16">
                       <JoinedCard
-                        // extraStyles="text-lg"
                         state={companyTypes}
                         title={'Company Type'}
                         value={field.value}
                         changeEvent={field.onChange}
-                        // secondTitle={'Company type'}
+                      />
+                    </div>
+                  )}
+                />
+                <Controller
+                  name="registeredIn"
+                  control={stepOneForm.control}
+                  render={({ field }) => (
+                    <div className="mb-16">
+                      <SeparatedCards
+                        state={registrationStates}
+                        title={'Registration State'}
+                        value={field.value}
+                        changeEvent={field.onChange}
                       />
                     </div>
                   )}
@@ -250,24 +269,6 @@ const CreateCompany = () => {
           {currentStep === 1 && (
             <form onSubmit={stepTwoForm.handleSubmit(handleStepTwoSubmit)}>
               <div>
-                <Controller
-                  name="registeredIn"
-                  control={stepTwoForm.control}
-                  render={({ field }) => (
-                    <>
-                      <div className="mb-16">
-                        <StateCards
-                          state={states}
-                          title={'Registration State'}
-                          value={field.value}
-                          changeEvent={field.onChange}
-                          secondTitle={'Registration state'}
-                        />
-                      </div>
-                      <Separator />
-                    </>
-                  )}
-                />
                 <Controller
                   name="registrationDate"
                   control={stepTwoForm.control}

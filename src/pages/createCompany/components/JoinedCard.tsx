@@ -7,22 +7,13 @@ interface IProps {
   value: string;
   state: { fullName: string; shortName: string }[];
   title: string;
-  // extraStyles?: string;
-  // secondTitle?: string;
 }
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const JoinedCard = ({
-  changeEvent,
-  value,
-  state,
-  title,
-  // extraStyles,
-  // secondTitle,
-}: IProps) => {
+const JoinedCard = ({ changeEvent, value, state, title }: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
   const [hoveredItem, setHoveredItem] = useState('');
 

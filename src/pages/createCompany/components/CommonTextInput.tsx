@@ -17,6 +17,10 @@ interface IProps {
   removeLabel?: boolean;
 }
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
 const CommonTextInput = ({
   id,
   name,
@@ -31,6 +35,7 @@ const CommonTextInput = ({
   const [loader, setLoader] = React.useState(false);
   const [done, setDone] = React.useState(false);
   const [error, setError] = React.useState('');
+  const isNameField = id === 'name';
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const validPattern =
@@ -86,7 +91,12 @@ const CommonTextInput = ({
   return (
     <>
       <SectionHeading text={heading || ''} status={done} />
-      <div className={`w-full ${extraStyles} max-lg:ml-0 max-lg:mr-0`}>
+      <div
+        className={classNames(
+          `w-full max-lg:ml-0 max-lg:mr-0`,
+          extraStyles || ''
+        )}
+      >
         <label
           htmlFor={id}
           className="block text-sm font-medium leading-6 text-gray-900"
@@ -100,7 +110,10 @@ const CommonTextInput = ({
             type="text"
             name={name}
             id={id}
-            className={`outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6`}
+            className={classNames(
+              'outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6',
+              isNameField ? 'text-xl py-3 px-5' : ''
+            )}
             placeholder={title}
             data-1p-ignore={true}
             onKeyDown={handleEnterKey}
@@ -112,8 +125,8 @@ const CommonTextInput = ({
           {done && field.value && !loader ? (
             <div className="absolute right-1.5 top-1.5 bottom-1.5 rounded-full w-7 flex items-center justify-center">
               <CheckBox
-                wrapperSize={'w-5 h-5'}
-                iconSize={'w-2.5 h-2.5'}
+                wrapperSize={isNameField ? 'w-7 h-7' : 'w-5 h-5'}
+                iconSize={isNameField ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5'}
                 isItemHovered={false}
                 isItemSelected={true}
               />

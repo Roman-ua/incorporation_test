@@ -7,22 +7,13 @@ interface IProps {
   value: string;
   state: { fullName: string; shortName: string }[];
   title: string;
-  // extraStyles?: string;
-  // secondTitle?: string;
 }
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const SeparatedCards = ({
-  changeEvent,
-  value,
-  state,
-  title,
-  // extraStyles,
-  // secondTitle,
-}: IProps) => {
+const SeparatedCards = ({ changeEvent, value, state, title }: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
   const [hoveredItem, setHoveredItem] = useState('');
 
@@ -30,7 +21,7 @@ const SeparatedCards = ({
     <>
       <SectionHeading text={title} status={!!value} />
       <div className="w-full">
-        <dl className="mx-auto grid grid-cols-1 gap-2 md:grid-cols-1 lg:grid-cols-3">
+        <dl className="mx-auto grid grid-cols-1 gap-2 md:grid-cols-1 lg:grid-cols-2">
           {state.map((stat) => (
             <div
               key={`${stat.fullName}`}
