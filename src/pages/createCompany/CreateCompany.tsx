@@ -13,6 +13,7 @@ import JoinedCard from './components/JoinedCard';
 import Separator from './components/Separator';
 import { VALIDATORS } from '../../constants/regexs';
 import SeparatedCards from './components/SeparatedCards';
+import ConfirmPage from './components/ConfirmPage';
 
 const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
@@ -62,7 +63,7 @@ export type StepOneData = {
   companyType: string;
 };
 
-type StepTwoData = {
+export type StepTwoData = {
   registrationDate: string;
   registrationNumber: string;
   status: string;
@@ -163,13 +164,15 @@ const CreateCompany = () => {
   const handleStepOneSubmit: SubmitHandler<StepOneData> = (data) => {
     setStepOneData(data);
     setCurrentStep(1);
+
     setStepToLocalStorage('stepOneData', data);
   };
 
   const handleStepTwoSubmit: SubmitHandler<StepTwoData> = (data) => {
     setStepTwoData(data);
-    setStepToLocalStorage('stepTwoData', data);
+    setCurrentStep(2);
 
+    setStepToLocalStorage('stepTwoData', data);
     const finalData: FormData = { ...stepOneData, ...data };
     console.log('Final form data:', finalData);
   };
@@ -182,6 +185,7 @@ const CreateCompany = () => {
           <h1 className="font-bold max-lg:text-xl">
             {currentStep === 0 && 'Company Name and Type'}
             {currentStep === 1 && 'Registration Information'}
+            {currentStep === 2 && 'Confirm Information'}
           </h1>
         </div>
         <div className="w-1/4 pr-2 flex items-end justify-end">
@@ -329,12 +333,40 @@ const CreateCompany = () => {
                     type="submit"
                     className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Submit
+                    Next Step
                   </button>
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
             </form>
+          )}
+
+          {currentStep === 2 && (
+            <div>
+              <ConfirmPage
+                stepOneData={stepOneData}
+                stepTwoData={stepTwoData}
+              />
+              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
+                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(1)}
+                    className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Submit
+                  </button>
+                </div>
+                <div className="w-1/4 pr-2 max-lg:hidden" />
+              </div>
+            </div>
           )}
         </div>
         <div className="w-1/4" />

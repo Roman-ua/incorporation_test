@@ -27,12 +27,12 @@ const JoinedCard = ({ changeEvent, value, state, title }: IProps) => {
               key={`${stat.fullName}`}
               onClick={() => {
                 setSelectedState(stat.shortName);
-                changeEvent(stat.shortName);
+                changeEvent(stat.fullName);
               }}
               onMouseEnter={() => setHoveredItem(stat.shortName)}
               onMouseLeave={() => setHoveredItem('')}
               className={classNames(
-                'flex relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-4 hover:cursor-pointer',
+                'flex relative flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5 px-5 py-3.5 hover:cursor-pointer',
                 index === 0 &&
                   'rounded-tl-lg lg:rounded-bl-lg max-lg:rounded-tr-lg',
                 index === 2 &&

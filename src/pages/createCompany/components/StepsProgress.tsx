@@ -12,6 +12,11 @@ const stepsData = [
     status: 'upcoming',
     id: 1,
   },
+  {
+    name: 'Confirm Information',
+    status: 'upcoming',
+    id: 2,
+  },
 ];
 
 function classNames(...classes: string[]) {
@@ -31,54 +36,59 @@ const StepsProgress = ({
 }) => {
   const [steps, setSteps] = useState(stepsData);
 
-  const stepHandler = () => {
+  const stepHandler = (currentStep: number) => {
     const data = [...steps];
 
-    const currentItem = data.findIndex((item) => item.id === currentStep);
-    const prevItem = data.findIndex((item) => item.id === currentStep - 1);
-    const nextItem = data.findIndex((item) => item.id === currentStep + 1);
+    data.forEach((step, index) => {
+      if (step.id === currentStep && step.status !== 'complete') {
+        data[index] = { ...step, status: 'current' };
+        return;
+      }
 
-    if (currentItem !== -1 && data[currentItem].status !== 'complete') {
-      data[currentItem].status = 'current';
-    }
-    if (prevItem !== -1 && data[prevItem].status !== 'complete') {
-      data[prevItem].status = 'upcoming';
-    }
-    if (nextItem !== -1 && data[nextItem].status !== 'complete') {
-      data[nextItem].status = 'upcoming';
-    }
+      if (step.id !== currentStep && step.status !== 'complete') {
+        data[index] = { ...step, status: 'upcoming' };
+        return;
+      }
+
+      if (step.status === 'complete') {
+        data[index] = { ...step, status: 'complete' };
+        return;
+      }
+
+      data[index] = { ...step, status: 'upcoming' };
+    });
 
     setSteps(data);
   };
 
   useEffect(() => {
-    stepHandler();
+    stepHandler(currentStep);
   }, [currentStep]);
 
   useEffect(() => {
-    const data = [...steps];
-    const existsEmptyFieldFirstStep = firstStepData.findIndex(
-      (item) => item === ''
-    );
-    const existsEmptyFieldSecondStep = secondStepData.findIndex(
-      (item) => item === ''
-    );
+    setSteps((prevState) => {
+      const existsEmptyFieldFirstStep = firstStepData.findIndex(
+        (item) => item === ''
+      );
+      const existsEmptyFieldSecondStep = secondStepData.findIndex(
+        (item) => item === ''
+      );
 
-    if (existsEmptyFieldFirstStep === -1 && currentStep !== 0) {
-      data[0].status = 'complete';
-    }
-    if (existsEmptyFieldFirstStep > -1 && currentStep === 0) {
-      data[0].status = 'current';
-    }
+      if (existsEmptyFieldFirstStep === -1 && currentStep !== 0) {
+        prevState[0].status = 'complete';
+      }
+      if (existsEmptyFieldFirstStep > -1 && currentStep === 0) {
+        prevState[0].status = 'current';
+      }
 
-    if (existsEmptyFieldSecondStep === -1 && currentStep !== 1) {
-      data[1].status = 'complete';
-    }
-    if (existsEmptyFieldSecondStep > -1 && currentStep === 1) {
-      data[1].status = 'current';
-    }
-
-    setSteps(data);
+      if (existsEmptyFieldSecondStep === -1 && currentStep !== 1) {
+        prevState[1].status = 'complete';
+      }
+      if (existsEmptyFieldSecondStep > -1 && currentStep === 1) {
+        prevState[1].status = 'current';
+      }
+      return prevState;
+    });
   }, [firstStepData, secondStepData]);
 
   return (

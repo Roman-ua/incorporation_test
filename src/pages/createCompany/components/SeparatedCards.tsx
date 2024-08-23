@@ -27,12 +27,12 @@ const SeparatedCards = ({ changeEvent, value, state, title }: IProps) => {
               key={`${stat.fullName}`}
               onClick={() => {
                 setSelectedState(stat.shortName);
-                changeEvent(stat.shortName);
+                changeEvent(stat.fullName);
               }}
               onMouseEnter={() => setHoveredItem(stat.shortName)}
               onMouseLeave={() => setHoveredItem('')}
               className={classNames(
-                'flex relative border rounded-lg flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-4 hover:cursor-pointer',
+                'flex relative border rounded-lg flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-5 py-3.5 hover:cursor-pointer',
                 selectedState === stat.shortName ? 'bg-green-50' : 'bg-white'
               )}
             >

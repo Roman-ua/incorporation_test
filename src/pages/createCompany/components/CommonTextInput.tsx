@@ -123,7 +123,12 @@ const CommonTextInput = ({
           />
 
           {done && field.value && !loader ? (
-            <div className="absolute right-1.5 top-1.5 bottom-1.5 rounded-full w-7 flex items-center justify-center">
+            <div
+              className={classNames(
+                'absolute right-1.5 top-1.5 bottom-1.5 rounded-full w-7 flex items-center justify-center',
+                isNameField ? 'right-3' : 'right-1.5'
+              )}
+            >
               <CheckBox
                 wrapperSize={isNameField ? 'w-7 h-7' : 'w-5 h-5'}
                 iconSize={isNameField ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5'}

@@ -113,12 +113,10 @@ const CustomCalendar = ({ field }: IProps) => {
                       onClick={() => {
                         if (isSameMonth(day, firstDayCurrentMonth)) {
                           setSelectedDay(day);
-                          field.onChange(day);
+                          field.onChange(format(day, 'MMMM dd, yyyy'));
                         }
                       }}
                       className={classNames(
-                        // isEqual(day, selectedDay) &&
-                        //   'bg-mainBlue hover:bg-sideBarBlue',
                         isEqual(day, selectedDay) && 'text-white',
                         !isEqual(day, selectedDay) &&
                           isToday(day) &&
@@ -132,7 +130,6 @@ const CustomCalendar = ({ field }: IProps) => {
                           !isToday(day) &&
                           !isSameMonth(day, firstDayCurrentMonth) &&
                           'text-gray-400',
-                        // isEqual(day, selectedDay) && isToday(day) && 'bg-mainBlue',
                         isEqual(day, selectedDay) &&
                           !isToday(day) &&
                           'bg-gray-900',
