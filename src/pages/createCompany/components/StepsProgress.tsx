@@ -3,7 +3,7 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 
 const stepsData = [
   {
-    name: 'Company Name',
+    name: 'Company Details',
     status: 'current',
     id: 0,
   },

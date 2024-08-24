@@ -183,7 +183,7 @@ const CreateCompany = () => {
         <div className="w-1/5 pr-2 max-lg:hidden" />
         <div className="w-1/2">
           <h1 className="font-bold max-lg:text-xl">
-            {currentStep === 0 && 'Company Name and Type'}
+            {currentStep === 0 && 'Company Details'}
             {currentStep === 1 && 'Registration Information'}
             {currentStep === 2 && 'Confirm Information'}
           </h1>
