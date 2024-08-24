@@ -13,7 +13,7 @@ const stepsData = [
     id: 1,
   },
   {
-    name: 'Confirm Information',
+    name: 'Review',
     status: 'upcoming',
     id: 2,
   },

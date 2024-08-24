@@ -185,7 +185,7 @@ const CreateCompany = () => {
           <h1 className="font-bold max-lg:text-xl">
             {currentStep === 0 && 'Company Details'}
             {currentStep === 1 && 'Registration Information'}
-            {currentStep === 2 && 'Confirm Information'}
+            {currentStep === 2 && 'Review'}
           </h1>
         </div>
         <div className="w-1/4 pr-2 flex items-end justify-end">
@@ -346,6 +346,7 @@ const CreateCompany = () => {
               <ConfirmPage
                 stepOneData={stepOneData}
                 stepTwoData={stepTwoData}
+                setCurrentStep={setCurrentStep}
               />
               <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
