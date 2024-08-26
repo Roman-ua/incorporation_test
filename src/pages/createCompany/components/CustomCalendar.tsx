@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   add,
   eachDayOfInterval,
@@ -40,6 +40,12 @@ const CustomCalendar = ({ field }: IProps) => {
   const [selectedDay, setSelectedDay] = useState(today);
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
+
+  useEffect(() => {
+    if (!field.value) {
+      field.onChange(format(today, 'MMMM dd, yyyy'));
+    }
+  }, []);
 
   const days = eachDayOfInterval({
     start: startOfISOWeek(firstDayCurrentMonth),

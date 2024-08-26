@@ -55,10 +55,10 @@ const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
                 key={index}
                 className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
               >
-                <dt className="text-lg font-medium leading-6 text-gray-900">
+                <dt className="leading-6 text-md text-gray-600 font-semibold">
                   {field.name}
                 </dt>
-                <dd className="mt-1 flex text-lg leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 flex leading-6 text-md text-black font-semibold sm:col-span-2 sm:mt-0">
                   {field.key !== 'status' ? (
                     <span className="flex-grow">{fieldValue}</span>
                   ) : (
@@ -77,7 +77,7 @@ const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
                     <button
                       type="button"
                       onClick={() => setCurrentStep(field.step)}
-                      className="rounded-md bg-white font-medium text-mainBlue hover:text-indigo-500"
+                      className="rounded-md bg-white font-medium text-mainBlue hover:cursor-pointer"
                     >
                       Edit
                     </button>
