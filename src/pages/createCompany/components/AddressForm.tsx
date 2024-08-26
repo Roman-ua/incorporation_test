@@ -68,6 +68,7 @@ const AddressForm = ({ setFromState }: IProps) => {
 
   return (
     <div className="flex flex-col items-end">
+      <div className="w-full text-base mb-2">Unmanaged address</div>
       <div className="rounded-md border w-full">
         <CountrySelector
           id={'countries'}
