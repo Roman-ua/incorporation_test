@@ -13,6 +13,7 @@ export interface CountrySelectorProps {
   list: { title: string; value: string }[];
   onChange: (value: SelectMenuOption['value']) => void;
   selectedValue: SelectMenuOption;
+  inputExtraStyles?: string;
   wrapperExtraStyles?: string;
 }
 
@@ -29,6 +30,7 @@ export default function CountrySelector({
   onChange,
   withIcon,
   selectedValue,
+  inputExtraStyles,
   wrapperExtraStyles,
 }: CountrySelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -59,7 +61,7 @@ export default function CountrySelector({
   const emptyState = id === 'states' ? 'No state found' : 'No countries found';
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className={inputExtraStyles}>
       <div className="relative">
         <button
           type="button"
@@ -82,7 +84,7 @@ export default function CountrySelector({
                 className={'inline mr-2 h-4 rounded-sm'}
               />
             )}
-            {selectedValue.title}
+            {selectedValue.value}
           </span>
           <span
             className={`absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none ${
@@ -138,7 +140,7 @@ export default function CountrySelector({
                 }
               >
                 {list.filter((country) =>
-                  country.title.toLowerCase().startsWith(query.toLowerCase())
+                  country.value.toLowerCase().startsWith(query.toLowerCase())
                 ).length === 0 ? (
                   <li className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
                     {emptyState}
@@ -146,7 +148,7 @@ export default function CountrySelector({
                 ) : (
                   list
                     .filter((country) =>
-                      country.title
+                      country.value
                         .toLowerCase()
                         .startsWith(query.toLowerCase())
                     )
@@ -177,7 +179,7 @@ export default function CountrySelector({
                             />
                           )}
                           <span className="text-md font-normal truncate">
-                            {value.title}
+                            {value.value} - {value.title}
                           </span>
                           {value.value === selectedValue.value ? (
                             <span className="text-blue-600 absolute inset-y-0 right-0 flex items-center pr-8">

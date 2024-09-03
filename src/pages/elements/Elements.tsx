@@ -6,6 +6,7 @@ import StateCardsElements from './components/StateCardsElements';
 import CustomCheckBox from './components/CustomCheckBox';
 import SeparatedCardsElements from './components/SeparatedCardsElements';
 import AddressFormElements from './components/AddressFormElements';
+import USAddressFormElements from './components/USAddressFormElements';
 
 const Elements = () => {
   return (
@@ -13,6 +14,7 @@ const Elements = () => {
       <SectionStatus />
       <CustomCheckBox />
       <AddressFormElements />
+      <USAddressFormElements />
       <InputWithButton />
       <JoinedCardsElements />
       <SeparatedCardsElements />
