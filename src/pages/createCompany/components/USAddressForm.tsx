@@ -4,6 +4,7 @@ import { COUNTRIES } from '../../../components/shared/CountrySelect/countries';
 import { SelectMenuOption } from '../../../components/shared/CountrySelect/types';
 import { USStates } from '../../../constants/form/form';
 import { VALIDATORS } from '../../../constants/regexs';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -11,8 +12,10 @@ function classNames(...classes: (string | boolean)[]) {
 
 type AddressFields = {
   country: string;
-  addressOne: string;
-  addressTwo?: string;
+  address0: string;
+  address1?: string;
+  address2?: string;
+  address3?: string;
   city: string;
   zip: string;
   state: string;
@@ -22,18 +25,25 @@ interface IProps {
   setFromState: (value: AddressFields) => void;
 }
 
+const addressFieldsMock = [
+  { title: 'Address', type: 'text' },
+  { title: 'Address', type: 'text' },
+];
+
 const areFieldsValid = ({
   country,
-  addressOne,
+  address0,
   city,
   zip,
   state,
 }: AddressFields): boolean => {
-  return !!country && !!addressOne && !!city && !!zip && !!state;
+  return !!country && !!address0 && !!city && !!zip && !!state;
 };
 
 const USAddressForm = ({ setFromState }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [addressFields, setAddressFields] =
+    useState<{ title: string; type: string }[]>(addressFieldsMock);
   const [isOpenStates, setIsOpenStates] = useState(false);
 
   const openCountryHandler = (value: boolean) => {
@@ -53,15 +63,27 @@ const USAddressForm = ({ setFromState }: IProps) => {
   };
 
   const [country, setCountry] = useState('US');
-  const [addressOne, setAddressOne] = useState('');
-  const [addressTwo, setAddressTwo] = useState('');
+  const [address, setAddress] = useState<{
+    address0: string;
+    [key: string]: string;
+  }>({
+    address0: '',
+  });
+
   const [city, setCity] = useState('');
   const [zip, setZip] = useState('');
   const [state, setState] = useState('NY');
 
   const setZipHandler = (value: string) => {
-    const validatedValue = value.replace(VALIDATORS.ZIP_CODE, '');
-    setZip(validatedValue);
+    if (value.length === 1 && value[0] === '-') {
+      return;
+    }
+    if (value.length > 5 && value[5] !== '-') {
+      return;
+    }
+    if (VALIDATORS.ZIP_CODE.test(value) || value === '') {
+      setZip(value);
+    }
   };
 
   const inputCommonClasses = 'p-2 text-md border-b focus:outline-none';
@@ -70,28 +92,59 @@ const USAddressForm = ({ setFromState }: IProps) => {
     <div className="flex flex-col items-end">
       <div className="w-full text-base mb-2">Unmanaged address</div>
       <div className="rounded-md border w-full">
-        <input
-          className={classNames(inputCommonClasses, 'w-full rounded-t-md')}
-          type="text"
-          value={addressOne}
-          onChange={(e) => setAddressOne(e.target.value)}
-          placeholder="Address"
-        />
+        {addressFields.map((field, index) => {
+          return (
+            <div
+              key={index}
+              className={classNames(
+                'w-full relative',
+                index < 3 ? 'group' : ''
+              )}
+            >
+              <input
+                key={index}
+                className={classNames(
+                  inputCommonClasses,
+                  `w-full ${index === 0 ? 'rounded-t-md' : ''}`
+                )}
+                type={field.type}
+                value={address[index]}
+                onChange={(e) =>
+                  setAddress({
+                    ...address,
+                    [`address${index}`]: e.target.value,
+                  })
+                }
+                placeholder={field.title}
+              />
+              <div className="absolute right-2 top-1/2 -translate-y-2/4">
+                {index < 3 && index === addressFields.length - 1 && (
+                  <div
+                    onClick={() => {
+                      if (addressFields.length < 4) {
+                        setAddressFields((prevState) => [
+                          ...prevState,
+                          { title: 'Address', type: 'text' },
+                        ]);
+                      }
+                    }}
+                    className="p-1 rounded-md bg-gray-100 opacity-0 group-hover:opacity-100 transition hover:cursor-pointer"
+                  >
+                    <PlusIcon className="w-4 h-4 text-gray-700" />
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
         <input
           className={classNames(inputCommonClasses, 'w-full')}
           type="text"
-          value={addressTwo}
-          onChange={(e) => setAddressTwo(e.target.value)}
-          placeholder="Address"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          placeholder="City"
         />
         <div className="w-full flex items-center justify-center">
-          <input
-            className={classNames(inputCommonClasses, 'w-1/2 border-r')}
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="City"
-          />
           <CountrySelector
             id={'states'}
             open={isOpenStates}
@@ -108,49 +161,40 @@ const USAddressForm = ({ setFromState }: IProps) => {
             wrapperExtraStyles={'rounded-none border-t-0 border-l-0'}
           />
           <input
-            className={classNames(inputCommonClasses, 'w-1/4')}
+            className={classNames(inputCommonClasses, 'w-1/2')}
             type="text"
             value={zip}
             onChange={(e) => setZipHandler(e.target.value)}
-            placeholder="ZIP"
+            placeholder="Zip Code"
           />
         </div>
-        <div className="w-full flex items-center justify-center">
-          <CountrySelector
-            id={'countries'}
-            open={isOpen}
-            list={COUNTRIES}
-            withIcon={true}
-            onToggle={() => openCountryHandler(!isOpen)}
-            onChange={(val) => setCountry(val)}
-            selectedValue={
-              COUNTRIES.find(
-                (option) => option.value === country
-              ) as SelectMenuOption
-            }
-            inputExtraStyles={'w-full'}
-            wrapperExtraStyles={'rounded-b-0 border-0'}
-          />
-          <button
-            onClick={() =>
-              setFromState({
-                country,
-                addressOne,
-                addressTwo,
-                city,
-                zip,
-                state,
-              })
-            }
-            disabled={
-              !areFieldsValid({ country, addressOne, city, zip, state })
-            }
-            className="px-2 py-2 w-1/3 text-base font-bold bg-mainBlue text-white rounded-br-md disabled:bg-gray-500"
-          >
-            Save
-          </button>
-        </div>
+        <CountrySelector
+          id={'countries'}
+          open={isOpen}
+          list={COUNTRIES}
+          withIcon={true}
+          onToggle={() => openCountryHandler(!isOpen)}
+          onChange={(val) => setCountry(val)}
+          selectedValue={
+            COUNTRIES.find(
+              (option) => option.value === country
+            ) as SelectMenuOption
+          }
+          inputExtraStyles={'w-full'}
+          wrapperExtraStyles={'rounded-b-0 border-0'}
+        />
       </div>
+      <button
+        onClick={() => {
+          setFromState({ country, ...address, city, zip, state });
+        }}
+        disabled={
+          !areFieldsValid({ country, address0: address[0], city, zip, state })
+        }
+        className="px-4 py-2 text-base font-bold bg-mainBlue text-white rounded-md mt-2 disabled:bg-gray-500"
+      >
+        Save
+      </button>
     </div>
   );
 };

@@ -84,7 +84,9 @@ export default function CountrySelector({
                 className={'inline mr-2 h-4 rounded-sm'}
               />
             )}
-            {selectedValue.value}
+            {id === 'states'
+              ? `${selectedValue.value} - ${selectedValue.title}`
+              : selectedValue.value}
           </span>
           <span
             className={`absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none ${
