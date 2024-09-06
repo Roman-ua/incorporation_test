@@ -11,15 +11,15 @@ interface IProps {
 const statusBadge = (status: string) => {
   switch (status) {
     case 'Active':
-      return 'bg-green-300 text-green-800';
+      return 'bg-green-50 text-green-700 ring-green-600/20';
     case 'Inactive':
-      return 'bg-red-300 text-red-800';
+      return 'bg-red-50 text-red-700 ring-red-600/20';
     case 'Dissolved':
-      return 'bg-gray-300 text-gray-800';
+      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
     case 'Withdrawn':
-      return 'bg-gray-300 text-gray-800';
+      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
     default:
-      return 'bg-red-300 text-red-800';
+      return 'bg-red-50 text-red-700 ring-red-600/20';
   }
 };
 
@@ -29,7 +29,7 @@ function classNames(...classes: (string | boolean)[]) {
 
 const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
   // const [confetti, setConfetti] = React.useState(false);
-
+  console.log(stepTwoData.status, 'stepTwoData');
   return (
     <div>
       {/*{confetti && <ConfettiAp />}*/}
@@ -44,11 +44,12 @@ const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
       <div className="mt-6 border-t border-gray-100">
         <dl className="divide-y divide-gray-100">
           {fields.map((field, index) => {
-            console.log(field, 'field');
             const fieldValue =
               field.step === 0
                 ? stepOneData[field.key]
                 : stepTwoData[field.key];
+
+            if (field.key === 'status') return;
 
             return (
               <div
@@ -59,20 +60,19 @@ const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
                   {field.name}
                 </dt>
                 <dd className="mt-1 flex leading-6 text-md text-black font-semibold sm:col-span-2 sm:mt-0">
-                  {field.key !== 'status' ? (
-                    <span className="flex-grow">{fieldValue}</span>
-                  ) : (
-                    <span className="flex-grow">
+                  <span className="flex-grow items-center">
+                    {fieldValue}
+                    {index === 0 && (
                       <span
                         className={classNames(
-                          statusBadge(fieldValue),
-                          'inline-flex items-center rounded-md px-1.5 py-0.5 text-base font-medium'
+                          'ml-6 w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+                          statusBadge(stepTwoData?.status)
                         )}
                       >
-                        {fieldValue}
+                        {stepTwoData?.status}
                       </span>
-                    </span>
-                  )}
+                    )}
+                  </span>
                   <span className="ml-4 flex-shrink-0">
                     <button
                       type="button"
