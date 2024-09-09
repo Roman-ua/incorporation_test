@@ -67,7 +67,7 @@ export default function CountrySelector({
           type="button"
           className={classNames(
             disabled ? 'bg-neutral-100' : 'bg-white',
-            'relative w-full border rounded-md pl-3 pr-10 py-2 text-left cursor-default focus:outline-none sm:text-md',
+            'relative w-full border rounded-md pl-2 pr-10 py-2 text-left cursor-default focus:outline-none sm:text-md',
             wrapperExtraStyles || ''
           )}
           aria-haspopup="listbox"
@@ -76,18 +76,22 @@ export default function CountrySelector({
           onClick={onToggle}
           disabled={disabled}
         >
-          <span className="truncate flex items-center">
-            {withIcon && (
-              <img
-                alt={`${selectedValue.value}`}
-                src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${selectedValue.value}.svg`}
-                className={'inline mr-2 h-4 rounded-sm'}
-              />
-            )}
-            {id === 'states'
-              ? `${selectedValue.value} - ${selectedValue.title}`
-              : selectedValue.value}
-          </span>
+          {selectedValue ? (
+            <span className="truncate flex items-center">
+              {withIcon && (
+                <img
+                  alt={`${selectedValue.value}`}
+                  src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${selectedValue.value}.svg`}
+                  className={'inline mr-2 h-4 rounded-sm'}
+                />
+              )}
+              {id === 'states'
+                ? `${selectedValue.value} - ${selectedValue.title}`
+                : selectedValue.title}
+            </span>
+          ) : (
+            <span className="truncate flex items-center opacity-40">State</span>
+          )}
           <span
             className={`absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none ${
               disabled ? 'hidden' : ''
@@ -110,7 +114,7 @@ export default function CountrySelector({
         </button>
 
         <AnimatePresence>
-          {open && (
+          {open && id === 'states' && (
             <motion.ul
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -142,7 +146,7 @@ export default function CountrySelector({
                 }
               >
                 {list.filter((country) =>
-                  country.value.toLowerCase().startsWith(query.toLowerCase())
+                  country.title.toLowerCase().startsWith(query.toLowerCase())
                 ).length === 0 ? (
                   <li className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
                     {emptyState}
@@ -150,7 +154,7 @@ export default function CountrySelector({
                 ) : (
                   list
                     .filter((country) =>
-                      country.value
+                      country.title
                         .toLowerCase()
                         .startsWith(query.toLowerCase())
                     )
@@ -159,15 +163,11 @@ export default function CountrySelector({
                         <li
                           key={`${id}-${index}`}
                           className={classNames(
-                            'text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 flex items-center hover:bg-gray-50 transition',
-                            id !== 'states' &&
-                              value.value !== 'US' &&
-                              'opacity-30'
+                            'text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 flex items-center hover:bg-gray-50 transition'
                           )}
                           id="listbox-option-0"
                           role="option"
                           onClick={() => {
-                            if (id !== 'states' && value.value !== 'US') return;
                             onChange(value.value);
                             setQuery('');
                             onToggle();
@@ -183,7 +183,7 @@ export default function CountrySelector({
                           <span className="text-md font-normal truncate">
                             {value.value} - {value.title}
                           </span>
-                          {value.value === selectedValue.value ? (
+                          {value.value === selectedValue?.value ? (
                             <span className="text-blue-600 absolute inset-y-0 right-0 flex items-center pr-8">
                               <svg
                                 className="h-5 w-5"

@@ -8,7 +8,7 @@ const USAddressFormElements = () => {
   return (
     <div className="w-1/2 mb-20">
       <SectionHeading
-        text={'US Heading Address Form'}
+        text={'US Address Form'}
         status={!!Object.keys(state).length}
       />
       <USAddressForm setFromState={setState} />

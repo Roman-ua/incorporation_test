@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import CountrySelector from '../../../components/shared/CountrySelect/selector';
 import { COUNTRIES } from '../../../components/shared/CountrySelect/countries';
 import { SelectMenuOption } from '../../../components/shared/CountrySelect/types';
-import { USStates } from '../../../constants/form/form';
 import { VALIDATORS } from '../../../constants/regexs';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
@@ -54,14 +53,6 @@ const AddressForm = ({ setFromState }: IProps) => {
     setIsOpen(value);
   };
 
-  const openStateHandler = (value: boolean) => {
-    if (isOpen) {
-      setIsOpen(false);
-    }
-
-    setIsOpenStates(value);
-  };
-
   const [country, setCountry] = useState('US');
   const [address, setAddress] = useState<{
     address0: string;
@@ -71,7 +62,7 @@ const AddressForm = ({ setFromState }: IProps) => {
   });
   const [city, setCity] = useState('');
   const [zip, setZip] = useState('');
-  const [state, setState] = useState('NY');
+  const [state, setState] = useState('');
 
   const setZipHandler = (value: string) => {
     if (value.length === 1 && value[0] === '-') {
@@ -90,7 +81,6 @@ const AddressForm = ({ setFromState }: IProps) => {
 
   return (
     <div className="flex flex-col items-end">
-      <div className="w-full text-base mb-2">Unmanaged address</div>
       <div className="rounded-md border w-full">
         <CountrySelector
           id={'countries'}
@@ -126,7 +116,7 @@ const AddressForm = ({ setFromState }: IProps) => {
                     [`address${index}`]: e.target.value,
                   })
                 }
-                placeholder={field.title}
+                placeholder={index === 0 ? field.title : ''}
               />
               <div className="absolute right-2 top-1/2 -translate-y-2/4">
                 {index < 3 && index === addressFields.length - 1 && (
@@ -161,22 +151,18 @@ const AddressForm = ({ setFromState }: IProps) => {
             type="text"
             value={zip}
             onChange={(e) => setZipHandler(e.target.value)}
-            placeholder="Zip Code"
+            placeholder="Postal Code"
           />
         </div>
-        <CountrySelector
-          id={'states'}
-          open={isOpenStates}
-          list={USStates}
-          withIcon={false}
-          onToggle={() => openStateHandler(!isOpenStates)}
-          onChange={(val) => setState(val)}
-          selectedValue={
-            USStates.find(
-              (option) => option.value === state
-            ) as SelectMenuOption
-          }
-          wrapperExtraStyles={'rounded-t-none border-0'}
+        <input
+          className={classNames(
+            inputCommonClasses,
+            'w-full rounded-b-md border-b-0'
+          )}
+          type="text"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+          placeholder="State, province"
         />
       </div>
       <button

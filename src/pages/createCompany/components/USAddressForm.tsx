@@ -72,7 +72,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
 
   const [city, setCity] = useState('');
   const [zip, setZip] = useState('');
-  const [state, setState] = useState('NY');
+  const [state, setState] = useState('');
 
   const setZipHandler = (value: string) => {
     if (value.length === 1 && value[0] === '-') {
@@ -90,7 +90,6 @@ const USAddressForm = ({ setFromState }: IProps) => {
 
   return (
     <div className="flex flex-col items-end">
-      <div className="w-full text-base mb-2">Unmanaged address</div>
       <div className="rounded-md border w-full">
         {addressFields.map((field, index) => {
           return (
@@ -115,7 +114,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
                     [`address${index}`]: e.target.value,
                   })
                 }
-                placeholder={field.title}
+                placeholder={index === 0 ? field.title : ''}
               />
               <div className="absolute right-2 top-1/2 -translate-y-2/4">
                 {index < 3 && index === addressFields.length - 1 && (
