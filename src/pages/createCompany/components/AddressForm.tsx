@@ -17,8 +17,6 @@ type AddressFields = {
   address2?: string;
   address3?: string;
   city: string;
-  zip: string;
-  state: string;
 };
 
 interface IProps {
@@ -34,10 +32,8 @@ const areFieldsValid = ({
   country,
   address0,
   city,
-  zip,
-  state,
 }: AddressFields): boolean => {
-  return !!country && !!address0 && !!city && !!zip && !!state;
+  return !!country && !!address0 && !!city;
 };
 
 const AddressForm = ({ setFromState }: IProps) => {
@@ -82,15 +78,13 @@ const AddressForm = ({ setFromState }: IProps) => {
   };
 
   const saveHandler = () => {
-    if (
-      areFieldsValid({ country, address0: address.address0, city, zip, state })
-    ) {
+    if (areFieldsValid({ country, address0: address.address0, city })) {
       setLoader(true);
 
       const timeout = setTimeout(() => {
         setLoader(false);
         setDone(true);
-        setFromState({ country, ...address, city, zip, state });
+        setFromState({ country, ...address, city });
 
         clearTimeout(timeout);
       }, 500);
@@ -214,8 +208,6 @@ const AddressForm = ({ setFromState }: IProps) => {
               country,
               address0: address.address0,
               city,
-              zip,
-              state,
             })
           }
           className="flex items-center justify-center w-[69px] h-[40px] text-base font-bold bg-mainBlue text-white rounded-md mt-2 disabled:bg-gray-500"

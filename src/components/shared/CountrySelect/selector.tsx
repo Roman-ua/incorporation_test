@@ -3,7 +3,7 @@
 import { SelectMenuOption } from './types';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 export interface CountrySelectorProps {
   id: string;
@@ -37,6 +37,7 @@ export default function CountrySelector({
   disableDropDown = false,
 }: CountrySelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const mutableRef = ref as MutableRefObject<HTMLDivElement | null>;
@@ -57,6 +58,12 @@ export default function CountrySelector({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [ref]);
+
+  useEffect(() => {
+    if (open && inputRef.current) {
+      inputRef.current?.focus();
+    }
+  }, [open, inputRef.current]);
 
   const [query, setQuery] = useState('');
 
@@ -130,6 +137,7 @@ export default function CountrySelector({
                     type="text"
                     name="search"
                     autoComplete={'off'}
+                    ref={inputRef}
                     className="block w-full sm:text-sm focus:outline-none"
                     placeholder={'Search'}
                     onChange={(e) => setQuery(e.target.value)}

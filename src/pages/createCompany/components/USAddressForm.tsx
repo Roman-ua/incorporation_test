@@ -38,7 +38,9 @@ const areFieldsValid = ({
   zip,
   state,
 }: AddressFields): boolean => {
-  return !!country && !!address0 && !!city && !!zip && !!state;
+  return (
+    !!country && !!address0 && !!city && !!zip && zip.length >= 5 && !!state
+  );
 };
 
 const USAddressForm = ({ setFromState }: IProps) => {
