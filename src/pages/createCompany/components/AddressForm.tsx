@@ -77,7 +77,8 @@ const AddressForm = ({ setFromState }: IProps) => {
     }
   };
 
-  const inputCommonClasses = 'p-2 text-md border-b focus:outline-none';
+  const inputCommonClasses =
+    'p-2 text-md border-b focus:outline-none placeholder-gray-500';
 
   return (
     <div className="flex flex-col items-end">
@@ -94,6 +95,7 @@ const AddressForm = ({ setFromState }: IProps) => {
               (option) => option.value === country
             ) as SelectMenuOption
           }
+          disableDropDown={false}
           wrapperExtraStyles={'rounded-b-none border-t-0 border-l-0 border-r-0'}
         />
         {addressFields.map((field, index) => {
@@ -116,7 +118,7 @@ const AddressForm = ({ setFromState }: IProps) => {
                     [`address${index}`]: e.target.value,
                   })
                 }
-                placeholder={index === 0 ? field.title : ''}
+                placeholder={field.title}
               />
               <div className="absolute right-2 top-1/2 -translate-y-2/4">
                 {index < 3 && index === addressFields.length - 1 && (

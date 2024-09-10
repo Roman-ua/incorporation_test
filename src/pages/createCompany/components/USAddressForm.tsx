@@ -69,7 +69,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
   }>({
     address0: '',
   });
-
+  console.log(address, 'address');
   const [city, setCity] = useState('');
   const [zip, setZip] = useState('');
   const [state, setState] = useState('');
@@ -86,7 +86,8 @@ const USAddressForm = ({ setFromState }: IProps) => {
     }
   };
 
-  const inputCommonClasses = 'p-2 text-md border-b focus:outline-none';
+  const inputCommonClasses =
+    'p-2 text-md border-b focus:outline-none placeholder-gray-500';
 
   return (
     <div className="flex flex-col items-end">
@@ -114,7 +115,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
                     [`address${index}`]: e.target.value,
                   })
                 }
-                placeholder={index === 0 ? field.title : ''}
+                placeholder={field.title}
               />
               <div className="absolute right-2 top-1/2 -translate-y-2/4">
                 {index < 3 && index === addressFields.length - 1 && (
@@ -136,14 +137,14 @@ const USAddressForm = ({ setFromState }: IProps) => {
             </div>
           );
         })}
-        <input
-          className={classNames(inputCommonClasses, 'w-full')}
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="City"
-        />
         <div className="w-full flex items-center justify-center">
+          <input
+            className={classNames(inputCommonClasses, 'w-full border-r')}
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="City"
+          />
           <CountrySelector
             id={'states'}
             open={isOpenStates}
@@ -156,11 +157,11 @@ const USAddressForm = ({ setFromState }: IProps) => {
                 (option) => option.value === state
               ) as SelectMenuOption
             }
-            inputExtraStyles={'w-1/2'}
+            inputExtraStyles={'min-w-[80px] max-w-[80px]'}
             wrapperExtraStyles={'rounded-none border-t-0 border-l-0'}
           />
           <input
-            className={classNames(inputCommonClasses, 'w-1/2')}
+            className={classNames(inputCommonClasses, 'w-5/12')}
             type="text"
             value={zip}
             onChange={(e) => setZipHandler(e.target.value)}
@@ -179,7 +180,8 @@ const USAddressForm = ({ setFromState }: IProps) => {
               (option) => option.value === country
             ) as SelectMenuOption
           }
-          inputExtraStyles={'w-full'}
+          inputExtraStyles={'w-full opacity-40'}
+          disableDropDown={true}
           wrapperExtraStyles={'rounded-b-0 border-0'}
         />
       </div>
@@ -188,7 +190,13 @@ const USAddressForm = ({ setFromState }: IProps) => {
           setFromState({ country, ...address, city, zip, state });
         }}
         disabled={
-          !areFieldsValid({ country, address0: address[0], city, zip, state })
+          !areFieldsValid({
+            country,
+            address0: address.address0,
+            city,
+            zip,
+            state,
+          })
         }
         className="px-4 py-2 text-base font-bold bg-mainBlue text-white rounded-md mt-2 disabled:bg-gray-500"
       >

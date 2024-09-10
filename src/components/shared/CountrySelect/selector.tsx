@@ -15,6 +15,7 @@ export interface CountrySelectorProps {
   selectedValue: SelectMenuOption;
   inputExtraStyles?: string;
   wrapperExtraStyles?: string;
+  disableDropDown?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -32,6 +33,7 @@ export default function CountrySelector({
   selectedValue,
   inputExtraStyles,
   wrapperExtraStyles,
+  disableDropDown = false,
 }: CountrySelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -57,7 +59,7 @@ export default function CountrySelector({
 
   const [query, setQuery] = useState('');
 
-  const placeholder = id === 'states' ? 'Search a state' : 'Search a country';
+  // const placeholder = id === 'states' ? 'Search a state' : 'Search a country';
   const emptyState = id === 'states' ? 'No state found' : 'No countries found';
 
   return (
@@ -67,14 +69,14 @@ export default function CountrySelector({
           type="button"
           className={classNames(
             disabled ? 'bg-neutral-100' : 'bg-white',
-            'relative w-full border rounded-md pl-2 pr-10 py-2 text-left cursor-default focus:outline-none sm:text-md',
+            'relative w-full border rounded-md pl-2 pr-8 py-2 text-left cursor-default focus:outline-none sm:text-md',
             wrapperExtraStyles || ''
           )}
           aria-haspopup="listbox"
           aria-expanded="true"
           aria-labelledby="listbox-label"
           onClick={onToggle}
-          disabled={disabled}
+          disabled={disableDropDown}
         >
           {selectedValue ? (
             <span className="truncate flex items-center">
@@ -85,36 +87,38 @@ export default function CountrySelector({
                   className={'inline mr-2 h-4 rounded-sm'}
                 />
               )}
-              {id === 'states'
-                ? `${selectedValue.value} - ${selectedValue.title}`
-                : selectedValue.title}
+              {id === 'states' ? selectedValue.value : selectedValue.title}
             </span>
           ) : (
-            <span className="truncate flex items-center opacity-40">State</span>
+            <span className="truncate flex items-center text-gray-500">
+              State
+            </span>
           )}
           <span
             className={`absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none ${
               disabled ? 'hidden' : ''
             }`}
           >
-            <svg
-              className="h-5 w-5 text-gray-400"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
+            {!disableDropDown && (
+              <svg
+                className="h-5 w-5 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
           </span>
         </button>
 
         <AnimatePresence>
-          {open && id === 'states' && (
+          {open && (
             <motion.ul
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -127,13 +131,13 @@ export default function CountrySelector({
               aria-activedescendant="listbox-option-3"
             >
               <div className="sticky top-0 z-10 bg-white">
-                <li className=" text-gray-900 cursor-default select-none relative py-2 px-3">
+                <li className=" text-gray-900 cursor-default select-none relative py-2 px-2">
                   <input
-                    type="search"
+                    type="text"
                     name="search"
                     autoComplete={'off'}
                     className="block w-full sm:text-sm focus:outline-none"
-                    placeholder={placeholder}
+                    placeholder={'Search'}
                     onChange={(e) => setQuery(e.target.value)}
                   />
                 </li>
@@ -181,10 +185,10 @@ export default function CountrySelector({
                             />
                           )}
                           <span className="text-md font-normal truncate">
-                            {value.value} - {value.title}
+                            {id === 'states' ? value.value : value.title}
                           </span>
                           {value.value === selectedValue?.value ? (
-                            <span className="text-blue-600 absolute inset-y-0 right-0 flex items-center pr-8">
+                            <span className="text-blue-600 absolute inset-y-0 right-0 flex items-center pr-2">
                               <svg
                                 className="h-5 w-5"
                                 xmlns="http://www.w3.org/2000/svg"
