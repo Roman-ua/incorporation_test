@@ -65,6 +65,46 @@ const CustomCheckBox = () => {
       <SectionHeading text={'Check-box'} status={!!selectedState} hideStatus />
       <div className="flex items-center justify-start gap-2">
         {items.map((item: number) => {
+          // if (item === 3) {
+          //   return (
+          //     <label
+          //       key={item}
+          //       htmlFor="checkboxScaleUp"
+          //       className="flex cursor-pointer items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-300 [&:has(input:checked)]:text-neutral-900 dark:[&:has(input:checked)]:text-white [&:has(input:disabled)]:cursor-not-allowed [&:has(input:disabled)]:opacity-75"
+          //     >
+          //       <div
+          //         onClick={() => handleToggleNumber(item)}
+          //         className="relative flex items-center"
+          //       >
+          //         <input
+          //           id="checkboxScaleUp"
+          //           type="checkbox"
+          //           className={classNames(
+          //             "before:content[''] peer relative size-6 cursor-pointer appearance-none overflow-hidden rounded-full border border-neutral-300 bg-neutral-50 before:absolute before:inset-0 before:scale-0 before:rounded-full before:transition before:duration-200 checked:border-green-300",
+          //             'checked:before:scale-125 checked:before:bg-green-300 focus:outline-none active:outline-offset-0 disabled:cursor-not-allowed'
+          //           )}
+          //           checked={selectedState.includes(3)}
+          //         />
+          //         <svg
+          //           xmlns="http://www.w3.org/2000/svg"
+          //           viewBox="0 0 24 24"
+          //           aria-hidden="true"
+          //           stroke="currentColor"
+          //           fill="none"
+          //           strokeWidth="4"
+          //           className="pointer-events-none invisible absolute left-1/2 top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 scale-0 transition duration-200 delay-200 peer-checked:scale-100 text-black peer-checked:visible"
+          //         >
+          //           <path
+          //             strokeLinecap="round"
+          //             strokeLinejoin="round"
+          //             d="M4.5 12.75l6 6 9-13.5"
+          //           />
+          //         </svg>
+          //       </div>
+          //       <span>Check Me</span>
+          //     </label>
+          //   );
+          // }
           return (
             <div key={item} className="flex flex-col items-center">
               <span className="text-xs font-bold mb-2 text-gray-700">

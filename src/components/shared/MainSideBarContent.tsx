@@ -55,17 +55,17 @@ const MainSideBarContent = ({
                 onClick={() => currentMenuItemHandler(item.name)}
                 className={classNames(
                   item.name === currentMenuItem
-                    ? 'bg-gray-50 text-sideBarBlue'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-mainBlue',
-                  'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
+                    ? 'text-gray-600'
+                    : 'text-gray-400 hover:text-gray-600',
+                  'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-all'
                 )}
               >
                 <item.icon
                   className={classNames(
                     item.name === currentMenuItem
-                      ? 'text-sideBarBlue'
-                      : 'text-gray-400 group-hover:text-mainBlue',
-                    'h-6 w-6 shrink-0'
+                      ? 'text-sideBarBlue/80'
+                      : 'text-gray-400 group-hover:text-mainBlue/80',
+                    'h-6 w-6 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
                 />
@@ -76,7 +76,7 @@ const MainSideBarContent = ({
         </ul>
       </li>
       <li>
-        <div className="text-xs font-semibold leading-6 text-gray-400">
+        <div className="text-xs font-semibold leading-6 text-gray-500">
           Internal
         </div>
         <ul role="list" className="-mx-2 mt-2 space-y-1">
@@ -87,17 +87,17 @@ const MainSideBarContent = ({
                 onClick={() => currentMenuItemHandler(team.name)}
                 className={classNames(
                   team.name === currentMenuItem
-                    ? 'bg-gray-50 text-sideBarBlue'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-mainBlue',
-                  'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
+                    ? 'text-gray-600'
+                    : 'text-gray-400 hover:text-gray-600',
+                  'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-all'
                 )}
               >
                 <team.icon
                   className={classNames(
                     team.name === currentMenuItem
-                      ? 'text-sideBarBlue'
-                      : 'text-gray-400 group-hover:text-mainBlue',
-                    'h-6 w-6 shrink-0'
+                      ? 'text-sideBarBlue/80'
+                      : 'text-gray-400 group-hover:text-mainBlue/80',
+                    'h-6 w-6 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
                 />
