@@ -7,13 +7,11 @@ import CustomCheckBox from './components/CustomCheckBox';
 import SeparatedCardsElements from './components/SeparatedCardsElements';
 import AddressFormElements from './components/AddressFormElements';
 import USAddressFormElements from './components/USAddressFormElements';
-import ButtonWithLoader from './components/ButtonWithLoader';
 
 const Elements = () => {
   return (
     <div className="p-10">
       <SectionStatus />
-      <ButtonWithLoader />
       <CustomCheckBox />
       <AddressFormElements />
       <USAddressFormElements />
