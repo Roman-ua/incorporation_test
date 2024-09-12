@@ -12,14 +12,21 @@ interface IProps {
   state: string[];
   title: string;
   secondTitle?: string;
+  requiredError?: boolean;
 }
-const StateCards = ({ changeEvent, value, state, title }: IProps) => {
+const StateCards = ({
+  changeEvent,
+  value,
+  state,
+  title,
+  requiredError,
+}: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
   const [hoveredItem, setHoveredItem] = useState('');
 
   return (
     <>
-      <SectionHeading text={title} status={!!value} />
+      <SectionHeading text={title} status={!!value} hideStatus={true} />
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-2">
         {state.map((item) => {
           return (
@@ -34,7 +41,8 @@ const StateCards = ({ changeEvent, value, state, title }: IProps) => {
               className={classNames(
                 'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-5 hover:cursor-pointer',
                 'hover:cursor-pointer',
-                selectedState === item ? 'bg-green-50' : 'bg-gray-50'
+                selectedState === item ? 'bg-green-50' : 'bg-gray-50',
+                requiredError ? 'border-red-500' : ''
               )}
             >
               <dt className="flex items-center justify-start">

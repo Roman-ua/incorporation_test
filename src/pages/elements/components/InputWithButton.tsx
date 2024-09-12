@@ -64,6 +64,7 @@ const InputWithButton = () => {
       <SectionHeading
         text={'Heading Input Field with Save Button'}
         status={done}
+        hideStatus={true}
       />
       <div className={`w-full max-lg:ml-0 max-lg:mr-0`}>
         <label

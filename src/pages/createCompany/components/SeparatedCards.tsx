@@ -7,19 +7,26 @@ interface IProps {
   value: string;
   state: { fullName: string; shortName: string }[];
   title: string;
+  requiredError?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const SeparatedCards = ({ changeEvent, value, state, title }: IProps) => {
+const SeparatedCards = ({
+  changeEvent,
+  value,
+  state,
+  title,
+  requiredError,
+}: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
   const [hoveredItem, setHoveredItem] = useState('');
 
   return (
     <>
-      <SectionHeading text={title} status={!!value} />
+      <SectionHeading text={title} status={!!value} hideStatus={true} />
       <div className="w-full">
         <dl className="mx-auto grid grid-cols-1 gap-2 md:grid-cols-1 lg:grid-cols-2">
           {state.map((stat) => (
@@ -33,7 +40,8 @@ const SeparatedCards = ({ changeEvent, value, state, title }: IProps) => {
               onMouseLeave={() => setHoveredItem('')}
               className={classNames(
                 'flex relative border rounded-lg flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-5 py-3.5 hover:cursor-pointer',
-                selectedState === stat.shortName ? 'bg-green-50' : 'bg-white'
+                selectedState === stat.shortName ? 'bg-green-50' : 'bg-white',
+                requiredError ? 'border-red-500' : ''
               )}
             >
               <div className="flex items-center justify-start">

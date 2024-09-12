@@ -7,20 +7,32 @@ interface IProps {
   value: string;
   state: { fullName: string; shortName: string }[];
   title: string;
+  requiredError?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const JoinedCard = ({ changeEvent, value, state, title }: IProps) => {
+const JoinedCard = ({
+  changeEvent,
+  value,
+  state,
+  title,
+  requiredError,
+}: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
   const [hoveredItem, setHoveredItem] = useState('');
 
   return (
     <>
-      <SectionHeading text={title} status={!!value} />
-      <div className="w-full border rounded-lg">
+      <SectionHeading text={title} status={!!value} hideStatus={true} />
+      <div
+        className={classNames(
+          'w-full border rounded-lg',
+          requiredError ? 'border-red-500' : ''
+        )}
+      >
         <dl className="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 md:grid-cols-1 lg:grid-cols-3 rounded-lg">
           {state.map((stat, index) => (
             <div

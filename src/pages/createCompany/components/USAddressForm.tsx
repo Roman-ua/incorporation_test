@@ -118,10 +118,8 @@ const USAddressForm = ({ setFromState }: IProps) => {
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         className={classNames(
-          'rounded-md border w-full transition-all duration-500',
-          focused
-            ? 'border-blue-300/50 shadow-[0_0_6px_rgb(28,125,255,0.2)]'
-            : ''
+          'rounded-md border w-full transition-all duration-200',
+          focused ? 'border border-mainBlue' : ''
         )}
       >
         {addressFields.map((field, index) => {

@@ -153,6 +153,7 @@ const CreateCompany = () => {
     defaultValues: stepOneData,
     resolver: yupResolver(stepOneSchema),
   });
+  console.log(stepOneForm.formState.errors);
   const stepOneFormObserver = stepOneForm.watch();
 
   const stepTwoForm = useForm<StepTwoData>({
@@ -221,6 +222,9 @@ const CreateCompany = () => {
                         removeLabel={true}
                         extraStyles="mb-16"
                         heading="Company Name"
+                        requiredError={Object.keys(
+                          stepOneForm.formState.errors
+                        ).includes('companyName')}
                       />
                       <Separator />
                     </>
@@ -236,6 +240,9 @@ const CreateCompany = () => {
                         title={'Company Type'}
                         value={field.value}
                         changeEvent={field.onChange}
+                        requiredError={Object.keys(
+                          stepOneForm.formState.errors
+                        ).includes('companyType')}
                       />
                     </div>
                   )}
@@ -250,6 +257,9 @@ const CreateCompany = () => {
                         title={'Registration State'}
                         value={field.value}
                         changeEvent={field.onChange}
+                        requiredError={Object.keys(
+                          stepOneForm.formState.errors
+                        ).includes('registeredIn')}
                       />
                     </div>
                   )}
@@ -279,7 +289,12 @@ const CreateCompany = () => {
                   render={({ field }) => {
                     return (
                       <>
-                        <CustomCalendar field={field} />
+                        <CustomCalendar
+                          field={field}
+                          requiredError={Object.keys(
+                            stepTwoForm.formState.errors
+                          ).includes('registrationDate')}
+                        />
                         <Separator />
                       </>
                     );
@@ -298,6 +313,9 @@ const CreateCompany = () => {
                         removeLabel={true}
                         heading="Registration Number"
                         extraStyles="mb-16"
+                        requiredError={Object.keys(
+                          stepTwoForm.formState.errors
+                        ).includes('registrationNumber')}
                       />
                       <Separator />
                     </>
@@ -314,6 +332,9 @@ const CreateCompany = () => {
                         value={field.value}
                         changeEvent={field.onChange}
                         secondTitle={'Company status'}
+                        requiredError={Object.keys(
+                          stepTwoForm.formState.errors
+                        ).includes('status')}
                       />
                     </div>
                   )}

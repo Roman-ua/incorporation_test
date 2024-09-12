@@ -15,6 +15,7 @@ interface IProps {
   heading?: string;
   extraInputStyles?: string;
   removeLabel?: boolean;
+  requiredError?: boolean;
 }
 
 function classNames(...classes: string[]) {
@@ -31,6 +32,7 @@ const CommonTextInput = ({
   readonly,
   heading,
   removeLabel,
+  requiredError,
 }: IProps) => {
   const [loader, setLoader] = React.useState(false);
   const [done, setDone] = React.useState(false);
@@ -90,7 +92,7 @@ const CommonTextInput = ({
 
   return (
     <>
-      <SectionHeading text={heading || ''} status={done} />
+      <SectionHeading text={heading || ''} status={done} hideStatus={true} />
       <div
         className={classNames(
           `w-full max-lg:ml-0 max-lg:mr-0`,
@@ -112,7 +114,8 @@ const CommonTextInput = ({
             id={id}
             className={classNames(
               'outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue max-sm:text-sm sm:leading-6',
-              isNameField ? 'text-xl py-3 px-5' : ''
+              isNameField ? 'text-xl py-3 px-5' : '',
+              requiredError ? 'ring-2 ring-inset ring-red-500' : ''
             )}
             placeholder={title}
             data-1p-ignore={true}

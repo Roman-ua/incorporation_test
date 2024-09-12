@@ -2,7 +2,7 @@
     --color: #F6F8FF;
     --background: #2B3044;
     --icon: var(--color);
-    --progress-border: rgba(0, 0, 0, 0);
+    --progress-border: #bdbdbd;
     --progress-active: #fff;
     --progress-success: #fff;
     --tick-stroke: var(--progress-active);
@@ -23,7 +23,6 @@
         }
     }
     & > div {
-        margin-right: 4px;
         border-radius: 50%;
         display: inline-block;
         vertical-align: top;

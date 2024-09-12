@@ -10,6 +10,7 @@ const AddressFormElements = () => {
       <SectionHeading
         text={'Address Form'}
         status={!!Object.keys(state).length}
+        hideStatus={true}
       />
       <AddressForm setFromState={setState} />
     </div>

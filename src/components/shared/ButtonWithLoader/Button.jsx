@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import './Button.scss';
-import { CursorArrowRaysIcon } from '@heroicons/react/24/solid';
 
 // eslint-disable-next-line react/prop-types
 const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
@@ -33,7 +32,6 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
 
   useEffect(() => {
     const button = document.getElementById(uniqId);
-
     if (button && !discard) {
       button.classList.remove('process');
       button.classList.remove('success');
@@ -46,10 +44,10 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
       id={uniqId}
       onClick={clickHandler}
       disabled={disabled}
-      className="buttonHold flex items-center justify-center w-[90px] h-[40px] text-base font-bold bg-mainBlue text-white rounded-md mt-2 disabled:bg-gray-500"
+      className={`buttonHold flex items-center px-3 justify-between w-[90px] h-[40px] text-base font-bold bg-mainBlue text-white rounded-md mt-2 disabled:bg-gray-500`}
     >
-      <div>
-        <CursorArrowRaysIcon className="icon w-5 h-5" />
+      <span>{discard ? 'Saved' : 'Save'}</span>
+      <div style={{ marginLeft: 5 }}>
         <svg className="progress" viewBox="0 0 32 32">
           <circle r="8" cx="16" cy="16" />
         </svg>
@@ -57,7 +55,6 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
           <polyline points="18,7 11,16 6,12" />
         </svg>
       </div>
-      <span>Save</span>
     </button>
   );
 };

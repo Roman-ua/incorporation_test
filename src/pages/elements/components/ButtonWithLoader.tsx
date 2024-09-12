@@ -16,7 +16,11 @@ const ButtonWithLoader = () => {
 
   return (
     <div className="w-2/3 mb-20">
-      <SectionHeading text={'Button with loader'} status={false} />
+      <SectionHeading
+        text={'Button with loader'}
+        status={false}
+        hideStatus={true}
+      />
       <div onClick={setCheckedWithDelay}>
         <label
           htmlFor="checkboxScaleUp"

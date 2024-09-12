@@ -69,7 +69,7 @@ export default function CountrySelector({
 
   // const placeholder = id === 'states' ? 'Search a state' : 'Search a country';
   const emptyState = id === 'states' ? 'No state found' : 'No countries found';
-
+  const emptyPlaceholder = id === 'states' ? 'State' : 'Country';
   return (
     <div ref={ref} className={inputExtraStyles}>
       <div className="relative">
@@ -99,7 +99,7 @@ export default function CountrySelector({
             </span>
           ) : (
             <span className="truncate flex items-center text-gray-500">
-              State
+              {emptyPlaceholder}
             </span>
           )}
           <span

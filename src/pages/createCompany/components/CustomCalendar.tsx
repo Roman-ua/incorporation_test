@@ -33,9 +33,10 @@ const colStartClasses = [
 
 interface IProps {
   field: FieldValues;
+  requiredError?: boolean;
 }
 
-const CustomCalendar = ({ field }: IProps) => {
+const CustomCalendar = ({ field, requiredError }: IProps) => {
   const today = field.value || startOfToday();
   const [selectedDay, setSelectedDay] = useState(today);
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
@@ -64,7 +65,11 @@ const CustomCalendar = ({ field }: IProps) => {
 
   return (
     <>
-      <SectionHeading text={'Registration Date'} status={selectedDay} />
+      <SectionHeading
+        text={'Registration Date'}
+        status={selectedDay}
+        hideStatus={true}
+      />
       <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1 pb-16">
         <div>
           <div className="overflow-hidden rounded-lg bg-white max-sm:py-6">
@@ -105,7 +110,12 @@ const CustomCalendar = ({ field }: IProps) => {
               <div>S</div>
               <div>S</div>
             </div>
-            <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+            <div
+              className={classNames(
+                'isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200',
+                requiredError ? 'ring-red-500' : ''
+              )}
+            >
               {days.map((day, dayIdx) => {
                 return (
                   <div
