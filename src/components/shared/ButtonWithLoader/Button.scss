@@ -13,7 +13,7 @@
     cursor: pointer;
     -webkit-backface-visibility: hidden;
     -webkit-appearance: none;
-    transition: transform .3s, box-shadow .3s;
+    transition: transform .3s, box-shadow .1s;
     transform: scale(var(--scale, 1)) translateZ(0);
     &:disabled {
         & > div {
@@ -27,7 +27,7 @@
         display: inline-block;
         vertical-align: top;
         position: relative;
-        background: var(--progress-border);
+        background: transparent; // tut
 
         &:before {
             content: '';
@@ -55,7 +55,7 @@
                 //top: 4px;
                 fill: var(--icon);
                 z-index: 1;
-                transition: opacity .2s, transform .2s;
+                transition: opacity .2s, transform .1s;
                 opacity: var(--icon-opacity, 1);
                 transform: translateY(var(--icon-y, 0)) scale(var(--icon-scale, 1));
             }
@@ -72,24 +72,24 @@
                     stroke-dashoffset: 1;
                     stroke-dasharray: var(--progress-array, 0) 52;
                     stroke-width: 16;
-                    stroke: var(--progress-active);
+                    stroke: transparent; // tut
                     transition: stroke-dasharray var(--duration) linear;
                 }
             }
             &.tick {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
                 left: 0;
-                top: 0;
+                top: 1px;
                 stroke-width: 3;
                 stroke-linecap: round;
                 stroke-linejoin: round;
                 stroke: var(--tick-stroke);
-                transition: stroke .3s ease .7s;
+                transition: stroke .3s ease .1s;
                 polyline {
                     stroke-dasharray: 18 18 18;
                     stroke-dashoffset: var(--tick-offset, 18);
-                    transition: stroke-dashoffset .4s ease .7s;
+                    transition: stroke-dashoffset .4s ease .1s;
                 }
             }
         }

@@ -130,6 +130,7 @@ const AddressForm = ({ setFromState }: IProps) => {
                     [`address${index}`]: e.target.value,
                   })
                 }
+                data-1p-ignore={true}
                 placeholder={field.title}
               />
               <div className="absolute right-2 top-1/2 -translate-y-2/4">
@@ -158,6 +159,7 @@ const AddressForm = ({ setFromState }: IProps) => {
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            data-1p-ignore={true}
             placeholder="City"
           />
           <input
@@ -165,6 +167,7 @@ const AddressForm = ({ setFromState }: IProps) => {
             type="text"
             value={zip}
             onChange={(e) => setZipHandler(e.target.value)}
+            data-1p-ignore={true}
             placeholder="Postal Code"
           />
         </div>
@@ -176,6 +179,7 @@ const AddressForm = ({ setFromState }: IProps) => {
           type="text"
           value={state}
           onChange={(e) => setState(e.target.value)}
+          data-1p-ignore={true}
           placeholder="State, province"
         />
       </div>

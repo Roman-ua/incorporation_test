@@ -139,6 +139,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
                 )}
                 type={field.type}
                 value={address[index]}
+                data-1p-ignore={true}
                 onChange={(e) =>
                   setAddress({
                     ...address,
@@ -173,6 +174,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            data-1p-ignore={true}
             placeholder="City"
           />
           <CountrySelector
@@ -198,6 +200,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
             type="text"
             value={zip}
             onChange={(e) => setZipHandler(e.target.value)}
+            data-1p-ignore={true}
             placeholder="Zip Code"
           />
         </div>

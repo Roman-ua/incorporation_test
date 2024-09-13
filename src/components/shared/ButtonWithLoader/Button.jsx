@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './Button.scss';
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
 // eslint-disable-next-line react/prop-types
 const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -8,7 +12,7 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
   useEffect(() => {
     const button = document.getElementById(uniqId);
     let timeout;
-    const duration = 500;
+    const duration = 100;
 
     const success = (button) => {
       button.classList.add('success');
@@ -20,9 +24,7 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
       ['click'].forEach((e) => {
         button.addEventListener(e, () => {
           if (e == 'click' && !button.classList.contains('process')) {
-            setTimeout(() => {
-              button.classList.add('process');
-            }, 100);
+            button.classList.add('process');
             timeout = setTimeout(success, duration, button);
           }
         });
@@ -48,14 +50,14 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
     <button
       id={uniqId}
       onClick={() => {
+        clickHandler();
         setIsClicked(true);
-        const timeout = setTimeout(() => {
-          clickHandler();
-          clearTimeout(timeout);
-        }, 100);
       }}
       disabled={disabled}
-      className={`buttonHold flex items-center px-3 justify-between h-[35px] text-base font-bold bg-mainBlue text-sm font-semibold text-white rounded-md mt-2 disabled:bg-gray-500`}
+      className={classNames(
+        'buttonHold flex items-center justify-between h-[35px] bg-mainBlue text-sm font-semibold text-white rounded-md mt-2 disabled:bg-gray-500',
+        isClicked ? 'pl-3 pr-2' : 'px-3'
+      )}
     >
       <span>{isClicked ? 'Saved' : 'Save'}</span>
       {isClicked && (
