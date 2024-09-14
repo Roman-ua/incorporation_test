@@ -26,6 +26,8 @@ type AddressFields = {
 
 interface IProps {
   setFromState: (value: AddressFields) => void;
+  value?: AddressFields;
+  requiredError?: boolean;
 }
 
 const addressFieldsMock = [
@@ -45,7 +47,7 @@ const areFieldsValid = ({
   );
 };
 
-const USAddressForm = ({ setFromState }: IProps) => {
+const USAddressForm = ({ setFromState, value, requiredError }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
   const [focused, setFocused] = useState(false);
@@ -70,17 +72,20 @@ const USAddressForm = ({ setFromState }: IProps) => {
     setIsOpenStates(value);
   };
 
-  const [country, setCountry] = useState('US');
+  const [country, setCountry] = useState('United States');
   const [address, setAddress] = useState<{
     address0: string;
     [key: string]: string;
   }>({
-    address0: '',
+    address0: value?.address0 || '',
+    address1: value?.address1 || '',
+    address2: value?.address2 || '',
+    address3: value?.address3 || '',
   });
 
-  const [city, setCity] = useState('');
-  const [zip, setZip] = useState('');
-  const [state, setState] = useState('');
+  const [city, setCity] = useState(value?.city || '');
+  const [zip, setZip] = useState(value?.zip || '');
+  const [state, setState] = useState(value?.state || '');
 
   const setZipHandler = (value: string) => {
     let cleanedValue = value.replace(/[^0-9-]/g, '');
@@ -111,7 +116,6 @@ const USAddressForm = ({ setFromState }: IProps) => {
 
   const inputCommonClasses =
     'p-2 text-md border-b focus:outline-none placeholder-gray-500';
-
   return (
     <div className="flex flex-col items-end">
       <div
@@ -119,7 +123,8 @@ const USAddressForm = ({ setFromState }: IProps) => {
         onBlur={() => setFocused(false)}
         className={classNames(
           'rounded-md border w-full',
-          focused ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]' : ''
+          focused ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]' : '',
+          requiredError ? 'border-red-500' : ''
         )}
       >
         {addressFields.map((field, index) => {
@@ -138,7 +143,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
                   `w-full ${index === 0 ? 'rounded-t-md' : ''}`
                 )}
                 type={field.type}
-                value={address[index]}
+                value={address[`address${index}`]}
                 data-1p-ignore={true}
                 onChange={(e) =>
                   setAddress({
@@ -186,7 +191,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
             onChange={(val) => setState(val)}
             selectedValue={
               USStates.find(
-                (option) => option.value === state
+                (option) => option.title === state
               ) as SelectMenuOption
             }
             inputExtraStyles={'min-w-[80px] max-w-[80px]'}
@@ -213,7 +218,7 @@ const USAddressForm = ({ setFromState }: IProps) => {
           onChange={(val) => setCountry(val)}
           selectedValue={
             COUNTRIES.find(
-              (option) => option.value === country
+              (option) => option.title === country
             ) as SelectMenuOption
           }
           inputExtraStyles={'w-full opacity-40'}

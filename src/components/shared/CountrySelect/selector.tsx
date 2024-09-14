@@ -174,7 +174,7 @@ export default function CountrySelector({
                           id="listbox-option-0"
                           role="option"
                           onClick={() => {
-                            onChange(value.value);
+                            onChange(value.title);
                             setQuery('');
                             onToggle();
                           }}

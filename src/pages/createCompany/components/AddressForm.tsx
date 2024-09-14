@@ -104,7 +104,7 @@ const AddressForm = ({ setFromState }: IProps) => {
           onChange={(val) => setCountry(val)}
           selectedValue={
             COUNTRIES.find(
-              (option) => option.value === country
+              (option) => option.title === country
             ) as SelectMenuOption
           }
           disableDropDown={false}

@@ -48,6 +48,7 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
 
   return (
     <button
+      type={'button'}
       id={uniqId}
       onClick={() => {
         clickHandler();

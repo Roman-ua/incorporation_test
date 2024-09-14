@@ -5,6 +5,7 @@ import { fields } from '../../../constants/form/form';
 interface IProps {
   stepOneData: { [key: string]: string };
   stepTwoData: { [key: string]: string };
+  stepThreeData: { address: { [key: string]: string } };
   setCurrentStep: (value: number) => void;
 }
 
@@ -27,9 +28,18 @@ function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
+const ConfirmPage = ({
+  stepOneData,
+  stepTwoData,
+  stepThreeData,
+  setCurrentStep,
+}: IProps) => {
+  const fieldsData = {
+    0: stepOneData,
+    1: stepTwoData,
+    2: stepThreeData,
+  };
   // const [confetti, setConfetti] = React.useState(false);
-  console.log(stepTwoData.status, 'stepTwoData');
   return (
     <div>
       {/*{confetti && <ConfettiAp />}*/}
@@ -44,13 +54,10 @@ const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
       <div className="mt-6 border-t border-gray-100">
         <dl className="divide-y divide-gray-100">
           {fields.map((field, index) => {
-            const fieldValue =
-              field.step === 0
-                ? stepOneData[field.key]
-                : stepTwoData[field.key];
-
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            const fieldValue = fieldsData[field.step][field.key];
             if (field.key === 'status') return;
-
             return (
               <div
                 key={index}
@@ -61,7 +68,15 @@ const ConfirmPage = ({ stepOneData, stepTwoData, setCurrentStep }: IProps) => {
                 </dt>
                 <dd className="mt-1 flex leading-6 text-md text-black font-semibold sm:col-span-2 sm:mt-0">
                   <span className="flex-grow items-center">
-                    {fieldValue}
+                    {field.key === 'address' ? (
+                      <>
+                        {Object.keys(fieldValue).map((key) => (
+                          <div key={key}>{fieldValue[key]}</div>
+                        ))}
+                      </>
+                    ) : (
+                      fieldValue
+                    )}
                     {index === 0 && (
                       <span
                         className={classNames(

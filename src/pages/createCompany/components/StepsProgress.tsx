@@ -13,9 +13,14 @@ const stepsData = [
     id: 1,
   },
   {
-    name: 'Review',
+    name: ' Registration Address',
     status: 'upcoming',
     id: 2,
+  },
+  {
+    name: 'Review',
+    status: 'upcoming',
+    id: 3,
   },
 ];
 
@@ -28,11 +33,13 @@ const StepsProgress = ({
   setCurrentStep,
   firstStepData,
   secondStepData,
+  thirdStepData,
 }: {
   currentStep: number;
   setCurrentStep: (value: number) => void;
   firstStepData: string[];
   secondStepData: string[];
+  thirdStepData: string[];
 }) => {
   const [steps, setSteps] = useState(stepsData);
 
@@ -73,6 +80,9 @@ const StepsProgress = ({
       const existsEmptyFieldSecondStep = secondStepData.findIndex(
         (item) => item === ''
       );
+      const existsEmptyFieldThirdStep = thirdStepData.findIndex(
+        (item) => item === ''
+      );
 
       if (existsEmptyFieldFirstStep === -1 && currentStep !== 0) {
         prevState[0].status = 'complete';
@@ -87,9 +97,17 @@ const StepsProgress = ({
       if (existsEmptyFieldSecondStep > -1 && currentStep === 1) {
         prevState[1].status = 'current';
       }
+
+      if (existsEmptyFieldThirdStep === -1 && currentStep !== 2) {
+        prevState[2].status = 'complete';
+      }
+      if (existsEmptyFieldThirdStep > -1 && currentStep === 2) {
+        prevState[2].status = 'current';
+      }
+
       return prevState;
     });
-  }, [firstStepData, secondStepData]);
+  }, [firstStepData, secondStepData, thirdStepData]);
 
   return (
     <nav aria-label="Progress" className="max-lg:overflow-scroll">

@@ -14,6 +14,7 @@ import Separator from './components/Separator';
 import { VALIDATORS } from '../../constants/regexs';
 import SeparatedCards from './components/SeparatedCards';
 import ConfirmPage from './components/ConfirmPage';
+import USAddressForm from './components/USAddressForm';
 
 const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
@@ -54,6 +55,19 @@ const stepTwoSchema = yup.object().shape({
   status: yup.string().required('State of Registration is required'),
 });
 
+const stepThreeSchema = yup.object().shape({
+  address: yup.object().shape({
+    country: yup.string().required('Country is required'),
+    address0: yup.string().required('Address of Registration is required'),
+    address1: yup.string(),
+    address2: yup.string(),
+    address3: yup.string(),
+    city: yup.string().required('City of Registration is required'),
+    zip: yup.string().required('Zip code of Registration is required'),
+    state: yup.string().required('State of Registration is required'),
+  }),
+});
+
 const localStorageKey = 'multistep-form-data';
 type Step = 'stepOneData' | 'stepTwoData';
 
@@ -69,7 +83,20 @@ export type StepTwoData = {
   status: string;
 };
 
-type FormData = StepOneData & StepTwoData;
+export type StepThreeData = {
+  address: {
+    country: string;
+    address0: string;
+    address1?: string;
+    address2?: string;
+    address3?: string;
+    city: string;
+    zip: string;
+    state: string;
+  };
+};
+
+type FormData = StepOneData & StepTwoData & StepThreeData;
 
 const defaultStepOneValues: StepOneData = {
   registeredIn: '',
@@ -81,6 +108,16 @@ const defaultStepTwoValues: StepTwoData = {
   registrationDate: '',
   registrationNumber: '',
   status: '',
+};
+
+const defaultStepThreeValues: StepThreeData = {
+  address: {
+    country: '',
+    address0: '',
+    city: '',
+    zip: '',
+    state: '',
+  },
 };
 
 const queryKeyHandler = (location: Location, key: string, value?: string) => {
@@ -115,14 +152,19 @@ const CreateCompany = () => {
   const [stepTwoData, setStepTwoData] = useState<StepTwoData>(
     parsedData?.stepTwoData || defaultStepTwoValues
   );
+  const [stepThreeData, setStepThreeData] = useState<StepThreeData>(
+    parsedData?.stepThreeData || defaultStepThreeValues
+  );
 
   useEffect(() => {
     const savedData = localStorage.getItem(localStorageKey);
     if (savedData) {
-      const { step, stepOneData, stepTwoData } = JSON.parse(savedData);
+      const { step, stepOneData, stepTwoData, stepThreeData } =
+        JSON.parse(savedData);
       setCurrentStep(step);
       setStepOneData(stepOneData);
       setStepTwoData(stepTwoData);
+      setStepThreeData(stepThreeData);
     }
   }, []);
 
@@ -134,12 +176,13 @@ const CreateCompany = () => {
 
   const setStepToLocalStorage = (
     step: Step,
-    data: StepOneData | StepTwoData
+    data: StepOneData | StepTwoData | StepThreeData
   ) => {
     const initData = {
       step: currentStep,
       stepOneData,
       stepTwoData,
+      stepThreeData,
     };
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -153,7 +196,6 @@ const CreateCompany = () => {
     defaultValues: stepOneData,
     resolver: yupResolver(stepOneSchema),
   });
-  console.log(stepOneForm.formState.errors);
   const stepOneFormObserver = stepOneForm.watch();
 
   const stepTwoForm = useForm<StepTwoData>({
@@ -161,6 +203,12 @@ const CreateCompany = () => {
     resolver: yupResolver(stepTwoSchema),
   });
   const stepTwoFormObserver = stepTwoForm.watch();
+
+  const stepThreeForm = useForm<StepThreeData>({
+    defaultValues: stepThreeData,
+    resolver: yupResolver(stepThreeSchema),
+  });
+  const stepThreeFormObserver = stepThreeForm.watch();
 
   const handleStepOneSubmit: SubmitHandler<StepOneData> = (data) => {
     setStepOneData(data);
@@ -174,7 +222,18 @@ const CreateCompany = () => {
     setCurrentStep(2);
 
     setStepToLocalStorage('stepTwoData', data);
-    const finalData: FormData = { ...stepOneData, ...data };
+  };
+
+  const handleStepThreeSubmit: SubmitHandler<StepThreeData> = (data) => {
+    setStepThreeData(data);
+    setCurrentStep(3);
+
+    setStepToLocalStorage('stepTwoData', data);
+    const finalData: FormData = {
+      ...stepOneData,
+      ...stepTwoData,
+      ...data,
+    };
     console.log('Final form data:', finalData);
   };
 
@@ -186,7 +245,8 @@ const CreateCompany = () => {
           <h1 className="font-bold max-lg:text-xl">
             {currentStep === 0 && 'Company Details'}
             {currentStep === 1 && 'Registration Information'}
-            {currentStep === 2 && 'Review'}
+            {currentStep === 2 && 'Registration Address'}
+            {currentStep === 3 && 'Review'}
           </h1>
         </div>
         <div className="w-1/4 pr-2 flex items-end justify-end">
@@ -202,6 +262,7 @@ const CreateCompany = () => {
             setCurrentStep={setCurrentStep}
             firstStepData={Object.values(stepOneFormObserver)}
             secondStepData={Object.values(stepTwoFormObserver)}
+            thirdStepData={Object.values(stepThreeFormObserver.address)}
           />
         </div>
         <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
@@ -363,10 +424,51 @@ const CreateCompany = () => {
           )}
 
           {currentStep === 2 && (
+            <form onSubmit={stepThreeForm.handleSubmit(handleStepThreeSubmit)}>
+              <div>
+                <Controller
+                  name="address"
+                  control={stepThreeForm.control}
+                  render={({ field }) => (
+                    <div className="mb-16">
+                      <USAddressForm
+                        setFromState={field.onChange}
+                        value={field.value}
+                        requiredError={Object.keys(
+                          stepThreeForm.formState.errors
+                        ).includes('address')}
+                      />
+                    </div>
+                  )}
+                />
+              </div>
+              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(1)}
+                    className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Next Step
+                  </button>
+                </div>
+                <div className="w-1/4 pr-2 max-lg:hidden" />
+              </div>
+            </form>
+          )}
+          {currentStep === 3 && (
             <div>
               <ConfirmPage
                 stepOneData={stepOneData}
                 stepTwoData={stepTwoData}
+                stepThreeData={stepThreeData}
                 setCurrentStep={setCurrentStep}
               />
               <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
@@ -374,7 +476,7 @@ const CreateCompany = () => {
                 <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(1)}
+                    onClick={() => setCurrentStep(2)}
                     className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     Back
