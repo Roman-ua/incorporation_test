@@ -1,5 +1,5 @@
 import React from 'react';
-import { fields } from '../../../constants/form/form';
+import { fields, USStates } from '../../../constants/form/form';
 // import ConfettiAp from '../../../components/shared/Confetti';
 
 interface IProps {
@@ -34,6 +34,7 @@ const ConfirmPage = ({
   stepThreeData,
   setCurrentStep,
 }: IProps) => {
+  console.log(stepThreeData, 'stepThreeData');
   const fieldsData = {
     0: stepOneData,
     1: stepTwoData,
@@ -70,9 +71,30 @@ const ConfirmPage = ({
                   <span className="flex-grow items-center">
                     {field.key === 'address' ? (
                       <>
-                        {Object.keys(fieldValue).map((key) => (
-                          <div key={key}>{fieldValue[key]}</div>
-                        ))}
+                        <div>
+                          <span>{fieldValue.address0}, </span>
+                          {fieldValue.address1 && (
+                            <span>{fieldValue.address1}</span>
+                          )}
+                        </div>
+                        <div>
+                          {fieldValue.address2 && (
+                            <span>{fieldValue.address2}, </span>
+                          )}
+                          {fieldValue.address3 && (
+                            <span>{fieldValue.address3}</span>
+                          )}
+                        </div>
+                        <div>
+                          <span>{fieldValue.city}, </span>
+                          <span>
+                            {USStates.find(
+                              (item) => item.title === fieldValue.state
+                            )?.value || ''}{' '}
+                          </span>
+                          <span>{fieldValue.zip}</span>
+                        </div>
+                        <div>{fieldValue.country}</div>
                       </>
                     ) : (
                       fieldValue

@@ -245,7 +245,7 @@ const CreateCompany = () => {
           <h1 className="font-bold max-lg:text-xl">
             {currentStep === 0 && 'Company Details'}
             {currentStep === 1 && 'Registration Information'}
-            {currentStep === 2 && 'Registration Address'}
+            {currentStep === 2 && 'Addresses'}
             {currentStep === 3 && 'Review'}
           </h1>
         </div>
@@ -262,7 +262,13 @@ const CreateCompany = () => {
             setCurrentStep={setCurrentStep}
             firstStepData={Object.values(stepOneFormObserver)}
             secondStepData={Object.values(stepTwoFormObserver)}
-            thirdStepData={Object.values(stepThreeFormObserver.address)}
+            thirdStepData={Object.values({
+              country: stepThreeFormObserver.address?.country,
+              city: stepThreeFormObserver.address?.city,
+              address0: stepThreeFormObserver.address?.address0,
+              state: stepThreeFormObserver.address?.state,
+              zip: stepThreeFormObserver.address?.zip,
+            })}
           />
         </div>
         <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
@@ -437,6 +443,7 @@ const CreateCompany = () => {
                         requiredError={Object.keys(
                           stepThreeForm.formState.errors
                         ).includes('address')}
+                        heading={'Main Address'}
                       />
                     </div>
                   )}
