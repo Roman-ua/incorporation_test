@@ -23,7 +23,7 @@ const JoinedCard = ({
 }: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
   const [hoveredItem, setHoveredItem] = useState('');
-  console.log(selectedState, 'selectedState');
+
   return (
     <>
       <SectionHeading text={title} status={!!value} hideStatus={true} />

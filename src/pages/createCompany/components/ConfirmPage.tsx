@@ -34,7 +34,6 @@ const ConfirmPage = ({
   stepThreeData,
   setCurrentStep,
 }: IProps) => {
-  console.log(stepThreeData, 'stepThreeData');
   const fieldsData = {
     0: stepOneData,
     1: stepTwoData,
@@ -58,7 +57,10 @@ const ConfirmPage = ({
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             const fieldValue = fieldsData[field.step][field.key];
+            const stateHandler =
+              field.key === 'address' ? fieldValue.address0 : fieldValue;
             if (field.key === 'status') return;
+
             return (
               <div
                 key={index}
@@ -69,7 +71,7 @@ const ConfirmPage = ({
                 </dt>
                 <dd className="mt-1 flex leading-6 text-md text-black font-semibold sm:col-span-2 sm:mt-0">
                   <span className="flex-grow items-center">
-                    {field.key === 'address' ? (
+                    {field.key === 'address' && stateHandler && (
                       <>
                         <div>
                           <span>{fieldValue.address0}, </span>
@@ -96,10 +98,9 @@ const ConfirmPage = ({
                         </div>
                         <div>{fieldValue.country}</div>
                       </>
-                    ) : (
-                      fieldValue
                     )}
-                    {index === 0 && (
+                    {field.key !== 'address' && fieldValue}
+                    {index === 0 && stepTwoData?.status && (
                       <span
                         className={classNames(
                           'ml-6 w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
@@ -111,13 +112,23 @@ const ConfirmPage = ({
                     )}
                   </span>
                   <span className="ml-4 flex-shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => setCurrentStep(field.step)}
-                      className="rounded-md bg-white font-medium text-mainBlue hover:cursor-pointer"
-                    >
-                      Edit
-                    </button>
+                    {stateHandler ? (
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(field.step)}
+                        className="rounded-md bg-white font-medium text-mainBlue hover:cursor-pointer"
+                      >
+                        Edit
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(field.step)}
+                        className="w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset bg-red-50 text-red-700 ring-red-600/20"
+                      >
+                        {field.name} is missing
+                      </button>
+                    )}
                   </span>
                 </dd>
               </div>

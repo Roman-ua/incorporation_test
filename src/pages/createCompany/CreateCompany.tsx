@@ -69,7 +69,7 @@ const stepThreeSchema = yup.object().shape({
 });
 
 const localStorageKey = 'multistep-form-data';
-type Step = 'stepOneData' | 'stepTwoData';
+type Step = 'stepOneData' | 'stepTwoData' | 'stepThreeData';
 
 export type StepOneData = {
   registeredIn: string;
@@ -228,7 +228,7 @@ const CreateCompany = () => {
     setStepThreeData(data);
     setCurrentStep(3);
 
-    setStepToLocalStorage('stepTwoData', data);
+    setStepToLocalStorage('stepThreeData', data);
     const finalData: FormData = {
       ...stepOneData,
       ...stepTwoData,
@@ -490,7 +490,16 @@ const CreateCompany = () => {
                   </button>
                   <button
                     type="submit"
-                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    disabled={
+                      !Object.values(stepOneFormObserver).every(
+                        (value) => value
+                      ) ||
+                      !Object.values(stepTwoFormObserver).every(
+                        (value) => value
+                      ) ||
+                      !stepThreeFormObserver.address.address0
+                    }
+                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed"
                   >
                     Submit
                   </button>
