@@ -33,14 +33,14 @@ const SeparatedCards = ({
             <div
               key={`${stat.fullName}`}
               onClick={() => {
-                setSelectedState(stat.shortName);
+                setSelectedState(stat.fullName);
                 changeEvent(stat.fullName);
               }}
-              onMouseEnter={() => setHoveredItem(stat.shortName)}
+              onMouseEnter={() => setHoveredItem(stat.fullName)}
               onMouseLeave={() => setHoveredItem('')}
               className={classNames(
                 'flex relative border rounded-lg flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-5 py-3.5 hover:cursor-pointer',
-                selectedState === stat.shortName ? 'bg-green-50' : 'bg-white',
+                selectedState === stat.fullName ? 'bg-green-50' : 'bg-white',
                 requiredError ? 'border-red-500' : ''
               )}
             >
@@ -48,8 +48,8 @@ const SeparatedCards = ({
                 <CheckBox
                   wrapperSize={'w-5 h-5'}
                   iconSize={'w-2.5 h-2.5'}
-                  isItemHovered={hoveredItem === stat.shortName}
-                  isItemSelected={selectedState === stat.shortName}
+                  isItemHovered={hoveredItem === stat.fullName}
+                  isItemSelected={selectedState === stat.fullName}
                 />
                 <dt className="text-xl font-bold text-gray-800 ml-2">
                   {stat.shortName}

@@ -23,7 +23,7 @@ const JoinedCard = ({
 }: IProps) => {
   const [selectedState, setSelectedState] = useState(value);
   const [hoveredItem, setHoveredItem] = useState('');
-
+  console.log(selectedState, 'selectedState');
   return (
     <>
       <SectionHeading text={title} status={!!value} hideStatus={true} />
@@ -38,10 +38,10 @@ const JoinedCard = ({
             <div
               key={`${stat.fullName}`}
               onClick={() => {
-                setSelectedState(stat.shortName);
+                setSelectedState(stat.fullName);
                 changeEvent(stat.fullName);
               }}
-              onMouseEnter={() => setHoveredItem(stat.shortName)}
+              onMouseEnter={() => setHoveredItem(stat.fullName)}
               onMouseLeave={() => setHoveredItem('')}
               className={classNames(
                 'flex relative flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5 px-5 py-3.5 hover:cursor-pointer',
@@ -49,15 +49,15 @@ const JoinedCard = ({
                   'rounded-tl-lg lg:rounded-bl-lg max-lg:rounded-tr-lg',
                 index === 2 &&
                   'lg:rounded-tr-lg rounded-br-lg max-lg:rounded-bl-lg',
-                selectedState === stat.shortName ? 'bg-green-50' : 'bg-white'
+                selectedState === stat.fullName ? 'bg-green-50' : 'bg-white'
               )}
             >
               <div className="flex items-center justify-start">
                 <CheckBox
                   wrapperSize={'w-5 h-5'}
                   iconSize={'w-2.5 h-2.5'}
-                  isItemHovered={hoveredItem === stat.shortName}
-                  isItemSelected={selectedState === stat.shortName}
+                  isItemHovered={hoveredItem === stat.fullName}
+                  isItemSelected={selectedState === stat.fullName}
                 />
                 <dt className="text-xl font-bold text-gray-800 ml-2">
                   {stat.shortName}
