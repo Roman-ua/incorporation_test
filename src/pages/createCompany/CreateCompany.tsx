@@ -15,6 +15,7 @@ import { VALIDATORS } from '../../constants/regexs';
 import SeparatedCards from './components/SeparatedCards';
 import ConfirmPage from './components/ConfirmPage';
 import USAddressForm from './components/USAddressForm';
+import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithArrow';
 
 const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
@@ -335,12 +336,7 @@ const CreateCompany = () => {
               <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-end">
-                  <button
-                    type="submit"
-                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Next Step
-                  </button>
+                  <ButtonWithArrow />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
@@ -417,12 +413,7 @@ const CreateCompany = () => {
                   >
                     Back
                   </button>
-                  <button
-                    type="submit"
-                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Next Step
-                  </button>
+                  <ButtonWithArrow />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
@@ -459,12 +450,7 @@ const CreateCompany = () => {
                   >
                     Back
                   </button>
-                  <button
-                    type="submit"
-                    className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Next Step
-                  </button>
+                  <ButtonWithArrow />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
