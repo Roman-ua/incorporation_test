@@ -81,10 +81,13 @@ const ConfirmPage = ({
                         </div>
                         <div>
                           {fieldValue.address2 && (
-                            <span>{fieldValue.address2}, </span>
+                            <span>{fieldValue.address2}</span>
                           )}
                           {fieldValue.address3 && (
-                            <span>{fieldValue.address3}</span>
+                            <span>
+                              {fieldValue.address2 ? ',' : ''}{' '}
+                              {fieldValue.address3}
+                            </span>
                           )}
                         </div>
                         <div>

@@ -121,6 +121,25 @@ const USAddressForm = ({
     }
   }, [address, state, city, country, zip]);
 
+  useEffect(() => {
+    if (value?.address2) {
+      setAddressFields((prevState) => {
+        if (prevState.length < 3) {
+          return [...prevState, { title: 'Address', type: 'text' }];
+        }
+        return prevState;
+      });
+    }
+    if (value?.address3) {
+      setAddressFields((prevState) => {
+        if (prevState.length < 4) {
+          return [...prevState, { title: 'Address', type: 'text' }];
+        }
+        return prevState;
+      });
+    }
+  }, [value]);
+
   const inputCommonClasses =
     'p-2 text-md border-b focus:outline-none placeholder-gray-500';
   return (

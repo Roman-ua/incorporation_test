@@ -245,7 +245,7 @@ const CreateCompany = () => {
           <h1 className="font-bold max-lg:text-xl">
             {currentStep === 0 && 'Company Details'}
             {currentStep === 1 && 'Registration Information'}
-            {currentStep === 2 && 'Addresses'}
+            {currentStep === 2 && 'Address'}
             {currentStep === 3 && 'Review'}
           </h1>
         </div>
