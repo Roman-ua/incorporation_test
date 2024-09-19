@@ -1,26 +1,26 @@
 import React from 'react';
 import {
-  CalendarIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
+  // CalendarIcon,
+  // DocumentDuplicateIcon,
+  // FolderIcon,
   HomeIcon,
   Squares2X2Icon,
-  UsersIcon,
+  // UsersIcon,
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 
 const navigation = [
   { name: 'Company', href: '/home', icon: HomeIcon, current: true },
-  { name: 'Notices', href: '/home', icon: UsersIcon, current: false },
-  { name: 'Domains', href: '/home', icon: FolderIcon, current: false },
-  { name: 'Orders', href: '/home', icon: CalendarIcon, current: false },
-  {
-    name: 'Senders',
-    href: '/home',
-    icon: DocumentDuplicateIcon,
-    current: false,
-  },
+  // { name: 'Notices', href: '/home', icon: UsersIcon, current: false },
+  // { name: 'Domains', href: '/home', icon: FolderIcon, current: false },
+  // { name: 'Orders', href: '/home', icon: CalendarIcon, current: false },
+  // {
+  //   name: 'Senders',
+  //   href: '/home',
+  //   icon: DocumentDuplicateIcon,
+  //   current: false,
+  // },
 ];
 const teams = [
   {
@@ -45,7 +45,7 @@ const MainSideBarContent = ({
   currentMenuItemHandler: (value: string) => void;
 }) => {
   return (
-    <ul role="list" className="flex flex-1 flex-col gap-y-7">
+    <ul role="list" className="flex flex-1 flex-col gap-y-2">
       <li>
         <ul role="list" className="-mx-2 space-y-1">
           {navigation.map((item) => (
