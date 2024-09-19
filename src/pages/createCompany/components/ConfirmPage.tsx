@@ -140,7 +140,7 @@ const ConfirmPage = ({
                         stateHandler ? 'text-mainBlue' : 'text-red-700'
                       )}
                     >
-                      {stateHandler ? 'Edit' : 'Provide'}
+                      {stateHandler ? 'Edit' : 'Add.'}
                     </button>
                   </span>
                 </dd>
