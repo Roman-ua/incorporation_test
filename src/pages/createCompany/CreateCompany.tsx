@@ -344,6 +344,7 @@ const CreateCompany = () => {
               </div>
             </form>
           )}
+
           {currentStep === 1 && (
             <form onSubmit={stepTwoForm.handleSubmit(handleStepTwoSubmit)}>
               <div>
