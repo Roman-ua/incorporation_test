@@ -344,7 +344,6 @@ const CreateCompany = () => {
               </div>
             </form>
           )}
-
           {currentStep === 1 && (
             <form onSubmit={stepTwoForm.handleSubmit(handleStepTwoSubmit)}>
               <div>
@@ -421,7 +420,6 @@ const CreateCompany = () => {
               </div>
             </form>
           )}
-
           {currentStep === 2 && (
             <form onSubmit={stepThreeForm.handleSubmit(handleStepThreeSubmit)}>
               <div>
