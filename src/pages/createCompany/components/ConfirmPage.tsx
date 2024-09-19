@@ -127,7 +127,12 @@ const ConfirmPage = ({
                       <button
                         type="button"
                         onClick={() => setCurrentStep(field.step)}
-                        className="w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset bg-red-50 text-red-700 ring-red-600/20"
+                        className={classNames(
+                          'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+                          field.key === 'address'
+                            ? 'bg-gray-50 text-gray-700 ring-gray-600/20'
+                            : 'bg-red-50 text-red-700 ring-red-600/20'
+                        )}
                       >
                         {field.name} is missing
                       </button>

@@ -58,14 +58,14 @@ const stepTwoSchema = yup.object().shape({
 
 const stepThreeSchema = yup.object().shape({
   address: yup.object().shape({
-    country: yup.string().required('Country is required'),
-    address0: yup.string().required('Address of Registration is required'),
+    country: yup.string(),
+    address0: yup.string(),
     address1: yup.string(),
     address2: yup.string(),
     address3: yup.string(),
-    city: yup.string().required('City of Registration is required'),
-    zip: yup.string().required('Zip code of Registration is required'),
-    state: yup.string().required('State of Registration is required'),
+    city: yup.string(),
+    zip: yup.string(),
+    state: yup.string(),
   }),
 });
 
@@ -86,14 +86,14 @@ export type StepTwoData = {
 
 export type StepThreeData = {
   address: {
-    country: string;
-    address0: string;
+    country?: string;
+    address0?: string;
     address1?: string;
     address2?: string;
     address3?: string;
-    city: string;
-    zip: string;
-    state: string;
+    city?: string;
+    zip?: string;
+    state?: string;
   };
 };
 
@@ -263,13 +263,15 @@ const CreateCompany = () => {
             setCurrentStep={setCurrentStep}
             firstStepData={Object.values(stepOneFormObserver)}
             secondStepData={Object.values(stepTwoFormObserver)}
-            thirdStepData={Object.values({
-              country: stepThreeFormObserver.address?.country,
-              city: stepThreeFormObserver.address?.city,
-              address0: stepThreeFormObserver.address?.address0,
-              state: stepThreeFormObserver.address?.state,
-              zip: stepThreeFormObserver.address?.zip,
-            })}
+            thirdStepData={
+              Object.values({
+                country: stepThreeFormObserver.address?.country,
+                city: stepThreeFormObserver.address?.city,
+                address0: stepThreeFormObserver.address?.address0,
+                state: stepThreeFormObserver.address?.state,
+                zip: stepThreeFormObserver.address?.zip,
+              }) as string[]
+            }
           />
         </div>
         <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
@@ -430,7 +432,7 @@ const CreateCompany = () => {
                     <div className="mb-16">
                       <USAddressForm
                         setFromState={field.onChange}
-                        value={field.value}
+                        value={field?.value}
                         requiredError={Object.keys(
                           stepThreeForm.formState.errors
                         ).includes('address')}
@@ -482,8 +484,7 @@ const CreateCompany = () => {
                       ) ||
                       !Object.values(stepTwoFormObserver).every(
                         (value) => value
-                      ) ||
-                      !stepThreeFormObserver.address.address0
+                      )
                     }
                     className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed"
                   >

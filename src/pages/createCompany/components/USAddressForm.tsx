@@ -15,14 +15,14 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 type AddressFields = {
-  country: string;
-  address0: string;
+  country?: string;
+  address0?: string;
   address1?: string;
   address2?: string;
   address3?: string;
-  city: string;
-  zip: string;
-  state: string;
+  city?: string;
+  zip?: string;
+  state?: string;
 };
 
 interface IProps {
