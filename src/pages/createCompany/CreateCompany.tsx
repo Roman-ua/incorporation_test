@@ -452,6 +452,7 @@ const CreateCompany = () => {
                   >
                     Back
                   </button>
+
                   <ButtonWithArrow />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
