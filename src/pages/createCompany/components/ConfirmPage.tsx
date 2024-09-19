@@ -70,60 +70,53 @@ const ConfirmPage = ({
                   {field.name}
                 </dt>
                 <dd className="mt-1 flex leading-6 text-md text-black font-semibold sm:col-span-2 sm:mt-0">
-                  <span className="flex-grow items-center">
-                    {field.key === 'address' && stateHandler && (
-                      <>
-                        <div>
-                          <span>{fieldValue.address0}, </span>
-                          {fieldValue.address1 && (
-                            <span>{fieldValue.address1}</span>
-                          )}
-                        </div>
-                        <div>
-                          {fieldValue.address2 && (
-                            <span>{fieldValue.address2}</span>
-                          )}
-                          {fieldValue.address3 && (
+                  {stateHandler ? (
+                    <span className="flex-grow items-center">
+                      {field.key === 'address' && stateHandler && (
+                        <>
+                          <div>
+                            <span>{fieldValue.address0}, </span>
+                            {fieldValue.address1 && (
+                              <span>{fieldValue.address1}</span>
+                            )}
+                          </div>
+                          <div>
+                            {fieldValue.address2 && (
+                              <span>{fieldValue.address2}</span>
+                            )}
+                            {fieldValue.address3 && (
+                              <span>
+                                {fieldValue.address2 ? ',' : ''}{' '}
+                                {fieldValue.address3}
+                              </span>
+                            )}
+                          </div>
+                          <div>
+                            <span>{fieldValue.city}, </span>
                             <span>
-                              {fieldValue.address2 ? ',' : ''}{' '}
-                              {fieldValue.address3}
+                              {USStates.find(
+                                (item) => item.title === fieldValue.state
+                              )?.value || ''}{' '}
                             </span>
+                            <span>{fieldValue.zip}</span>
+                          </div>
+                          <div>{fieldValue.country}</div>
+                        </>
+                      )}
+                      {field.key !== 'address' && fieldValue}
+                      {index === 0 && stepTwoData?.status && (
+                        <span
+                          className={classNames(
+                            'ml-6 w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+                            statusBadge(stepTwoData?.status)
                           )}
-                        </div>
-                        <div>
-                          <span>{fieldValue.city}, </span>
-                          <span>
-                            {USStates.find(
-                              (item) => item.title === fieldValue.state
-                            )?.value || ''}{' '}
-                          </span>
-                          <span>{fieldValue.zip}</span>
-                        </div>
-                        <div>{fieldValue.country}</div>
-                      </>
-                    )}
-                    {field.key !== 'address' && fieldValue}
-                    {index === 0 && stepTwoData?.status && (
-                      <span
-                        className={classNames(
-                          'ml-6 w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                          statusBadge(stepTwoData?.status)
-                        )}
-                      >
-                        {stepTwoData?.status}
-                      </span>
-                    )}
-                  </span>
-                  <span className="ml-4 flex-shrink-0">
-                    {stateHandler ? (
-                      <button
-                        type="button"
-                        onClick={() => setCurrentStep(field.step)}
-                        className="rounded-md bg-white font-medium text-mainBlue hover:cursor-pointer"
-                      >
-                        Edit
-                      </button>
-                    ) : (
+                        >
+                          {stepTwoData?.status}
+                        </span>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="flex-grow items-start">
                       <button
                         type="button"
                         onClick={() => setCurrentStep(field.step)}
@@ -136,7 +129,19 @@ const ConfirmPage = ({
                       >
                         {field.name} is missing
                       </button>
-                    )}
+                    </span>
+                  )}
+                  <span className="ml-4 flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(field.step)}
+                      className={classNames(
+                        'rounded-md bg-white font-medium hover:cursor-pointer',
+                        stateHandler ? 'text-mainBlue' : 'text-red-700'
+                      )}
+                    >
+                      {stateHandler ? 'Edit' : 'Provide'}
+                    </button>
                   </span>
                 </dd>
               </div>
