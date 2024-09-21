@@ -9,6 +9,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        inputBackground: '#f4f5f5',
+        mainBackground: '#FBFBFB',
         mainBlue: '#0277ff',
         sideBarBlue: '#005ab2',
       },

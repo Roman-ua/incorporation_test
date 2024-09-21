@@ -72,7 +72,7 @@ const CustomCalendar = ({ field, requiredError }: IProps) => {
       />
       <div className="grid gap-5 grid-cols-2 max-lg:grid-cols-1 pb-16">
         <div>
-          <div className="overflow-hidden rounded-lg bg-white max-sm:py-6">
+          <div className="overflow-hidden rounded-lg bg-mainBackground max-sm:py-6">
             <dd className="text-xl font-bold tracking-tight text-gray-900">
               {format(selectedDay, 'MMMM dd, yyyy')}
             </dd>
@@ -156,7 +156,7 @@ const CustomCalendar = ({ field, requiredError }: IProps) => {
                         dayIdx === 6 && 'rounded-tr-lg',
                         dayIdx === days.length - 7 && 'rounded-bl-lg',
                         dayIdx === days.length - 1 && 'rounded-br-lg',
-                        'py-1.5 bg-white hover:bg-gray-100 focus:z-10 w-full'
+                        'py-1.5 bg-inputBackground hover:bg-white focus:z-10 w-full'
                       )}
                     >
                       <time

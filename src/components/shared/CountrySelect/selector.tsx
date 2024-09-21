@@ -76,7 +76,7 @@ export default function CountrySelector({
         <button
           type="button"
           className={classNames(
-            disabled ? 'bg-neutral-100' : 'bg-white',
+            disabled ? 'bg-neutral-100' : 'bg-transparent',
             'relative w-full border rounded-md pl-2 pr-8 py-2 text-left cursor-default focus:outline-none sm:text-md',
             wrapperExtraStyles || ''
           )}

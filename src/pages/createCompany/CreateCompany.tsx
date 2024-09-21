@@ -240,7 +240,7 @@ const CreateCompany = () => {
 
   return (
     <>
-      <div className="w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:bg-white max-lg:z-10">
+      <div className="bg-mainBackground w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10">
         <div className="w-1/5 pr-2 max-lg:hidden" />
         <div className="w-1/2">
           <h1 className="font-bold max-lg:text-xl">
@@ -256,7 +256,7 @@ const CreateCompany = () => {
           </Link>
         </div>
       </div>
-      <div className="m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20">
+      <div className="min-h-[calc(100vh-65px)] bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20">
         <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <StepsProgress
             currentStep={currentStep}
@@ -335,7 +335,7 @@ const CreateCompany = () => {
                   )}
                 />
               </div>
-              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-end">
                   <ButtonWithArrow />
@@ -405,13 +405,13 @@ const CreateCompany = () => {
                   )}
                 />
               </div>
-              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(0)}
-                    className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     Back
                   </button>
@@ -441,13 +441,13 @@ const CreateCompany = () => {
                   )}
                 />
               </div>
-              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(1)}
-                    className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     Back
                   </button>
@@ -465,13 +465,13 @@ const CreateCompany = () => {
                 stepThreeData={stepThreeFormObserver}
                 setCurrentStep={setCurrentStep}
               />
-              <div className="bg-white py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(2)}
-                    className="min-w-28 rounded-md mr-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     Back
                   </button>

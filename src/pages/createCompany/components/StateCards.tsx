@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SectionHeading from './SectionHeading';
 import CheckBox from '../../../components/shared/CheckBox';
 
-function classNames(...classes: string[]) {
+function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -40,9 +40,11 @@ const StateCards = ({
               }}
               className={classNames(
                 'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-5 hover:cursor-pointer',
+                'transition-all duration-150 ease-in-out',
                 'hover:cursor-pointer',
-                selectedState === item ? 'bg-green-50' : 'bg-gray-50',
-                requiredError ? 'border-red-500' : ''
+                selectedState === item ? 'bg-green-50' : 'bg-inputBackground',
+                requiredError ? 'border-red-500' : '',
+                selectedState !== item && 'hover:bg-white'
               )}
             >
               <dt className="flex items-center justify-start">

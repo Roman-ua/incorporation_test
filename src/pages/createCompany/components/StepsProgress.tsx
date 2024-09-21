@@ -113,7 +113,7 @@ const StepsProgress = ({
     <nav aria-label="Progress" className="max-lg:overflow-scroll">
       <ol
         role="list"
-        className="bg-white overflow-hidden flex flex-col max-lg:flex-row max-lg:py-3 max-lg:border-b max-lg:px-2 max-lg:fixed max-lg:z-10 max-lg:left-0 max-lg:right-0 max-lg:top-14 max-lg:border-t max-lg:overflow-scroll"
+        className="bg-mainBackground overflow-hidden flex flex-col max-lg:flex-row max-lg:py-3 max-lg:border-b max-lg:px-2 max-lg:fixed max-lg:z-10 max-lg:left-0 max-lg:right-0 max-lg:top-14 max-lg:border-t max-lg:overflow-scroll"
       >
         {steps.map((step, stepIdx) => (
           <li

@@ -40,8 +40,12 @@ const SeparatedCards = ({
               onMouseLeave={() => setHoveredItem('')}
               className={classNames(
                 'flex relative border rounded-lg flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-5 py-3.5 hover:cursor-pointer',
-                selectedState === stat.fullName ? 'bg-green-50' : 'bg-white',
-                requiredError ? 'border-red-500' : ''
+                'transition-all duration-150 ease-in-out',
+                selectedState === stat.fullName
+                  ? 'bg-green-50'
+                  : 'bg-inputBackground',
+                requiredError ? 'border-red-500' : '',
+                selectedState !== stat.fullName && 'hover:bg-white'
               )}
             >
               <div className="flex items-center justify-start">

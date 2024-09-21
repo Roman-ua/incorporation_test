@@ -141,7 +141,7 @@ const USAddressForm = ({
   }, [value]);
 
   const inputCommonClasses =
-    'p-2 text-md border-b focus:outline-none placeholder-gray-500';
+    'p-2 text-md border-b focus:outline-none bg-transparent placeholder:text-gray-300 hover:placeholder:text-gray-400 transition-all duration-150 ease-in-out hover:cursor-pointer';
   return (
     <>
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />
@@ -151,8 +151,10 @@ const USAddressForm = ({
           onBlur={() => setFocused(false)}
           className={classNames(
             'rounded-md border w-full',
+            'transition-all duration-150 ease-in-out',
             focused ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]' : '',
-            requiredError ? 'border-red-500' : ''
+            requiredError ? 'border-red-500' : '',
+            !focused ? 'bg-inputBackground' : 'bg-white'
           )}
         >
           {addressFields.map((field, index) => {
