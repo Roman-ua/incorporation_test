@@ -156,7 +156,7 @@ const CustomCalendar = ({ field, requiredError }: IProps) => {
                         dayIdx === 6 && 'rounded-tr-lg',
                         dayIdx === days.length - 7 && 'rounded-bl-lg',
                         dayIdx === days.length - 1 && 'rounded-br-lg',
-                        'py-1.5 bg-inputBackground hover:bg-white focus:z-10 w-full'
+                        'py-1.5 bg-white hover:bg-gray-50 focus:z-10 w-full'
                       )}
                     >
                       <time

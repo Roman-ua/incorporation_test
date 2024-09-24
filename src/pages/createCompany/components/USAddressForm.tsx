@@ -141,7 +141,7 @@ const USAddressForm = ({
   }, [value]);
 
   const inputCommonClasses =
-    'p-2 text-md border-b focus:outline-none bg-transparent placeholder:text-gray-300 hover:placeholder:text-gray-400 transition-all duration-150 ease-in-out hover:cursor-pointer';
+    'p-2 text-md border-b focus:outline-none bg-transparent placeholder:text-gray-300 hover:placeholder:text-gray-400 hover:cursor-pointer';
   return (
     <>
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />

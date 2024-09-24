@@ -288,7 +288,6 @@ const CreateCompany = () => {
                         name="name"
                         field={field}
                         title="Company Name"
-                        extraInputStyles="text-3xl font-bold"
                         removeLabel={true}
                         extraStyles="mb-16"
                         heading="Company Name"
