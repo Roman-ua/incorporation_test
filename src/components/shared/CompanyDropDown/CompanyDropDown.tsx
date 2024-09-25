@@ -45,6 +45,18 @@ const CompanyDropDown = () => {
               onClick={() => setSelectedState('Company ABC')}
               className={classNames(
                 'group flex w-full items-center gap-2 rounded py-1 px-3 data-[focus]:bg-gray-100',
+                selectedState === currentCompany?.stepOneData?.companyName &&
+                  'bg-gray-200 text-gray-700'
+              )}
+            >
+              {currentCompany?.stepOneData?.companyName || 'Company ABC new'}
+            </button>
+          </MenuItem>
+          <MenuItem>
+            <button
+              onClick={() => setSelectedState('Company ABC')}
+              className={classNames(
+                'group flex w-full items-center gap-2 rounded py-1 px-3 data-[focus]:bg-gray-100',
                 selectedState === 'Company ABC' && 'bg-gray-200 text-gray-700'
               )}
             >
