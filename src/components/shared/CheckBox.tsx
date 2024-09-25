@@ -11,6 +11,7 @@ interface IProps {
   isItemHovered: boolean;
   wrapperSize?: string;
   iconSize?: string;
+  roundedStyle?: string;
 }
 
 const CheckBox = ({
@@ -18,14 +19,16 @@ const CheckBox = ({
   isItemHovered,
   wrapperSize,
   iconSize,
+  roundedStyle,
 }: IProps) => {
   return (
     <span
       className={classNames(
-        'border rounded-full flex items-center justify-center hover:cursor-pointer',
+        'border flex items-center justify-center hover:cursor-pointer',
         wrapperSize ? wrapperSize : 'w-6 h-6',
         isItemSelected && 'bg-green-300 border-green-300',
-        isItemHovered && !isItemSelected && 'bg-gray-200'
+        isItemHovered && !isItemSelected && 'bg-gray-200',
+        roundedStyle ? roundedStyle : 'rounded-full'
       )}
     >
       <>

@@ -11,7 +11,7 @@ import {
 import MainSideBarContent from '../MainSideBarContent';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { Link } from 'react-router-dom';
-import CompanyDropDown from '../CompanyDropDown/CompanyDropDown';
+// import CompanyDropDown from '../CompanyDropDown/CompanyDropDown';
 
 function SideBar({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -96,7 +96,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
             <div className="flex h-16 shrink-0 items-center">
               <img className="h-8 w-auto" src={logo} alt="Your Company" />
             </div>
-            <CompanyDropDown />
+            {/*<CompanyDropDown />*/}
             <nav className="flex flex-1 flex-col">
               <MainSideBarContent
                 currentMenuItem={currentMenuItem}
