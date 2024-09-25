@@ -6,16 +6,14 @@ import ConfettiAp from '../../components/shared/Confetti';
 
 function Home() {
   const navigate = useNavigate();
-
+  const localData = localStorage.getItem('multistep-form-data');
   const [confetti, setConfetti] = React.useState(false);
   const [companyData, setCompanyData] = React.useState(
-    JSON.parse(localStorage.getItem('multistep-form-data') || 'undefined')
+    localData ? JSON.parse(localData) : undefined
   );
 
   useEffect(() => {
-    setCompanyData(
-      JSON.parse(localStorage.getItem('multistep-form-data') || 'undefined')
-    );
+    setCompanyData(localData ? JSON.parse(localData) : undefined);
 
     const timer = setTimeout(() => {
       if (!localStorage.getItem('confetti_success')) {
