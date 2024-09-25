@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../../images/shared/bluelogo.svg';
+import logo from '../../../images/shared/bluelogo.svg';
 
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import {
@@ -8,9 +8,10 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import MainSideBarContent from './MainSideBarContent';
-import { ROUTES } from '../../constants/navigation/routes';
+import MainSideBarContent from '../MainSideBarContent';
+import { ROUTES } from '../../../constants/navigation/routes';
 import { Link } from 'react-router-dom';
+import CompanyDropDown from '../CompanyDropDown/CompanyDropDown';
 
 function SideBar({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -95,6 +96,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
             <div className="flex h-16 shrink-0 items-center">
               <img className="h-8 w-auto" src={logo} alt="Your Company" />
             </div>
+            <CompanyDropDown />
             <nav className="flex flex-1 flex-col">
               <MainSideBarContent
                 currentMenuItem={currentMenuItem}

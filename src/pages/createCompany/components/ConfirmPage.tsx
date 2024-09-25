@@ -39,10 +39,8 @@ const ConfirmPage = ({
     1: stepTwoData,
     2: stepThreeData,
   };
-  // const [confetti, setConfetti] = React.useState(false);
   return (
     <div>
-      {/*{confetti && <ConfettiAp />}*/}
       <div className="px-4 sm:px-0">
         <h3 className="text-lg font-semibold leading-7 text-gray-900">
           Please review all company details

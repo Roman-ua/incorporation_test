@@ -6,7 +6,7 @@ import StepsProgress from './components/StepsProgress';
 import CommonTextInput from './components/CommonTextInput';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ROUTES } from '../../constants/navigation/routes';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
@@ -135,6 +135,8 @@ const queryKeyHandler = (location: Location, key: string, value?: string) => {
 };
 
 const CreateCompany = () => {
+  const navigate = useNavigate();
+
   const parsedData = JSON.parse(
     localStorage.getItem(localStorageKey) as string
   );
@@ -484,6 +486,7 @@ const CreateCompany = () => {
                         (value) => value
                       )
                     }
+                    onClick={() => navigate(ROUTES.HOME)}
                     className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed"
                   >
                     Submit
