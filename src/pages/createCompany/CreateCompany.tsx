@@ -237,7 +237,8 @@ const CreateCompany = () => {
       ...stepTwoData,
       ...data,
     };
-    console.log('Final form data:', finalData);
+
+    localStorage.setItem('finalFormData', JSON.stringify(finalData));
   };
 
   return (

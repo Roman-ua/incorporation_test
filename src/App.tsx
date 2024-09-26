@@ -15,12 +15,9 @@ import RecoveryPassConfirm from './pages/recovery/RecoveryPassConfirm';
 import CreateCompany from './pages/createCompany/CreateCompany';
 import Account from './pages/account/Account';
 import Elements from './pages/elements/Elements';
+import CompanyPage from './pages/company/CompanyPage';
 
 function App() {
-  // useEffect(() => {
-  //   localStorage.removeItem('multistep-form-data');
-  // }, []);
-
   return (
     <Router>
       <Routes>
@@ -35,6 +32,7 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/elements" element={<Elements />} />
             <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.COMPANY} element={<CompanyPage />} />
             <Route path={ROUTES.ACCOUNT} element={<Account />} />
           </Route>
         </Route>
