@@ -17,7 +17,7 @@ import ConfirmPage from './components/ConfirmPage';
 import USAddressForm from './components/USAddressForm';
 import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithArrow';
 
-const companyTypes = [
+export const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
   { fullName: 'Limited Liability Company', shortName: 'LLC' },
   { fullName: 'Non-profit', shortName: 'Non-profit' },

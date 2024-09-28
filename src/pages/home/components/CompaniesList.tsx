@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { companyTypes } from '../../createCompany/CreateCompany';
 
 const mockCompanies = [
   {
@@ -88,25 +89,31 @@ const CompaniesList = () => {
         <tr>
           <th
             scope="col"
-            className="py-3 pl-3 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
+            className="py-3 pl-3 pr-3 text-left text-xs font-medium tracking-wide text-gray-500"
           >
             Company Name
           </th>
           <th
             scope="col"
-            className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
+            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
           >
             Status
           </th>
           <th
             scope="col"
-            className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
+            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
           >
             Type
           </th>
           <th
             scope="col"
-            className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
+            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
+          >
+            Registration #
+          </th>
+          <th
+            scope="col"
+            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
           >
             State
           </th>
@@ -116,39 +123,50 @@ const CompaniesList = () => {
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200 bg-white">
-        {mockCompanies.map((company) => (
-          <tr
-            key={company.id}
-            onClick={() => navigate(`${ROUTES.COMPANY}`)}
-            className="hover:bg-gray-100 transition-all duration-150 ease-in-out hover:cursor-pointer group"
-          >
-            <td className="whitespace-nowrap py-4 pl-3 pr-3 text-base font-semibold text-gray-700">
-              {company.companyName}
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              <span
-                className={classNames(
-                  'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
-                  statusBadge(company.status)
-                )}
-              >
-                {company.status}
-              </span>
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-              {company.companyType}
-            </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-              {company.registeredIn}
-            </td>
-            <td className="relative opacity-0 group-hover:opacity-100 whitespace-nowrap py-5 px-2 text-right text-sm font-medium transition-all duration-150 ease-in-out">
-              <div className="p-1 rounded w-fit ml-auto bg-mainBlue text-white hover:bg-gray-700 transition-all duration-150 ease-in-out">
-                <ArrowRightIcon className="h-4 w-4" />
-                <span className="sr-only">, {company.companyName}</span>
-              </div>
-            </td>
-          </tr>
-        ))}
+        {mockCompanies.map((company) => {
+          const formatedType = companyTypes.find(
+            (companyTypeItem) =>
+              companyTypeItem.fullName === company.companyType
+          );
+          return (
+            <tr
+              key={company.id}
+              onClick={() => navigate(`${ROUTES.COMPANY}`)}
+              className="hover:bg-gray-100 transition-all duration-150 ease-in-out hover:cursor-pointer group"
+            >
+              <td className="whitespace-nowrap py-4 pl-3 pr-3 text-base font-semibold text-gray-700">
+                {company.companyName}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <span
+                  className={classNames(
+                    'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+                    statusBadge(company.status)
+                  )}
+                >
+                  {company.status}
+                </span>
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                {company.companyType === 'Limited Liability Company'
+                  ? formatedType?.shortName
+                  : company.companyType}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                {company.registrationNumber}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                {company.registeredIn.split(' ')[2]}
+              </td>
+              <td className="relative opacity-0 group-hover:opacity-100 whitespace-nowrap py-5 px-2 text-right text-sm font-medium transition-all duration-150 ease-in-out">
+                <div className="p-1 rounded w-fit ml-auto bg-mainBlue text-white hover:bg-gray-700 transition-all duration-150 ease-in-out">
+                  <ArrowRightIcon className="h-4 w-4" />
+                  <span className="sr-only">, {company.companyName}</span>
+                </div>
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
