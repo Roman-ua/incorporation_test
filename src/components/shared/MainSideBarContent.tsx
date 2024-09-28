@@ -1,26 +1,23 @@
 import React from 'react';
-import {
-  // CalendarIcon,
-  // DocumentDuplicateIcon,
-  // FolderIcon,
-  HomeIcon,
-  Squares2X2Icon,
-  // UsersIcon,
-} from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
+import {
+  CiHome,
+  CiMail,
+  CiFileOn,
+  CiBoxList,
+  CiMoneyCheck1,
+  CiReceipt,
+  CiGrid32,
+} from 'react-icons/ci';
 
 const navigation = [
-  { name: 'Company', href: '/home', icon: HomeIcon, current: true },
-  // { name: 'Notices', href: '/home', icon: UsersIcon, current: false },
-  // { name: 'Domains', href: '/home', icon: FolderIcon, current: false },
-  // { name: 'Orders', href: '/home', icon: CalendarIcon, current: false },
-  // {
-  //   name: 'Senders',
-  //   href: '/home',
-  //   icon: DocumentDuplicateIcon,
-  //   current: false,
-  // },
+  { name: 'Home', href: '/home', icon: CiHome, current: true },
+  { name: 'Mail', href: '/home', icon: CiMail, current: true },
+  { name: 'Documents', href: '/home', icon: CiFileOn, current: true },
+  { name: 'Services', href: '/home', icon: CiBoxList, current: true },
+  { name: 'Orders', href: '/home', icon: CiMoneyCheck1, current: true },
+  { name: 'Invoices', href: '/home', icon: CiReceipt, current: true },
 ];
 const teams = [
   {
@@ -29,7 +26,7 @@ const teams = [
     href: '/elements',
     initial: 'C',
     current: false,
-    icon: Squares2X2Icon,
+    icon: CiGrid32,
   },
 ];
 
@@ -57,7 +54,7 @@ const MainSideBarContent = ({
                   item.name === currentMenuItem
                     ? 'text-gray-600'
                     : 'text-gray-400 hover:text-gray-600',
-                  'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-all'
+                  'group flex items-center gap-x-2 rounded-md p-2 text-sm font-medium leading-6 transition-all'
                 )}
               >
                 <item.icon
@@ -65,7 +62,7 @@ const MainSideBarContent = ({
                     item.name === currentMenuItem
                       ? 'text-sideBarBlue/80'
                       : 'text-gray-400 group-hover:text-mainBlue/80',
-                    'h-6 w-6 shrink-0 transition-all'
+                    'h-5 w-5 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
                 />
@@ -89,7 +86,7 @@ const MainSideBarContent = ({
                   team.name === currentMenuItem
                     ? 'text-gray-600'
                     : 'text-gray-400 hover:text-gray-600',
-                  'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-all'
+                  'group flex items-center gap-x-2 rounded-md p-2 text-sm font-medium leading-6 transition-all'
                 )}
               >
                 <team.icon
@@ -97,7 +94,7 @@ const MainSideBarContent = ({
                     team.name === currentMenuItem
                       ? 'text-sideBarBlue/80'
                       : 'text-gray-400 group-hover:text-mainBlue/80',
-                    'h-6 w-6 shrink-0 transition-all'
+                    'h-5 w-5 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
                 />
