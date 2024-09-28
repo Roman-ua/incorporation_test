@@ -9,7 +9,7 @@ const SectionHeading = () => {
     navigate(ROUTES.CREATE_COMPANY);
   };
   return (
-    <div className="sm:flex sm:items-center border-b pb-3 mb-11">
+    <div className="sm:flex sm:items-center pb-3 mb-11">
       <form action="#" method="GET" className="relative flex flex-1">
         <label htmlFor="search-field" className="sr-only">
           Search

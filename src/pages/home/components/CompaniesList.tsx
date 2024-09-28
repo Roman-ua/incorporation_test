@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { companyTypes } from '../../createCompany/CreateCompany';
+import { LuArrowUpRight } from 'react-icons/lu';
 
 const mockCompanies = [
   {
@@ -89,35 +89,35 @@ const CompaniesList = () => {
         <tr>
           <th
             scope="col"
-            className="py-3 pl-3 pr-3 text-left text-xs font-medium tracking-wide text-gray-500"
+            className="py-3 pl-3 pr-3 text-left text-base font-medium tracking-wide text-gray-500"
           >
             Company Name
           </th>
           <th
             scope="col"
-            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
+            className="px-3 py-3 text-left text-base font-medium tracking-wide text-gray-500"
           >
             Status
           </th>
           <th
             scope="col"
-            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
+            className="px-3 py-3 text-left text-base font-medium tracking-wide text-gray-500"
           >
             Type
           </th>
           <th
             scope="col"
-            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
+            className="px-3 py-3 text-left text-base font-medium tracking-wide text-gray-500"
           >
             Registration #
           </th>
           <th
             scope="col"
-            className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500"
+            className="px-3 py-3 text-left text-base font-medium tracking-wide text-gray-500"
           >
             State
           </th>
-          <th scope="col" className="relative py-3 pl-3 pr-4 sm:pr-0">
+          <th scope="col" className="w-8 relative py-3 pl-3 pr-4 sm:pr-0">
             <span className="sr-only">Edit</span>
           </th>
         </tr>
@@ -158,9 +158,9 @@ const CompaniesList = () => {
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
                 {company.registeredIn.split(' ')[2]}
               </td>
-              <td className="relative opacity-0 group-hover:opacity-100 whitespace-nowrap py-5 px-2 text-right text-sm font-medium transition-all duration-150 ease-in-out">
-                <div className="p-1 rounded w-fit ml-auto bg-mainBlue text-white hover:bg-gray-700 transition-all duration-150 ease-in-out">
-                  <ArrowRightIcon className="h-4 w-4" />
+              <td className="w-8 relative opacity-0 group-hover:opacity-100 whitespace-nowrap py-5 pl-2 pr-5 text-right text-sm font-medium transition-all duration-150 ease-in-out">
+                <div className="p-1 rounded w-fit ml-auto bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out">
+                  <LuArrowUpRight className="h-4 w-4" />
                   <span className="sr-only">, {company.companyName}</span>
                 </div>
               </td>
