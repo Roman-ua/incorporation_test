@@ -1,23 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
-import {
-  CiHome,
-  CiMail,
-  CiFileOn,
-  CiBoxList,
-  CiMoneyCheck1,
-  CiReceipt,
-  CiGrid32,
-} from 'react-icons/ci';
+import { RiHome6Line } from 'react-icons/ri';
+import { TbMail, TbPuzzle, TbPuzzle2 } from 'react-icons/tb';
+import { HiOutlineDocumentText } from 'react-icons/hi';
+import { LuClipboardList } from 'react-icons/lu';
+import { BiReceipt } from 'react-icons/bi';
 
 const navigation = [
-  { name: 'Home', href: '/home', icon: CiHome, current: true },
-  { name: 'Mail', href: '/home', icon: CiMail, current: true },
-  { name: 'Documents', href: '/home', icon: CiFileOn, current: true },
-  { name: 'Services', href: '/home', icon: CiBoxList, current: true },
-  { name: 'Orders', href: '/home', icon: CiMoneyCheck1, current: true },
-  { name: 'Invoices', href: '/home', icon: CiReceipt, current: true },
+  { name: 'Home', href: '/home', icon: RiHome6Line, current: true },
+  { name: 'Mail', href: '/home', icon: TbMail, current: true },
+  {
+    name: 'Documents',
+    href: '/home',
+    icon: HiOutlineDocumentText,
+    current: true,
+  },
+  { name: 'Services', href: '/home', icon: TbPuzzle2, current: true },
+  { name: 'Orders', href: '/home', icon: LuClipboardList, current: true },
+  { name: 'Invoices', href: '/home', icon: BiReceipt, current: true },
 ];
 const teams = [
   {
@@ -26,7 +27,7 @@ const teams = [
     href: '/elements',
     initial: 'C',
     current: false,
-    icon: CiGrid32,
+    icon: TbPuzzle,
   },
 ];
 
@@ -51,17 +52,14 @@ const MainSideBarContent = ({
                 to={item.href}
                 onClick={() => currentMenuItemHandler(item.name)}
                 className={classNames(
-                  item.name === currentMenuItem
-                    ? 'text-gray-600'
-                    : 'text-gray-400 hover:text-gray-600',
-                  'group flex items-center gap-x-2 rounded-md p-2 text-sm font-medium leading-6 transition-all'
+                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1 text-sm font-bold leading-2 transition-all'
                 )}
               >
                 <item.icon
                   className={classNames(
                     item.name === currentMenuItem
                       ? 'text-sideBarBlue/80'
-                      : 'text-gray-400 group-hover:text-mainBlue/80',
+                      : 'text-gray-700 group-hover:text-mainBlue/80',
                     'h-5 w-5 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
@@ -83,17 +81,14 @@ const MainSideBarContent = ({
                 to={team.href}
                 onClick={() => currentMenuItemHandler(team.name)}
                 className={classNames(
-                  team.name === currentMenuItem
-                    ? 'text-gray-600'
-                    : 'text-gray-400 hover:text-gray-600',
-                  'group flex items-center gap-x-2 rounded-md p-2 text-sm font-medium leading-6 transition-all'
+                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1 text-sm font-bold leading-6 transition-all'
                 )}
               >
                 <team.icon
                   className={classNames(
                     team.name === currentMenuItem
                       ? 'text-sideBarBlue/80'
-                      : 'text-gray-400 group-hover:text-mainBlue/80',
+                      : 'text-gray-700 group-hover:text-mainBlue/80',
                     'h-5 w-5 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
