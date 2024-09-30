@@ -2,7 +2,7 @@ import React from 'react';
 import SectionHeading from './components/SectionHeading';
 import { MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
-import FloridaIcon from '../../images/svgIcons/FloridaIcon';
+import StateIconHandler from '../../components/shared/StateIconHandler';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -69,8 +69,10 @@ const CompanyPage = () => {
         <div className="flex flex-col gap-y-1 border-l pl-5">
           <dt className="text-sm text-gray-500">State</dt>
           <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
-            <FloridaIcon />
-            {data?.registeredIn.split(' ')[2]}
+            {data?.registeredIn.split(' ')[2] || 'Florida'}
+            <StateIconHandler
+              state={data?.registeredIn.split(' ')[2] || 'Florida'}
+            />
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l pl-5">

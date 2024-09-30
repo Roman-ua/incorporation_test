@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SectionHeading from './SectionHeading';
 import CheckBox from '../../../components/shared/CheckBox';
+import StateIconHandler from '../../../components/shared/StateIconHandler';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -55,9 +56,12 @@ const StateCards = ({
                   isItemSelected={selectedState === item}
                 />
                 <p
-                  className={classNames('text-xl font-bold text-gray-900 ml-2')}
+                  className={classNames(
+                    'text-xl font-bold text-gray-900 ml-2 flex items-center'
+                  )}
                 >
                   {item}
+                  <StateIconHandler state={item} />
                 </p>
               </dt>
             </div>
