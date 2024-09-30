@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import SectionHeading from './SectionHeading';
 import CheckBox from '../../../components/shared/CheckBox';
+import StateIconHandler from '../../../components/shared/StateIconHandler';
 
 interface IProps {
   changeEvent: (value: string) => void;
   value: string;
-  state: { fullName: string; shortName: string }[];
+  state: { fullName: string; shortName: string; title?: string }[];
   title: string;
   requiredError?: boolean;
 }
@@ -55,8 +56,9 @@ const SeparatedCards = ({
                   isItemHovered={hoveredItem === stat.fullName}
                   isItemSelected={selectedState === stat.fullName}
                 />
-                <dt className="text-xl font-bold text-gray-800 ml-2">
+                <dt className="text-xl font-bold text-gray-800 ml-2 flex items-center">
                   {stat.shortName}
+                  {stat.title && <StateIconHandler state={stat.title} />}
                 </dt>
               </div>
 

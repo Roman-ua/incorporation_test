@@ -24,10 +24,10 @@ export const companyTypes = [
 ];
 
 const registrationStates = [
-  { fullName: 'State of Florida', shortName: 'FL' },
-  { fullName: 'State of Delaware', shortName: 'DE' },
-  { fullName: 'State of Texas', shortName: 'TX' },
-  { fullName: 'State of California', shortName: 'CA' },
+  { fullName: 'State of Florida', shortName: 'FL', title: 'Florida' },
+  { fullName: 'State of Delaware', shortName: 'DE', title: 'Delaware' },
+  { fullName: 'State of Texas', shortName: 'TX', title: 'Texas' },
+  { fullName: 'State of California', shortName: 'CA', title: 'California' },
 ];
 
 const status = [
