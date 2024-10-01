@@ -4,10 +4,10 @@ import { ROUTES } from '../../constants/navigation/routes';
 import { TbMail, TbPuzzle, TbPuzzle2 } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { LuClipboardList } from 'react-icons/lu';
-import { BiHomeAlt, BiReceipt } from 'react-icons/bi';
+import { BiBuildings, BiReceipt } from 'react-icons/bi';
 
 const navigation = [
-  { name: 'Home', href: '/home', icon: BiHomeAlt, current: true },
+  { name: 'Home', href: '/home', icon: BiBuildings, current: true },
   { name: 'Mail', href: '/home', icon: TbMail, current: true },
   {
     name: 'Documents',
@@ -51,8 +51,9 @@ const MainSideBarContent = ({
                 to={item.href}
                 onClick={() => currentMenuItemHandler(item.name)}
                 className={classNames(
-                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
-                  item.name === currentMenuItem && 'text-sideBarBlue font-bold'
+                  'tracking-tight text-gray-700 group flex items-start gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                  item.name === currentMenuItem &&
+                    'text-sideBarBlue font-semibold'
                 )}
               >
                 <item.icon
@@ -79,8 +80,9 @@ const MainSideBarContent = ({
                 to={team.href}
                 onClick={() => currentMenuItemHandler(team.name)}
                 className={classNames(
-                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
-                  team.name === currentMenuItem && 'text-sideBarBlue font-bold'
+                  'tracking-tight text-gray-700 group flex items-start gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                  team.name === currentMenuItem &&
+                    'text-sideBarBlue font-semibold'
                 )}
               >
                 <team.icon
@@ -102,7 +104,7 @@ const MainSideBarContent = ({
         <Link
           to={ROUTES.ACCOUNT}
           onClick={() => currentMenuItemHandler('Account')}
-          className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
+          className="tracking-tight flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
         >
           <img
             className="h-8 w-8 rounded-full bg-gray-50"
