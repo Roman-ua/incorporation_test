@@ -31,13 +31,13 @@ const CompanyPage = () => {
   // const rowValueClass = 'text-sm text-gray-700 mb-1';
 
   return data ? (
-    <div className="w-full pl-10 pr-10 pt-8">
+    <div className="container mx-auto pl-10 pr-10 pb-8 pt-24">
       {/*<SectionHeading title="General Information" />*/}
-      <div className="w-full flex items-center justify-between pb-3 pr-2">
-        <span className="text-lg font-bold text-gray-700">
+      <div className="w-full flex items-center justify-between pb-7 pr-2 border-b">
+        <span className="text-2xl font-bold text-gray-700">
           {data.companyName}
         </span>
-        <span className="flex items-center text-gray-400 text-xs hover:cursor-pointer hover:text-gray-700">
+        <span className="flex items-center text-gray-600 text-xs hover:cursor-pointer hover:text-gray-700">
           ci_132FGd3123dasDRD3342s
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
@@ -69,11 +69,11 @@ const CompanyPage = () => {
         <div className="flex flex-col gap-y-1 border-l pl-5">
           <dt className="text-sm text-gray-500">State</dt>
           <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
-            {data?.registeredIn.split(' ')[2] || 'Florida'}
             <StateIconHandler
               simpleIcon={true}
               state={data?.registeredIn.split(' ')[2] || 'Florida'}
             />
+            {data?.registeredIn.split(' ')[2] || 'Florida'}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l pl-5">
@@ -84,9 +84,9 @@ const CompanyPage = () => {
         </div>
       </dl>
       <SectionHeading title="Address" />
-      <div className="mt-5 w-1/2 gap-4 mb-11 text-gray-700">
+      <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
         <>
-          <div className="text-sm text-gray-500 mb-1">Address type: Main</div>
+          <div className="text-base text-gray-500 mb-1">Main</div>
           <div>
             <span>{data.address.address0}, </span>
             {data.address.address1 && <span>{data.address.address1}</span>}

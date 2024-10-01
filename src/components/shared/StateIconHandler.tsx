@@ -17,7 +17,7 @@ const StateIconHandler = ({
   };
 
   const simpleIconExtraClass = {
-    wrapper: 'w-6 ml-3',
+    wrapper: 'w-6 mr-3',
     path: 'stroke-gray-700 fill-gray-700',
   };
   return (

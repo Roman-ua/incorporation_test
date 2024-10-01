@@ -87,7 +87,7 @@ const CompaniesList = () => {
   return (
     <>
       <SectionHeading title="Companies" />
-      <div className="w-full h-screen overflow-auto">
+      <div className="w-full overflow-auto">
         <table className="w-full divide-y divide-gray-300">
           <thead>
             <tr>
