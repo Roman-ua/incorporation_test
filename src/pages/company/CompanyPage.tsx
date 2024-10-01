@@ -31,7 +31,7 @@ const CompanyPage = () => {
   // const rowValueClass = 'text-sm text-gray-700 mb-1';
 
   return data ? (
-    <div className="w-full pl-10 pr-10 pt-5">
+    <div className="w-full pl-10 pr-10 pt-8">
       {/*<SectionHeading title="General Information" />*/}
       <div className="w-full flex items-center justify-between pb-3 pr-2">
         <span className="text-lg font-bold text-gray-700">

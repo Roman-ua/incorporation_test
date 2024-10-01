@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 function SideBar({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [currentMenuItem, setCurrentMenuItem] = useState('Company');
+  const [currentMenuItem, setCurrentMenuItem] = useState('Home');
 
   const currentMenuItemHandler = (value: string) => {
     setCurrentMenuItem(value);
@@ -91,8 +91,8 @@ function SideBar({ children }: { children: React.ReactNode }) {
           </Dialog>
         </Transition>
 
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-          <div className="flex grow flex-col gap-y-8 overflow-y-auto border-r border-gray-200 bg-gray-50/90 px-8">
+        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-60 lg:flex-col">
+          <div className="flex grow flex-col gap-y-8 overflow-y-auto border-r border-gray-200 bg-white px-8">
             <div className="flex shrink-0 items-center mt-8">
               <img className="h-7 w-auto" src={logo} alt="Your Company" />
             </div>
@@ -131,7 +131,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
 
-        <main className="lg:pl-72">
+        <main className="lg:pl-60">
           <div>{children}</div>
         </main>
       </div>

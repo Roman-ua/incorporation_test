@@ -34,7 +34,7 @@ function Home() {
 
   return (
     <div className="relative">
-      <div className="w-full pl-10 pr-10 pt-5">
+      <div className="w-full pl-10 pr-10 pt-8">
         {confetti && <ConfettiAp />}
         {!companyData ? (
           <div className="w-full flex-row mt-[20%]">

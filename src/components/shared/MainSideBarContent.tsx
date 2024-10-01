@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
-import { RiHome6Line } from 'react-icons/ri';
 import { TbMail, TbPuzzle, TbPuzzle2 } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { LuClipboardList } from 'react-icons/lu';
-import { BiReceipt } from 'react-icons/bi';
+import { BiHomeAlt, BiReceipt } from 'react-icons/bi';
 
 const navigation = [
-  { name: 'Home', href: '/home', icon: RiHome6Line, current: true },
+  { name: 'Home', href: '/home', icon: BiHomeAlt, current: true },
   { name: 'Mail', href: '/home', icon: TbMail, current: true },
   {
     name: 'Documents',
@@ -31,7 +30,7 @@ const teams = [
   },
 ];
 
-function classNames(...classes: string[]) {
+function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -43,7 +42,7 @@ const MainSideBarContent = ({
   currentMenuItemHandler: (value: string) => void;
 }) => {
   return (
-    <ul role="list" className="flex flex-1 flex-col gap-y-2">
+    <ul role="list" className="flex flex-1 flex-col gap-y-7">
       <li>
         <ul role="list" className="-mx-2 space-y-1">
           {navigation.map((item) => (
@@ -52,14 +51,15 @@ const MainSideBarContent = ({
                 to={item.href}
                 onClick={() => currentMenuItemHandler(item.name)}
                 className={classNames(
-                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1 text-sm font-bold leading-2 transition-all'
+                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                  item.name === currentMenuItem && 'text-sideBarBlue font-bold'
                 )}
               >
                 <item.icon
                   className={classNames(
                     item.name === currentMenuItem
-                      ? 'text-sideBarBlue/80'
-                      : 'text-gray-700 group-hover:text-mainBlue/80',
+                      ? 'text-sideBarBlue'
+                      : 'text-gray-700',
                     'h-5 w-5 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
@@ -71,9 +71,7 @@ const MainSideBarContent = ({
         </ul>
       </li>
       <li>
-        <div className="text-xs font-semibold leading-6 text-gray-500">
-          Internal
-        </div>
+        <div className="text-sm text-gray-500">Internal</div>
         <ul role="list" className="-mx-2 mt-2 space-y-1">
           {teams.map((team) => (
             <li key={team.name}>
@@ -81,14 +79,15 @@ const MainSideBarContent = ({
                 to={team.href}
                 onClick={() => currentMenuItemHandler(team.name)}
                 className={classNames(
-                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1 text-sm font-bold leading-6 transition-all'
+                  'text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                  team.name === currentMenuItem && 'text-sideBarBlue font-bold'
                 )}
               >
                 <team.icon
                   className={classNames(
                     team.name === currentMenuItem
-                      ? 'text-sideBarBlue/80'
-                      : 'text-gray-700 group-hover:text-mainBlue/80',
+                      ? 'text-sideBarBlue'
+                      : 'text-gray-700',
                     'h-5 w-5 shrink-0 transition-all'
                   )}
                   aria-hidden="true"
