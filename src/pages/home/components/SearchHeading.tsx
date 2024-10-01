@@ -3,13 +3,13 @@ import { ROUTES } from '../../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-const SectionHeading = () => {
+const SearchHeading = () => {
   const navigate = useNavigate();
   const handleButtonClick = () => {
     navigate(ROUTES.CREATE_COMPANY);
   };
   return (
-    <div className="sm:flex sm:items-center pb-3 mb-11">
+    <div className="flex items-center pb-3 mb-3">
       <form action="#" method="GET" className="relative flex flex-1">
         <label htmlFor="search-field" className="sr-only">
           Search
@@ -26,7 +26,7 @@ const SectionHeading = () => {
           className="outline-0 block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-700 placeholder:text-gray-400 focus:ring-0 sm:text-base"
         />
       </form>
-      <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <div className="mt-0 ml-16">
         <button
           type="button"
           onClick={handleButtonClick}
@@ -39,4 +39,4 @@ const SectionHeading = () => {
   );
 };
 
-export default SectionHeading;
+export default SearchHeading;

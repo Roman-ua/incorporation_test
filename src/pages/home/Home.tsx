@@ -3,8 +3,8 @@ import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import { ROUTES } from '../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
 import ConfettiAp from '../../components/shared/Confetti';
-import SectionHeading from './components/SectionHeadeing';
 import CompaniesList from './components/CompaniesList';
+import SearchHeading from './components/SearchHeading';
 
 function Home() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ function Home() {
 
   return (
     <div className="relative">
-      <div className="w-full pl-10 pr-10 pt-8">
+      <div className="pl-10 pr-10 pt-8 max-sm:pl-4 max-sm:pr-4 overflow-hidden w-full">
         {confetti && <ConfettiAp />}
         {!companyData ? (
           <div className="w-full flex-row mt-[20%]">
@@ -57,7 +57,7 @@ function Home() {
           </div>
         ) : (
           <>
-            <SectionHeading />
+            <SearchHeading />
             <CompaniesList />
           </>
         )}
