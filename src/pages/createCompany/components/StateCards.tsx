@@ -40,7 +40,7 @@ const StateCards = ({
                 changeEvent(item);
               }}
               className={classNames(
-                'flex border rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-5 hover:cursor-pointer',
+                'flex border group overflow-hidden rounded-lg relative flex-wrap items-baseline justify-between gap-x-4 gap-y-2 px-5 py-5 hover:cursor-pointer',
                 'transition-all duration-150 ease-in-out',
                 'hover:cursor-pointer',
                 selectedState === item ? 'bg-green-50' : 'bg-inputBackground',
@@ -48,6 +48,9 @@ const StateCards = ({
                 selectedState !== item && 'hover:bg-white'
               )}
             >
+              <div className="absolute right-0 -top-1 rotate-12">
+                <StateIconHandler state={item} simpleIcon={false} />
+              </div>
               <dt className="flex items-center justify-start">
                 <CheckBox
                   wrapperSize={'w-5 h-5'}
@@ -61,7 +64,6 @@ const StateCards = ({
                   )}
                 >
                   {item}
-                  <StateIconHandler state={item} />
                 </p>
               </dt>
             </div>

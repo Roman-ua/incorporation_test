@@ -40,8 +40,8 @@ const SeparatedCards = ({
               onMouseEnter={() => setHoveredItem(stat.fullName)}
               onMouseLeave={() => setHoveredItem('')}
               className={classNames(
-                'flex relative border rounded-lg flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-5 py-3.5 hover:cursor-pointer',
-                'transition-all duration-150 ease-in-out',
+                'flex relative group border rounded-lg flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-5 py-3.5 hover:cursor-pointer',
+                'transition-all duration-150 ease-in-out overflow-hidden',
                 selectedState === stat.fullName
                   ? 'bg-green-50'
                   : 'bg-inputBackground',
@@ -49,6 +49,11 @@ const SeparatedCards = ({
                 selectedState !== stat.fullName && 'hover:bg-white'
               )}
             >
+              {stat.title && (
+                <div className="absolute right-0 -top-1 rotate-12">
+                  <StateIconHandler state={stat.title} simpleIcon={false} />
+                </div>
+              )}
               <div className="flex items-center justify-start">
                 <CheckBox
                   wrapperSize={'w-5 h-5'}
@@ -58,7 +63,6 @@ const SeparatedCards = ({
                 />
                 <dt className="text-xl font-bold text-gray-800 ml-2 flex items-center">
                   {stat.shortName}
-                  {stat.title && <StateIconHandler state={stat.title} />}
                 </dt>
               </div>
 

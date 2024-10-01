@@ -71,6 +71,7 @@ const CompanyPage = () => {
           <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
             {data?.registeredIn.split(' ')[2] || 'Florida'}
             <StateIconHandler
+              simpleIcon={true}
               state={data?.registeredIn.split(' ')[2] || 'Florida'}
             />
           </dd>
