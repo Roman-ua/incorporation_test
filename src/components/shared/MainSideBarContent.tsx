@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
-import { TbMail, TbPuzzle, TbPuzzle2 } from 'react-icons/tb';
+import { TbMail, TbPuzzle } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
-import { LuClipboardList } from 'react-icons/lu';
+import { LuClipboardList, LuConciergeBell } from 'react-icons/lu';
 import { BiBuildings, BiReceipt } from 'react-icons/bi';
 
 const navigation = [
@@ -15,7 +15,7 @@ const navigation = [
     icon: HiOutlineDocumentText,
     current: true,
   },
-  { name: 'Services', href: '/home', icon: TbPuzzle2, current: true },
+  { name: 'Services', href: '/home', icon: LuConciergeBell, current: true },
   { name: 'Orders', href: '/home', icon: LuClipboardList, current: true },
   { name: 'Invoices', href: '/home', icon: BiReceipt, current: true },
 ];
@@ -51,7 +51,7 @@ const MainSideBarContent = ({
                 to={item.href}
                 onClick={() => currentMenuItemHandler(item.name)}
                 className={classNames(
-                  'tracking-tight text-gray-700 group flex items-start gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                  'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
                   item.name === currentMenuItem &&
                     'text-sideBarBlue font-semibold'
                 )}
@@ -80,7 +80,7 @@ const MainSideBarContent = ({
                 to={team.href}
                 onClick={() => currentMenuItemHandler(team.name)}
                 className={classNames(
-                  'tracking-tight text-gray-700 group flex items-start gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                  'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
                   team.name === currentMenuItem &&
                     'text-sideBarBlue font-semibold'
                 )}
