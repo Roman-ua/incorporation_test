@@ -72,7 +72,7 @@ const MainSideBarContent = ({
         </ul>
       </li>
       <li>
-        <div className="text-sm text-gray-500">Internal</div>
+        <div className="text-sm text-gray-500 mt-7">Internal</div>
         <ul role="list" className="-mx-2 mt-2 space-y-1">
           {teams.map((team) => (
             <li key={team.name}>
