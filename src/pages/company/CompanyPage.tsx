@@ -31,19 +31,19 @@ const CompanyPage = () => {
   // const rowValueClass = 'text-sm text-gray-700 mb-1';
 
   return data ? (
-    <div className="container mx-auto pl-10 pr-10 pb-8 pt-24">
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
       {/*<SectionHeading title="General Information" />*/}
-      <div className="w-full flex items-center justify-between pb-7 pr-2 border-b">
+      <div className="w-full flex items-center justify-between pb-7 pr-2 border-b border-gray-100">
         <span className="text-2xl font-bold text-gray-700">
           {data.companyName}
         </span>
-        <span className="flex items-center text-gray-600 text-xs hover:cursor-pointer hover:text-gray-700">
+        <span className="p-1 rounded flex items-center text-gray-600 text-xs hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
           ci_132FGd3123dasDRD3342s
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
       <dl className="w-full mt-5 mb-12 grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 sm:gap-y-16 lg:grid-cols-5">
-        <div className="flex flex-col gap-y-1 border-l pl-5">
+        <div className="flex flex-col gap-y-1 pl-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
@@ -54,19 +54,19 @@ const CompanyPage = () => {
             {data?.status}
           </span>
         </div>
-        <div className="flex flex-col gap-y-1 border-l pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
           <dt className="text-sm text-gray-500">Registration #</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationNumber}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
           <dt className="text-sm text-gray-500">Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.companyType}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
           <dt className="text-sm text-gray-500">State</dt>
           <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
             <StateIconHandler
@@ -76,7 +76,7 @@ const CompanyPage = () => {
             {data?.registeredIn.split(' ')[2] || 'Florida'}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
           <dt className="text-sm text-gray-500">Registration Date</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationDate}

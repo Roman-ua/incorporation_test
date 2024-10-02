@@ -16,6 +16,11 @@ import CreateCompany from './pages/createCompany/CreateCompany';
 import Account from './pages/account/Account';
 import Elements from './pages/elements/Elements';
 import CompanyPage from './pages/company/CompanyPage';
+import Mail from './pages/mail/Mail';
+import Documents from './pages/documents/Documents';
+import Services from './pages/services/Services';
+import Orders from './pages/orders/Orders';
+import Invoices from './pages/invoices/Invoices';
 
 function App() {
   return (
@@ -32,6 +37,11 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/elements" element={<Elements />} />
             <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.MAIL} element={<Mail />} />
+            <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
+            <Route path={ROUTES.SERVICES} element={<Services />} />
+            <Route path={ROUTES.ORDERS} element={<Orders />} />
+            <Route path={ROUTES.INVOICES} element={<Invoices />} />
             <Route path={ROUTES.COMPANY} element={<CompanyPage />} />
             <Route path={ROUTES.ACCOUNT} element={<Account />} />
           </Route>

@@ -5,7 +5,7 @@ interface IProps {
 
 const SectionHeading = ({ title }: IProps) => {
   return (
-    <div className="w-full border-b text-lg font-semibold text-gray-700 mb-3 pb-1">
+    <div className="w-full border-b border-gray-100 text-lg font-semibold text-gray-700 mb-3 pb-1">
       {title}
     </div>
   );

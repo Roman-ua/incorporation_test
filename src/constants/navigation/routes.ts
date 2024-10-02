@@ -8,4 +8,9 @@ export const ROUTES = {
   CREATE_COMPANY: '/create_company',
   ACCOUNT: '/account',
   COMPANY: '/company',
+  MAIL: '/mail',
+  DOCUMENTS: '/documents',
+  SERVICES: '/services',
+  ORDERS: '/orders',
+  INVOICES: '/invoices',
 };

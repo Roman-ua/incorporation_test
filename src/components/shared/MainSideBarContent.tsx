@@ -8,16 +8,16 @@ import { BiBuildings, BiReceipt } from 'react-icons/bi';
 
 const navigation = [
   { name: 'Home', href: '/home', icon: BiBuildings, current: true },
-  { name: 'Mail', href: '/home', icon: TbMail, current: true },
+  { name: 'Mail', href: '/mail', icon: TbMail, current: true },
   {
     name: 'Documents',
-    href: '/home',
+    href: '/documents',
     icon: HiOutlineDocumentText,
     current: true,
   },
-  { name: 'Services', href: '/home', icon: LuConciergeBell, current: true },
-  { name: 'Orders', href: '/home', icon: LuClipboardList, current: true },
-  { name: 'Invoices', href: '/home', icon: BiReceipt, current: true },
+  { name: 'Services', href: '/services', icon: LuConciergeBell, current: true },
+  { name: 'Orders', href: '/orders', icon: LuClipboardList, current: true },
+  { name: 'Invoices', href: '/invoices', icon: BiReceipt, current: true },
 ];
 const teams = [
   {
@@ -34,13 +34,7 @@ function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const MainSideBarContent = ({
-  currentMenuItem,
-  currentMenuItemHandler,
-}: {
-  currentMenuItem: string;
-  currentMenuItemHandler: (value: string) => void;
-}) => {
+const MainSideBarContent = ({ pathname }: { pathname: string }) => {
   return (
     <ul role="list" className="flex flex-1 flex-col gap-y-7">
       <li>
@@ -49,16 +43,14 @@ const MainSideBarContent = ({
             <li key={item.name}>
               <Link
                 to={item.href}
-                onClick={() => currentMenuItemHandler(item.name)}
                 className={classNames(
                   'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
-                  item.name === currentMenuItem &&
-                    'text-sideBarBlue font-semibold'
+                  item.href === pathname && 'text-sideBarBlue font-semibold'
                 )}
               >
                 <item.icon
                   className={classNames(
-                    item.name === currentMenuItem
+                    item.href === pathname
                       ? 'text-sideBarBlue'
                       : 'text-gray-700',
                     'h-5 w-5 shrink-0 transition-all'
@@ -78,16 +70,14 @@ const MainSideBarContent = ({
             <li key={team.name}>
               <Link
                 to={team.href}
-                onClick={() => currentMenuItemHandler(team.name)}
                 className={classNames(
                   'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
-                  team.name === currentMenuItem &&
-                    'text-sideBarBlue font-semibold'
+                  team.href === pathname && 'text-sideBarBlue font-semibold'
                 )}
               >
                 <team.icon
                   className={classNames(
-                    team.name === currentMenuItem
+                    team.href === pathname
                       ? 'text-sideBarBlue'
                       : 'text-gray-700',
                     'h-5 w-5 shrink-0 transition-all'
@@ -103,7 +93,6 @@ const MainSideBarContent = ({
       <li className="-mx-6 mt-auto max-lg:hidden">
         <Link
           to={ROUTES.ACCOUNT}
-          onClick={() => currentMenuItemHandler('Account')}
           className="tracking-tight flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
         >
           <img

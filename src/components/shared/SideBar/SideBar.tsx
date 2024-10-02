@@ -10,16 +10,12 @@ import {
 } from '@headlessui/react';
 import MainSideBarContent from '../MainSideBarContent';
 import { ROUTES } from '../../../constants/navigation/routes';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // import CompanyDropDown from '../CompanyDropDown/CompanyDropDown';
 
 function SideBar({ children }: { children: React.ReactNode }) {
+  const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [currentMenuItem, setCurrentMenuItem] = useState('Home');
-
-  const currentMenuItemHandler = (value: string) => {
-    setCurrentMenuItem(value);
-  };
 
   return (
     <>
@@ -79,10 +75,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
                       />
                     </div>
                     <nav className="flex flex-1 flex-col">
-                      <MainSideBarContent
-                        currentMenuItem={currentMenuItem}
-                        currentMenuItemHandler={currentMenuItemHandler}
-                      />
+                      <MainSideBarContent pathname={pathname} />
                     </nav>
                   </div>
                 </DialogPanel>
@@ -98,10 +91,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
             </div>
             {/*<CompanyDropDown />*/}
             <nav className="flex flex-1 flex-col">
-              <MainSideBarContent
-                currentMenuItem={currentMenuItem}
-                currentMenuItemHandler={currentMenuItemHandler}
-              />
+              <MainSideBarContent pathname={pathname} />
             </nav>
           </div>
         </div>
@@ -118,10 +108,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
           <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">
             Dashboard
           </div>
-          <Link
-            to={ROUTES.ACCOUNT}
-            onClick={() => currentMenuItemHandler('Account')}
-          >
+          <Link to={ROUTES.ACCOUNT}>
             <span className="sr-only">Your profile</span>
             <img
               className="h-8 w-8 rounded-full bg-gray-50"
