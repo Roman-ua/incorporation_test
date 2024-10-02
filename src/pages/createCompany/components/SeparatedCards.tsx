@@ -50,8 +50,12 @@ const SeparatedCards = ({
               )}
             >
               {stat.title && (
-                <div className="absolute right-0 -top-1 rotate-12">
-                  <StateIconHandler state={stat.title} simpleIcon={false} />
+                <div className="absolute right-1 top-0 bottom-0">
+                  <StateIconHandler
+                    state={stat.title}
+                    simpleIcon={false}
+                    selectedState={selectedState.split(' ')[2]}
+                  />
                 </div>
               )}
               <div className="flex items-center justify-start">

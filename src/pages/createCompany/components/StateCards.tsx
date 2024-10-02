@@ -49,7 +49,11 @@ const StateCards = ({
               )}
             >
               <div className="absolute right-0 -top-1 rotate-12">
-                <StateIconHandler state={item} simpleIcon={false} />
+                <StateIconHandler
+                  selectedState={selectedState.split(' ')[2]}
+                  state={item}
+                  simpleIcon={false}
+                />
               </div>
               <dt className="flex items-center justify-start">
                 <CheckBox

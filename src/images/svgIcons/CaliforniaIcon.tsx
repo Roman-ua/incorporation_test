@@ -12,7 +12,7 @@ const CaliforniaIcon = ({ extraClass }: IProps) => {
     <svg
       className={`${extraClass.wrapper}`}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 83 100"
+      viewBox="-15 -5 105 100"
     >
       <path
         fillRule="evenodd"

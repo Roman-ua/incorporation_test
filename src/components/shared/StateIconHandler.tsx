@@ -7,13 +7,20 @@ import FloridaIcon from '../../images/svgIcons/FloridaIcon';
 const StateIconHandler = ({
   state,
   simpleIcon,
+  selectedState,
 }: {
   state: string;
   simpleIcon: boolean;
+  selectedState: string;
 }) => {
+  console.log(selectedState, 'selectedState');
   const extraClass = {
     wrapper: 'w-20 transition-all duration-150 ease-in-out',
-    path: 'stroke-gray-200 fill-gray-200 group-hover:fill-gray-700 group-hover:stroke-gray-700 transition-all duration-150 ease-in-out',
+    path: `
+      ${selectedState === state ? 'fill-gray-500 stroke-gray-500' : 'stroke-gray-200 fill-gray-200'} 
+      ${selectedState === state ? 'group-hover:fill-gray-500 group-hover:stroke-gray-500' : 'group-hover:fill-gray-300 group-hover:stroke-gray-300'} 
+      transition-all duration-150 ease-in-out
+    `,
   };
 
   const simpleIconExtraClass = {

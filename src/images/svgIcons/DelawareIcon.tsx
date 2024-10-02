@@ -12,7 +12,7 @@ const DelawareIcon = ({ extraClass }: IProps) => {
     <svg
       className={`${extraClass.wrapper}`}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="-5 0 90 110"
+      viewBox="-25 -5 110 110"
     >
       <path
         className={`${extraClass.path}`}
