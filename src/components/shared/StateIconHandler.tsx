@@ -13,7 +13,6 @@ const StateIconHandler = ({
   simpleIcon: boolean;
   selectedState: string;
 }) => {
-  console.log(selectedState, 'selectedState');
   const extraClass = {
     wrapper: 'w-20 transition-all duration-150 ease-in-out',
     path: `
@@ -24,7 +23,7 @@ const StateIconHandler = ({
   };
 
   const simpleIconExtraClass = {
-    wrapper: 'w-8 mr-3 bg-yellow-300/80 rounded p-1.5',
+    wrapper: 'w-8 mr-3 bg-yellow-300/80 rounded p-1',
     path: 'stroke-gray-700 fill-gray-700',
   };
   return (

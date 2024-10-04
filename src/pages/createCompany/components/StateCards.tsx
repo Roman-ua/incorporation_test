@@ -48,7 +48,7 @@ const StateCards = ({
                 selectedState !== item && 'hover:bg-white'
               )}
             >
-              <div className="absolute right-0 -top-1 rotate-12">
+              <div className="absolute right-1 top-0 bottom-0">
                 <StateIconHandler
                   selectedState={selectedState.split(' ')[2]}
                   state={item}

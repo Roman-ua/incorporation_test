@@ -3,6 +3,7 @@ import SectionHeading from './components/SectionHeading';
 import { MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
 import StateIconHandler from '../../components/shared/StateIconHandler';
+import { companyTypes } from '../createCompany/CreateCompany';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -43,7 +44,7 @@ const CompanyPage = () => {
         </span>
       </div>
       <dl className="w-full mt-5 mb-12 grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 sm:gap-y-16 lg:grid-cols-5">
-        <div className="flex flex-col gap-y-1 pl-5">
+        <div className="flex flex-col gap-y-1">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
@@ -63,7 +64,10 @@ const CompanyPage = () => {
         <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
           <dt className="text-sm text-gray-500">Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
-            {data?.companyType}
+            {
+              companyTypes.find((item) => item.fullName === data?.companyType)
+                ?.shortName
+            }
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">

@@ -1,7 +1,7 @@
 import React from 'react';
 import StateCards from '../../createCompany/components/StateCards';
 
-const states = ['Florida', 'Texas', 'Delaware', 'California'];
+export const states = ['Florida', 'Texas', 'Delaware', 'California'];
 
 const StateCardsElements = () => {
   const [state, setState] = React.useState('');
