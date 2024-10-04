@@ -14,7 +14,7 @@ const StateIconHandler = ({
   selectedState: string;
 }) => {
   const extraClass = {
-    wrapper: 'w-20 transition-all duration-150 ease-in-out',
+    wrapper: 'w-14 transition-all duration-150 ease-in-out',
     path: `
       ${selectedState === state ? 'fill-gray-500 stroke-gray-500' : 'stroke-gray-200 fill-gray-200'} 
       ${selectedState === state ? 'group-hover:fill-gray-500 group-hover:stroke-gray-500' : 'group-hover:fill-gray-300 group-hover:stroke-gray-300'} 
