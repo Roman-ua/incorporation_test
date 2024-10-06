@@ -38,13 +38,58 @@ const CompanyPage = () => {
         <span className="text-2xl font-bold text-gray-700">
           {data.companyName}
         </span>
-        <span className="p-1 rounded flex items-center text-gray-600 text-xs hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-          ci_132FGd3123dasDRD3342s
+        <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
+          c_1v2FG
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
-      <dl className="w-full mt-5 mb-12 grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 sm:gap-y-16 lg:grid-cols-5">
-        <div className="flex flex-col gap-y-1">
+      {/*<dl className="w-full mt-5 mb-12 grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 sm:gap-y-16 lg:grid-cols-5">*/}
+      {/*  <div className="flex flex-col gap-y-1">*/}
+      {/*    <dt className="text-sm text-gray-500">Status</dt>*/}
+      {/*    <span*/}
+      {/*      className={classNames(*/}
+      {/*        'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',*/}
+      {/*        statusBadge(data?.status)*/}
+      {/*      )}*/}
+      {/*    >*/}
+      {/*      {data?.status}*/}
+      {/*    </span>*/}
+      {/*  </div>*/}
+      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
+      {/*    <dt className="text-sm text-gray-500">Registration #</dt>*/}
+      {/*    <dd className="text-base font-semibold tracking-tight text-gray-700">*/}
+      {/*      {data?.registrationNumber}*/}
+      {/*    </dd>*/}
+      {/*  </div>*/}
+      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
+      {/*    <dt className="text-sm text-gray-500">Type</dt>*/}
+      {/*    <dd className="text-base font-semibold tracking-tight text-gray-700">*/}
+      {/*      {*/}
+      {/*        companyTypes.find((item) => item.fullName === data?.companyType)*/}
+      {/*          ?.shortName*/}
+      {/*      }*/}
+      {/*    </dd>*/}
+      {/*  </div>*/}
+      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
+      {/*    <dt className="text-sm text-gray-500">State</dt>*/}
+      {/*    <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">*/}
+      {/*      <StateIconHandler*/}
+      {/*        simpleIcon={true}*/}
+      {/*        selectedState={data?.registeredIn.split(' ')[2] || 'Florida'}*/}
+      {/*        state={data?.registeredIn.split(' ')[2] || 'Florida'}*/}
+      {/*      />*/}
+      {/*      {data?.registeredIn.split(' ')[2] || 'Florida'}*/}
+      {/*    </dd>*/}
+      {/*  </div>*/}
+      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
+      {/*    <dt className="text-sm text-gray-500">Registration Date</dt>*/}
+      {/*    <dd className="text-base font-semibold tracking-tight text-gray-700">*/}
+      {/*      {data?.registrationDate}*/}
+      {/*    </dd>*/}
+      {/*  </div>*/}
+      {/*</dl>*/}
+      <dl className="w-full mt-5 mb-12 flex items-center justify-start">
+        <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
@@ -55,13 +100,13 @@ const CompanyPage = () => {
             {data?.status}
           </span>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
           <dt className="text-sm text-gray-500">Registration #</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationNumber}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
           <dt className="text-sm text-gray-500">Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {
@@ -70,7 +115,7 @@ const CompanyPage = () => {
             }
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
           <dt className="text-sm text-gray-500">State</dt>
           <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
             <StateIconHandler
@@ -81,7 +126,7 @@ const CompanyPage = () => {
             {data?.registeredIn.split(' ')[2] || 'Florida'}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
           <dt className="text-sm text-gray-500">Registration Date</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationDate}
