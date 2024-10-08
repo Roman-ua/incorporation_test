@@ -23,7 +23,7 @@ const StateIconHandler = ({
   };
 
   const simpleIconExtraClass = {
-    wrapper: 'w-8 mr-3 bg-yellow-300/80 rounded p-1',
+    wrapper: 'w-5 mr-2 bg-yellow-300/80 rounded-sm p-0.5',
     path: 'stroke-gray-700 fill-gray-700',
   };
   return (
