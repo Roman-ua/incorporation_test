@@ -88,7 +88,7 @@ const CompanyPage = () => {
       {/*    </dd>*/}
       {/*  </div>*/}
       {/*</dl>*/}
-      <dl className="w-full mt-5 mb-12 flex items-center justify-start">
+      <dl className="w-full mt-4 mb-12 flex items-center justify-start">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
