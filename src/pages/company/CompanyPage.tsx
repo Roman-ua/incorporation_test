@@ -136,7 +136,7 @@ const CompanyPage = () => {
       <SectionHeading title="Address" />
       <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
         <>
-          <div className="text-base text-gray-500 mb-1">Main</div>
+          <div className="text-sm text-gray-500 mb-1">Main</div>
           <div>
             <span>{data.address.address0}, </span>
             {data.address.address1 && <span>{data.address.address1}</span>}
