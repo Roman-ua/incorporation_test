@@ -2,9 +2,7 @@ import React from 'react';
 import SectionHeading from './components/SectionHeading';
 import { MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
-// import StateIconHandler from '../../components/shared/StateIconHandler';
 import { companyTypes } from '../createCompany/CreateCompany';
-import { states } from '../elements/components/StateCardsElements';
 import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler';
 
 const statusBadge = (status: string) => {
@@ -120,21 +118,11 @@ const CompanyPage = () => {
         <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
           <dt className="text-sm text-gray-500">State</dt>
           <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
-            {/*<StateIconHandler*/}
-            {/*  simpleIcon={true}*/}
-            {/*  selectedState={data?.registeredIn.split(' ')[2] || 'Florida'}*/}
-            {/*  state={data?.registeredIn.split(' ')[2] || 'Florida'}*/}
-            {/*/>*/}
-            {states.map((state) => {
-              return (
-                <StateSolidIconHandler
-                  key={`${state}-4`}
-                  selectedState={state}
-                  state={state}
-                  simpleIcon={true}
-                />
-              );
-            })}
+            <StateSolidIconHandler
+              simpleIcon={true}
+              selectedState={data?.registeredIn.split(' ')[2] || 'Florida'}
+              state={data?.registeredIn.split(' ')[2] || 'Florida'}
+            />
             {data?.registeredIn.split(' ')[2] || 'Florida'}
           </dd>
         </div>
@@ -179,6 +167,3 @@ const CompanyPage = () => {
 };
 
 export default CompanyPage;
-// <div className={rowClass}>Company Name</div>
-// <div className={rowClass}>State</div>
-// <div className={rowClass}>Registration Date</div>

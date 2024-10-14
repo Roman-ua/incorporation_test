@@ -24,7 +24,7 @@ const StateSolidIconHandler = ({
 
   const simpleIconExtraClass = {
     wrapper: 'w-5 mr-2 bg-yellow-300/80 rounded-sm p-0.5',
-    path: 'stroke-gray-700 fill-gray-700',
+    path: 'stroke-black fill-black',
   };
   return (
     <>
