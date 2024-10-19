@@ -2,7 +2,7 @@ import React from 'react';
 
 const SecurityInfo = () => {
   return (
-    <div className="p-8 max-sm:p-6 lg:flex-auto">
+    <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-16">
       <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
         <div>
           <h2 className="text-base font-semibold leading-7 text-gray-900">

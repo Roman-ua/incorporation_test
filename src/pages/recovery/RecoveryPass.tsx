@@ -1,7 +1,7 @@
 import logo from '../../images/shared/bluelogo.svg';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import React, { ChangeEvent, useState } from 'react';
-import { validateEmail } from '../login/utils/validators';
+import { validateEmail } from '../../utils/validators';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 
