@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SectionHeading from './SectionHeading';
 import CheckBox from '../../../components/shared/CheckBox';
-import StateIconHandler from '../../../components/shared/StateIconHandler';
+import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
 
 interface IProps {
   changeEvent: (value: string) => void;
@@ -66,7 +66,7 @@ const SeparatedCards = ({
                 </dd>
               </div>
               {stat.title && (
-                <StateIconHandler
+                <StateSolidIconHandler
                   state={stat.title}
                   simpleIcon={false}
                   selectedState={selectedState.split(' ')[2]}

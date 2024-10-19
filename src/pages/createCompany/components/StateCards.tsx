@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SectionHeading from './SectionHeading';
 import CheckBox from '../../../components/shared/CheckBox';
-import StateIconHandler from '../../../components/shared/StateIconHandler';
+import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -49,7 +49,7 @@ const StateCards = ({
               )}
             >
               <div className="absolute right-1 top-0 bottom-0">
-                <StateIconHandler
+                <StateSolidIconHandler
                   selectedState={selectedState.split(' ')[2]}
                   state={item}
                   simpleIcon={false}
