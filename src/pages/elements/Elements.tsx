@@ -8,6 +8,7 @@ import SeparatedCardsElements from './components/SeparatedCardsElements';
 import AddressFormElements from './components/AddressFormElements';
 import USAddressFormElements from './components/USAddressFormElements';
 import StateIcons from './components/StateIcons';
+import RenderEmails from './components/RenderEmeils';
 
 const Elements = () => {
   return (
@@ -21,6 +22,7 @@ const Elements = () => {
       <JoinedCardsElements />
       <SeparatedCardsElements />
       <StateCardsElements />
+      <RenderEmails />
     </div>
   );
 };
