@@ -66,7 +66,7 @@ const RenderEmails = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          to: 'c@dmcanow.oi',
+          to: 'c@dmcanow.io',
           subject: 'Тестовое письмо',
           text: 'Это текст письма',
           html: htmlContent,
