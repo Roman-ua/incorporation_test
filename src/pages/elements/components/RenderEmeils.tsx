@@ -59,7 +59,7 @@ const RenderEmails = () => {
   //   "html": "<h1>Это HTML письмо</h1>"
   // }
   const send = () => {
-    fetch('https://sender-mkyhunxmi-romanuas-projects.vercel.app/send-email', {
+    fetch('https://sender-w6ve.onrender.com/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
