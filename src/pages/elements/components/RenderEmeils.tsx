@@ -59,18 +59,22 @@ const RenderEmails = () => {
   //   "html": "<h1>Это HTML письмо</h1>"
   // }
   const send = () => {
-    fetch('https://sender-w6ve.onrender.com/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        to: 'gavrilchukroman@gmail.com',
-        subject: 'Тестовое письмо',
-        text: 'Это текст письма',
-        html: htmlContent,
-      }),
-    });
+    try {
+      fetch('https://sender-w6ve.onrender.com/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: 'c@dmcanow.oi',
+          subject: 'Тестовое письмо',
+          text: 'Это текст письма',
+          html: htmlContent,
+        }),
+      });
+    } catch (error) {
+      console.error('Ошибка при отправке письма:', error);
+    }
   };
   return (
     <div>
@@ -85,13 +89,22 @@ const RenderEmails = () => {
           </button>
         ))}
       </div>
-      <div onClick={send}>send</div>
-      <div className="bg-gray-300 p-4">
+      {htmlContent && (
+        <div className="bg-gray-300 p-4">
+          <div
+            className="bg-white py-6"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          />
+        </div>
+      )}
+      {htmlContent && (
         <div
-          className="bg-white py-6"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}
-        />
-      </div>
+          className="bg-mainBlue text-white px-4 py-2 rounded mt-5 font-bold w-fit hover:cursor-pointer"
+          onClick={send}
+        >
+          Send Email
+        </div>
+      )}
     </div>
   );
 };
