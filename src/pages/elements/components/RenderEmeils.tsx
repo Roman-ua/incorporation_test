@@ -68,7 +68,7 @@ const RenderEmails = () => {
         to: 'gavrilchukroman@gmail.com',
         subject: 'Тестовое письмо',
         text: 'Это текст письма',
-        html: '<h1>Это HTML письмо</h1>',
+        html: htmlContent,
       }),
     });
   };
