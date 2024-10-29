@@ -28,35 +28,20 @@ const UserGeneralInfo = () => {
           <div className="p-2 rounded-full bg-gray-400 text-xl font-black text-white mr-3">
             JD
           </div>
-          <div className="text-xl font-bold text-gray-700">John Doe</div>
+          <div className="text-2xl font-bold text-gray-700">
+            <div>John Doe</div>
+            <div className="text-xs font-semibold tracking-tight text-gray-500 flex items-center">
+              u_1v2FG
+              <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
+            </div>
+          </div>
         </div>
         <div className="text-sm text-sideBarBlue font-bold hover:cursor-pointer">
           Edit
         </div>
       </div>
       <dl className="w-full pt-4 flex items-center justify-start">
-        <div className="flex flex-col gap-y-1 pr-5">
-          <dt className="text-sm text-gray-500">User ID</dt>
-          <dd className="text-sm font-semibold tracking-tight text-gray-700 flex items-center">
-            u_1v2FG
-            <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
-          </dd>
-        </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
-          <dt className="text-sm text-gray-500">Email</dt>
-          <dd className="text-sm font-semibold tracking-tight text-gray-700 flex items-center">
-            john.do@example.com
-            <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
-          </dd>
-        </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
-          <dt className="text-sm text-gray-500">Phone number</dt>
-          <dd className="text-sm font-semibold tracking-tight text-gray-700 flex items-center">
-            +1-212-456-7890
-            <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
-          </dd>
-        </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
+        <div className="flex flex-col gap-y-1 border-gray-100 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
@@ -66,6 +51,13 @@ const UserGeneralInfo = () => {
           >
             Active
           </span>
+        </div>
+        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
+          <dt className="text-sm text-gray-500">Email</dt>
+          <dd className="text-sm font-semibold tracking-tight text-gray-700 flex items-center">
+            john.do@example.com
+            <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
+          </dd>
         </div>
       </dl>
     </div>

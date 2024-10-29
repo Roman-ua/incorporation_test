@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 // import UpdatableRow from './UpdateableRow';
 // import { validateEmail } from '../../../utils/validators';
 import UserGeneralInfo from './UserGeneralInfo';
+import ContactsBlock from './ContactsBlock';
+import BioBlock from './BioBlock';
 
 // interface IErrors {
 //   email?: string;
@@ -52,7 +54,14 @@ const AccountInfo = () => {
         ))}
       </div>
 
-      <div>{activeTab}</div>
+      {activeTab === 'General' && (
+        <div>
+          <BioBlock />
+          <ContactsBlock />
+        </div>
+      )}
+
+      {/*<div>{activeTab}</div>*/}
       {/*<div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">*/}
       {/*  <div>*/}
       {/*    <h2 className="text-base font-semibold leading-7 text-gary-700">*/}
