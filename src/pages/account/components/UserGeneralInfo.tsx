@@ -30,10 +30,6 @@ const UserGeneralInfo = () => {
           </div>
           <div className="text-2xl font-bold text-gray-700">
             <div>John Doe</div>
-            <div className="text-xs font-semibold tracking-tight text-gray-500 flex items-center">
-              u_1v2FG
-              <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
-            </div>
           </div>
         </div>
         <div className="text-sm text-sideBarBlue font-bold hover:cursor-pointer">
@@ -58,6 +54,12 @@ const UserGeneralInfo = () => {
             john.do@example.com
             <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
           </dd>
+        </div>
+        <div className="ml-auto">
+          <div className="text-xs font-semibold tracking-tight text-gray-400 flex items-center">
+            u_1v2FG
+            <MdOutlineCopyAll className="text-base ml-2 text-gray-400 hover:text-gray-700 hover:cursor-pointer" />
+          </div>
         </div>
       </dl>
     </div>

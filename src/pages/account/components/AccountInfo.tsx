@@ -1,26 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 // import UpdatableRow from './UpdateableRow';
 // import { validateEmail } from '../../../utils/validators';
 import UserGeneralInfo from './UserGeneralInfo';
 import ContactsBlock from './ContactsBlock';
-import BioBlock from './BioBlock';
 
 // interface IErrors {
 //   email?: string;
 //   name?: string;
 // }
 
-function classNames(...classes: (string | boolean)[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
-const tabs = ['General', 'Security', 'Notifications', 'Settings'];
+// const tabs = ['General', 'Security', 'Notifications', 'Settings'];
 
 const AccountInfo = () => {
   // const [email, setEmail] = useState('tom.cook@example.com');
   // const [fullName, setFullName] = useState('Tom Cook');
   // const [error, setError] = useState<IErrors>({});
-  const [activeTab, setActiveTab] = useState('General');
 
   // const emailHandler = (value: string) => {
   //   const email = value;
@@ -37,29 +31,26 @@ const AccountInfo = () => {
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
       <UserGeneralInfo />
 
-      <div className="flex items-center justify-start mb-12">
-        {tabs.map((tab) => (
-          <div
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={classNames(
-              'py-1.5 px-2 mr-2 font-semibold text-sm text-gray-400 rounded hover:cursor-pointer transition-all ease-in-out duration-150',
-              tab === activeTab
-                ? 'bg-mainBlue text-white hover:text-white'
-                : 'hover:text-gray-600'
-            )}
-          >
-            {tab}
-          </div>
-        ))}
-      </div>
+      {/*<div className="flex items-center justify-start mb-8">*/}
+      {/*  {tabs.map((tab) => (*/}
+      {/*    <div*/}
+      {/*      key={tab}*/}
+      {/*      onClick={() => setActiveTab(tab)}*/}
+      {/*      className={classNames(*/}
+      {/*        'py-1.5 px-2 mr-2 font-semibold text-sm text-gray-400 rounded hover:cursor-pointer transition-all ease-in-out duration-150',*/}
+      {/*        tab === activeTab*/}
+      {/*          ? 'bg-gray-200 text-gray-700 hover:text-gray-700'*/}
+      {/*          : 'hover:text-gray-600'*/}
+      {/*      )}*/}
+      {/*    >*/}
+      {/*      {tab}*/}
+      {/*    </div>*/}
+      {/*  ))}*/}
+      {/*</div>*/}
 
-      {activeTab === 'General' && (
-        <div>
-          <BioBlock />
-          <ContactsBlock />
-        </div>
-      )}
+      <div>
+        <ContactsBlock />
+      </div>
 
       {/*<div>{activeTab}</div>*/}
       {/*<div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">*/}

@@ -7,56 +7,80 @@ import {
   PiTelegramLogo,
   PiWhatsappLogoLight,
 } from 'react-icons/pi';
+import wpLogo from '../../../images/socials/whatsapp.png';
+import tgLogo from '../../../images/socials/telegram.png';
+
 const ContactsBlock = () => {
   return (
-    <div className="rounded shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] mb-12">
-      <div className="px-4 py-3 border-b font-semibold text-gray-700 flex items-center">
+    <div className="mb-6">
+      <div className="pb-3 mb-4 border-b font-semibold text-gray-700 flex items-center">
         <RiContactsFill className="text-gray-700 mr-2" />
         Contacts
       </div>
-      <div className="px-4 py-6">
-        <div className="flex items-center mb-4">
-          <FiPhone className="text-gray-700 mr-2" />
-          <div className="text-sm font-semibold text-gray-500 mr-2">Phone:</div>
-          <div className="text-sm font-semibold text-gray-700">
-            +1 123 456 7890
-          </div>
-        </div>
-        <div className="flex items-center mb-4">
-          <MdOutlineMail className="text-gray-700 mr-2" />
-          <div className="text-sm font-semibold text-gray-500 mr-2">
-            Secondary Email:
-          </div>
-          <div className="text-sm font-semibold text-gray-700">
-            johnsecondary.do@example.com
-          </div>
-        </div>
-        <div className="flex items-center mb-4">
-          <PiTelegramLogo className="text-gray-700 mr-2" />
-          <div className="text-sm font-semibold text-gray-500 mr-2">
-            Telegram:
-          </div>
-          <div className="text-sm font-semibold text-gray-700">@john_doe</div>
-        </div>
-        <div className="flex items-center mb-4">
-          <PiWhatsappLogoLight className="text-gray-700 mr-2" />
-          <div className="text-sm font-semibold text-gray-500 mr-2">
-            WhatsApp:
-          </div>
-          <div className="text-sm font-semibold text-gray-700">
-            @john_doe_whatsup
-          </div>
-        </div>
-        <div className="flex items-center">
-          <PiLinkedinLogo className="text-gray-700 mr-2" />
-          <div className="text-sm font-semibold text-gray-500 mr-2">
-            LinkedIn:
-          </div>
-          <div className="text-sm font-semibold text-gray-700">
-            @john_doe_LinkedIn
-          </div>
-        </div>
-      </div>
+      <table
+        className="table-auto border-separate"
+        style={{ borderSpacing: '0 10px' }}
+      >
+        <tbody>
+          <tr>
+            <td className="flex items-center">
+              <FiPhone className="text-gray-700 mr-2" />
+              <span className="text-sm font-semibold text-gray-500">Phone</span>
+            </td>
+            <td>
+              <div className="pl-8 flex items-center">
+                <span className="text-sm font-semibold text-gray-700">
+                  +1 123 456 7890
+                </span>
+                <img src={wpLogo} alt="wpLogo" className="w-4 inline ml-2" />
+                <img src={tgLogo} alt="tgLogo" className="w-4 inline ml-2" />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td className="flex items-center">
+              <MdOutlineMail className="text-gray-700 mr-2" />
+              <span className="text-sm font-semibold text-gray-500">Email</span>
+            </td>
+            <td className="pl-8 text-sm font-semibold text-gray-700">
+              johnsecondary.do@example.com
+            </td>
+          </tr>
+          <tr>
+            <td className="flex items-center">
+              <PiTelegramLogo className="text-gray-700 mr-2" />
+              <span className="text-sm font-semibold text-gray-500">
+                Telegram
+              </span>
+            </td>
+            <td className="pl-8 text-sm font-semibold text-gray-700">
+              @john_doe
+            </td>
+          </tr>
+          <tr>
+            <td className="flex items-center">
+              <PiWhatsappLogoLight className="text-gray-700 mr-2" />
+              <span className="text-sm font-semibold text-gray-500">
+                WhatsApp
+              </span>
+            </td>
+            <td className="pl-8 text-sm font-semibold text-gray-700">
+              @john_doe_whatsup
+            </td>
+          </tr>
+          <tr>
+            <td className="flex items-center">
+              <PiLinkedinLogo className="text-gray-700 mr-2" />
+              <span className="text-sm font-semibold text-gray-500">
+                LinkedIn
+              </span>
+            </td>
+            <td className="pl-8 text-sm font-semibold text-gray-700">
+              @john_doe_LinkedIn
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
