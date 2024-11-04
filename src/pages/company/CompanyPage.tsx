@@ -34,7 +34,7 @@ const CompanyPage = () => {
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
       {/*<SectionHeading title="General Information" />*/}
-      <div className="w-full flex items-center justify-between pb-7 pr-2 border-b border-gray-100">
+      <div className="w-full flex items-center justify-between pb-7 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">
           {data.companyName}
         </span>
@@ -100,13 +100,13 @@ const CompanyPage = () => {
             {data?.status}
           </span>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
+        <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Registration #</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationNumber}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
+        <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {
@@ -115,7 +115,7 @@ const CompanyPage = () => {
             }
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
+        <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">State</dt>
           <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
             <StateSolidIconHandler
@@ -126,7 +126,7 @@ const CompanyPage = () => {
             {data?.registeredIn.split(' ')[2] || 'Florida'}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l border-gray-100 px-5">
+        <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Registration Date</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationDate}

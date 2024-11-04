@@ -49,7 +49,7 @@ const ConfirmPage = ({
           You can jump between steps to make any necessary changes.
         </p>
       </div>
-      <div className="mt-6 border-t border-gray-100">
+      <div className="mt-6 border-t">
         <dl className="divide-y divide-gray-100">
           {fields.map((field, index) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
