@@ -21,6 +21,7 @@ import Documents from './pages/documents/Documents';
 import Services from './pages/services/Services';
 import Orders from './pages/orders/Orders';
 import Invoices from './pages/invoices/Invoices';
+import Ein from './pages/EIN/Ein';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             <Route path={ROUTES.INVOICES} element={<Invoices />} />
             <Route path={ROUTES.COMPANY} element={<CompanyPage />} />
             <Route path={ROUTES.ACCOUNT} element={<Account />} />
+            <Route path={ROUTES.EIN} element={<Ein />} />
           </Route>
         </Route>
         <Route

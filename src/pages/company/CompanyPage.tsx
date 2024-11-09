@@ -4,6 +4,10 @@ import { MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
 import { companyTypes } from '../createCompany/CreateCompany';
 import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler';
+import { HiMiniArrowTopRightOnSquare } from 'react-icons/hi2';
+import { copyToClipboard } from '../../utils/helpers';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../constants/navigation/routes';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -25,6 +29,7 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const CompanyPage = () => {
+  const navigate = useNavigate();
   const localData = localStorage.getItem('finalFormData');
   const data = localData ? JSON.parse(localData) : undefined;
 
@@ -43,51 +48,6 @@ const CompanyPage = () => {
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
-      {/*<dl className="w-full mt-5 mb-12 grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 sm:gap-y-16 lg:grid-cols-5">*/}
-      {/*  <div className="flex flex-col gap-y-1">*/}
-      {/*    <dt className="text-sm text-gray-500">Status</dt>*/}
-      {/*    <span*/}
-      {/*      className={classNames(*/}
-      {/*        'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',*/}
-      {/*        statusBadge(data?.status)*/}
-      {/*      )}*/}
-      {/*    >*/}
-      {/*      {data?.status}*/}
-      {/*    </span>*/}
-      {/*  </div>*/}
-      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
-      {/*    <dt className="text-sm text-gray-500">Registration #</dt>*/}
-      {/*    <dd className="text-base font-semibold tracking-tight text-gray-700">*/}
-      {/*      {data?.registrationNumber}*/}
-      {/*    </dd>*/}
-      {/*  </div>*/}
-      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
-      {/*    <dt className="text-sm text-gray-500">Type</dt>*/}
-      {/*    <dd className="text-base font-semibold tracking-tight text-gray-700">*/}
-      {/*      {*/}
-      {/*        companyTypes.find((item) => item.fullName === data?.companyType)*/}
-      {/*          ?.shortName*/}
-      {/*      }*/}
-      {/*    </dd>*/}
-      {/*  </div>*/}
-      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
-      {/*    <dt className="text-sm text-gray-500">State</dt>*/}
-      {/*    <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">*/}
-      {/*      <StateIconHandler*/}
-      {/*        simpleIcon={true}*/}
-      {/*        selectedState={data?.registeredIn.split(' ')[2] || 'Florida'}*/}
-      {/*        state={data?.registeredIn.split(' ')[2] || 'Florida'}*/}
-      {/*      />*/}
-      {/*      {data?.registeredIn.split(' ')[2] || 'Florida'}*/}
-      {/*    </dd>*/}
-      {/*  </div>*/}
-      {/*  <div className="flex flex-col gap-y-1 border-l border-gray-100 pl-5">*/}
-      {/*    <dt className="text-sm text-gray-500">Registration Date</dt>*/}
-      {/*    <dd className="text-base font-semibold tracking-tight text-gray-700">*/}
-      {/*      {data?.registrationDate}*/}
-      {/*    </dd>*/}
-      {/*  </div>*/}
-      {/*</dl>*/}
       <dl className="w-full mt-4 mb-12 flex items-center justify-start">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
@@ -99,6 +59,26 @@ const CompanyPage = () => {
           >
             {data?.status}
           </span>
+        </div>
+        <div className="flex flex-col gap-y-1 border-l px-5">
+          <dt className="text-sm text-gray-500">EIN (Tax ID)</dt>
+          <dd
+            onClick={(event) => {
+              event.preventDefault();
+              navigate(ROUTES.EIN);
+            }}
+            className="text-base font-semibold tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer"
+          >
+            12-3456789
+            <MdOutlineCopyAll
+              onClick={(event) => {
+                event.stopPropagation();
+                copyToClipboard('12-3456789');
+              }}
+              className="text-gray-500 text-sm ml-2 absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
+            />
+            <HiMiniArrowTopRightOnSquare className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
+          </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Registration #</dt>
