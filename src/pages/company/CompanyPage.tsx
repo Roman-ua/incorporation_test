@@ -1,10 +1,9 @@
 import React from 'react';
 import SectionHeading from './components/SectionHeading';
-import { MdOutlineCopyAll } from 'react-icons/md';
+import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
 import { companyTypes } from '../createCompany/CreateCompany';
 import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler';
-import { HiMiniArrowTopRightOnSquare } from 'react-icons/hi2';
 import { copyToClipboard } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
@@ -77,7 +76,7 @@ const CompanyPage = () => {
               }}
               className="text-gray-500 text-sm ml-2 absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
             />
-            <HiMiniArrowTopRightOnSquare className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
+            <MdOpenInNew className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
