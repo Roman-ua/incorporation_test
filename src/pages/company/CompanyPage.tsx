@@ -28,6 +28,7 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const CompanyPage = () => {
+  const [copied, setCopied] = React.useState('');
   const navigate = useNavigate();
   const localData = localStorage.getItem('finalFormData');
   const data = localData ? JSON.parse(localData) : undefined;
@@ -69,9 +70,23 @@ const CompanyPage = () => {
             className="text-base font-semibold tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer"
           >
             12-3456789
+            {copied && (
+              <div className="absolute -right-2 -top-6 text-xs px-1 py-0.5 rounded bg-gray-100">
+                {copied}
+              </div>
+            )}
             <MdOutlineCopyAll
+              onMouseEnter={() => setCopied('Copy')}
+              onMouseLeave={() => setCopied('')}
               onClick={(event) => {
                 event.stopPropagation();
+                setCopied('Copied!');
+
+                const timer = setTimeout(() => {
+                  clearTimeout(timer);
+                  setCopied('');
+                }, 700);
+
                 copyToClipboard('12-3456789');
               }}
               className="text-gray-500 text-sm ml-2 absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
