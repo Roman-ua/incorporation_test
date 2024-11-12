@@ -7,6 +7,7 @@ import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler
 import { copyToClipboard } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
+import { IoMdCheckmark } from 'react-icons/io';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -70,14 +71,13 @@ const CompanyPage = () => {
             className="text-base font-semibold tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer"
           >
             12-3456789
-            {copied && (
-              <div className="absolute -right-2 -top-6 text-xs px-1 py-0.5 rounded bg-gray-100">
-                {copied}
-              </div>
-            )}
+            <IoMdCheckmark
+              className={classNames(
+                'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
+                copied ? 'opacity-100' : 'opacity-0'
+              )}
+            />
             <MdOutlineCopyAll
-              onMouseEnter={() => setCopied('Copy')}
-              onMouseLeave={() => setCopied('')}
               onClick={(event) => {
                 event.stopPropagation();
                 setCopied('Copied!');
@@ -89,7 +89,10 @@ const CompanyPage = () => {
 
                 copyToClipboard('12-3456789');
               }}
-              className="text-gray-500 text-sm ml-2 absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
+              className={classNames(
+                'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
+                !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
+              )}
             />
             <MdOpenInNew className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </dd>
