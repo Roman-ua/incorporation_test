@@ -34,12 +34,8 @@ const CompanyPage = () => {
   const localData = localStorage.getItem('finalFormData');
   const data = localData ? JSON.parse(localData) : undefined;
 
-  // const rowClass = 'text-sm text-gray-500 mb-1';
-  // const rowValueClass = 'text-sm text-gray-700 mb-1';
-
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
-      {/*<SectionHeading title="General Information" />*/}
       <div className="w-full flex items-center justify-between pb-7 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">
           {data.companyName}
