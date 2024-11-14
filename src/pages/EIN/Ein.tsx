@@ -123,7 +123,7 @@ const Ein = () => {
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
       <PageSign
         title={'EIN (Tax ID)'}
-        icon={<FaHashtag className="w-4 h-4 text-gray-400 mr-1" />}
+        icon={<FaHashtag className="w-3 h-3 text-gray-400 mr-1" />}
       />
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">12-3456789</span>
