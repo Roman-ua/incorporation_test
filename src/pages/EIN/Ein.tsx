@@ -122,7 +122,7 @@ const Ein = () => {
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
       <PageSign
-        title={'EIN (Tax ID)'}
+        title={'EIN (TAX ID)'}
         icon={<FaHashtag className="w-3 h-3 text-gray-400 mr-1" />}
       />
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
@@ -137,7 +137,7 @@ const Ein = () => {
           <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
-              'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+              'text-nowrap w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
               statusBadge(mockStatuses[0])
             )}
           >
@@ -162,13 +162,13 @@ const Ein = () => {
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Document Type</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center">
+          <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center flex-wrap">
             {mockFiles.map((file) => {
               return (
                 <div
                   key={file.id}
                   className={classNames(
-                    'flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1',
+                    'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',
                     labelBadgeHandler(file.label)
                   )}
                 >
