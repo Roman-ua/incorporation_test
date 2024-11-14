@@ -4,6 +4,8 @@ import SectionHeading from '../company/components/SectionHeading';
 import { USStates } from '../../constants/form/form';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
+import PageSign from '../../components/shared/PageSign';
+import { FaHashtag } from 'react-icons/fa';
 
 const mockStatuses = ['Confirmation Needed', 'Confirmed', 'Archived'];
 const mockFiles = [
@@ -119,7 +121,11 @@ const Ein = () => {
 
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
-      <div className="w-full flex items-center justify-between pb-7 pr-2 border-b">
+      <PageSign
+        title={'EIN (Tax ID)'}
+        icon={<FaHashtag className="w-4 h-4 text-gray-400 mr-1" />}
+      />
+      <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">12-3456789</span>
         <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
           ein_1v2FG

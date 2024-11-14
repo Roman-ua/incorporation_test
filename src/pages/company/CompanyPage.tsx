@@ -8,6 +8,8 @@ import { copyToClipboard } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 import { IoMdCheckmark } from 'react-icons/io';
+import PageSign from '../../components/shared/PageSign';
+import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -36,7 +38,13 @@ const CompanyPage = () => {
 
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
-      <div className="w-full flex items-center justify-between pb-7 pr-2 border-b">
+      <PageSign
+        title={'COMPANY'}
+        icon={
+          <HiOutlineOfficeBuilding className="w-4 h-4 text-gray-400 mr-1" />
+        }
+      />
+      <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">
           {data.companyName}
         </span>
