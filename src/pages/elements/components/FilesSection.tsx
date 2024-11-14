@@ -111,21 +111,6 @@ const fileBgHandler = (type: string) => {
   }
 };
 
-// const statusBadge = (status: string) => {
-//   switch (status) {
-//     case 'Active':
-//       return 'bg-green-50 text-green-700 ring-green-600/20';
-//     case 'Inactive':
-//       return 'bg-red-50 text-red-700 ring-red-600/20';
-//     case 'Dissolved':
-//       return 'bg-gray-50 text-gray-700 ring-gray-600/20';
-//     case 'Withdrawn':
-//       return 'bg-gray-50 text-gray-700 ring-gray-600/20';
-//     default:
-//       return 'bg-red-50 text-red-700 ring-red-600/20';
-//   }
-// };
-
 const labelBadgeHandler = (label: string) => {
   switch (label) {
     case 'CP575A':
