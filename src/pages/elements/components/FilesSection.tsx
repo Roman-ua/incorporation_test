@@ -1,14 +1,8 @@
 import React from 'react';
-import jpgIcon from '../../../images/formats/jpg.png';
-import pdfIcon from '../../../images/formats/pdf.png';
-import xlsIcon from '../../../images/formats/xls.png';
-import docIcon from '../../../images/formats/doc.png';
-import {
-  MdOpenInNew,
-  MdOutlineCloudDownload,
-  MdOutlineDeleteOutline,
-} from 'react-icons/md';
 import SectionHeading from '../../createCompany/components/SectionHeading';
+import { PaperClipIcon } from '@heroicons/react/20/solid';
+import { TbTrash } from 'react-icons/tb';
+import { MdOutlineCloudDownload } from 'react-icons/md';
 
 const mockFiles = [
   {
@@ -76,40 +70,7 @@ const mockFiles = [
     date: '2021-05-23',
   },
 ];
-
-const filesIconHandler = (type: string) => {
-  switch (type) {
-    case 'pdf':
-      return pdfIcon;
-    case 'jpg':
-      return jpgIcon;
-    case 'xls':
-      return xlsIcon;
-    case 'xlsx':
-      return xlsIcon;
-    case 'doc':
-      return docIcon;
-    default:
-      return jpgIcon;
-  }
-};
-
-const fileBgHandler = (type: string) => {
-  switch (type) {
-    case 'pdf':
-      return 'bg-red-100';
-    case 'jpg':
-      return 'bg-yellow-100';
-    case 'xls':
-      return 'bg-green-100';
-    case 'xlsx':
-      return 'bg-green-100';
-    case 'doc':
-      return 'bg-gray-100';
-    default:
-      return 'bg-blue-100';
-  }
-};
+const replaceSpaces = (str: string) => str.replace(/ /g, '_');
 
 const labelBadgeHandler = (label: string) => {
   switch (label) {
@@ -148,44 +109,30 @@ const FilesSection = () => {
               key={file.id}
               className="flex items-center justify-start py-4 px-2 border-b"
             >
-              <div className="mr-3 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] w-[57px] h-[57px] rounded-lg w-fit flex items-center justify-center">
+              <PaperClipIcon
+                aria-hidden="true"
+                className="mr-3 size-5 shrink-0 text-gray-400"
+              />
+              <div className="flex items-center justify-between w-full pr-4 mr-4 border-r group">
+                <div className="flex min-w-0 items-center flex-1 gap-3">
+                  <span className="truncate font-semibold hover:cursor-pointer">
+                    {replaceSpaces(file.name)}
+                  </span>
+                  <span className="shrink-0 text-gray-400">{file.date}</span>
+                  <MdOutlineCloudDownload className="w-5 h-5 text-gray-500 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150" />
+                </div>
                 <div
                   className={classNames(
-                    'rounded-md p-2',
-                    fileBgHandler(file.type)
+                    'flex items-center text-sm px-2 font-medium rounded ring-1 ring-inset leading-6',
+                    labelBadgeHandler(file.label)
                   )}
                 >
-                  <img
-                    src={filesIconHandler(file.type)}
-                    alt={file.icon}
-                    className="w-8 h-8"
-                  />
-                </div>
-              </div>
-              <div>
-                <p className="font-semibold mb-1">{file.name}</p>
-                <div className="flex items-center">
-                  <div
-                    className={classNames(
-                      'flex items-center text-sm px-2 font-medium rounded ring-1 ring-inset leading-6',
-                      labelBadgeHandler(file.label)
-                    )}
-                  >
-                    {file.label}
-                  </div>
-                  <div className="mx-2 w-[3px] h-[3px] bg-gray-400 rounded-full" />
-                  <p className="text-gray-500 text-sm">{file.date}</p>
+                  {file.label}
                 </div>
               </div>
               <div className="ml-auto flex items-center justify-end">
-                <div className="p-1.5 rounded-md bg-gray-100 border ml-2 group hover:cursor-pointer hover:bg-blue-100">
-                  <MdOutlineCloudDownload className="w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150" />
-                </div>
-                <div className="p-1.5 rounded-md bg-gray-100 border ml-2 group hover:cursor-pointer">
-                  <MdOpenInNew className="w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150" />
-                </div>
-                <div className="p-1.5 rounded-md bg-gray-100 border ml-2 group hover:cursor-pointer hover:bg-red-100">
-                  <MdOutlineDeleteOutline className="w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150" />
+                <div className="px-1.5 py-1 rounded bg-gray-100 border group hover:cursor-pointer hover:bg-red-100">
+                  <TbTrash className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150" />
                 </div>
               </div>
             </div>
