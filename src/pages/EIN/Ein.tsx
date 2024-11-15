@@ -140,7 +140,7 @@ const Ein = () => {
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
-      <dl className="w-full mt-4 mb-12 flex items-center justify-start overflow-x-scroll">
+      <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
