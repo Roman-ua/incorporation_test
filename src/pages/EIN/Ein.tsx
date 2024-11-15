@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 import PageSign from '../../components/shared/PageSign';
 import { FaHashtag } from 'react-icons/fa';
+import { IoMdCheckmark } from 'react-icons/io';
+import { copyToClipboard } from '../../utils/helpers';
 
 const mockStatuses = ['Confirmation Needed', 'Confirmed', 'Archived'];
 const mockFiles = [
@@ -74,29 +76,6 @@ const mockFiles = [
     date: '2021-05-23',
   },
 ];
-
-// const labelBadgeHandler = (label: string) => {
-//   switch (label) {
-//     case 'CP575A':
-//       return 'bg-red-100 text-red-700 ring-red-600/20';
-//     case 'Screenshot':
-//       return 'bg-yellow-100 text-yellow-700 ring-yellow-600/20';
-//     case 'CP575G':
-//       return 'bg-blue-100 text-blue-700 ring-blue-600/20';
-//     case '147C':
-//       return 'bg-purple-100 text-purple-700 ring-purple-600/20';
-//     case 'Faxed SS-4':
-//       return 'bg-green-100 text-green-700 ring-green-600/20';
-//     case 'W-9':
-//       return 'bg-red-100 text-red-700 ring-red-600/20';
-//     case 'CP577':
-//       return 'bg-yellow-100 text-yellow-700 ring-yellow-600/20';
-//     case 'CP577E':
-//       return 'bg-red-100 text-red-700 ring-red-600/20';
-//     default:
-//       return 'bg-blue-100 text-blue-700 ring-blue-600/20';
-//   }
-// };
 const statusBadge = (status: string) => {
   switch (status) {
     case 'Confirmation Needed':
@@ -115,6 +94,8 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const Ein = () => {
+  const [copied, setCopied] = React.useState('');
+
   const localData = localStorage.getItem('finalFormData');
   const data = localData ? JSON.parse(localData) : undefined;
   const navigate = useNavigate();
@@ -126,7 +107,34 @@ const Ein = () => {
         icon={<FaHashtag className="w-3 h-3 text-gray-400 mr-1" />}
       />
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
-        <span className="text-2xl font-bold text-gray-700">12-3456789</span>
+        <span
+          onClick={(event) => {
+            event.stopPropagation();
+            setCopied('Copied!');
+
+            const timer = setTimeout(() => {
+              clearTimeout(timer);
+              setCopied('');
+            }, 700);
+
+            copyToClipboard('12-3456789');
+          }}
+          className="text-2xl font-bold text-gray-700 group hover:cursor-pointer flex items-center relative pr-7"
+        >
+          12-3456789
+          <IoMdCheckmark
+            className={classNames(
+              'w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1',
+              copied ? 'opacity-100' : 'opacity-0'
+            )}
+          />
+          <MdOutlineCopyAll
+            className={classNames(
+              'w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1',
+              !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
+            )}
+          />
+        </span>
         <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
           ein_1v2FG
           <MdOutlineCopyAll className="text-base ml-2" />
@@ -171,7 +179,6 @@ const Ein = () => {
                   key={file.id}
                   className={classNames(
                     'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',
-                    // labelBadgeHandler(file.label)
                     'bg-gray-100 text-gray-700 ring-gray-600/20'
                   )}
                 >
