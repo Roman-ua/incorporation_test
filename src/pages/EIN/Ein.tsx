@@ -124,13 +124,13 @@ const Ein = () => {
           12-3456789
           <IoMdCheckmark
             className={classNames(
-              'w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1',
+              'w-5 h-5 text-gray-500 group-hover:text-gray-500 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1.5',
               copied ? 'opacity-100' : 'opacity-0'
             )}
           />
           <MdOutlineCopyAll
             className={classNames(
-              'w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1',
+              'w-5 h-5 text-gray-500 group-hover:text-gray-500 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1.5',
               !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
             )}
           />
