@@ -53,7 +53,7 @@ const CompanyPage = () => {
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
-      <dl className="w-full mt-4 mb-12 flex items-center justify-start">
+      <dl className="w-full mt-4 mb-12 flex items-center justify-start overflow-x-scroll">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
@@ -66,13 +66,13 @@ const CompanyPage = () => {
           </span>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
-          <dt className="text-sm text-gray-500">EIN (Tax ID)</dt>
+          <dt className="text-nowrap text-sm text-gray-500">EIN (Tax ID)</dt>
           <dd
             onClick={(event) => {
               event.preventDefault();
               navigate(ROUTES.EIN);
             }}
-            className="text-base font-semibold tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer"
+            className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer"
           >
             12-3456789
             <IoMdCheckmark
@@ -102,14 +102,14 @@ const CompanyPage = () => {
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
-          <dt className="text-sm text-gray-500">Registration #</dt>
+          <dt className="text-nowrap text-sm text-gray-500">Registration #</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationNumber}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
-          <dt className="text-sm text-gray-500">Type</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700">
+          <dt className="text-nowrap text-sm text-gray-500">Type</dt>
+          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {
               companyTypes.find((item) => item.fullName === data?.companyType)
                 ?.shortName
@@ -117,8 +117,8 @@ const CompanyPage = () => {
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
-          <dt className="text-sm text-gray-500">State</dt>
-          <dd className="text-base flex items-center font-semibold tracking-tight text-gray-700">
+          <dt className="text-nowrap text-sm text-gray-500">State</dt>
+          <dd className="text-nowrap text-base flex items-center font-semibold tracking-tight text-gray-700">
             <StateSolidIconHandler
               simpleIcon={true}
               selectedState={data?.registeredIn.split(' ')[2] || 'Florida'}
@@ -128,8 +128,10 @@ const CompanyPage = () => {
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
-          <dt className="text-sm text-gray-500">Registration Date</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700">
+          <dt className="text-nowrap text-sm text-gray-500">
+            Registration Date
+          </dt>
+          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationDate}
           </dd>
         </div>

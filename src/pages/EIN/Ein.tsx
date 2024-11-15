@@ -75,28 +75,28 @@ const mockFiles = [
   },
 ];
 
-const labelBadgeHandler = (label: string) => {
-  switch (label) {
-    case 'CP575A':
-      return 'bg-red-100 text-red-700 ring-red-600/20';
-    case 'Screenshot':
-      return 'bg-yellow-100 text-yellow-700 ring-yellow-600/20';
-    case 'CP575G':
-      return 'bg-blue-100 text-blue-700 ring-blue-600/20';
-    case '147C':
-      return 'bg-purple-100 text-purple-700 ring-purple-600/20';
-    case 'Faxed SS-4':
-      return 'bg-green-100 text-green-700 ring-green-600/20';
-    case 'W-9':
-      return 'bg-red-100 text-red-700 ring-red-600/20';
-    case 'CP577':
-      return 'bg-yellow-100 text-yellow-700 ring-yellow-600/20';
-    case 'CP577E':
-      return 'bg-red-100 text-red-700 ring-red-600/20';
-    default:
-      return 'bg-blue-100 text-blue-700 ring-blue-600/20';
-  }
-};
+// const labelBadgeHandler = (label: string) => {
+//   switch (label) {
+//     case 'CP575A':
+//       return 'bg-red-100 text-red-700 ring-red-600/20';
+//     case 'Screenshot':
+//       return 'bg-yellow-100 text-yellow-700 ring-yellow-600/20';
+//     case 'CP575G':
+//       return 'bg-blue-100 text-blue-700 ring-blue-600/20';
+//     case '147C':
+//       return 'bg-purple-100 text-purple-700 ring-purple-600/20';
+//     case 'Faxed SS-4':
+//       return 'bg-green-100 text-green-700 ring-green-600/20';
+//     case 'W-9':
+//       return 'bg-red-100 text-red-700 ring-red-600/20';
+//     case 'CP577':
+//       return 'bg-yellow-100 text-yellow-700 ring-yellow-600/20';
+//     case 'CP577E':
+//       return 'bg-red-100 text-red-700 ring-red-600/20';
+//     default:
+//       return 'bg-blue-100 text-blue-700 ring-blue-600/20';
+//   }
+// };
 const statusBadge = (status: string) => {
   switch (status) {
     case 'Confirmation Needed':
@@ -132,7 +132,7 @@ const Ein = () => {
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
-      <dl className="w-full mt-4 mb-12 flex items-center justify-start">
+      <dl className="w-full mt-4 mb-12 flex items-center justify-start overflow-x-scroll">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
@@ -148,15 +148,17 @@ const Ein = () => {
           <dt className="text-sm text-gray-500">Company</dt>
           <span
             onClick={() => navigate(ROUTES.COMPANY)}
-            className="flex items-center text-base font-semibold tracking-tight text-gray-700 group hover:cursor-pointer"
+            className="text-nowrap flex items-center text-base font-semibold tracking-tight text-gray-700 group hover:cursor-pointer"
           >
             {data?.companyName}
             <MdOpenInNew className="text-gray-500 text-sm ml-2 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </span>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
-          <dt className="text-sm text-gray-500">Last verification date</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700">
+          <dt className="text-nowrap text-sm text-gray-500">
+            Last verification date
+          </dt>
+          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {data?.registrationDate}
           </dd>
         </div>
@@ -169,7 +171,8 @@ const Ein = () => {
                   key={file.id}
                   className={classNames(
                     'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',
-                    labelBadgeHandler(file.label)
+                    // labelBadgeHandler(file.label)
+                    'bg-gray-100 text-gray-700 ring-gray-600/20'
                   )}
                 >
                   {file.label}
