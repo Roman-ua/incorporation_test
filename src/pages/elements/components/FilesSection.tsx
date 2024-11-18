@@ -80,19 +80,19 @@ const mockFiles = [
 const fileIconHandler = (type: string) => {
   switch (type) {
     case 'pdf':
-      return <IconFileTypePdf className="w-6 h-6 text-gray-500 mr-2" />;
+      return <IconFileTypePdf className="w-5 h-5 text-gray-500 mr-2" />;
     case 'jpg':
-      return <IconFileTypeJpg className="w-6 h-6 text-gray-500 mr-2" />;
+      return <IconFileTypeJpg className="w-5 h-5 text-gray-500 mr-2" />;
     case 'xls':
-      return <IconFileTypeXls className="w-6 h-6 text-gray-500 mr-2" />;
+      return <IconFileTypeXls className="w-5 h-5 text-gray-500 mr-2" />;
     default:
-      return <IconFileTypeDoc className="w-6 h-6 text-gray-500 mr-2" />;
+      return <IconFileTypeDoc className="w-5 h-5 text-gray-500 mr-2" />;
   }
 };
 const replaceSpaces = (str: string) => {
   const result = str.replace(/ /g, '_');
   if (result.length > 10) {
-    return result.slice(0, 15) + '...';
+    return result.slice(0, 25) + '...';
   }
   return result;
 };
@@ -110,16 +110,20 @@ const FilesSection = () => {
           return (
             <div
               key={file.id}
-              className="flex items-center justify-start py-4 px-2 border-b"
+              className="flex items-center justify-start py-4 px-2 border-b group"
             >
               {fileIconHandler(file.type)}
-              <div className="flex items-center justify-between w-full pr-4 mr-4 border-r group">
+              <div className="flex items-center justify-between w-full mr-4">
                 <div className="flex min-w-0 items-center flex-1 gap-3">
-                  <span className="truncate hover:cursor-pointer">
-                    {replaceSpaces(file.name)}
-                  </span>
-                  <span className="shrink-0 text-gray-400">{file.date}</span>
-                  <MdOutlineCloudDownload className="w-5 h-5 text-gray-500 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150" />
+                  <div className="flex flex-col align-middle justify-start">
+                    <span className="truncate text-sm hover:cursor-pointer">
+                      {replaceSpaces(file.name)}
+                    </span>
+                    <span className="shrink-0 text-sm text-gray-400">
+                      Document date: {file.date}
+                    </span>
+                  </div>
+                  <MdOutlineCloudDownload className="w-5 h-5 text-gray-500 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150 hover:text-blue-700" />
                 </div>
                 <div
                   className={classNames(
@@ -131,7 +135,7 @@ const FilesSection = () => {
                 </div>
               </div>
               <div className="ml-auto flex items-center justify-end">
-                <TbTrash className="w-4 h-4 text-gray-500 hover:cursor-pointer hover:text-red-700 transition-all ease-in-out duration-150" />
+                <TbTrash className="w-4 h-4 text-gray-500 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150 hover:text-red-700" />
               </div>
             </div>
           );
