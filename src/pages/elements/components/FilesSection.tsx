@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionHeading from '../../createCompany/components/SectionHeading';
 // import { PaperClipIcon } from '@heroicons/react/20/solid';
 import { TbTrash } from 'react-icons/tb';
@@ -9,6 +9,7 @@ import {
   IconFileTypePdf,
   IconFileTypeXls,
 } from '@tabler/icons-react';
+import AddCompanyFileModal from '../../../components/shared/Modals/AddCompanyFileModal';
 
 const mockFiles = [
   {
@@ -102,24 +103,33 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const FilesSection = () => {
+  const [open, setOpen] = useState(true);
+
   return (
     <>
       <SectionHeading text="Files list" status={false} hideStatus={true} />
+      <AddCompanyFileModal setOpen={setOpen} open={open} />
       <div className="w-1/2 mb-20">
+        <div
+          onClick={() => setOpen(true)}
+          className="ml-auto bg-mainBlue py-1.5 px-2 rounded w-fit text-white mb-4 hover:cursor-pointer"
+        >
+          + Add new file
+        </div>
         {mockFiles.map((file) => {
           return (
             <div
               key={file.id}
-              className="flex items-center justify-start py-4 px-2 border-b group"
+              className="flex items-center justify-start py-2 px-2 border-b"
             >
               {fileIconHandler(file.type)}
-              <div className="flex items-center justify-between w-full mr-4">
+              <div className="flex items-center justify-between w-full group">
                 <div className="flex min-w-0 items-center flex-1 gap-3">
                   <div className="flex flex-col align-middle justify-start">
-                    <span className="truncate text-sm hover:cursor-pointer">
+                    <span className="truncate text-sm hover:cursor-pointer mb-1">
                       {replaceSpaces(file.name)}
                     </span>
-                    <span className="shrink-0 text-sm text-gray-400">
+                    <span className="shrink-0 text-xs text-gray-400">
                       Document date: {file.date}
                     </span>
                   </div>
@@ -134,7 +144,7 @@ const FilesSection = () => {
                   {file.label}
                 </div>
               </div>
-              <div className="ml-auto flex items-center justify-end">
+              <div className="ml-auto flex items-center justify-end group px-4 py-2">
                 <TbTrash className="w-4 h-4 text-gray-500 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150 hover:text-red-700" />
               </div>
             </div>
