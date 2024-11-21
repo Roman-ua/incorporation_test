@@ -9,7 +9,7 @@ import {
   IconFileTypePdf,
   IconFileTypeXls,
 } from '@tabler/icons-react';
-import AddCompanyFileModal from '../../../components/shared/Modals/AddCompanyFileModal';
+import AddCompanyFileModal from '../../../components/shared/Modals/addCompanyFile/AddCompanyFileModal';
 
 const mockFiles = [
   {
