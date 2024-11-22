@@ -9,6 +9,7 @@ import AddressFormElements from './components/AddressFormElements';
 import USAddressFormElements from './components/USAddressFormElements';
 import StateIcons from './components/StateIcons';
 import FilesSection from './components/FilesSection';
+import Buttons from './components/Buttons';
 
 const Elements = () => {
   return (
@@ -22,6 +23,7 @@ const Elements = () => {
       <JoinedCardsElements />
       <SeparatedCardsElements />
       <StateCardsElements />
+      <Buttons />
       <FilesSection />
     </div>
   );

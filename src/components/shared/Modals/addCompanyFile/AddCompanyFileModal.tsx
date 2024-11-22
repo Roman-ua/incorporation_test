@@ -98,7 +98,8 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-7">
                 <span className="text-gray-900 text-lg">
-                  Upload EIN (Tax ID) Confirmation Document
+                  Upload EIN (<span className="font-bold">Tax ID</span>)
+                  Confirmation Document
                 </span>
                 <IconX
                   onClick={() => setOpen(false)}
@@ -113,14 +114,16 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
               />
               <div className="flex items-center justify-between mt-2">
                 <span className="text-xs text-gray-500">
-                  Supported formats: XLS, PDF, JPEG, DOC
+                  Supported formats: PDF, JPEG
                 </span>
                 <span className="text-xs text-gray-500">
                   Maximum size: 25mb
                 </span>
               </div>
               <div className="mt-6">
-                <div className="text-gray-700 text-sm mb-2">Document type:</div>
+                <div className="text-gray-700 text-sm mb-2 font-bold">
+                  Document type:
+                </div>
                 <div className="flex items-center justify-start flex-wrap">
                   {labels.map((label) => (
                     <div
@@ -139,7 +142,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                 </div>
               </div>
               <div className="mt-6">
-                <div className="text-gray-700 text-sm mb-2">
+                <div className="text-gray-700 text-sm mb-2 font-bold">
                   Document status:
                 </div>
                 <div className="flex items-center justify-start flex-wrap">

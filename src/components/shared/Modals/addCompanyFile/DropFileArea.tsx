@@ -40,7 +40,7 @@ const FileDropArea = ({
       >
         <div
           className={`flex justify-center rounded-lg border border-dashed border-gray-500/25
-          dark:border-white/25 px-6 py-20`}
+          dark:border-white/25 px-6 py-10`}
         >
           <div className={`text-center flex flex-col items-center`}>
             {loaderStatus ? (
@@ -66,7 +66,7 @@ const FileDropArea = ({
                 className={`sr-only`}
                 onChange={(e) => handleFileInput(e)}
               />
-              <span className="ml-1 underline underline-offset-1">
+              <span className="ml-1 font-semibold underline underline-offset-1">
                 Choose file
               </span>
             </div>
