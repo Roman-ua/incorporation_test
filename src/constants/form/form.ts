@@ -60,3 +60,14 @@ export const USStates = [
   { title: 'Wisconsin', value: 'WI' },
   { title: 'Wyoming', value: 'WY' },
 ];
+
+export const fileLabels = [
+  { title: 'CP575A', value: 'CP575A' },
+  { title: 'Screenshot', value: 'Screenshot' },
+  { title: 'CP575G', value: 'CP575G' },
+  { title: '147C', value: '147C' },
+  { title: 'Faxed SS-4', value: 'Faxed SS-4' },
+  { title: 'W-9', value: 'W-9' },
+  { title: 'CP577', value: 'CP577' },
+  { title: 'CP577E', value: 'CP577E' },
+];

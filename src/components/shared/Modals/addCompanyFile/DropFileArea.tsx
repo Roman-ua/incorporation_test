@@ -1,7 +1,7 @@
 import React, { ChangeEvent, RefObject } from 'react';
-import { FolderArrowDownIcon } from '@heroicons/react/24/solid';
 import { DragEventHandler } from 'react';
 import Spinner from '../../Loaders/Spinner';
+import { IconUpload } from '@tabler/icons-react';
 
 interface IProps {
   handleFileDrop: (file: File) => void;
@@ -30,7 +30,7 @@ const FileDropArea = ({
   };
   return (
     <div
-      className={`bg-white shadow-lg rounded-lg`}
+      className={`bg-white rounded-lg`}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -40,19 +40,23 @@ const FileDropArea = ({
       >
         <div
           className={`flex justify-center rounded-lg border border-dashed border-gray-500/25
-          dark:border-white/25 px-6 py-10`}
+          dark:border-white/25 px-6 py-20`}
         >
-          <div className={`text-center`}>
+          <div className={`text-center flex flex-col items-center`}>
             {loaderStatus ? (
               <Spinner />
             ) : (
-              <FolderArrowDownIcon
-                className={`mx-auto h-10 w-10 text-blue-600/90`}
-                aria-hidden="true"
-              />
+              <div className="rounded-full bg-gray-900 w-fit p-2">
+                <IconUpload
+                  className={`mx-auto h-5 w-5 text-white`}
+                  aria-hidden="true"
+                />
+              </div>
             )}
-            <div className={`mt-4 flex text-sm leading-6 text-gray-400`}>
-              <span>Upload a file</span>
+            <div
+              className={`mt-4 flex text-sm font-light leading-6 text-gray-900`}
+            >
+              <span>Drag and Drop file here or</span>
               <input
                 disabled={loaderStatus}
                 ref={inputRef}
@@ -62,10 +66,10 @@ const FileDropArea = ({
                 className={`sr-only`}
                 onChange={(e) => handleFileInput(e)}
               />
-
-              <p className={`pl-1`}>or drag and drop</p>
+              <span className="ml-1 underline underline-offset-1">
+                Choose file
+              </span>
             </div>
-            <p className={`text-xs leading-5 text-gray-400`}>file up to 10MB</p>
           </div>
         </div>
       </label>
