@@ -1,3 +1,4 @@
+const flowbite = require('flowbite-react/tailwind');
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -5,6 +6,7 @@ module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
     './node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
+    flowbite.content(),
   ],
   theme: {
     extend: {
@@ -16,5 +18,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [flowbite.plugin()],
 };

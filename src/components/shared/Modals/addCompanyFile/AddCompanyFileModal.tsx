@@ -3,6 +3,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import DropFileArea from './DropFileArea';
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import { IconX } from '@tabler/icons-react';
+import DatePicker from './datePicker';
 
 interface IProps {
   open: boolean;
@@ -93,7 +94,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
         <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
           <DialogPanel
             // transition
-            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+            className="relative transform rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-7">
@@ -119,6 +120,12 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                 <span className="text-xs text-gray-500">
                   Maximum size: 25mb
                 </span>
+              </div>
+              <div className="mt-6">
+                <div className="text-gray-700 text-sm mb-2 font-bold">
+                  Document date:
+                </div>
+                <DatePicker />
               </div>
               <div className="mt-6">
                 <div className="text-gray-700 text-sm mb-2 font-bold">
@@ -164,7 +171,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
               </div>
             </div>
             {/*//*/}
-            <div className="w-full bg-gray-100 py-3 px-5">
+            <div className="w-full bg-gray-100 py-3 px-5 rounded-b-lg">
               <div className="mr-auto flex items-center justify-end">
                 <div className="text-[12px] bg-white mr-2 border text-gray-900 py-2 px-3.5 rounded-lg hover:bg-red-100 transition-all duration-150 ease-in-out hover:cursor-pointer hover:border-red-100">
                   Cancel
