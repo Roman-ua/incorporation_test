@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Datepicker } from 'flowbite-react';
 import { format, isValid, parse, startOfToday } from 'date-fns';
+import useOutsideClick from '../../../../utils/hooks/useOutsideClick';
 
 const customTheme = {
   root: {
@@ -34,9 +35,9 @@ const customTheme = {
       button: {
         base: 'w-full rounded-lg px-5 py-2 text-center text-sm font-medium transition-all duration-150 ease-in-out',
         today:
-          'bg-mainBlue text-white hover:bg-sideBarBlue dark:bg-cyan-600 dark:hover:bg-cyan-700',
+          'text-white hover:bg-sideBarBlue text-[12px] bg-white mr-2 border text-gray-900 py-2 px-3.5 rounded-lg transition-all duration-150 ease-in-out hover:text-white hover:cursor-pointer hover:border-sideBarBlue',
         clear:
-          'border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600',
+          'text-[12px] py-2 px-3.5 rounded-lg bg-gray-300 text-gray-500 hover:bg-sideBarBlue hover:text-white transition-all duration-150 ease-in-out hover:cursor-pointer',
       },
     },
   },
@@ -89,45 +90,85 @@ const customTheme = {
   },
 };
 const DatePicker = () => {
+  const dateRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+  const inputValueRef = React.useRef('');
+
   const today = startOfToday();
+
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string>(
-    format(today, 'MMM dd yyyy')
+    format(today, 'MMMM dd, yyyy')
   );
   const [calendarValue, setCalendarValue] = React.useState<Date | null>(today);
 
-  const validateDateInput = (input: string) => {
-    setInputValue(input);
-    const formats = ['MM/dd/yyyy', 'MM.dd.yyyy', 'MMM dd yyyy'];
+  const validateDateInput = (input: string, isKb: boolean) => {
+    if (!isKb) {
+      setInputValue(input);
+    }
+
+    const formats = [
+      'MM.dd.yyyy',
+      'MM dd yyyy',
+      'MM/dd/yyyy',
+      'MMM dd yyyy',
+      'MMM dd, yyyy',
+      'MMMM dd yyyy',
+    ];
 
     for (const formatI of formats) {
       const parsedDate = parse(input, formatI, new Date());
 
-      if (isValid(parsedDate)) {
-        return setCalendarValue(parsedDate);
+      if (isValid(parsedDate) && isKb) {
+        setInputValue(format(parsedDate as Date, 'MMMM dd, yyyy') || '');
       }
+
+      if (isValid(parsedDate)) {
+        setCalendarValue(parsedDate);
+        setOpen(false);
+        const timer = setTimeout(() => {
+          setOpen(true);
+          clearTimeout(timer);
+        }, 100);
+        return;
+      }
+      setOpen(false);
+      const timer = setTimeout(() => {
+        setOpen(true);
+        clearTimeout(timer);
+      }, 100);
+      setCalendarValue(today);
     }
 
     return null;
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      validateDateInput(inputValueRef.current, true);
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    inputValueRef.current = inputValue;
+  }, [inputValue]);
+
+  useOutsideClick(dateRef, inputRef, () => setOpen(false));
+
   return (
     <div className="relative">
       <input
+        ref={inputRef}
         className="rounded border border-gray-300 px-2 py-1.5 w-full text-sm text-gray-900 focus:outline-none"
         value={inputValue}
-        onChange={(e) => validateDateInput(e.target.value)}
-        // onBlur={() => {
-        //   const timer = setTimeout(() => {
-        //     setOpen(false);
-        //     clearTimeout(timer);
-        //   }, 200);
-        // }}
+        onChange={(e) => validateDateInput(e.target.value, false)}
         onFocus={() => setOpen(true)}
         type="text"
+        onKeyDown={handleKeyDown}
       />
       {open && (
-        <div className="absolute left-0 top-10">
+        <div ref={dateRef} className="absolute left-0 top-10">
           <Datepicker
             value={calendarValue}
             defaultValue={today}
@@ -136,9 +177,8 @@ const DatePicker = () => {
             theme={customTheme}
             onChange={(date) => {
               const dataValue = date === null ? today : date;
-
               setCalendarValue(dataValue);
-              setInputValue(format(dataValue as Date, 'MMM dd yyyy') || '');
+              setInputValue(format(dataValue as Date, 'MMMM dd, yyyy') || '');
               setOpen(false);
             }}
           />

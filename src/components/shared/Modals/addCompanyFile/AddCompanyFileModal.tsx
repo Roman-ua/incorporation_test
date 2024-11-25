@@ -39,8 +39,8 @@ const statuses = [
   },
   {
     title: 'Archived',
-    hoverStyles: 'hover:text-gray-900 hover:border-gray-600',
-    selectedStyles: 'bg-gray-50 text-gray-700 border-gray-600',
+    hoverStyles: 'hover:text-gray-900 hover:border-gray-900',
+    selectedStyles: 'bg-gray-100 text-gray-900 border-gray-900',
   },
 ];
 
@@ -98,9 +98,8 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-7">
-                <span className="text-gray-900 text-lg">
-                  Upload EIN (<span className="font-bold">Tax ID</span>)
-                  Confirmation Document
+                <span className="text-gray-900 text-lg font-bold">
+                  Upload EIN (Tax ID) Confirmation Document
                 </span>
                 <IconX
                   onClick={() => setOpen(false)}
@@ -150,7 +149,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
               </div>
               <div className="mt-6">
                 <div className="text-gray-700 text-sm mb-2 font-bold">
-                  Document status:
+                  EIN (Tax ID) status:
                 </div>
                 <div className="flex items-center justify-start flex-wrap">
                   {statuses.map((item) => (

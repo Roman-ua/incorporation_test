@@ -67,7 +67,7 @@ const FileDropArea = ({
                 onChange={(e) => handleFileInput(e)}
               />
               <span className="ml-1 font-semibold underline underline-offset-1">
-                Choose file
+                choose file
               </span>
             </div>
           </div>
