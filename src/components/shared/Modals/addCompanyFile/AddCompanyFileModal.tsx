@@ -4,6 +4,7 @@ import DropFileArea from './DropFileArea';
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import { IconX } from '@tabler/icons-react';
 import DatePicker from './datePicker';
+import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
 
 interface IProps {
   open: boolean;
@@ -167,6 +168,13 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                     </div>
                   ))}
                 </div>
+              </div>
+              <div className="w-full mt-6">
+                <FileDownloadProgress
+                  fileName="classification_v3"
+                  fileSize="1.2 MB"
+                  duration={3}
+                />
               </div>
             </div>
             <div className="w-full bg-gray-100 py-3 px-5 rounded-b-lg">
