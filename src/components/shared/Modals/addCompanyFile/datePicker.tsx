@@ -20,7 +20,7 @@ const customTheme = {
       selectors: {
         base: 'mb-2 flex justify-between',
         button: {
-          base: 'rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600',
+          base: 'rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600',
           prev: '',
           next: '',
           view: '',
@@ -33,11 +33,11 @@ const customTheme = {
     footer: {
       base: 'mt-2 flex space-x-2',
       button: {
-        base: 'w-full rounded-lg px-5 py-2 text-center text-sm font-medium transition-all duration-150 ease-in-out',
+        base: 'w-full rounded-md px-5 py-2 text-center text-sm font-medium transition-all duration-150 ease-in-out',
         today:
-          'text-white hover:bg-sideBarBlue text-[12px] bg-white mr-2 border text-gray-900 py-2 px-3.5 rounded-lg transition-all duration-150 ease-in-out hover:text-white hover:cursor-pointer hover:border-sideBarBlue',
+          'block rounded-md bg-white px-3 py-2 border text-center text-sm shadow-sm text-gray-900 hover:text-white hover:bg-mainBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
         clear:
-          'text-[12px] py-2 px-3.5 rounded-lg bg-gray-300 text-gray-500 hover:bg-sideBarBlue hover:text-white transition-all duration-150 ease-in-out hover:cursor-pointer',
+          'block rounded-md bg-white px-3 py-2 border text-center text-sm shadow-sm text-gray-900 hover:text-white hover:bg-mainBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
       },
     },
   },
@@ -62,7 +62,7 @@ const customTheme = {
         base: 'grid w-64 grid-cols-4',
         item: {
           base: 'block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600',
-          selected: 'bg-cyan-700 text-white hover:bg-cyan-600',
+          selected: 'bg-mainBlue text-white hover:bg-sidebarBlue',
           disabled: 'text-gray-500',
         },
       },
@@ -72,7 +72,7 @@ const customTheme = {
         base: 'grid w-64 grid-cols-4',
         item: {
           base: 'block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600',
-          selected: 'bg-cyan-700 text-white hover:bg-cyan-600',
+          selected: 'bg-mainBlue text-white hover:bg-sidebarBlue',
           disabled: 'text-gray-500',
         },
       },
@@ -82,7 +82,7 @@ const customTheme = {
         base: 'grid w-64 grid-cols-4',
         item: {
           base: 'block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600',
-          selected: 'bg-cyan-700 text-white hover:bg-cyan-600',
+          selected: 'bg-mainBlue text-white hover:bg-sidebarBlue',
           disabled: 'text-gray-500',
         },
       },

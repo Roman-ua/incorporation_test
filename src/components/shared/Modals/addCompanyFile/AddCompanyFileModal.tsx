@@ -30,17 +30,17 @@ const statuses = [
   {
     title: 'Confirmation Needed',
     hoverStyles: 'hover:text-yellow-700 hover:border-yellow-600',
-    selectedStyles: 'bg-yellow-50 text-yellow-700 border-yellow-600',
+    selectedStyles: 'bg-yellow-100 text-yellow-700 border-yellow-600',
   },
   {
     title: 'Confirmed',
     hoverStyles: 'hover:text-green-700 hover:border-green-600',
-    selectedStyles: 'bg-green-50 text-green-700 border-green-600',
+    selectedStyles: 'bg-green-100 text-green-700 border-green-600',
   },
   {
     title: 'Archived',
     hoverStyles: 'hover:text-gray-900 hover:border-gray-900',
-    selectedStyles: 'bg-gray-100 text-gray-900 border-gray-900',
+    selectedStyles: 'bg-gray-200 text-gray-900 border-gray-900',
   },
 ];
 
@@ -135,7 +135,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                     <div
                       onClick={() => setSelectedDocTypeHandler(label)}
                       className={classNames(
-                        'text-sm text-gray-700 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
+                        'text-sm font-bold text-gray-700 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
                         selectedDocType === label
                           ? 'bg-sideBarBlue text-white border-sideBarBlue'
                           : 'border-gray-300 hover:border-sideBarBlue hover:text-sideBarBlue'
@@ -156,7 +156,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                     <div
                       onClick={() => setSelectedDocStatusHandler(item)}
                       className={classNames(
-                        'text-sm py-1.5 px-3 border rounded mr-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
+                        'text-sm font-bold py-1.5 px-3 border rounded mr-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
                         selectedDocStatus.title === item.title
                           ? item.selectedStyles
                           : item.hoverStyles
@@ -169,13 +169,12 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                 </div>
               </div>
             </div>
-            {/*//*/}
             <div className="w-full bg-gray-100 py-3 px-5 rounded-b-lg">
               <div className="mr-auto flex items-center justify-end">
-                <div className="text-[12px] bg-white mr-2 border text-gray-900 py-2 px-3.5 rounded-lg hover:bg-red-100 transition-all duration-150 ease-in-out hover:cursor-pointer hover:border-red-100">
+                <div className="block rounded-md bg-white px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:text-white hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer">
                   Cancel
                 </div>
-                <div className="text-[12px] py-2 px-3.5 rounded-lg bg-gray-300 text-gray-500 hover:bg-sideBarBlue hover:text-white transition-all duration-150 ease-in-out hover:cursor-pointer">
+                <div className="ml-2 block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer">
                   Upload
                 </div>
               </div>
