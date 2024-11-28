@@ -38,7 +38,6 @@ export default function CountrySelector({
 }: CountrySelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log(list, 'list');
   useEffect(() => {
     const mutableRef = ref as MutableRefObject<HTMLDivElement | null>;
 

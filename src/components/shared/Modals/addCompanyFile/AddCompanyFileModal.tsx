@@ -77,12 +77,10 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
     inputRef,
     // errorState,
     // setErrorState,
-    // selectedFiles,
-    loaderStatus,
+    selectedFile,
     handleFileInput,
-    // handleDownload,
     handleFileDrop,
-    // deleteFileHandler
+    deleteFileHandler,
   } = useFileUpload();
   return (
     <Dialog open={open} onClose={setOpen} className="fixed z-10">
@@ -107,12 +105,24 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                   className="w-5 h-5 text-gray-500 ml-auto hover:cursor-pointer hover:text-gray-700 transition-all ease-in-out duration-150"
                 />
               </div>
-              <DropFileArea
-                loaderStatus={loaderStatus}
-                inputRef={inputRef}
-                handleFileDrop={handleFileDrop}
-                handleFileInput={handleFileInput}
-              />
+              {selectedFile?.name ? (
+                <div className="w-full">
+                  <FileDownloadProgress
+                    deleteFileHandler={deleteFileHandler}
+                    fileName={selectedFile.name}
+                    fileSize={`${selectedFile?.size} MB`}
+                    fileFormat={selectedFile.format}
+                    duration={3}
+                  />
+                </div>
+              ) : (
+                <DropFileArea
+                  loaderStatus={false}
+                  inputRef={inputRef}
+                  handleFileDrop={handleFileDrop}
+                  handleFileInput={handleFileInput}
+                />
+              )}
               <div className="flex items-center justify-between mt-2">
                 <span className="text-xs text-gray-500">
                   Supported formats: PDF, JPEG
@@ -168,13 +178,6 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className="w-full mt-6">
-                <FileDownloadProgress
-                  fileName="classification_v3"
-                  fileSize="1.2 MB"
-                  duration={3}
-                />
               </div>
             </div>
             <div className="w-full bg-gray-100 py-3 px-5 rounded-b-lg">

@@ -6,12 +6,24 @@ interface IFiles {
   name: string;
   status: string;
   dueDate: string;
+  size?: number;
+  format: string;
 }
+
+const defaultFileStructure = {
+  id: 0,
+  file: null,
+  name: '',
+  status: '',
+  dueDate: '',
+  size: 0,
+  format: '',
+};
 
 const useFileUpload = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [loaderStatus, setLoaderStatus] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState<IFiles[]>([]);
+  const [selectedFile, setSelectedFile] =
+    useState<IFiles>(defaultFileStructure);
   const [errorState, setErrorState] = useState<string>('');
 
   const dateHandler = () => {
@@ -29,52 +41,24 @@ const useFileUpload = () => {
     );
   };
 
-  const deleteFileHandler = (id: number) => {
-    const updatedFiles = selectedFiles.filter((item) => item.id !== id);
-    setSelectedFiles(updatedFiles);
+  const deleteFileHandler = () => {
+    setSelectedFile(defaultFileStructure);
   };
 
   const convertHandler = async (file: File) => {
     const fileName = file.name.split('.')[0];
+    const fileFormat = file.name.split('.')[1];
     const formData = new FormData();
     formData.append('file', file as File);
-
-    try {
-      const response = await fetch('https://ofxapi.nowlab.io/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-
-        const timeout = setTimeout(() => {
-          setSelectedFiles((prevState) => {
-            const lastElement = prevState.at(-1)?.id;
-            return [
-              ...prevState,
-              {
-                id: lastElement ? lastElement + 1 : 0,
-                file: { name: `${fileName}.ofx`, link: url },
-                name: `${fileName}.ofx`,
-                status: 'Converted',
-                dueDate: dateHandler(),
-              },
-            ];
-          });
-
-          setLoaderStatus(false);
-          clearTimeout(timeout);
-        }, 1000);
-      } else {
-        setLoaderStatus(false);
-        console.log('Upload failed');
-      }
-    } catch (e) {
-      setLoaderStatus(false);
-      console.log(e, 'error');
-    }
+    setSelectedFile({
+      id: 1,
+      file: { name: `${fileName}.${fileFormat}`, link: '' },
+      name: `${fileName.replace(/ /g, '_')}`,
+      status: '',
+      dueDate: dateHandler(),
+      format: fileFormat,
+      size: parseFloat((file?.size / (1024 * 1024)).toFixed(2)),
+    });
   };
 
   const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,16 +68,7 @@ const useFileUpload = () => {
 
     if (e.target.files) {
       const file = e.target.files[0];
-      if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
-        setLoaderStatus(true);
-        await convertHandler(file);
-
-        if (inputRef.current) {
-          inputRef.current.value = '';
-        }
-      } else {
-        setErrorState('Ooops invalid file type. Please select a CSV file.');
-      }
+      await convertHandler(file);
     }
   };
 
@@ -101,39 +76,16 @@ const useFileUpload = () => {
     if (errorState) {
       setErrorState('');
     }
-
-    if (file && (file.type === 'text/csv' || file.name.endsWith('.csv'))) {
-      setLoaderStatus(true);
-      await convertHandler(file);
-    } else {
-      setErrorState('Ooops invalid file type. Please select a CSV file.');
-    }
-  };
-
-  const handleDownload = (id: number) => {
-    const convertedFile = selectedFiles.find((item) => item.id === id) as {
-      file: { name: string; link: string };
-    };
-
-    if (convertedFile) {
-      const link = document.createElement('a');
-      link.href = convertedFile?.file?.link || '';
-      link.download = convertedFile?.file?.name || '';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    await convertHandler(file);
   };
 
   return {
     inputRef,
     errorState,
-    selectedFiles,
-    loaderStatus,
+    selectedFile,
     deleteFileHandler,
     setErrorState,
     handleFileInput,
-    handleDownload,
     handleFileDrop,
   };
 };
