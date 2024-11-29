@@ -45,18 +45,18 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
   const fileIconHandler = (type: string) => {
     switch (type) {
       case 'pdf':
-        return <IconFileTypePdf className="w-5 h-5 text-gray-500 mr-2" />;
+        return <IconFileTypePdf className="w-6 h-6 text-gray-500 mr-1.5" />;
       case 'jpg':
-        return <IconFileTypeJpg className="w-5 h-5 text-gray-500 mr-2" />;
+        return <IconFileTypeJpg className="w-6 h-6 text-gray-500 mr-1.5" />;
       default:
-        return <IconFileTypeJpg className="w-5 h-5 text-gray-500 mr-2" />;
+        return <IconFileTypeJpg className="w-6 h-6 text-gray-500 mr-1.5" />;
     }
   };
 
   return (
-    <div className="flex items-center space-x-4 border py-3 px-1.5 rounded-lg w-full">
-      <div className="flex-1 group">
-        <div className="flex items-center justify-start gap-2 mb-2 pr-2">
+    <div className="flex items-center space-x-4 border py-3 px-4 rounded-lg w-full">
+      <div className="flex-1">
+        <div className="flex items-center justify-start gap-2 mb-2">
           {fileIconHandler(fileFormat)}
           <div>
             <div className="text-gray-900 text-sm font-semibold mb-1.5 leading-none	">
@@ -83,7 +83,7 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
           </div>
           <TbTrash
             onClick={deleteFileHandler}
-            className="ml-auto mb-auto w-4 h-4 text-gray-500 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150 hover:text-red-700"
+            className="ml-auto mb-auto w-5 h-5 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 hover:text-red-700"
           />
         </div>
         <div className="w-full bg-gray-300 rounded-full h-1.5 mt-2">

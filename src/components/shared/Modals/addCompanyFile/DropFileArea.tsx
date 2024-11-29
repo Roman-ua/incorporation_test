@@ -1,6 +1,5 @@
 import React, { ChangeEvent, RefObject } from 'react';
 import { DragEventHandler } from 'react';
-import Spinner from '../../Loaders/Spinner';
 import { IconUpload } from '@tabler/icons-react';
 
 interface IProps {
@@ -28,6 +27,7 @@ const FileDropArea = ({
       handleFileDrop(files[0]);
     }
   };
+
   return (
     <div
       className={`bg-white rounded-lg`}
@@ -39,22 +39,17 @@ const FileDropArea = ({
         className={`relative cursor-pointer rounded-md font-semibold text-gray-900 dark:text-white`}
       >
         <div
-          className={`flex justify-center rounded-lg border border-dashed border-gray-500/25
-          dark:border-white/25 px-6 py-10`}
+          className={`flex justify-center rounded-lg border border-dashed border-gray-500/25 px-2 py-2`}
         >
           <div className={`text-center flex flex-col items-center`}>
-            {loaderStatus ? (
-              <Spinner />
-            ) : (
-              <div className="rounded-full bg-gray-900 w-fit p-2">
-                <IconUpload
-                  className={`mx-auto h-5 w-5 text-white`}
-                  aria-hidden="true"
-                />
-              </div>
-            )}
+            <div className="rounded-full bg-gray-900 w-fit p-2 mt-0.5">
+              <IconUpload
+                className={`mx-auto h-3 w-3 text-white`}
+                aria-hidden="true"
+              />
+            </div>
             <div
-              className={`mt-4 flex text-sm font-light leading-6 text-gray-900`}
+              className={`mt-1 flex text-sm font-light leading-6 text-gray-900`}
             >
               <span>Drag and Drop file here or</span>
               <input
