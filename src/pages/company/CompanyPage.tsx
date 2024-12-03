@@ -150,6 +150,32 @@ const CompanyPage = () => {
             {data?.registrationDate}
           </dd>
         </div>
+        <div className="flex flex-col gap-y-1 ml-auto">
+          <dt className="text-nowrap text-sm text-gray-500">People</dt>
+          <div className="isolate flex -space-x-2 overflow-hidden">
+            <div className="flex text-xs items-center justify-center font-bold relative z-40 inline-block size-6 rounded-full ring-2 ring-white bg-gray-400 text-white">
+              U
+            </div>
+            <img
+              alt=""
+              src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              className="relative z-30 inline-block size-6 rounded-full ring-2 ring-white"
+            />
+            <img
+              alt=""
+              src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              className="relative z-20 inline-block size-6 rounded-full ring-2 ring-white"
+            />
+            <div className="flex text-xs items-center justify-center font-bold relative z-10 inline-block size-6 rounded-full ring-2 ring-white bg-gray-400 text-white">
+              K
+            </div>
+            <img
+              alt=""
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              className="relative z-0 inline-block size-6 rounded-full ring-2 ring-white"
+            />
+          </div>
+        </div>
       </dl>
       <SectionHeading title="Address" />
       <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
@@ -178,42 +204,11 @@ const CompanyPage = () => {
           <div>{data.address.country}</div>
         </>
       </div>
-      {/*<SectionHeading title="Associated users" />*/}
-      <div className="mt-6 flow-root">
+      <SectionHeading title="People" />
+      <div className="flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table className="min-w-full divide-y ">
-              <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                  >
-                    Associated users
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Position
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Status
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Role
-                  </th>
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                    <span className="sr-only">Edit</span>
-                  </th>
-                </tr>
-              </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {people.map((person) => (
                   <tr
