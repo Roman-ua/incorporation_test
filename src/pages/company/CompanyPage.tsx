@@ -206,16 +206,16 @@ const CompanyPage = () => {
       </div>
       <SectionHeading title="People" extraClass={'mb-0'} />
       <div className="flow-root">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <table className="min-w-full divide-y ">
+        <div className="overflow-x-auto">
+          <div className="inline-block min-w-full align-middle">
+            <table className="min-w-full divide-y">
               <tbody className="divide-y divide-gray-200 bg-white">
                 {people.map((person) => (
                   <tr
                     key={person.email}
                     className="transition-all ease-in-out duration-150 group"
                   >
-                    <td className="whitespace-nowrap py-[19px] pl-4 pr-3 text-sm sm:pl-0">
+                    <td className="whitespace-nowrap py-[18px] pl-4 pr-3 text-sm sm:pl-0">
                       <div className="flex items-center">
                         <div className="size-11 shrink-0">
                           <span className="w-10 h-10 text-xl font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
@@ -232,18 +232,18 @@ const CompanyPage = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-[19px] text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-3 py-[18px] text-sm text-gray-500">
                       <div className="text-gray-900">{person.title}</div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-[19px] text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-3 py-[18px] text-sm text-gray-500">
                       <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
                         Active
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-[19px] text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-3 py-[18px] text-sm text-gray-500">
                       {/*{person.role}*/}
                     </td>
-                    <td className="relative whitespace-nowrap py-[19px] pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                    <td className="relative whitespace-nowrap py-[18px] pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <div className="p-1 rounded w-fit ml-auto bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
                         <LuArrowUpRight className="h-4 w-4" />
                       </div>
