@@ -22,6 +22,7 @@ import Services from './pages/services/Services';
 import Orders from './pages/orders/Orders';
 import Invoices from './pages/invoices/Invoices';
 import Ein from './pages/EIN/Ein';
+import Emails from './pages/emails/Emails';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/elements" element={<Elements />} />
+            <Route path="/emails" element={<Emails />} />
             <Route path={ROUTES.HOME} element={<Home />} />
             <Route path={ROUTES.MAIL} element={<Mail />} />
             <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
