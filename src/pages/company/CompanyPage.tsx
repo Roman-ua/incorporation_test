@@ -204,7 +204,7 @@ const CompanyPage = () => {
           <div>{data.address.country}</div>
         </>
       </div>
-      <SectionHeading title="People" extraClass={'mb-0'} />
+      <SectionHeading title="People" removeMargin={true} />
       <div className="flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">

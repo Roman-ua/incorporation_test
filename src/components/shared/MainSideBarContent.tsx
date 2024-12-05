@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 import { TbMail, TbPuzzle } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
-import { LuClipboardList, LuConciergeBell } from 'react-icons/lu';
+import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
 import { BiBuildings, BiReceipt } from 'react-icons/bi';
-import { SiAmazonsimpleemailservice } from 'react-icons/si';
 
 const navigation = [
   { name: 'Home', href: '/home', icon: BiBuildings, current: true },
@@ -35,7 +34,7 @@ const teams = [
     href: '/emails',
     initial: 'C',
     current: false,
-    icon: SiAmazonsimpleemailservice,
+    icon: LuFileStack,
   },
 ];
 

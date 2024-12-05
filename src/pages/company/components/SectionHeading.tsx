@@ -1,19 +1,19 @@
 import React from 'react';
 interface IProps {
   title: string;
-  extraClass?: string;
+  removeMargin?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const SectionHeading = ({ title, extraClass }: IProps) => {
+const SectionHeading = ({ title, removeMargin }: IProps) => {
   return (
     <div
       className={classNames(
-        extraClass ? extraClass : '',
-        'w-full border-b text-lg font-semibold text-gray-700 mb-3 pb-1'
+        'w-full border-b text-lg font-semibold text-gray-700 pb-1',
+        removeMargin ? 'mb-0' : 'mb-3'
       )}
     >
       {title}
