@@ -18,14 +18,14 @@ const htmlFiles = [
   // },
   {
     link: 'recover_pass_incorp.html',
-    title: '📧 Password Recovery',
+    title: '📧 Password Reset',
     sectionId: 4,
-    subj: 'Recover your incorporatenow.com password',
+    subj: 'Reset your incorporatenow.com password',
     vars: false,
   },
   {
     link: 'Password_Reset_Confirmation.html',
-    title: '📧 Password Recovery - Confirmation',
+    title: '📧 Password Reset - Confirmation',
     sectionId: 4,
     subj: 'Your incorporatenow.com password was updated',
     vars: false,
