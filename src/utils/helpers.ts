@@ -20,3 +20,7 @@ export const copyToClipboard = (text: string) => {
     document.body.removeChild(textArea);
   }
 };
+
+export const classNames = (...classes: (string | boolean)[]) => {
+  return classes.filter(Boolean).join(' ');
+};

@@ -11,6 +11,7 @@ import { IoMdCheckmark } from 'react-icons/io';
 import PageSign from '../../components/shared/PageSign';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { LuArrowUpRight } from 'react-icons/lu';
+import AnnualReportsListFL from './components/AnnualReportsListFL';
 const people = [
   {
     name: 'Lindsay Walton',
@@ -50,7 +51,7 @@ const CompanyPage = () => {
   const navigate = useNavigate();
   const localData = localStorage.getItem('finalFormData');
   const data = localData ? JSON.parse(localData) : undefined;
-
+  console.log(data?.registeredIn, 'data?.registeredIn');
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
       <PageSign
@@ -205,7 +206,7 @@ const CompanyPage = () => {
         </>
       </div>
       <SectionHeading title="People" removeMargin={true} />
-      <div className="flow-root">
+      <div className="flow-root mb-12">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <table className="min-w-full divide-y">
@@ -255,6 +256,9 @@ const CompanyPage = () => {
           </div>
         </div>
       </div>
+      {data?.registeredIn.split(' ')[2] === 'Florida' && (
+        <AnnualReportsListFL />
+      )}
     </div>
   ) : (
     <></>
