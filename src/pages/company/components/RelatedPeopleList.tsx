@@ -59,13 +59,19 @@ const RelatedPeopleList = () => {
               key={rowIndex}
               className={`flex py-3 group transition-all ease-in-out duration-150`}
             >
-              <div className="whitespace-nowrap overflow-hidden w-[24%] pr-2 flex items-center justify-start font-bold text-gray-900">
+              <div className="whitespace-nowrap overflow-hidden w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
                 <span className="mr-2 w-8 h-8 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
                   {person.name[0]}
                 </span>
                 {person.name}
               </div>
               <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start text-gray-900">
+                {person.email}
+              </div>
+              <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
+                {person.title}
+              </div>
+              <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-end text-gray-900">
                 <span
                   className={classNames(
                     'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
@@ -74,12 +80,6 @@ const RelatedPeopleList = () => {
                 >
                   {person?.status}
                 </span>
-              </div>
-              <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start text-gray-900">
-                {person.email}
-              </div>
-              <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
-                {person.title}
               </div>
               <div className="pl-2 flex items-center justify-end ml-auto">
                 <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">

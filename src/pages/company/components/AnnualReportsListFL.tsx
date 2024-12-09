@@ -10,7 +10,7 @@ const mock = [
     year: 2021,
     status: 'Filed',
     filingDate: 'February 12, 2021',
-    relatedOrder: 'ord_12312344',
+    relatedOrder: 'ord_12312',
     attachedFiles: true,
   },
   {
@@ -18,7 +18,7 @@ const mock = [
     year: 2020,
     status: 'Need to File',
     filingDate: '-',
-    relatedOrder: 'ord_1234421',
+    relatedOrder: 'ord_12344',
     attachedFiles: false,
   },
   {
@@ -34,7 +34,7 @@ const mock = [
     year: 2018,
     status: 'Pending Confirmation',
     filingDate: 'February 12, 2018',
-    relatedOrder: 'ord_1234',
+    relatedOrder: 'ord_12343',
     attachedFiles: false,
   },
 ];
@@ -76,7 +76,7 @@ const AnnualReportsListFL = () => {
               key={rowIndex}
               className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
             >
-              <div className="w-[24%] pr-2 flex items-center justify-start font-bold text-gray-900">
+              <div className="w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
                 {report.year}
                 {report?.attachedFiles && (
                   <IconFileTypePdf className="w-3 h-3 text-gray-500 ml-2" />
@@ -95,7 +95,7 @@ const AnnualReportsListFL = () => {
               <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
                 {report.filingDate}
               </div>
-              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
+              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
                 {report.relatedOrder}
               </div>
               <div className="pl-2 flex items-center justify-end ml-auto">
