@@ -3,6 +3,8 @@ import SectionHeading from './SectionHeading';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { classNames } from '../../../utils/helpers';
 import { IconFileTypePdf } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../constants/navigation/routes';
 
 const mock = [
   {
@@ -54,6 +56,8 @@ const statusBadge = (status: string) => {
 };
 
 const AnnualReportsListFL = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <SectionHeading title="Annual Reports" removeMargin={true} />
@@ -73,6 +77,7 @@ const AnnualReportsListFL = () => {
         <div>
           {mock.map((report, rowIndex) => (
             <div
+              onClick={() => navigate(`${ROUTES.REPORT}/${report.id}`)}
               key={rowIndex}
               className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
             >

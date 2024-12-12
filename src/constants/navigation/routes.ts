@@ -14,4 +14,5 @@ export const ROUTES = {
   ORDERS: '/orders',
   INVOICES: '/invoices',
   EIN: '/ein',
+  REPORT: '/report',
 };
