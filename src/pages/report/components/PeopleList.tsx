@@ -1,6 +1,7 @@
 import SectionHeading from '../../company/components/SectionHeading';
 import { USStates } from '../../../constants/form/form';
 import React from 'react';
+import { LuArrowUpRight } from 'react-icons/lu';
 
 const mock = [
   {
@@ -57,56 +58,51 @@ const PeopleList = () => {
       {mock.map((person, rowIndex) => (
         <div
           key={rowIndex}
-          className="flex items-start justify-start mb-4 max-lg:flex-col"
+          className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
         >
-          <div className="w-1/2 max-lg:w-full max-lg:mb-3">
-            <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-1/3 max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                Name
+          <div className="whitespace-nowrap overflow-hidden w-[20%] pr-2 flex items-center justify-start  text-gray-900">
+            <span className="mr-2 w-8 h-8 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
+              {person.name[0]}
+            </span>
+            {person.name}
+          </div>
+          <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
+            {person.title}
+          </div>
+          <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
+            <div className="w-full pr-2 text-gray-700">
+              <div>
+                <span>{person.address.address0}, </span>
+                {person.address.address1 && (
+                  <span>{person.address.address1}</span>
+                )}
               </div>
-              <div className="w-full pr-2 text-gray-700">{person.name}</div>
-            </div>
-            <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-1/3 max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                Title
+              <div>
+                {person.address.address2 && (
+                  <span>{person.address.address2}</span>
+                )}
+                {person.address.address3 && (
+                  <span>
+                    {person.address.address2 ? ',' : ''}{' '}
+                    {person.address.address3}
+                  </span>
+                )}
               </div>
-              <div className="w-full pr-2 text-gray-700">{person.title}</div>
+              <div>
+                <span>{person.address.city}, </span>
+                <span>
+                  {USStates.find((item) => item.title === person.address.state)
+                    ?.value || ''}{' '}
+                </span>
+                <span>{person.address.zip}</span>
+              </div>
+              <div>{person.address.country}</div>
             </div>
           </div>
-          <div className="w-1/2 max-lg:w-full">
-            <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-1/3 max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                Address
-              </div>
-              <div className="w-full pr-2 text-gray-700">
-                <div>
-                  <span>{person.address.address0}, </span>
-                  {person.address.address1 && (
-                    <span>{person.address.address1}</span>
-                  )}
-                </div>
-                <div>
-                  {person.address.address2 && (
-                    <span>{person.address.address2}</span>
-                  )}
-                  {person.address.address3 && (
-                    <span>
-                      {person.address.address2 ? ',' : ''}{' '}
-                      {person.address.address3}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <span>{person.address.city}, </span>
-                  <span>
-                    {USStates.find(
-                      (item) => item.title === person.address.state
-                    )?.value || ''}{' '}
-                  </span>
-                  <span>{person.address.zip}</span>
-                </div>
-                <div>{person.address.country}</div>
-              </div>
+          <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start"></div>
+          <div className="pl-2 flex items-center justify-end ml-auto">
+            <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
+              <LuArrowUpRight className="h-4 w-4" />
             </div>
           </div>
         </div>
