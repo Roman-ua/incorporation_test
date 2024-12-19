@@ -3,11 +3,12 @@ import { MdOutlineCloudDownload, MdOutlineCopyAll } from 'react-icons/md';
 import { classNames } from '../../utils/helpers';
 import React from 'react';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
-import { IconFileTypePdf, IconLink } from '@tabler/icons-react';
-import SectionHeading from '../company/components/SectionHeading';
-import { USStates } from '../../constants/form/form';
+import { IconFileTypePdf } from '@tabler/icons-react';
 import RelatedOrders from './components/RelatedOrders';
 import PeopleList from './components/PeopleList';
+import Details from './components/Details';
+import Addresses from './components/Addresses';
+import RegisteredAgent from './components/RegisteredAgent';
 
 const mockData = {
   id: 1,
@@ -46,6 +47,7 @@ const mockData = {
   people: [],
   signed: 'John Doe',
 };
+
 const statusBadge = (status: string) => {
   switch (status) {
     case 'Filed':
@@ -96,7 +98,7 @@ const ReportPage = () => {
           </span>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
-          <dt className="text-nowrap text-sm text-gray-500">Company name</dt>
+          <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6">
             {mockData.companyName}
           </dd>
@@ -110,185 +112,10 @@ const ReportPage = () => {
           </dd>
         </div>
       </dl>
-      <SectionHeading title="Details" />
-      <div className="flex items-start justify-start mb-12 max-lg:flex-col">
-        <div className="w-1/2 max-lg:w-full max-lg:mb-3">
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Year
-            </div>
-            <div className="w-full pr-2 text-gray-700">{mockData.year}</div>
-          </div>
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Status
-            </div>
-            <div className="w-full pr-2">
-              <span
-                className={classNames(
-                  'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                  statusBadge(mockData?.status)
-                )}
-              >
-                {mockData?.status}
-              </span>
-            </div>
-          </div>
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Company Name
-            </div>
-            <div className="w-full pr-2 text-gray-700">
-              {mockData.companyName}
-            </div>
-          </div>
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Registration #
-            </div>
-            <div className="w-full pr-2 text-gray-700">
-              {mockData.registrationNumber}
-            </div>
-          </div>
-        </div>
-        <div className="w-1/2 max-lg:w-full">
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              State ID
-            </div>
-            <div className="w-full pr-2 text-gray-700">{mockData.stateId}</div>
-          </div>
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Filing Date
-            </div>
-            <div className="w-full pr-2 text-gray-700">
-              {mockData.filingDate}
-            </div>
-          </div>
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Attached file
-            </div>
-            <div className="w-full pr-2 text-gray-700 group flex items-center justify-start hover:cursor-pointer">
-              <IconFileTypePdf className="w-5 h-5 mr-1" />
-              Download
-              <MdOutlineCloudDownload className="w-5 h-5 text-gray-500 ml-1 top-0.5 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150 hover:text-blue-700" />
-            </div>
-          </div>
-          <div className="w-full flex items-start justify-between pb-2">
-            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Review Link
-            </div>
-            <div className="w-full pr-2 text-gray-700">
-              {!mockData.confirmationLinks.length ? (
-                <div className="flex items-center justify-start hover:cursor-pointer hover:underline hover:text-sideBarBlue transition-all duration-150 ease-in-out">
-                  Create Confirmation Link <IconLink className="w-4 h-4 ml-2" />
-                </div>
-              ) : (
-                <div>links list</div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <SectionHeading title="Addresses and Agents" />
-      <div className="flex items-start gap-10 justify-start mb-12 max-lg:flex-col">
-        <div className="flex items-start justify-start pb-2">
-          <div className="w-full pr-2 text-gray-700">
-            <div className="text-sm text-gray-500 mb-1">Main address</div>
-            <div>
-              <span>{mockData.address.address0}, </span>
-              {mockData.address.address1 && (
-                <span>{mockData.address.address1}</span>
-              )}
-            </div>
-            <div>
-              {mockData.address.address2 && (
-                <span>{mockData.address.address2}</span>
-              )}
-              {mockData.address.address3 && (
-                <span>
-                  {mockData.address.address2 ? ',' : ''}{' '}
-                  {mockData.address.address3}
-                </span>
-              )}
-            </div>
-            <div>
-              <span>{mockData.address.city}, </span>
-              <span>
-                {USStates.find((item) => item.title === mockData.address.state)
-                  ?.value || ''}{' '}
-              </span>
-              <span>{mockData.address.zip}</span>
-            </div>
-            <div>{mockData.address.country}</div>
-          </div>
-        </div>
-        <div className="flex items-start justify-between pb-2">
-          <div className="w-full pr-2 text-gray-700">
-            <div className="text-sm text-gray-500 mb-1">Mailing address</div>
-            <div>
-              <span>{mockData.address.address0}, </span>
-              {mockData.address.address1 && (
-                <span>{mockData.address.address1}</span>
-              )}
-            </div>
-            <div>
-              {mockData.address.address2 && (
-                <span>{mockData.address.address2}</span>
-              )}
-              {mockData.address.address3 && (
-                <span>
-                  {mockData.address.address2 ? ',' : ''}{' '}
-                  {mockData.address.address3}
-                </span>
-              )}
-            </div>
-            <div>
-              <span>{mockData.address.city}, </span>
-              <span>
-                {USStates.find((item) => item.title === mockData.address.state)
-                  ?.value || ''}{' '}
-              </span>
-              <span>{mockData.address.zip}</span>
-            </div>
-            <div>{mockData.address.country}</div>
-          </div>
-        </div>
-        <div className="pr-2 text-gray-700">
-          <div className="text-sm text-gray-500 mb-1">Registered Agent</div>
-          <div className="uppercase">John Doe,</div>
-          <div>
-            <span>{mockData.address.address0}, </span>
-            {mockData.address.address1 && (
-              <span>{mockData.address.address1}</span>
-            )}
-          </div>
-          <div>
-            {mockData.address.address2 && (
-              <span>{mockData.address.address2}</span>
-            )}
-            {mockData.address.address3 && (
-              <span>
-                {mockData.address.address2 ? ',' : ''}{' '}
-                {mockData.address.address3}
-              </span>
-            )}
-          </div>
-          <div>
-            <span>{mockData.address.city}, </span>
-            <span>
-              {USStates.find((item) => item.title === mockData.address.state)
-                ?.value || ''}{' '}
-            </span>
-            <span>{mockData.address.zip}</span>
-          </div>
-          <div>{mockData.address.country}</div>
-        </div>
-      </div>
+      <Details />
+      <Addresses />
       <PeopleList />
+      <RegisteredAgent />
       <RelatedOrders />
     </div>
   );

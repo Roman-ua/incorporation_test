@@ -8,6 +8,7 @@ const mock = [
     id: 1,
     name: 'John Doe',
     title: 'CEO',
+    email: 'example@gmail.com',
     address: {
       country: 'United States',
       address0: '1234 Elm St',
@@ -23,6 +24,7 @@ const mock = [
     id: 2,
     name: 'Philip Moris',
     title: 'Accountant',
+    email: 'example@gmail.com',
     address: {
       country: 'United States',
       address0: '1234 Elm St',
@@ -38,6 +40,7 @@ const mock = [
     id: 3,
     name: 'User Admin',
     title: 'Developer',
+    email: 'example@gmail.com',
     address: {
       country: 'United States',
       address0: '1234 Elm St',
@@ -61,16 +64,19 @@ const PeopleList = () => {
           className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
         >
           <div className="whitespace-nowrap overflow-hidden w-[20%] pr-2 flex items-center justify-start  text-gray-900">
-            <span className="mr-2 w-8 h-8 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
+            <span className="mr-4 w-10 h-10 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
               {person.name[0]}
             </span>
-            {person.name}
+            <div className="text-sm flex flex-col items-start justify-start">
+              <span>{person.name}</span>
+              <span className="text-gray-500">{person.email}</span>
+            </div>
           </div>
-          <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
+          <div className="text-sm whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
             {person.title}
           </div>
           <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
-            <div className="w-full pr-2 text-gray-700">
+            <div className="w-full pr-2 text-gray-700 text-sm">
               <div>
                 <span>{person.address.address0}, </span>
                 {person.address.address1 && (
