@@ -30,28 +30,27 @@ const htmlFiles = [
     subj: 'Your incorporatenow.com password was updated',
     vars: false,
   },
+  {
+    link: 'Anual_report_confirmation.html',
+    title: 'Annual report confirmation',
+    sectionId: 1,
+    subj: 'Your incorporatenow.com password was updated',
+    subjOne: '',
+    varOne: '{year} ',
+    subjTwo: ' Annual Report Filing Confirmation for',
+    varTwo: '{company_name}',
+    vars: true,
+  },
 ];
 
 const sections = [
-  // {
-  //   title: 'DMCA Agent Oder',
-  //   id: 1,
-  // },
-  // {
-  //   title: 'DMCA Amendment Order',
-  //   id: 5,
-  // },
-  // {
-  //   title: 'Notices',
-  //   id: 2,
-  // },
-  // {
-  //   title: 'Users',
-  //   id: 3,
-  // },
   {
     title: 'Security (Password)',
     id: 4,
+  },
+  {
+    title: 'Reports',
+    id: 1,
   },
 ];
 
