@@ -24,6 +24,7 @@ import Invoices from './pages/invoices/Invoices';
 import Ein from './pages/EIN/Ein';
 import RenderEmails from './pages/emails/Emails';
 import ReportPage from './pages/report/ReportPage';
+import AnnualReportReview from './pages/report/AnnualReportReview';
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
         <Route
           path={ROUTES.RECOVERY_PASS_CONFIRM}
           element={<RecoveryPassConfirm />}
+        />
+        <Route
+          path={ROUTES.ANN_REPORT_REVIEW}
+          element={<AnnualReportReview />}
         />
         <Route element={<ProtectedRoute />}>
           <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />

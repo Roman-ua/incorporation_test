@@ -15,4 +15,5 @@ export const ROUTES = {
   INVOICES: '/invoices',
   EIN: '/ein',
   REPORT: '/report',
+  ANN_REPORT_REVIEW: '/report_review',
 };
