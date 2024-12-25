@@ -9,7 +9,7 @@ const SearchHeading = () => {
     navigate(ROUTES.CREATE_COMPANY);
   };
   return (
-    <div className="flex items-center pb-3 mb-3">
+    <div className="flex items-center pb-3 mb-3 text-sm">
       <form action="#" method="GET" className="relative flex flex-1">
         <label htmlFor="search-field" className="sr-only">
           Search

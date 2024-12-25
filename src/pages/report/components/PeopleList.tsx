@@ -64,16 +64,13 @@ const PeopleList = () => {
           className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
         >
           <div className="whitespace-nowrap overflow-hidden w-[20%] pr-2 flex items-center justify-start  text-gray-900">
-            <span className="mr-4 w-10 h-10 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
+            <span className="mr-4 w-9 h-9 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
               {person.name[0]}
             </span>
             <div className="text-sm flex flex-col items-start justify-start">
-              <span>{person.name}</span>
+              <span className="font-bold">{person.name}</span>
               <span className="text-gray-500">{person.email}</span>
             </div>
-          </div>
-          <div className="text-sm whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
-            {person.title}
           </div>
           <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
             <div className="w-full pr-2 text-gray-700 text-sm">
@@ -107,6 +104,7 @@ const PeopleList = () => {
           </div>
           <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start"></div>
           <div className="pl-2 flex items-center justify-end ml-auto">
+            <span className="mr-3">{person.title}</span>
             <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
               <LuArrowUpRight className="h-4 w-4" />
             </div>

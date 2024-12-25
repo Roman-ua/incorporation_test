@@ -101,7 +101,7 @@ const Ein = () => {
   const navigate = useNavigate();
 
   return data ? (
-    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
       <PageSign
         title={'EIN (TAX ID)'}
         icon={<FaHashtag className="w-3 h-3 text-gray-400 mr-1" />}

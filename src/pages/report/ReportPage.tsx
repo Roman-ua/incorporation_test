@@ -3,7 +3,6 @@ import { MdOutlineCloudDownload, MdOutlineCopyAll } from 'react-icons/md';
 import { classNames } from '../../utils/helpers';
 import React from 'react';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
-import { IconFileTypePdf } from '@tabler/icons-react';
 import RelatedOrders from './components/RelatedOrders';
 import PeopleList from './components/PeopleList';
 import Details from './components/Details';
@@ -105,10 +104,9 @@ const ReportPage = () => {
         </div>
         <div className="flex flex-col gap-y-1 ml-auto px-6">
           <dt className="text-nowrap text-sm text-gray-500">Confirmation</dt>
-          <dd className="relative text-base group tracking-tight text-gray-700 flex items-center justify-start hover:cursor-pointer">
-            <IconFileTypePdf className="w-5 h-5 mr-1" />
+          <dd className="w-full pr-2 text-gray-700 group flex items-center justify-start hover:cursor-pointer text-sm hover:text-blue-500 transition-all ease-in-out duration-150">
             Download
-            <MdOutlineCloudDownload className="w-5 h-5 text-gray-500 absolute -right-6 top-0.5 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150 hover:text-blue-700" />
+            <MdOutlineCloudDownload className="w-5 h-5 text-blue-500 ml-1 top-0.5 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </dd>
         </div>
       </dl>

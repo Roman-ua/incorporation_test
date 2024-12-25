@@ -40,7 +40,7 @@ const CompanyPage = () => {
   console.log(data, 'data');
   console.log(data?.registeredIn, 'data?.registeredIn');
   return data ? (
-    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
       <PageSign
         title={'COMPANY'}
         icon={

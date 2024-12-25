@@ -49,7 +49,7 @@ const RelatedOrders = () => {
               key={rowIndex}
               className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
             >
-              <div className="w-[20%] pr-2 flex items-center justify-start text-gray-900 text-sm">
+              <div className="w-[20%] pr-2 font-bold flex items-center justify-start text-gray-900 text-sm">
                 {order.id}
               </div>
               <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 text-sm">

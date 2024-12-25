@@ -36,7 +36,7 @@ function Home() {
     <div className="relative pl-10 pr-10 py-8 max-sm:pl-4 max-sm:pr-4 container max-w-7xl mx-auto">
       {confetti && <ConfettiAp />}
       {!companyData ? (
-        <div className="w-full flex-row mt-[20%]">
+        <div className="w-full flex-row mt-[20%] text-sm">
           <div className="w-full flex items-center justify-center mb-6">
             <ExclamationCircleIcon className="text-mainBlue w-10 h-10" />
           </div>

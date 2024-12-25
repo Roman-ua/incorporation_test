@@ -87,7 +87,7 @@ const CompaniesList = () => {
   return (
     <>
       <SectionHeading title="Companies" />
-      <div className="w-full overflow-auto">
+      <div className="w-full overflow-auto text-sm">
         <table className="w-full divide-y divide-gray-300">
           <thead>
             <tr>
@@ -138,7 +138,7 @@ const CompaniesList = () => {
                   onClick={() => navigate(`${ROUTES.COMPANY}`)}
                   className="hover:bg-gray-100 transition-all duration-150 ease-in-out hover:cursor-pointer group"
                 >
-                  <td className="whitespace-nowrap py-4 pl-3 pr-3 text-base font-semibold text-gray-700">
+                  <td className="whitespace-nowrap py-4 pl-3 pr-3 text-sm font-semibold text-gray-700">
                     {company.companyName}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -151,15 +151,15 @@ const CompaniesList = () => {
                       {company.status}
                     </span>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-base text-gray-700">
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
                     {company.companyType === 'Limited Liability Company'
                       ? formatedType?.shortName
                       : company.companyType}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-base text-gray-700">
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
                     {company.registrationNumber}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-base text-gray-700">
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
                     {company.registeredIn.split(' ')[2]}
                   </td>
                   <td className="w-8 relative opacity-0 group-hover:opacity-100 whitespace-nowrap py-5 pl-2 pr-5 text-right text-sm font-medium transition-all duration-150 ease-in-out">
