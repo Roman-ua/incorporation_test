@@ -38,8 +38,8 @@ const DatePicker = ({ field }: IProps) => {
         toggleClassName={
           'absolute right-0 top-0 h-full px-3 text-gray-400 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed'
         }
-        primaryColor={'blue'}
-        asSingle={true}
+        primaryColor={'blue'} // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        asSingle={true} // @ts-ignore
         value={value}
         onChange={handleValueChange}
         useRange={false}

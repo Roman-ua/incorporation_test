@@ -32,12 +32,12 @@ const htmlFiles = [
   },
   {
     link: 'Anual_report_confirmation.html',
-    title: 'Annual report confirmation',
+    title: 'Annual Report Confirmation',
     sectionId: 1,
     subj: 'Your incorporatenow.com password was updated',
     subjOne: '',
-    varOne: '{year} ',
-    subjTwo: ' Annual Report Filing Confirmation for',
+    varOne: '{year}',
+    subjTwo: 'Annual Report Filing Confirmation for',
     varTwo: '{company_name}',
     vars: true,
   },
@@ -49,7 +49,7 @@ const sections = [
     id: 4,
   },
   {
-    title: 'Reports',
+    title: 'FL - Annual Report',
     id: 1,
   },
 ];
@@ -260,7 +260,7 @@ const RenderEmails = () => {
                             </span>
                           )}
                           {subject[section.id].varOne && (
-                            <span className="text-gray-700 text-sm font-bold bg-gray-200">
+                            <span className="text-gray-700 text-sm font-bold bg-gray-200 mr-1.5">
                               {subject[section.id].varOne}
                             </span>
                           )}
