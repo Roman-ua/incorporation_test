@@ -19,7 +19,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div>
+      <div className="selection:bg-mainBlue selection:text-white">
         <Transition show={sidebarOpen}>
           <Dialog className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
             <TransitionChild

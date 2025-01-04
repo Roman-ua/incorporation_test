@@ -2,6 +2,8 @@ import SectionHeading from '../../company/components/SectionHeading';
 import { USStates } from '../../../constants/form/form';
 import React from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
+import { PiSignatureFill } from 'react-icons/pi';
+import { FaSignature } from 'react-icons/fa6';
 
 const mock = [
   {
@@ -9,6 +11,7 @@ const mock = [
     name: 'John Doe',
     title: 'CEO',
     email: 'example@gmail.com',
+    signer: false,
     address: {
       country: 'United States',
       address0: '1234 Elm St',
@@ -25,6 +28,7 @@ const mock = [
     name: 'Philip Moris',
     title: 'Accountant',
     email: 'example@gmail.com',
+    signer: true,
     address: {
       country: 'United States',
       address0: '1234 Elm St',
@@ -41,6 +45,7 @@ const mock = [
     name: 'User Admin',
     title: 'Developer',
     email: 'example@gmail.com',
+    signer: false,
     address: {
       country: 'United States',
       address0: '1234 Elm St',
@@ -63,16 +68,24 @@ const PeopleList = () => {
           key={rowIndex}
           className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
         >
-          <div className="whitespace-nowrap overflow-hidden w-[20%] pr-2 flex items-center justify-start  text-gray-900">
+          <div className="whitespace-nowrap overflow-hidden w-[24%] max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900">
             <span className="mr-4 w-9 h-9 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
               {person.name[0]}
             </span>
             <div className="text-sm flex flex-col items-start justify-start">
-              <span className="font-bold">{person.name}</span>
-              <span className="text-gray-500">{person.email}</span>
+              <span className="font-bold flex items-center justify-start">
+                {person.name}{' '}
+                {person.signer && (
+                  <PiSignatureFill className="w-4 h-4 text-gray-500 ml-2 opacity-0 max-lg:opacity-100" />
+                )}
+              </span>
+              <span className="text-gray-500 font-semibold">
+                {person.title}
+              </span>
+              <span className="text-gray-400">{person.email}</span>
             </div>
           </div>
-          <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
+          <div className="whitespace-nowrap overflow-hidden w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
             <div className="w-full pr-2 text-gray-700 text-sm">
               <div>
                 <span>{person.address.address0}, </span>
@@ -102,9 +115,14 @@ const PeopleList = () => {
               <div>{person.address.country}</div>
             </div>
           </div>
-          <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start"></div>
-          <div className="pl-2 flex items-center justify-end ml-auto">
-            <span className="mr-3">{person.title}</span>
+          <div className="whitespace-nowrap overflow-hidden w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
+          <div className="pl-2 flex items-center justify-end max-lg:hidden ml-auto">
+            {person.signer && (
+              <div className="flex mr-2 items-center justify-start text-xs px-1.5 py-0.5 rounded border border-gray-400 bg-gray-100">
+                Signer
+                <FaSignature className="w-4 h-4 text-gray-700 ml-2" />
+              </div>
+            )}
             <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
               <LuArrowUpRight className="h-4 w-4" />
             </div>

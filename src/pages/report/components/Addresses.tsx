@@ -41,9 +41,9 @@ const mockData = {
 const Addresses = () => {
   return (
     <>
-      <SectionHeading title="Addresses" />
+      <SectionHeading title="Address" />
       <div className="w-full flex items-start justify-start mb-12 max-lg:flex-col">
-        <div className="w-1/6 flex items-start justify-start pb-2 max-lg:w-full">
+        <div className="w-[24.5%] flex items-start justify-start pb-2 max-lg:w-full">
           <div className="pr-2 text-gray-700 text-sm">
             <div className="text-sm text-gray-500 mb-1">Main Address</div>
             <div>

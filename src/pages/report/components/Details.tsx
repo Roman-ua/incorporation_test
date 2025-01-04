@@ -31,13 +31,26 @@ const mockData = {
     zip: '35203',
     state: 'Alabama',
   },
-  companyName: 'ABC Company',
+  companyName: 'ABC Company Inc',
   registrationNumber: 'L23000056354',
   file: 'rep_2021',
+  state: 'Florida',
   confirmFile: 'Confirmation_file',
   stateId: '12323342CC',
   people: [],
   signed: 'John Doe',
+};
+
+const dockFieldHandler = (state: string) => {
+  if (state === 'Florida') {
+    return 'Document #';
+  }
+
+  if (state === 'Delaware') {
+    return 'File #';
+  }
+
+  return 'File #';
 };
 
 const Details = () => {
@@ -64,12 +77,22 @@ const Details = () => {
           </div>
           <div className="w-full flex items-start justify-between pb-2">
             <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-              Registration #
+              State
+            </div>
+            <div className="w-full pr-2 text-gray-700 text-sm">
+              {mockData.state}
+            </div>
+          </div>
+          <div className="w-full flex items-start justify-between pb-2">
+            <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+              {dockFieldHandler(mockData.state)}
             </div>
             <div className="w-full pr-2 text-gray-700 text-sm">
               {mockData.registrationNumber}
             </div>
           </div>
+        </div>
+        <div className="w-1/2 max-lg:w-full">
           <div className="w-full flex items-start justify-between pb-2">
             <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
               Filing Date
@@ -78,8 +101,6 @@ const Details = () => {
               {mockData.filingDate}
             </div>
           </div>
-        </div>
-        <div className="w-1/2 max-lg:w-full">
           <div className="w-full flex items-start justify-between pb-2">
             <div className="w-1/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
               State ID
@@ -94,7 +115,7 @@ const Details = () => {
             </div>
             <div className="w-full pr-2 text-gray-700 group flex items-center justify-start hover:cursor-pointer text-sm hover:text-blue-500 transition-all ease-in-out duration-150">
               Download
-              <MdOutlineCloudDownload className="w-5 h-5 text-blue-500 ml-1 top-0.5 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150" />
+              <MdOutlineCloudDownload className="w-5 h-5 text-gray-700 ml-2 top-0.5 hover:cursor-pointer group-hover:text-blue-500 transition-all ease-in-out duration-150" />
             </div>
           </div>
           <div className="w-full flex items-start justify-between pb-2">

@@ -38,11 +38,12 @@ const mockData = {
     zip: '35203',
     state: 'Alabama',
   },
-  companyName: 'ABC Company',
+  companyName: 'ABC Company Inc',
   registrationNumber: 'L23000056354',
   file: 'rep_2021',
   confirmFile: 'Confirmation_file',
   stateId: '12323342CC',
+  state: 'Florida',
   people: [],
   signed: 'John Doe',
 };
@@ -102,11 +103,17 @@ const ReportPage = () => {
             {mockData.companyName}
           </dd>
         </div>
+        <div className="flex flex-col gap-y-1 border-l px-5">
+          <dt className="text-nowrap text-sm text-gray-500">State</dt>
+          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6">
+            {mockData.state}
+          </dd>
+        </div>
         <div className="flex flex-col gap-y-1 ml-auto px-6">
           <dt className="text-nowrap text-sm text-gray-500">Confirmation</dt>
           <dd className="w-full pr-2 text-gray-700 group flex items-center justify-start hover:cursor-pointer text-sm hover:text-blue-500 transition-all ease-in-out duration-150">
             Download
-            <MdOutlineCloudDownload className="w-5 h-5 text-blue-500 ml-1 top-0.5 opacity-0 hover:cursor-pointer group-hover:opacity-100 transition-all ease-in-out duration-150" />
+            <MdOutlineCloudDownload className="w-5 h-5 text-gray-700 ml-2 top-0.5 hover:cursor-pointer group-hover:text-blue-500 transition-all ease-in-out duration-150" />
           </dd>
         </div>
       </dl>

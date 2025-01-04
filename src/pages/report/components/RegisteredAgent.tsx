@@ -3,7 +3,7 @@ import React from 'react';
 import { USStates } from '../../../constants/form/form';
 import { IconInfoCircle } from '@tabler/icons-react';
 const mockAgent = {
-  name: 'John Doe',
+  name: 'A Registered Agents Inc.',
   address: {
     country: 'United States',
     county: 'Jefferson',
@@ -22,10 +22,10 @@ const RegisteredAgent = () => {
     <>
       <SectionHeading title="Registered Agent" />
       <div className="w-full flex items-start justify-start mb-12 max-lg:flex-col">
-        <div className="w-1/6 flex items-start justify-between pb-2 max-lg:w-full">
-          <div className="pr-2 text-gray-700 text-sm">
+        <div className="w-[24.5%] flex items-start justify-between pb-2 max-lg:w-full">
+          <div className="pr-1 text-gray-700 text-sm">
             <div className="text-sm text-gray-500 mb-1">Name</div>
-            <div>{mockAgent.name}</div>
+            <div className="font-bold">{mockAgent.name}</div>
           </div>
         </div>
         <div className="flex items-start justify-start pb-2">
