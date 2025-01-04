@@ -16,19 +16,20 @@
         .borderCleanUp { border: none !important }
         .paddingCleanUp { padding-bottom: 0 !important }
         .bold { font-weight: bold; font-size: 14px !important; }
+        .decorationBold { font-weight: bold; }
         .button { font-weight: bold; width: 100%; max-width: 450px; display: inline-block; text-align: center; padding: 10px 0; background: #0277ff; color: #ffffff !important; text-decoration: none; border-radius: 5px; margin-bottom: 10px}
         .mb20 { margin-bottom: 20px }
         .mb6 { margin-bottom: 6px }
         .alert { font-size: 12px; color: #76777a !important; }
         .grayColor {color: #76777a !important;}
         .pr8 { padding-right: 8px }
-        .smallText { font-size: 11px !important; color: #76777a !important;}
+        .smallText { font-size: 14px !important; color: #76777a !important;}
         .address {color: #76777a !important;font-size: 10px;text-decoration: none !important;}
         .termsLink {color: #9a9ea6 !important;font-size: 10px;text-decoration: none !important;}
         .support {color: #76777a !important;font-size: 12px;text-decoration: none;padding-bottom: 8px;}
         .logo { margin-bottom: 20px; display: inline-block}
         .removeUnderline {text-decoration: none !important; color: #111111 !important;}
-
+        .headerLogo {max-width: 250px}
         .img {max-width: 20px;width: 100%;padding-top: 3px;}
         .domain {text-decoration: none; color: #333 !important;}
         .decorationNone { text-decoration: none; color: #0984cf !important; }
@@ -38,9 +39,23 @@
         .lineBreakFalse {word-break: break-all !important;}
         .termsLinkWrapper {margin-top: 5px;}
         .statusBadge {
-            font-size: 11px !important;
+            font-size: 14px !important;
             padding: 4px 8px !important;
             border-radius: 5px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #c81e1e;
+            color: #c81e1e;
+            background-color: #fdf2f2;
+            width: fit-content !important;
+            line-height: 11px !important;
+        }
+        .statusBadgeBold {
+            font-size: 12px !important;
+            padding: 4px 8px !important;
+            border-radius: 5px !important;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -77,13 +92,20 @@
 <!-- - People sections: Director, Manager etc. One section can contain 1 or many people.-->
 <body>
     <div class="body">
+        <img
+            src="/bluelogo.png"
+            alt="Company Logo"
+            title="Company Logo"
+            style="display:block"
+            class="headerLogo mb20"
+        >
         <div>
             <div class="header">
                 2024  Annual Report Filing Confirmation <br/>
                 for ABC Company Inc 📈
             </div>
         </div>
-        <div class="mb20 bold">
+        <div class="mb20 decorationBold">
             It's time to file 2024 Annual Report for ABC Company Inc.<br/>
             The due date is May 1, 2025.
         </div>
@@ -95,14 +117,15 @@
             <div class="section">
                 <div>
                     <div class="bold sectionTitle mb6">Annual Report Status</div>
-                    <span class="statusBadge"> Confirmation Needed</span>
+                    <span class="statusBadge mb6"> Confirmation Needed</span>
+                    <span class="statusBadgeBold"> Confirmation Needed</span>
                 </div>
             </div>
             <div class="section">
                 <div>
                     <div class="bold sectionTitle mb6">Company</div>
-                    <span class="mb6">ABC Company Inc</span><br/>
-                    <span class="smallText"># L23000056354</span>
+                    <div class="mb6">ABC Company Inc</div>
+                    <span class="grayColor">L23000056354</span>
                 </div>
             </div>
             <div class="section">
