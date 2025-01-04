@@ -8,6 +8,7 @@ import PeopleList from './components/PeopleList';
 import Details from './components/Details';
 import Addresses from './components/Addresses';
 import RegisteredAgent from './components/RegisteredAgent';
+import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler';
 
 const mockData = {
   id: 1,
@@ -105,7 +106,12 @@ const ReportPage = () => {
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-nowrap text-sm text-gray-500">State</dt>
-          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6">
+          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6 flex items-center justify-start">
+            <StateSolidIconHandler
+              simpleIcon={true}
+              selectedState={mockData.state || 'Florida'}
+              state={mockData.state || 'Florida'}
+            />
             {mockData.state}
           </dd>
         </div>

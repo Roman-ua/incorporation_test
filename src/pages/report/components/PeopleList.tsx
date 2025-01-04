@@ -2,7 +2,6 @@ import SectionHeading from '../../company/components/SectionHeading';
 import { USStates } from '../../../constants/form/form';
 import React from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
-import { PiSignatureFill } from 'react-icons/pi';
 import { FaSignature } from 'react-icons/fa6';
 
 const mock = [
@@ -76,7 +75,7 @@ const PeopleList = () => {
               <span className="font-bold flex items-center justify-start">
                 {person.name}{' '}
                 {person.signer && (
-                  <PiSignatureFill className="w-4 h-4 text-gray-500 ml-2 opacity-0 max-lg:opacity-100" />
+                  <FaSignature className="w-4 h-4 text-gray-700 ml-2" />
                 )}
               </span>
               <span className="text-gray-500 font-semibold">
@@ -117,12 +116,6 @@ const PeopleList = () => {
           </div>
           <div className="whitespace-nowrap overflow-hidden w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
           <div className="pl-2 flex items-center justify-end max-lg:hidden ml-auto">
-            {person.signer && (
-              <div className="flex mr-2 items-center justify-start text-xs px-1.5 py-0.5 rounded border border-gray-400 bg-gray-100">
-                Signer
-                <FaSignature className="w-4 h-4 text-gray-700 ml-2" />
-              </div>
-            )}
             <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
               <LuArrowUpRight className="h-4 w-4" />
             </div>
