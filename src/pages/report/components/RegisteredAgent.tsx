@@ -2,6 +2,7 @@ import SectionHeading from '../../company/components/SectionHeading';
 import React from 'react';
 import { USStates } from '../../../constants/form/form';
 import { IconInfoCircle } from '@tabler/icons-react';
+import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 const mockAgent = {
   name: 'A Registered Agents Inc.',
   address: {
@@ -56,9 +57,11 @@ const RegisteredAgent = () => {
               </span>
               <span>{mockAgent.address.zip}</span>
               {mockAgent.address.county && (
-                <span className="relative">
+                <span>
                   , {mockAgent.address.county}
-                  <IconInfoCircle className="w-3.5 h-3.5 text-gray-400 absolute -right-4 top-0.5 hover:cursor-pointer hover:text-gray-500" />
+                  <TooltipWrapper tooltipText="text">
+                    <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
+                  </TooltipWrapper>
                 </span>
               )}
             </div>

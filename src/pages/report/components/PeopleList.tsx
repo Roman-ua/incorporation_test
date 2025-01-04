@@ -3,6 +3,7 @@ import { USStates } from '../../../constants/form/form';
 import React from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { FaSignature } from 'react-icons/fa6';
+import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 
 const mock = [
   {
@@ -67,7 +68,7 @@ const PeopleList = () => {
           key={rowIndex}
           className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
         >
-          <div className="whitespace-nowrap overflow-hidden w-[24%] max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900">
+          <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900">
             <span className="mr-4 w-9 h-9 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
               {person.name[0]}
             </span>
@@ -75,7 +76,9 @@ const PeopleList = () => {
               <span className="font-bold flex items-center justify-start">
                 {person.name}{' '}
                 {person.signer && (
-                  <FaSignature className="w-4 h-4 text-gray-700 ml-2" />
+                  <TooltipWrapper tooltipText="Signer of the Annual Report">
+                    <FaSignature className="w-4 h-4 text-gray-700 ml-2 hover:cursor-pointer" />
+                  </TooltipWrapper>
                 )}
               </span>
               <span className="text-gray-500 font-semibold">
@@ -84,7 +87,7 @@ const PeopleList = () => {
               <span className="text-gray-400">{person.email}</span>
             </div>
           </div>
-          <div className="whitespace-nowrap overflow-hidden w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
+          <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
             <div className="w-full pr-2 text-gray-700 text-sm">
               <div>
                 <span>{person.address.address0}, </span>
@@ -114,7 +117,7 @@ const PeopleList = () => {
               <div>{person.address.country}</div>
             </div>
           </div>
-          <div className="whitespace-nowrap overflow-hidden w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
+          <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
           <div className="pl-2 flex items-center justify-end max-lg:hidden ml-auto">
             <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
               <LuArrowUpRight className="h-4 w-4" />
