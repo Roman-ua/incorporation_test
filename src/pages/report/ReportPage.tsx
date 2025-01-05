@@ -9,6 +9,7 @@ import Details from './components/Details';
 import Addresses from './components/Addresses';
 import RegisteredAgent from './components/RegisteredAgent';
 import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler';
+import { mockAgent, mockPeople } from '../../mock/mockData';
 
 const mockData = {
   id: 1,
@@ -125,8 +126,8 @@ const ReportPage = () => {
       </dl>
       <Details />
       <Addresses />
-      <PeopleList />
-      <RegisteredAgent />
+      <PeopleList data={mockPeople} />
+      <RegisteredAgent data={mockAgent} />
       <RelatedOrders />
     </div>
   );

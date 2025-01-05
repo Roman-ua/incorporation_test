@@ -24,3 +24,15 @@ export const copyToClipboard = (text: string) => {
 export const classNames = (...classes: (string | boolean)[]) => {
   return classes.filter(Boolean).join(' ');
 };
+
+export const dockFieldHandler = (state: string) => {
+  if (state === 'Florida') {
+    return 'Document #';
+  }
+
+  if (state === 'Delaware') {
+    return 'File #';
+  }
+
+  return 'File #';
+};

@@ -2,6 +2,7 @@ import SectionHeading from '../../company/components/SectionHeading';
 import { IconLink } from '@tabler/icons-react';
 import { MdOutlineCloudDownload } from 'react-icons/md';
 import React from 'react';
+import { dockFieldHandler } from '../../../utils/helpers';
 const mockData = {
   id: 1,
   year: 2021,
@@ -39,18 +40,6 @@ const mockData = {
   stateId: '12323342CC',
   people: [],
   signed: 'John Doe',
-};
-
-const dockFieldHandler = (state: string) => {
-  if (state === 'Florida') {
-    return 'Document #';
-  }
-
-  if (state === 'Delaware') {
-    return 'File #';
-  }
-
-  return 'File #';
 };
 
 const Details = () => {

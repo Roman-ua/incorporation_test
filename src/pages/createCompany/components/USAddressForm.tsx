@@ -30,6 +30,7 @@ interface IProps {
   value?: AddressFields;
   requiredError?: boolean;
   heading?: string;
+  disabledFlag?: boolean;
 }
 
 const addressFieldsMock = [
@@ -54,6 +55,7 @@ const USAddressForm = ({
   value,
   requiredError,
   heading,
+  disabledFlag,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
@@ -142,6 +144,10 @@ const USAddressForm = ({
 
   const inputCommonClasses =
     'p-2 text-md border-b focus:outline-none bg-transparent placeholder:text-gray-300 hover:placeholder:text-gray-400 hover:cursor-pointer';
+  const moreFieldAllowed = (index: number) => {
+    return index < 3 && index === addressFields.length - 1 && !disabledFlag;
+  };
+
   return (
     <>
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />
@@ -175,6 +181,7 @@ const USAddressForm = ({
                   type={field.type}
                   value={address[`address${index}`]}
                   data-1p-ignore={true}
+                  disabled={disabledFlag}
                   onChange={(e) =>
                     setAddress({
                       ...address,
@@ -184,7 +191,7 @@ const USAddressForm = ({
                   placeholder={field.title}
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-2/4">
-                  {index < 3 && index === addressFields.length - 1 && (
+                  {moreFieldAllowed(index) && (
                     <div
                       onClick={() => {
                         if (addressFields.length < 4) {
@@ -208,6 +215,7 @@ const USAddressForm = ({
               className={classNames(inputCommonClasses, 'w-full border-r')}
               type="text"
               value={city}
+              disabled={disabledFlag}
               onChange={(e) => setCity(e.target.value)}
               data-1p-ignore={true}
               placeholder="City"
@@ -224,6 +232,7 @@ const USAddressForm = ({
                   (option) => option.title === state
                 ) as SelectMenuOption
               }
+              disableDropDown={disabledFlag}
               inputExtraStyles={'min-w-[80px] max-w-[80px]'}
               wrapperExtraStyles={'rounded-none border-t-0 border-l-0'}
             />
@@ -234,6 +243,7 @@ const USAddressForm = ({
               )}
               type="text"
               value={zip}
+              disabled={disabledFlag}
               onChange={(e) => setZipHandler(e.target.value)}
               data-1p-ignore={true}
               placeholder="Zip Code"
@@ -256,20 +266,22 @@ const USAddressForm = ({
             wrapperExtraStyles={'rounded-b-0 border-0'}
           />
         </div>
-        <CustomButton
-          discard={done}
-          clickHandler={saveHandler}
-          disabled={
-            !areFieldsValid({
-              country,
-              address0: address.address0,
-              city,
-              zip,
-              state,
-            })
-          }
-          uniqId={'USAddressForm'}
-        />
+        {!disabledFlag && (
+          <CustomButton
+            discard={done}
+            clickHandler={saveHandler}
+            disabled={
+              !areFieldsValid({
+                country,
+                address0: address.address0,
+                city,
+                zip,
+                state,
+              })
+            }
+            uniqId={'USAddressForm'}
+          />
+        )}
       </div>
     </>
   );

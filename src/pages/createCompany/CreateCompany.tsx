@@ -340,7 +340,7 @@ const CreateCompany = () => {
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-end">
-                  <ButtonWithArrow />
+                  <ButtonWithArrow title={'Next Step'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
@@ -417,7 +417,7 @@ const CreateCompany = () => {
                   >
                     Back
                   </button>
-                  <ButtonWithArrow />
+                  <ButtonWithArrow title={'Next Step'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
@@ -453,7 +453,7 @@ const CreateCompany = () => {
                   >
                     Back
                   </button>
-                  <ButtonWithArrow />
+                  <ButtonWithArrow title={'Next Step'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>

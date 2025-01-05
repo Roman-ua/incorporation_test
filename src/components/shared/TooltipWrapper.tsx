@@ -12,12 +12,13 @@ const TooltipWrapper: React.FC<TooltipWrapperProps> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div
-      className="relative inline-block overflow-visible"
-      onMouseEnter={() => setIsVisible(true)}
-      onMouseLeave={() => setIsVisible(false)}
-    >
-      {children}
+    <div className="relative inline-block overflow-visible">
+      <div
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
+        {children}
+      </div>
       <div
         className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2
                      px-2.5 py-1.5 text-sm text-gray-700 bg-gray-100 rounded-lg shadow-lg
