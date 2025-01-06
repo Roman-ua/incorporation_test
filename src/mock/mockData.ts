@@ -27,7 +27,7 @@ export const mockReportData = {
     zip: '35203',
     state: 'Alabama',
   },
-  companyName: 'ABC Company',
+  companyName: 'ABC Company Inc',
   registrationNumber: 'L23000056354',
   file: 'rep_2021',
   confirmFile: 'Confirmation_file',

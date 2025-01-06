@@ -10,6 +10,8 @@ import SubmitReviewStep from './reviewReportComponents/SubmitReviewStep';
 import { USStates } from '../../constants/form/form';
 import TooltipWrapper from '../../components/shared/TooltipWrapper';
 import { IconInfoCircle } from '@tabler/icons-react';
+import logo from '../../images/shared/bluelogo.svg';
+import smallLogo from '../../images/shared/round_logo.png';
 
 // const statusBadge = (status: string) => {
 //   switch (status) {
@@ -33,8 +35,9 @@ const AnnualReportReview = () => {
   const [peopleDataDuplicate] = useState(mockPeople);
   const [agentDataDuplicate] = useState(mockAgent);
 
-  const [currentStep, setCurrentStep] = useState<number>(0);
-  const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
+  const [currentStep, setCurrentStep] = useState<number>(3);
+  const [visitedSteps, setVisitedSteps] = useState<number[]>([0, 1, 2]);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   const submitStepHandler = () => {
     setCurrentStep((prevState) => {
@@ -51,8 +54,19 @@ const AnnualReportReview = () => {
   };
   return (
     <>
-      <div className="bg-mainBackground w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10">
-        <div className="w-1/5 pr-2 max-lg:hidden" />
+      <div className="bg-mainBackground w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
+        <div className="w-1/5 max-lg:w-fit pr-2">
+          <img
+            className="h-6 w-auto max-lg:hidden"
+            src={logo}
+            alt="Your Company"
+          />
+          <img
+            className="h-6 w-auto lg:hidden"
+            src={smallLogo}
+            alt="Your Company"
+          />
+        </div>
         <div className="w-1/2">
           <h1 className="font-bold max-lg:text-xl">
             {currentStep === 0 && 'Details'}
@@ -67,6 +81,7 @@ const AnnualReportReview = () => {
       <div className="min-h-[calc(100vh-65px)] bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20">
         <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <ReviewStepsProgress
+            editMode={editMode}
             currentStep={currentStep}
             visitedSteps={visitedSteps}
             setCurrentStep={setCurrentStep}
@@ -248,10 +263,13 @@ const AnnualReportReview = () => {
                 <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(2)}
+                    onClick={() => {
+                      setEditMode(true);
+                      setCurrentStep(0);
+                    }}
                     className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
-                    Back
+                    Make Changes
                   </button>
                   <ButtonWithArrow title={'Submit'} />
                 </div>

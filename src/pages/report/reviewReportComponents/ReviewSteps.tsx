@@ -31,10 +31,12 @@ const stepsData = [
 ];
 
 const ReviewStepsProgress = ({
+  editMode,
   currentStep,
   visitedSteps,
   setCurrentStep,
 }: {
+  editMode: boolean;
   currentStep: number;
   visitedSteps: number[];
   setCurrentStep: (value: number) => void;
@@ -75,9 +77,14 @@ const ReviewStepsProgress = ({
         {steps.map((step, stepIdx) => (
           <li
             key={step.name}
-            onClick={() => setCurrentStep(step.id)}
+            onClick={() => {
+              if (editMode) {
+                setCurrentStep(step.id);
+              }
+            }}
             className={classNames(
               stepIdx !== steps.length - 1 ? 'pb-5' : '',
+              !editMode && step.id < 3 ? 'opacity-50' : '',
               'relative max-lg:mr-6 max-lg:pb-0'
             )}
           >

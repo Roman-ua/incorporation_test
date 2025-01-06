@@ -31,7 +31,7 @@ const PeopleList = ({
           key={rowIndex}
           className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
         >
-          <div className="whitespace-nowrap w-[28%] max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900">
+          <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900">
             <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
               {person.name[0]}
             </span>
