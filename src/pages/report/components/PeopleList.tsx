@@ -35,7 +35,7 @@ const PeopleList = ({
           <div
             className={classNames(
               'whitespace-nowrap max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900',
-              editableList ? 'w-[28%]' : 'w-[24%]'
+              disabledRedirect ? 'w-[28%]' : 'w-[24%]'
             )}
           >
             <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">

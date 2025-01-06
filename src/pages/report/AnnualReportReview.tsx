@@ -12,23 +12,8 @@ import TooltipWrapper from '../../components/shared/TooltipWrapper';
 import { IconInfoCircle } from '@tabler/icons-react';
 import logo from '../../images/shared/bluelogo.svg';
 import smallLogo from '../../images/shared/round_logo.png';
-
-// const statusBadge = (status: string) => {
-//   switch (status) {
-//     case 'Filed':
-//       return 'bg-green-50 text-green-700 ring-green-600/20';
-//     case 'Cancelled':
-//       return 'bg-red-50 text-red-700 ring-red-600/20';
-//     case 'Declined':
-//       return 'bg-gray-50 text-gray-700 ring-gray-600/20';
-//     case 'Confirmed':
-//       return 'bg-blue-50 text-blue-700 ring-blue-600/20';
-//     case 'Waiting for Confirmation':
-//       return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20';
-//     default:
-//       return 'bg-gray-50 text-gray-700 ring-gray-600/20';
-//   }
-// };
+import { HiOutlineDocumentReport } from 'react-icons/hi';
+import PageSign from '../../components/shared/PageSign';
 
 const AnnualReportReview = () => {
   const [dataDuplicate] = useState(mockReportData);
@@ -91,6 +76,14 @@ const AnnualReportReview = () => {
           {currentStep === 0 && (
             <form onSubmit={submitStepHandler}>
               <>
+                <div className="mb-10">
+                  <PageSign
+                    title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                    icon={
+                      <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
+                    }
+                  />
+                </div>
                 <SectionHeading title={'Company Information'} />
                 <div className="flex items-start justify-start mb-12 max-lg:flex-col">
                   <div className="w-full max-lg:mb-3">
@@ -191,6 +184,14 @@ const AnnualReportReview = () => {
 
           {currentStep === 1 && (
             <form onSubmit={submitStepHandler}>
+              <div className="mb-10">
+                <PageSign
+                  title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                  icon={
+                    <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
+                  }
+                />
+              </div>
               <div className="mb-5">
                 <USAddressForm
                   disabledFlag={true}
@@ -227,6 +228,14 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 2 && (
             <form onSubmit={submitStepHandler}>
+              <div className="mb-10">
+                <PageSign
+                  title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                  icon={
+                    <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
+                  }
+                />
+              </div>
               <PeopleList
                 removeAction={removePersonAction}
                 editAction={editPersonAction}
@@ -253,6 +262,14 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 3 && (
             <form onSubmit={submitStepHandler}>
+              <div className="mb-10">
+                <PageSign
+                  title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                  icon={
+                    <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
+                  }
+                />
+              </div>
               <SubmitReviewStep
                 reportData={dataDuplicate}
                 agentReportData={agentDataDuplicate}
