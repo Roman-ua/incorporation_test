@@ -278,7 +278,7 @@ const RenderEmails = () => {
                       )}
                     </div>
                     <div
-                      className="bg-white w-[600px] border border-gray-200 rounded-b py-6"
+                      className="bg-white w-[600px] border border-gray-200 rounded-b py-8"
                       dangerouslySetInnerHTML={{
                         __html: htmlContent[section.id],
                       }}
