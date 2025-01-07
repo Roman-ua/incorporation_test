@@ -54,11 +54,14 @@ const AnnualReportReview = () => {
         </div>
         <div className="w-1/2">
           <h1 className="font-bold max-lg:text-xl">
-            {currentStep === 0 && 'Details'}
-            {currentStep === 1 && 'Address'}
-            {currentStep === 2 && 'People'}
-            {currentStep === 3 && 'Review'}
-            {currentStep === 4 && 'Reviewed'}
+            {/*{currentStep === 0 && 'Details'}*/}
+            {/*{currentStep === 1 && 'Address'}*/}
+            {/*{currentStep === 2 && 'People'}*/}
+            {/*{currentStep === 3 && 'Review'}*/}
+            {/*{currentStep === 4 && 'Reviewed'}*/}
+            <span>
+              {`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+            </span>
           </h1>
         </div>
         <div className="w-1/4 pr-2" />
@@ -71,14 +74,23 @@ const AnnualReportReview = () => {
             visitedSteps={visitedSteps}
             setCurrentStep={setCurrentStep}
           />
+          {/*<div className="mt-auto">*/}
+          {/*  <span> Incorporate Now Inc</span>*/}
+          {/*  <span>*/}
+          {/*    100 S. Dixie Hwy, 3rd Floor West Palm Beach, FL 33401 United*/}
+          {/*    States*/}
+          {/*  </span>*/}
+          {/*  <span>Terms and Conditions Privacy Policy Service Agreement</span>*/}
+          {/*</div>*/}
         </div>
         <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
           {currentStep === 0 && (
             <form onSubmit={submitStepHandler}>
               <>
-                <div className="mb-10">
+                <div className="mb-5">
                   <PageSign
-                    title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                    titleSize={'text-[14px]'}
+                    title={`DETAILS`}
                     icon={
                       <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
                     }
@@ -175,7 +187,7 @@ const AnnualReportReview = () => {
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-end">
-                  <ButtonWithArrow title={'Approve'} />
+                  <ButtonWithArrow title={'Save'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
@@ -184,9 +196,10 @@ const AnnualReportReview = () => {
 
           {currentStep === 1 && (
             <form onSubmit={submitStepHandler}>
-              <div className="mb-10">
+              <div className="mb-5">
                 <PageSign
-                  title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                  titleSize={'text-[14px]'}
+                  title={`ADDRESS`}
                   icon={
                     <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
                   }
@@ -218,9 +231,9 @@ const AnnualReportReview = () => {
                     onClick={() => setCurrentStep(0)}
                     className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
-                    Back
+                    Cancel
                   </button>
-                  <ButtonWithArrow title={'Approve'} />
+                  <ButtonWithArrow title={'Save'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
@@ -228,9 +241,10 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 2 && (
             <form onSubmit={submitStepHandler}>
-              <div className="mb-10">
+              <div className="mb-5">
                 <PageSign
-                  title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                  titleSize={'text-[14px]'}
+                  title={`PEOPLE`}
                   icon={
                     <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
                   }
@@ -252,9 +266,9 @@ const AnnualReportReview = () => {
                     onClick={() => setCurrentStep(1)}
                     className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
-                    Back
+                    Cancel
                   </button>
-                  <ButtonWithArrow title={'Approve'} />
+                  <ButtonWithArrow title={'Save'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
@@ -262,15 +276,20 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 3 && (
             <form onSubmit={submitStepHandler}>
-              <div className="mb-10">
+              <div className="mb-5">
                 <PageSign
-                  title={`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
+                  titleSize={'text-[14px]'}
+                  title={`REVIEW`}
                   icon={
                     <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
                   }
                 />
               </div>
               <SubmitReviewStep
+                clickHandler={() => {
+                  setEditMode(true);
+                  setCurrentStep(2);
+                }}
                 reportData={dataDuplicate}
                 agentReportData={agentDataDuplicate}
                 peopleData={peopleDataDuplicate}
@@ -278,23 +297,26 @@ const AnnualReportReview = () => {
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-1/2 max-xl:w-full flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditMode(true);
-                      setCurrentStep(0);
-                    }}
-                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    Make Changes
-                  </button>
-                  <ButtonWithArrow title={'Submit'} />
+                  <div />
+                  <ButtonWithArrow title={'Confirm'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
-          {currentStep === 4 && <div>Сongratulations</div>}
+          {currentStep === 4 && (
+            <div>
+              <div className="mb-5">
+                <PageSign
+                  titleSize={'text-[14px]'}
+                  title={`CONFIRMED 🎉`}
+                  icon={
+                    <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
+                  }
+                />
+              </div>
+            </div>
+          )}
         </div>
         <div className="w-1/4" />
       </div>

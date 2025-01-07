@@ -24,7 +24,7 @@ const stepsData = [
     id: 3,
   },
   {
-    name: 'Reviewed',
+    name: 'Confirmed 🎉',
     status: 'upcoming',
     id: 4,
   },
@@ -51,9 +51,7 @@ const ReviewStepsProgress = ({
     });
 
     const currentStepIndex = data.findIndex((item) => item.id === currentStep);
-    if (data[currentStepIndex].status !== 'complete') {
-      data[currentStepIndex].status = 'current';
-    }
+    data[currentStepIndex].status = 'current';
 
     data.forEach((item, index) => {
       if (!visitedSteps.includes(item.id) && item.id !== currentStep) {

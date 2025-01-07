@@ -12,6 +12,7 @@ interface IProps {
   reportData: ReportData;
   agentReportData: Agent;
   peopleData: Person[];
+  clickHandler: () => void;
 }
 
 const statusBadge = (status: string) => {
@@ -35,6 +36,7 @@ const SubmitReviewStep = ({
   reportData,
   agentReportData,
   peopleData,
+  clickHandler,
 }: IProps) => {
   return (
     <>
@@ -42,7 +44,7 @@ const SubmitReviewStep = ({
         <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
           <div className="flex flex-col gap-y-1 pr-5">
             <dt className="text-sm text-gray-500">Year</dt>
-            <dd className="text-base font-semibold tracking-tight text-gray-700">
+            <dd className="text-base font-semibold tracking-tight text-gray-800">
               {reportData?.year}
             </dd>
           </div>
@@ -59,13 +61,13 @@ const SubmitReviewStep = ({
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
-            <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6">
+            <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-800 relative pr-6">
               {reportData.companyName}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">State</dt>
-            <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6 flex items-center justify-start">
+            <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-800 relative pr-6 flex items-center justify-start">
               <StateSolidIconHandler
                 simpleIcon={true}
                 selectedState={reportData.state || 'Florida'}
@@ -84,7 +86,7 @@ const SubmitReviewStep = ({
               <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
                 Year
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="w-full pr-2 text-gray-800 text-sm">
                 {reportData.year}
               </div>
             </div>
@@ -92,7 +94,7 @@ const SubmitReviewStep = ({
               <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
                 Company Name
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="w-full pr-2 text-gray-800 text-sm">
                 {reportData.companyName}
               </div>
             </div>
@@ -100,7 +102,7 @@ const SubmitReviewStep = ({
               <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
                 State
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="w-full pr-2 text-gray-800 text-sm">
                 {reportData.state}
               </div>
             </div>
@@ -108,7 +110,7 @@ const SubmitReviewStep = ({
               <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
                 {dockFieldHandler(reportData.state)}
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="w-full pr-2 text-gray-800 text-sm">
                 {reportData.registrationNumber}
               </div>
             </div>
@@ -121,13 +123,13 @@ const SubmitReviewStep = ({
           <div className="w-[35%] flex items-start justify-start pb-2 max-lg:w-full">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Main Address</div>
-              <div>
+              <div className="text-gray-800">
                 <span>{reportData.address.address0}, </span>
                 {reportData.address.address1 && (
                   <span>{reportData.address.address1}</span>
                 )}
               </div>
-              <div>
+              <div className="text-gray-800">
                 {reportData.address.address2 && (
                   <span>{reportData.address.address2}</span>
                 )}
@@ -138,7 +140,7 @@ const SubmitReviewStep = ({
                   </span>
                 )}
               </div>
-              <div>
+              <div className="text-gray-800">
                 <span>{reportData.address.city}, </span>
                 <span>
                   {USStates.find(
@@ -147,19 +149,19 @@ const SubmitReviewStep = ({
                 </span>
                 <span>{reportData.address.zip}</span>
               </div>
-              <div>{reportData.address.country}</div>
+              <div className="text-gray-800">{reportData.address.country}</div>
             </div>
           </div>
           <div className="w-1/2 flex items-start justify-between pb-2 ">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Mailing Address</div>
-              <div>
+              <div className="text-gray-800">
                 <span>{reportData.address.address0}, </span>
                 {reportData.address.address1 && (
                   <span>{reportData.address.address1}</span>
                 )}
               </div>
-              <div>
+              <div className="text-gray-800">
                 {reportData.address.address2 && (
                   <span>{reportData.address.address2}</span>
                 )}
@@ -170,7 +172,7 @@ const SubmitReviewStep = ({
                   </span>
                 )}
               </div>
-              <div>
+              <div className="text-gray-800">
                 <span>{reportData.address.city}, </span>
                 <span>
                   {USStates.find(
@@ -179,13 +181,22 @@ const SubmitReviewStep = ({
                 </span>
                 <span>{reportData.address.zip}</span>
               </div>
-              <div>{reportData.address.country}</div>
+              <div className="text-gray-800">{reportData.address.country}</div>
             </div>
           </div>
         </div>
       </div>
       <div className="mb-12">
-        <SectionHeading title="People" />
+        <div className="group w-full border-b text-lg font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+          People
+          <button
+            type="button"
+            onClick={clickHandler}
+            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
+          >
+            Make Changes
+          </button>
+        </div>
         {peopleData.map((person, rowIndex) => (
           <div
             key={rowIndex}
@@ -200,7 +211,7 @@ const SubmitReviewStep = ({
                 {person.name[0]}
               </span>
               <div className="text-sm flex flex-col items-start justify-start">
-                <span className="font-bold flex items-center justify-start">
+                <span className="font-bold flex items-center justify-start text-gray-900">
                   {person.name}{' '}
                   {person.signer && (
                     <TooltipWrapper tooltipText="Signer of the Annual Report">
@@ -215,7 +226,7 @@ const SubmitReviewStep = ({
               </div>
             </div>
             <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="w-full pr-2 text-sm text-gray-800">
                 <div>
                   <span>{person.address.address0}, </span>
                   {person.address.address1 && (
@@ -256,11 +267,13 @@ const SubmitReviewStep = ({
           <div className="w-[35%] flex items-start justify-between pb-2 max-lg:w-full">
             <div className="pr-1 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Name</div>
-              <div className="font-bold">{agentReportData.name}</div>
+              <div className="font-bold text-gray-800">
+                {agentReportData.name}
+              </div>
             </div>
           </div>
           <div className="flex items-start justify-start pb-2">
-            <div className="w-full pr-2 text-gray-700 text-sm">
+            <div className="w-full pr-2 text-gray-800 text-sm">
               <div className="text-sm text-gray-500 mb-1">Address</div>
               <div>
                 <span>{agentReportData.address.address0}, </span>

@@ -108,7 +108,7 @@ const PeopleList = ({
           className="ml-auto mt-10 flex items-center justify-center rounded-md group bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out"
         >
           Add Person
-          <IconPlus className="w-5 h-5 text-white ml-2 group-hover:rotate-180 transition-all duration-150 ease-in-out" />
+          <IconPlus className="w-5 h-5 text-white ml-2 group-hover:rotate-90 transition-all duration-350 ease-in-out" />
         </button>
       )}
     </div>
