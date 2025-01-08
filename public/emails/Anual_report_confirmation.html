@@ -8,9 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .body { font-family: Helvetica, sans-serif; font-size: 15px; color: #333; width: 100%; max-width: 450px; margin: auto;}
+        .body { font-family: Helvetica, sans-serif; font-size: 15px; color: #333; width: 100%; max-width: 450px; margin: auto; position: relative; }
         .container { margin: 20px auto; background: #f8f8f8; border-radius: 5px; border: 1px solid #efefef; }
-        .header { font-size: 20px; color: #1c1c1c; margin-bottom: 20px; font-weight: bold }
+        .header { font-size: 28px; line-height: 38px; color: #1c1c1c; margin-bottom: 20px; font-weight: 600; }
         .section { padding: 15px; border-bottom: 1px solid #efefef;}
         .sectionTitle { font-size: 13px !important; }
         .borderCleanUp { border: none !important }
@@ -40,16 +40,19 @@
         .mb32 {margin-bottom: 32px !important;}
         .termsLinkWrapper {margin-top: 5px;}
         .statusBadgeBold {
-            font-size: 12px !important;
-            padding: 9px 10px !important;
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 14px !important;
+            padding: 7px 8px !important;
             border-radius: 50px !important;
             display: flex;
             font-weight: bold;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(200, 30, 30, 0.3);
+            border: 2px solid #fce4e7;
             color: #191818;
-            background-color: #fdf2f2;
+            background-color: #fffaf8;
             width: fit-content !important;
             line-height: 11px !important;
         }
@@ -80,13 +83,16 @@
 <!-- - People sections: Director, Manager etc. One section can contain 1 or many people.-->
 <body>
     <div class="body">
-        <img
-            src="/bluelogo.png"
-            alt="Company Logo"
-            title="Company Logo"
-            style="display:block"
-            class="headerLogo mb32"
-        >
+        <div>
+            <img
+                src="/bluelogo.png"
+                alt="Company Logo"
+                title="Company Logo"
+                style="display:block"
+                class="headerLogo mb32"
+            >
+            <span class="statusBadgeBold"> Confirmation Needed</span>
+        </div>
         <div>
             <div class="header">
                 2024  Annual Report Filing Confirmation <br/>
@@ -102,12 +108,12 @@
         </div>
 
         <div class="container">
-            <div class="section">
-                <div>
-                    <div class="bold sectionTitle mb6">Annual Report Status</div>
-                    <span class="statusBadgeBold"> Confirmation Needed</span>
-                </div>
-            </div>
+<!--            <div class="section">-->
+<!--                <div>-->
+<!--                    <div class="bold sectionTitle mb6">Annual Report Status</div>-->
+<!--                    <span class="statusBadgeBold"> Confirmation Needed</span>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="section">
                 <div>
                     <div class="bold sectionTitle mb6">Company</div>
