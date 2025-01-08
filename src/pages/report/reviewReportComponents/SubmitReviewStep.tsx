@@ -44,7 +44,7 @@ const SubmitReviewStep = ({
         <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
           <div className="flex flex-col gap-y-1 pr-5">
             <dt className="text-sm text-gray-500">Year</dt>
-            <dd className="text-base font-semibold tracking-tight text-gray-800">
+            <dd className="text-sm font-semibold tracking-tight text-gray-800">
               {reportData?.year}
             </dd>
           </div>
@@ -61,13 +61,13 @@ const SubmitReviewStep = ({
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
-            <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-800 relative pr-6">
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
               {reportData.companyName}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">State</dt>
-            <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-800 relative pr-6 flex items-center justify-start">
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6 flex items-center justify-start">
               <StateSolidIconHandler
                 simpleIcon={true}
                 selectedState={reportData.state || 'Florida'}
@@ -79,38 +79,38 @@ const SubmitReviewStep = ({
         </dl>
       </div>
       <div className="mb-12">
-        <SectionHeading title="Details" />
+        <SectionHeading title="Details" textSettings={'text-base'} />
         <div className="flex items-start justify-start max-lg:flex-col">
           <div className="w-full max-lg:mb-3">
             <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
+              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
                 Year
               </div>
-              <div className="w-full pr-2 text-gray-800 text-sm">
+              <div className="w-1/2 pr-2 text-gray-800 text-sm">
                 {reportData.year}
               </div>
             </div>
             <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
+              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
                 Company Name
               </div>
-              <div className="w-full pr-2 text-gray-800 text-sm">
+              <div className="w-1/2 pr-2 text-gray-800 text-sm">
                 {reportData.companyName}
               </div>
             </div>
             <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
+              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
                 State
               </div>
-              <div className="w-full pr-2 text-gray-800 text-sm">
+              <div className="w-1/2 pr-2 text-gray-800 text-sm">
                 {reportData.state}
               </div>
             </div>
             <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-[54%] text-sm pr-2 text-nowrap text-gray-500">
+              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
                 {dockFieldHandler(reportData.state)}
               </div>
-              <div className="w-full pr-2 text-gray-800 text-sm">
+              <div className="w-1/2 pr-2 text-gray-800 text-sm">
                 {reportData.registrationNumber}
               </div>
             </div>
@@ -118,9 +118,9 @@ const SubmitReviewStep = ({
         </div>
       </div>
       <div className="mb-12">
-        <SectionHeading title="Address" />
+        <SectionHeading title="Address" textSettings={'text-base'} />
         <div className="w-full flex items-start justify-start max-lg:flex-col">
-          <div className="w-[35%] flex items-start justify-start pb-2 max-lg:w-full">
+          <div className="w-1/2 flex items-start justify-start pb-2 max-lg:w-full">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Main Address</div>
               <div className="text-gray-800">
@@ -187,7 +187,7 @@ const SubmitReviewStep = ({
         </div>
       </div>
       <div className="mb-12">
-        <div className="group w-full border-b text-lg font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+        <div className="group w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           People
           <button
             type="button"
@@ -200,18 +200,18 @@ const SubmitReviewStep = ({
         {peopleData.map((person, rowIndex) => (
           <div
             key={rowIndex}
-            className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
+            className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start w-full`}
           >
             <div
               className={classNames(
-                'whitespace-nowrap max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900 w-[34%]'
+                'whitespace-nowrap w-1/2 pr-2 flex items-start justify-start  text-gray-900'
               )}
             >
               <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
                 {person.name[0]}
               </span>
               <div className="text-sm flex flex-col items-start justify-start">
-                <span className="font-bold flex items-center justify-start text-gray-900">
+                <span className="font-semibold flex items-center justify-start text-gray-900">
                   {person.name}{' '}
                   {person.signer && (
                     <TooltipWrapper tooltipText="Signer of the Annual Report">
@@ -219,13 +219,13 @@ const SubmitReviewStep = ({
                     </TooltipWrapper>
                   )}
                 </span>
-                <span className="text-gray-500 font-semibold">
+                <span className="text-gray-500 font-semibold text-xs">
                   {person.title}
                 </span>
                 <span className="text-gray-400">{person.email}</span>
               </div>
             </div>
-            <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
+            <div className="whitespace-nowrap w-1/2 flex items-center justify-start">
               <div className="w-full pr-2 text-sm text-gray-800">
                 <div>
                   <span>{person.address.address0}, </span>
@@ -256,23 +256,21 @@ const SubmitReviewStep = ({
                 <div>{person.address.country}</div>
               </div>
             </div>
-            <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
-            <div className="pl-2 flex items-center justify-end ml-auto"></div>
           </div>
         ))}
       </div>
       <div className="mb-12">
-        <SectionHeading title="Registered Agent" />
+        <SectionHeading title="Registered Agent" textSettings={'text-base'} />
         <div className="w-full flex items-start justify-start mb-12 max-lg:flex-col">
-          <div className="w-[35%] flex items-start justify-between pb-2 max-lg:w-full">
+          <div className="w-1/2 flex items-start justify-between pb-2 max-lg:w-full">
             <div className="pr-1 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Name</div>
-              <div className="font-bold text-gray-800">
+              <div className="font-semibold text-gray-800">
                 {agentReportData.name}
               </div>
             </div>
           </div>
-          <div className="flex items-start justify-start pb-2">
+          <div className="w-1/2 flex items-start justify-start pb-2">
             <div className="w-full pr-2 text-gray-800 text-sm">
               <div className="text-sm text-gray-500 mb-1">Address</div>
               <div>

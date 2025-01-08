@@ -90,16 +90,16 @@ const ReviewStepsProgress = ({
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-green-500
+                    className="absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-200
                       max-lg:-right-4 max-lg:top-2 max-lg:left-auto max-lg:h-0.5 max-lg:w-2"
                     aria-hidden="true"
                   />
                 ) : null}
                 <span className="group relative flex items-center hover:cursor-pointer">
                   <span className="flex h-5 items-center">
-                    <span className="relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-green-500">
+                    <span className="relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-gray-200">
                       <CheckIcon
-                        className="h-2 w-2 text-white"
+                        className="h-2 w-2 text-gray-700"
                         aria-hidden="true"
                       />
                     </span>
@@ -115,7 +115,7 @@ const ReviewStepsProgress = ({
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-300
+                    className="absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-200
                       max-lg:-right-4 max-lg:top-2 max-lg:left-auto max-lg:h-0.5 max-lg:w-2"
                     aria-hidden="true"
                   />
@@ -140,7 +140,7 @@ const ReviewStepsProgress = ({
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-300
+                    className="absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-200
                       max-lg:-right-4 max-lg:top-2 max-lg:left-auto max-lg:h-0.5 max-lg:w-2"
                     aria-hidden="true"
                   />
