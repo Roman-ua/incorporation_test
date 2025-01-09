@@ -31,6 +31,8 @@ interface IProps {
   requiredError?: boolean;
   heading?: string;
   disabledFlag?: boolean;
+  enableCountry?: boolean;
+  deleteAction?: () => void;
 }
 
 const addressFieldsMock = [
@@ -56,6 +58,8 @@ const USAddressForm = ({
   requiredError,
   heading,
   disabledFlag,
+  enableCountry,
+  deleteAction,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
@@ -143,7 +147,7 @@ const USAddressForm = ({
   }, [value]);
 
   const inputCommonClasses =
-    'p-2 text-md border-b focus:outline-none bg-transparent placeholder:text-gray-300 hover:placeholder:text-gray-400 hover:cursor-pointer';
+    'p-2 text-md border-b border-b-gray-200 bg-transparent placeholder:text-gray-300 hover:placeholder:text-gray-400 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
   const moreFieldAllowed = (index: number) => {
     return index < 3 && index === addressFields.length - 1 && !disabledFlag;
   };
@@ -176,7 +180,7 @@ const USAddressForm = ({
                   key={index}
                   className={classNames(
                     inputCommonClasses,
-                    `w-full ${index === 0 ? 'rounded-t-md' : ''}`
+                    `w-full ${index === 0 ? 'rounded-t-md' : ''} border-0`
                   )}
                   type={field.type}
                   value={address[`address${index}`]}
@@ -212,7 +216,10 @@ const USAddressForm = ({
           })}
           <div className="w-full flex items-center justify-center">
             <input
-              className={classNames(inputCommonClasses, 'w-full border-r')}
+              className={classNames(
+                inputCommonClasses,
+                'w-full border-r border-t-0 border-l-0 border-r-gray-200'
+              )}
               type="text"
               value={city}
               disabled={disabledFlag}
@@ -234,12 +241,14 @@ const USAddressForm = ({
               }
               disableDropDown={disabledFlag}
               inputExtraStyles={'min-w-[80px] max-w-[80px]'}
-              wrapperExtraStyles={'rounded-none border-t-0 border-l-0'}
+              wrapperExtraStyles={
+                'rounded-none border-t-0 border-l-0 border-r-0'
+              }
             />
             <input
               className={classNames(
                 inputCommonClasses,
-                'min-w-[110px] max-w-[110px]'
+                'min-w-[110px] max-w-[110px] border-t-0 border-r-0 border-l-gray-200'
               )}
               type="text"
               value={zip}
@@ -261,27 +270,44 @@ const USAddressForm = ({
                 (option) => option.title === country
               ) as SelectMenuOption
             }
-            inputExtraStyles={'w-full opacity-40'}
-            disableDropDown={true}
+            inputExtraStyles={`${!enableCountry && 'opacity-40'} w-full `}
+            disableDropDown={!enableCountry}
             wrapperExtraStyles={'rounded-b-0 border-0'}
           />
         </div>
-        {!disabledFlag && (
-          <CustomButton
-            discard={done}
-            clickHandler={saveHandler}
-            disabled={
-              !areFieldsValid({
-                country,
-                address0: address.address0,
-                city,
-                zip,
-                state,
-              })
-            }
-            uniqId={'USAddressForm'}
-          />
-        )}
+        <div className="ml-auto flex items-center justify-center w-full">
+          {deleteAction && (
+            <div
+              onClick={deleteAction}
+              className="rounded-md bg-white px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:cursor-pointer transition-all ease-in-out duration-150"
+            >
+              Delete
+            </div>
+            // <button
+            //   type="button"
+            //   onClick={cancelAction}
+            //   className="min-w-28 rounded-md bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
+            // >
+            //   Make Changes
+            // </button>
+          )}
+          {!disabledFlag && (
+            <CustomButton
+              discard={done}
+              clickHandler={saveHandler}
+              disabled={
+                !areFieldsValid({
+                  country,
+                  address0: address.address0,
+                  city,
+                  zip,
+                  state,
+                })
+              }
+              uniqId={'USAddressForm'}
+            />
+          )}
+        </div>
       </div>
     </>
   );

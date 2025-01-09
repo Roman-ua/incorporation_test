@@ -14,6 +14,7 @@ import {
   IconPlus,
   IconSettings,
   IconTrashX,
+  IconX,
 } from '@tabler/icons-react';
 import logo from '../../images/shared/bluelogo.svg';
 import smallLogo from '../../images/shared/round_logo.png';
@@ -290,20 +291,43 @@ const AnnualReportReview = () => {
               </div>
               <>
                 {peopleDataDuplicate.map((person, rowIndex) => (
-                  <>
+                  <div
+                    key={rowIndex}
+                    className={classNames(
+                      editingPersonId === person.id &&
+                        'border border-gray-500 rounded-md p-7 my-5 bg-white relative'
+                    )}
+                  >
+                    {editingPersonId === person.id && (
+                      <IconX
+                        onClick={() => setEditingPersonId(0)}
+                        className="w-4 h-4 text-gray-700 absolute top-6 right-6 hover:cursor-pointer"
+                      />
+                    )}
                     <div
-                      key={rowIndex}
-                      className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
+                      className={classNames(
+                        `flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`
+                      )}
                     >
                       <div
                         className={classNames(
-                          'whitespace-nowrap w-[40%] max-sm:w-1/2 pr-2 flex items-start justify-start  text-gray-900'
+                          'whitespace-nowrap w-[40%] max-sm:w-1/2 pr-2 flex  text-gray-900 justify-start',
+                          editingPersonId === person.id
+                            ? 'items-center'
+                            : 'items-start '
                         )}
                       >
                         <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
                           {person.name[0]}
                         </span>
-                        <div className="text-sm flex flex-col items-start justify-start">
+                        <div
+                          className={classNames(
+                            'text-sm flex',
+                            editingPersonId === person.id
+                              ? 'gap-4 justify-start items-center'
+                              : 'flex-col justify-start items-start'
+                          )}
+                        >
                           <span className="font-bold flex items-center justify-start">
                             {person.name}{' '}
                             {person.signer && (
@@ -318,58 +342,67 @@ const AnnualReportReview = () => {
                           <span className="text-gray-400">{person.email}</span>
                         </div>
                       </div>
-                      <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
-                        <div className="w-full pr-2 text-gray-700 text-sm">
-                          <div>
-                            <span>{person.address.address0}, </span>
-                            {person.address.address1 && (
-                              <span>{person.address.address1}</span>
-                            )}
+                      {editingPersonId !== person.id && (
+                        <>
+                          <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
+                            <div className="w-full pr-2 text-gray-700 text-sm">
+                              <div>
+                                <span>{person.address.address0}, </span>
+                                {person.address.address1 && (
+                                  <span>{person.address.address1}</span>
+                                )}
+                              </div>
+                              <div>
+                                {person.address.address2 && (
+                                  <span>{person.address.address2}</span>
+                                )}
+                                {person.address.address3 && (
+                                  <span>
+                                    {person.address.address2 ? ',' : ''}{' '}
+                                    {person.address.address3}
+                                  </span>
+                                )}
+                              </div>
+                              <div>
+                                <span>{person.address.city}, </span>
+                                <span>
+                                  {USStates.find(
+                                    (item) =>
+                                      item.title === person.address.state
+                                  )?.value || ''}{' '}
+                                </span>
+                                <span>{person.address.zip}</span>
+                              </div>
+                              <div>{person.address.country}</div>
+                            </div>
                           </div>
-                          <div>
-                            {person.address.address2 && (
-                              <span>{person.address.address2}</span>
-                            )}
-                            {person.address.address3 && (
-                              <span>
-                                {person.address.address2 ? ',' : ''}{' '}
-                                {person.address.address3}
-                              </span>
-                            )}
-                          </div>
-                          <div>
-                            <span>{person.address.city}, </span>
-                            <span>
-                              {USStates.find(
-                                (item) => item.title === person.address.state
-                              )?.value || ''}{' '}
-                            </span>
-                            <span>{person.address.zip}</span>
-                          </div>
-                          <div>{person.address.country}</div>
+                          <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
+                        </>
+                      )}
+                      {editingPersonId !== person.id && (
+                        <div className="pl-2 flex items-center justify-end ml-auto">
+                          <IconSettings
+                            onClick={() => setEditingPersonId(person.id)}
+                            className="w-5 h-5 text-gray-700 ml-2 hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-180"
+                          />
+                          <IconTrashX
+                            onClick={() => removePersonHandler(person.id)}
+                            className="w-5 h-5 text-red-400 ml-2 hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-12"
+                          />
                         </div>
-                      </div>
-                      <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
-                      <div className="pl-2 flex items-center justify-end ml-auto">
-                        <IconSettings
-                          onClick={() => setEditingPersonId(person.id)}
-                          className="w-5 h-5 text-gray-700 ml-2 hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-180"
-                        />
-                        <IconTrashX
-                          onClick={() => removePersonHandler(person.id)}
-                          className="w-5 h-5 text-red-400 ml-2 hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-12"
-                        />
-                      </div>
+                      )}
                     </div>
                     {editingPersonId === person.id && (
                       <USAddressForm
+                        deleteAction={() => removePersonHandler(person.id)}
                         setFromState={updatePersonAddressHandler}
                         heading={``}
                         requiredError={false}
+                        enableCountry={true}
                         value={dataDuplicate.address}
                       />
                     )}
-                  </>
+                  </div>
                 ))}
                 <button
                   type="button"
