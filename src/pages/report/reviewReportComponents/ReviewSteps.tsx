@@ -82,7 +82,7 @@ const ReviewStepsProgress = ({
             }}
             className={classNames(
               stepIdx !== steps.length - 1 ? 'pb-5' : '',
-              !editMode && step.id < 3 ? 'opacity-50' : '',
+              !editMode && step.id === 3 ? 'opacity-50' : '',
               'relative max-lg:mr-6 max-lg:pb-0'
             )}
           >
@@ -90,16 +90,26 @@ const ReviewStepsProgress = ({
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-200
-                      max-lg:-right-4 max-lg:top-2 max-lg:left-auto max-lg:h-0.5 max-lg:w-2"
+                    className={classNames(
+                      'absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-200 max-lg:-right-4 max-lg:top-2 max-lg:left-auto max-lg:h-0.5 max-lg:w-2',
+                      currentStep === 4 ? 'bg-green-400' : 'bg-gray-200'
+                    )}
                     aria-hidden="true"
                   />
                 ) : null}
                 <span className="group relative flex items-center hover:cursor-pointer">
                   <span className="flex h-5 items-center">
-                    <span className="relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-gray-200">
+                    <span
+                      className={classNames(
+                        'relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-gray-200',
+                        currentStep === 4 ? 'bg-green-400' : 'bg-gray-200'
+                      )}
+                    >
                       <CheckIcon
-                        className="h-2 w-2 text-gray-700"
+                        className={classNames(
+                          'h-2 w-2 ',
+                          currentStep === 4 ? 'text-white' : 'text-gray-700'
+                        )}
                         aria-hidden="true"
                       />
                     </span>
