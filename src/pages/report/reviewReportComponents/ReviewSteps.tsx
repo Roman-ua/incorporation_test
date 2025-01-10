@@ -51,7 +51,8 @@ const ReviewStepsProgress = ({
     });
 
     const currentStepIndex = data.findIndex((item) => item.id === currentStep);
-    data[currentStepIndex].status = 'current';
+    data[currentStepIndex].status =
+      data[currentStepIndex].id === 4 ? 'complete' : 'current';
 
     data.forEach((item, index) => {
       if (!visitedSteps.includes(item.id) && item.id !== currentStep) {
@@ -82,7 +83,9 @@ const ReviewStepsProgress = ({
             }}
             className={classNames(
               stepIdx !== steps.length - 1 ? 'pb-5' : '',
-              !editMode && step.id === 3 ? 'opacity-50' : '',
+              !editMode && step.id === 3 && step.status !== 'complete'
+                ? 'opacity-50'
+                : '',
               'relative max-lg:mr-6 max-lg:pb-0'
             )}
           >
@@ -107,7 +110,7 @@ const ReviewStepsProgress = ({
                     >
                       <CheckIcon
                         className={classNames(
-                          'h-2 w-2 ',
+                          'h-2.5 w-2.5 font-bold',
                           currentStep === 4 ? 'text-white' : 'text-gray-700'
                         )}
                         aria-hidden="true"
