@@ -77,6 +77,35 @@ const AnnualReportReview = () => {
     });
   };
 
+  const signerCheckHandler = (id: number, currentChecked: boolean) => {
+    const result = [...peopleDataDuplicate];
+    const currentPersonIndex = peopleDataDuplicate.findIndex(
+      (person) => person.id === id
+    );
+    const prevSignerPersonIndex = peopleDataDuplicate.findIndex(
+      (person) => person.signer
+    );
+
+    if (currentChecked && currentPersonIndex !== -1) {
+      result[currentPersonIndex].signer = false;
+    }
+
+    if (!currentChecked && currentPersonIndex !== -1) {
+      result[currentPersonIndex].signer = true;
+    }
+
+    if (
+      !currentChecked &&
+      currentPersonIndex !== -1 &&
+      prevSignerPersonIndex !== -1
+    ) {
+      result[prevSignerPersonIndex].signer = false;
+      result[currentPersonIndex].signer = true;
+    }
+
+    setPeopleDataDuplicate(result);
+  };
+
   return (
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
@@ -295,7 +324,7 @@ const AnnualReportReview = () => {
                     key={rowIndex}
                     className={classNames(
                       editingPersonId === person.id &&
-                        'border border-gray-500 rounded-md p-7 my-5 bg-white relative'
+                        'border border-gray-200 rounded-md p-7 my-5 bg-white relative'
                     )}
                   >
                     {editingPersonId === person.id && (
@@ -309,39 +338,86 @@ const AnnualReportReview = () => {
                         `flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`
                       )}
                     >
-                      <div
-                        className={classNames(
-                          'whitespace-nowrap w-[40%] max-sm:w-1/2 pr-2 flex  text-gray-900 justify-start',
-                          editingPersonId === person.id
-                            ? 'items-center'
-                            : 'items-start '
-                        )}
-                      >
-                        <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
-                          {person.name[0]}
-                        </span>
+                      {editingPersonId !== person.id ? (
                         <div
                           className={classNames(
-                            'text-sm flex',
-                            editingPersonId === person.id
-                              ? 'gap-4 justify-start items-center'
-                              : 'flex-col justify-start items-start'
+                            'whitespace-nowrap w-[40%] max-sm:w-1/2 pr-2 flex  text-gray-900 justify-start items-start'
                           )}
                         >
-                          <span className="font-bold flex items-center justify-start">
-                            {person.name}{' '}
-                            {person.signer && (
-                              <TooltipWrapper tooltipText="Signer of the Annual Report">
-                                <FaSignature className="w-4 h-4 text-gray-700 ml-2 hover:cursor-pointer" />
-                              </TooltipWrapper>
+                          <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
+                            {person.name[0]}
+                          </span>
+                          <div
+                            className={classNames(
+                              'text-sm flex flex-col justify-start items-start'
                             )}
-                          </span>
-                          <span className="text-gray-500 font-semibold">
-                            {person.title}
-                          </span>
-                          <span className="text-gray-400">{person.email}</span>
+                          >
+                            <span className="font-bold flex items-center justify-start">
+                              {person.name}{' '}
+                              {person.signer && (
+                                <TooltipWrapper tooltipText="Signer of the Annual Report">
+                                  <FaSignature className="w-4 h-4 text-gray-700 ml-2 hover:cursor-pointer" />
+                                </TooltipWrapper>
+                              )}
+                            </span>
+                            <span className="text-gray-500 font-semibold">
+                              {person.title}
+                            </span>
+                            <span className="text-gray-400">
+                              {person.email}
+                            </span>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div>
+                          <div className="mb-2">
+                            <div className="text-xs mb-1 font-semibold">
+                              Person
+                            </div>
+                            <span className="text-sm flex items-center justify-start text-gray-700">
+                              {person.name}{' '}
+                              {person.signer && (
+                                <TooltipWrapper tooltipText="Signer of the Annual Report">
+                                  <FaSignature className="w-4 h-4 ml-2 hover:cursor-pointer" />
+                                </TooltipWrapper>
+                              )}
+                            </span>
+                            <span className="text-gray-700 text-sm">
+                              {person.title}
+                            </span>
+                          </div>
+                          <div className="mb-2">
+                            <div className="text-xs font-semibold">Email</div>
+                            <span className="text-gray-700 text-sm">
+                              {person.email}
+                            </span>
+                          </div>
+                          <div>
+                            <div className="text-xs mb-2 font-semibold">
+                              Signer
+                            </div>
+                            <div className="flex items-center">
+                              <input
+                                onChange={() =>
+                                  signerCheckHandler(person.id, person.signer)
+                                }
+                                checked={person.signer}
+                                id="checked-checkbox"
+                                type="checkbox"
+                                value=""
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 hover:cursor-pointer"
+                              />
+                              <label
+                                htmlFor="checked-checkbox"
+                                className="text-xs font-semibold text-gray-700 ml-2"
+                              >
+                                Signatory of the Annual Report.
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {editingPersonId !== person.id && (
                         <>
                           <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
@@ -393,14 +469,20 @@ const AnnualReportReview = () => {
                       )}
                     </div>
                     {editingPersonId === person.id && (
-                      <USAddressForm
-                        deleteAction={() => removePersonHandler(person.id)}
-                        setFromState={updatePersonAddressHandler}
-                        heading={``}
-                        requiredError={false}
-                        enableCountry={true}
-                        value={dataDuplicate.address}
-                      />
+                      <>
+                        <div className="text-xs mb-2 font-semibold">
+                          Address
+                        </div>
+                        <USAddressForm
+                          deleteAction={() => removePersonHandler(person.id)}
+                          setFromState={updatePersonAddressHandler}
+                          heading={``}
+                          removeFocusEffect={true}
+                          requiredError={false}
+                          enableCountry={true}
+                          value={dataDuplicate.address}
+                        />
+                      </>
                     )}
                   </div>
                 ))}

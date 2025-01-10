@@ -33,6 +33,7 @@ interface IProps {
   disabledFlag?: boolean;
   enableCountry?: boolean;
   deleteAction?: () => void;
+  removeFocusEffect?: boolean;
 }
 
 const addressFieldsMock = [
@@ -60,6 +61,7 @@ const USAddressForm = ({
   disabledFlag,
   enableCountry,
   deleteAction,
+  removeFocusEffect,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
@@ -162,7 +164,9 @@ const USAddressForm = ({
           className={classNames(
             'rounded-md border w-full',
             'transition-all duration-150 ease-in-out',
-            focused ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]' : '',
+            focused && !removeFocusEffect
+              ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]'
+              : '',
             requiredError ? 'border-red-500' : '',
             !focused ? 'bg-inputBackground' : 'bg-white'
           )}

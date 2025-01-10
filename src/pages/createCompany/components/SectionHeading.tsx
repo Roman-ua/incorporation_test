@@ -13,7 +13,7 @@ const SectionHeading = ({
   status: boolean;
   hideStatus?: boolean;
 }) => {
-  return (
+  return text ? (
     <div className="flex items-center justify-between mb-5">
       <h2 className="text-md text-gray-600 font-semibold">{text}</h2>
       {hideStatus ? (
@@ -31,6 +31,8 @@ const SectionHeading = ({
         </span>
       )}
     </div>
+  ) : (
+    <></>
   );
 };
 
