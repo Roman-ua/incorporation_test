@@ -34,6 +34,7 @@ interface IProps {
   enableCountry?: boolean;
   deleteAction?: () => void;
   removeFocusEffect?: boolean;
+  cancelAction?: () => void;
 }
 
 const addressFieldsMock = [
@@ -61,6 +62,7 @@ const USAddressForm = ({
   disabledFlag,
   enableCountry,
   deleteAction,
+  cancelAction,
   removeFocusEffect,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -283,17 +285,19 @@ const USAddressForm = ({
           {deleteAction && (
             <div
               onClick={deleteAction}
-              className="rounded-md bg-white px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:cursor-pointer transition-all ease-in-out duration-150"
+              className="rounded-md bg-red-50 px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-2 text-gray-900 shadow-sm hover:bg-red-100 hover:cursor-pointer transition-all ease-in-out duration-150"
             >
               Delete
             </div>
-            // <button
-            //   type="button"
-            //   onClick={cancelAction}
-            //   className="min-w-28 rounded-md bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
-            // >
-            //   Make Changes
-            // </button>
+          )}
+          {cancelAction && (
+            <button
+              type="button"
+              onClick={cancelAction}
+              className="mt-2 mr-2 ml-auto h-[35px] rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150"
+            >
+              Cancel
+            </button>
           )}
           {!disabledFlag && (
             <CustomButton

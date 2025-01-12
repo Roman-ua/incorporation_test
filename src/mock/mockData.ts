@@ -109,3 +109,5 @@ export const mockAgent = {
     state: 'Florida',
   },
 };
+
+export const mockTitleList = ['CEO', 'Accountant', 'Developer'];

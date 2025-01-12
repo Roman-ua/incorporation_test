@@ -4,7 +4,12 @@ import ReviewStepsProgress from './reviewReportComponents/ReviewSteps';
 import { classNames, dockFieldHandler } from '../../utils/helpers';
 import SectionHeading from '../company/components/SectionHeading';
 import USAddressForm from '../createCompany/components/USAddressForm';
-import { mockAgent, mockPeople, mockReportData } from '../../mock/mockData';
+import {
+  mockAgent,
+  mockPeople,
+  mockReportData,
+  mockTitleList,
+} from '../../mock/mockData';
 import SubmitReviewStep from './reviewReportComponents/SubmitReviewStep';
 import { USStates } from '../../constants/form/form';
 import TooltipWrapper from '../../components/shared/TooltipWrapper';
@@ -23,6 +28,7 @@ import PageSign from '../../components/shared/PageSign';
 import { FaSignature } from 'react-icons/fa6';
 import { Address, Person } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
+import SimpleSelect from '../../components/shared/SimpleSelect/SimpleSelect';
 
 const AnnualReportReview = () => {
   const [dataDuplicate] = useState(mockReportData);
@@ -69,6 +75,20 @@ const AnnualReportReview = () => {
     });
 
     setEditingPersonId(-1);
+  };
+
+  const updatePersonTitleHandler = (title: string) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
+      const currentItemIndex = prevState.findIndex(
+        (item) => item.id === editingPersonId
+      );
+
+      if (currentItemIndex !== -1) {
+        data[currentItemIndex].title = title;
+      }
+      return data;
+    });
   };
 
   const removePersonHandler = (id: number) => {
@@ -330,7 +350,7 @@ const AnnualReportReview = () => {
                     {editingPersonId === person.id && (
                       <IconX
                         onClick={() => setEditingPersonId(0)}
-                        className="w-4 h-4 text-gray-700 absolute top-6 right-6 hover:cursor-pointer"
+                        className="w-5 h-5 text-gray-700 absolute top-6 right-6 hover:cursor-pointer border rounded-md p-0.5"
                       />
                     )}
                     <div
@@ -369,51 +389,29 @@ const AnnualReportReview = () => {
                           </div>
                         </div>
                       ) : (
-                        <div>
-                          <div className="mb-2">
-                            <div className="text-xs mb-1 font-semibold">
-                              Person
-                            </div>
-                            <span className="text-sm flex items-center justify-start text-gray-700">
-                              {person.name}{' '}
-                              {person.signer && (
-                                <TooltipWrapper tooltipText="Signer of the Annual Report">
-                                  <FaSignature className="w-4 h-4 ml-2 hover:cursor-pointer" />
-                                </TooltipWrapper>
-                              )}
-                            </span>
-                            <span className="text-gray-700 text-sm">
-                              {person.title}
-                            </span>
+                        <div className="w-full">
+                          <div className="mb-5">
+                            <div className="mb-2 font-bold">Person</div>
+                            <input
+                              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70"
+                              type="text"
+                              value={person.name}
+                              disabled={true}
+                            />
+                            <SimpleSelect
+                              valueHandler={updatePersonTitleHandler}
+                              list={mockTitleList}
+                              currentItem={person.title}
+                            />
                           </div>
                           <div className="mb-2">
-                            <div className="text-xs font-semibold">Email</div>
-                            <span className="text-gray-700 text-sm">
-                              {person.email}
-                            </span>
-                          </div>
-                          <div>
-                            <div className="text-xs mb-2 font-semibold">
-                              Signer
-                            </div>
-                            <div className="flex items-center">
-                              <input
-                                onChange={() =>
-                                  signerCheckHandler(person.id, person.signer)
-                                }
-                                checked={person.signer}
-                                id="checked-checkbox"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 hover:cursor-pointer"
-                              />
-                              <label
-                                htmlFor="checked-checkbox"
-                                className="text-xs font-semibold text-gray-700 ml-2"
-                              >
-                                Signatory of the Annual Report.
-                              </label>
-                            </div>
+                            <div className="font-bold mb-2">Email</div>
+                            <input
+                              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70"
+                              type="text"
+                              value={person.email}
+                              disabled={true}
+                            />
                           </div>
                         </div>
                       )}
@@ -470,11 +468,10 @@ const AnnualReportReview = () => {
                     </div>
                     {editingPersonId === person.id && (
                       <>
-                        <div className="text-xs mb-2 font-semibold">
-                          Address
-                        </div>
+                        <div className="mb-2 font-bold">Address</div>
                         <USAddressForm
                           deleteAction={() => removePersonHandler(person.id)}
+                          cancelAction={() => setEditingPersonId(-1)}
                           setFromState={updatePersonAddressHandler}
                           heading={``}
                           removeFocusEffect={true}
@@ -482,6 +479,27 @@ const AnnualReportReview = () => {
                           enableCountry={true}
                           value={dataDuplicate.address}
                         />
+                        <div className="mt-5">
+                          <div className="mb-2 font-bold">Signer</div>
+                          <div className="flex items-center">
+                            <input
+                              onChange={() =>
+                                signerCheckHandler(person.id, person.signer)
+                              }
+                              checked={person.signer}
+                              id="checked-checkbox"
+                              type="checkbox"
+                              value=""
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 hover:cursor-pointer"
+                            />
+                            <label
+                              htmlFor="checked-checkbox"
+                              className="text-xs font-semibold text-gray-700 ml-2"
+                            >
+                              Signatory of the Annual Report.
+                            </label>
+                          </div>
+                        </div>
                       </>
                     )}
                   </div>
