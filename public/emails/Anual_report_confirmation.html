@@ -41,18 +41,35 @@
         .termsLinkWrapper {margin-top: 5px;}
         .statusBadgeBold {
             position: absolute;
-            top: 0;
+            top: 3px;
             right: 0;
-            font-size: 14px !important;
-            padding: 7px 8px !important;
+            font-size: 11px !important;
+            padding: 5px 6px !important;
             border-radius: 50px !important;
             display: flex;
             font-weight: bold;
             align-items: center;
             justify-content: center;
             border: 2px solid #fce4e7;
-            color: #191818;
+            color: #3a3838;
             background-color: #fffaf8;
+            width: fit-content !important;
+            line-height: 11px !important;
+        }
+        .statusBadgeBoldSecond {
+            position: absolute;
+            top: 35px;
+            right: 0;
+            font-size: 11px !important;
+            padding: 5px 6px !important;
+            border-radius: 50px !important;
+            display: flex;
+            font-weight: bold;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fce4e7;
+            color: #3a3838;
+            background-color: #fce4e7;
             width: fit-content !important;
             line-height: 11px !important;
         }
@@ -92,6 +109,7 @@
                 class="headerLogo mb32"
             >
             <span class="statusBadgeBold"> Confirmation Needed</span>
+            <span class="statusBadgeBoldSecond"> Confirmation Needed</span>
         </div>
         <div>
             <div class="header">
