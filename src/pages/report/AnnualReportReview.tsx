@@ -4,12 +4,7 @@ import ReviewStepsProgress from './reviewReportComponents/ReviewSteps';
 import { classNames, dockFieldHandler } from '../../utils/helpers';
 import SectionHeading from '../company/components/SectionHeading';
 import USAddressForm from '../createCompany/components/USAddressForm';
-import {
-  mockAgent,
-  mockPeople,
-  mockReportData,
-  mockTitleList,
-} from '../../mock/mockData';
+import { mockAgent, mockPeople, mockReportData } from '../../mock/mockData';
 import SubmitReviewStep from './reviewReportComponents/SubmitReviewStep';
 import { USStates } from '../../constants/form/form';
 import TooltipWrapper from '../../components/shared/TooltipWrapper';
@@ -19,15 +14,14 @@ import {
   IconPlus,
   IconSettings,
   IconTrashX,
-  IconX,
 } from '@tabler/icons-react';
 import logo from '../../images/shared/bluelogo.svg';
 import smallLogo from '../../images/shared/round_logo.png';
 import PageSign from '../../components/shared/PageSign';
 import { FaSignature } from 'react-icons/fa6';
-import { Address, Person } from '../../interfaces/interfaces';
+import { Person } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
-import SimpleSelect from '../../components/shared/SimpleSelect/SimpleSelect';
+import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
 
 const AnnualReportReview = () => {
   const [dataDuplicate] = useState(mockReportData);
@@ -48,7 +42,7 @@ const AnnualReportReview = () => {
   }, []);
 
   const [editingPersonId, setEditingPersonId] = useState(-1);
-
+  const [addPersonPressed, setAddPersonPressed] = React.useState(false);
   const [currentStep, setCurrentStep] = useState<number>(3);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0, 1, 2]);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -60,69 +54,48 @@ const AnnualReportReview = () => {
     });
   };
 
-  const updatePersonAddressHandler = (updatedAddress: Address) => {
-    setPeopleDataDuplicate((prevState) => {
-      const data = [...prevState];
-      const currentItemIndex = prevState.findIndex(
-        (item) => item.id === editingPersonId
-      );
-
-      if (currentItemIndex !== -1) {
-        data[currentItemIndex].address = updatedAddress;
-      }
-      return data;
-    });
-
-    setEditingPersonId(-1);
-  };
-
-  const updatePersonTitleHandler = (title: string) => {
-    setPeopleDataDuplicate((prevState) => {
-      const data = [...prevState];
-      const currentItemIndex = prevState.findIndex(
-        (item) => item.id === editingPersonId
-      );
-
-      if (currentItemIndex !== -1) {
-        data[currentItemIndex].title = title;
-      }
-      return data;
-    });
-  };
-
   const removePersonHandler = (id: number) => {
     setPeopleDataDuplicate((prevState) => {
       return prevState.filter((item) => item.id !== id);
     });
   };
 
-  const signerCheckHandler = (id: number, currentChecked: boolean) => {
-    const result = [...peopleDataDuplicate];
-    const currentPersonIndex = peopleDataDuplicate.findIndex(
-      (person) => person.id === id
-    );
-    const prevSignerPersonIndex = peopleDataDuplicate.findIndex(
-      (person) => person.signer
-    );
+  const updateExistedPersonHandler = (person: Person) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
+      const currentItemIndex = prevState.findIndex(
+        (item) => item.id === person.id
+      );
 
-    if (currentChecked && currentPersonIndex !== -1) {
-      result[currentPersonIndex].signer = false;
-    }
+      if (person.signer) {
+        const prevSignerIndex = data.findIndex((item) => item.signer);
+        if (prevSignerIndex !== -1) {
+          data[prevSignerIndex].signer = false;
+        }
+      }
 
-    if (!currentChecked && currentPersonIndex !== -1) {
-      result[currentPersonIndex].signer = true;
-    }
+      if (currentItemIndex !== -1) {
+        data[currentItemIndex] = person;
+      }
+      return data;
+    });
+  };
 
-    if (
-      !currentChecked &&
-      currentPersonIndex !== -1 &&
-      prevSignerPersonIndex !== -1
-    ) {
-      result[prevSignerPersonIndex].signer = false;
-      result[currentPersonIndex].signer = true;
-    }
+  const addNewPersonHandler = (person: Person) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
 
-    setPeopleDataDuplicate(result);
+      if (person.signer) {
+        const prevSignerIndex = data.findIndex((item) => item.signer);
+        if (prevSignerIndex !== -1) {
+          data[prevSignerIndex].signer = false;
+        }
+      }
+
+      data.push(person);
+
+      return data;
+    });
   };
 
   return (
@@ -176,7 +149,7 @@ const AnnualReportReview = () => {
             </span>
           </div>
         </div>
-        <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
+        <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 0 && (
             <form onSubmit={submitStepHandler}>
               <>
@@ -346,28 +319,10 @@ const AnnualReportReview = () => {
                 />
               </div>
               <>
-                {peopleDataDuplicate.map((person, rowIndex) => (
-                  <div
-                    key={rowIndex}
-                    className={classNames(
-                      editingPersonId === person.id &&
-                        'border border-gray-200 rounded-md p-7 my-5 bg-white relative'
-                    )}
-                  >
-                    {editingPersonId === person.id && (
-                      <div
-                        onClick={() => setEditingPersonId(0)}
-                        className="flex items-center justify-between absolute top-6 right-6 p-1 border rounded-md hover:cursor-pointer"
-                      >
-                        <IconX className="w-4 h-4 text-gray-700" />
-                      </div>
-                    )}
-                    <div
-                      className={classNames(
-                        `flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`
-                      )}
-                    >
-                      {editingPersonId !== person.id ? (
+                {peopleDataDuplicate.map((person, rowIndex) => {
+                  return editingPersonId !== person.id ? (
+                    <div key={rowIndex}>
+                      <div className="flex py-3 group transition-all ease-in-out duration-150 items-start justify-start">
                         <div
                           className={classNames(
                             'whitespace-nowrap w-[40%] max-sm:w-1/2 pr-2 flex  text-gray-900 justify-start items-start'
@@ -397,98 +352,45 @@ const AnnualReportReview = () => {
                             </span>
                           </div>
                         </div>
-                      ) : (
-                        <div className="w-full">
-                          <div className="mb-5">
-                            <div className="mb-2 font-bold text-sm">
-                              Name and Title
+
+                        <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
+                          <div className="w-full pr-2 text-gray-700 text-sm">
+                            <div>
+                              <span>{person.address.address0}, </span>
+                              {person.address.address1 && (
+                                <span>{person.address.address1}</span>
+                              )}
                             </div>
-                            <input
-                              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70"
-                              type="text"
-                              value={person.name}
-                              disabled={true}
-                            />
-                            <SimpleSelect
-                              valueHandler={updatePersonTitleHandler}
-                              list={mockTitleList}
-                              currentItem={person.title}
-                            />
-                          </div>
-                          <div className="mb-5">
-                            <div className="font-bold mb-2 text-sm">Email</div>
-                            <input
-                              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70"
-                              type="text"
-                              value={person.email}
-                              disabled={true}
-                            />
-                          </div>
-                          <div className="mb-3">
-                            <div className="mb-2 font-bold text-sm">Signer</div>
-                            <div className="flex items-center">
-                              <input
-                                onChange={() =>
-                                  signerCheckHandler(person.id, person.signer)
-                                }
-                                checked={person.signer}
-                                id="checked-checkbox"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 hover:cursor-pointer"
-                              />
-                              <label
-                                htmlFor="checked-checkbox"
-                                className="text-xs font-semibold text-gray-700 ml-2"
-                              >
-                                Signatory of the Annual Report.
-                              </label>
+                            <div>
+                              {person.address.address2 && (
+                                <span>{person.address.address2}</span>
+                              )}
+                              {person.address.address3 && (
+                                <span>
+                                  {person.address.address2 ? ',' : ''}{' '}
+                                  {person.address.address3}
+                                </span>
+                              )}
                             </div>
+                            <div>
+                              <span>{person.address.city}, </span>
+                              <span>
+                                {USStates.find(
+                                  (item) => item.title === person.address.state
+                                )?.value || ''}{' '}
+                              </span>
+                              <span>{person.address.zip}</span>
+                            </div>
+                            <div>{person.address.country}</div>
                           </div>
                         </div>
-                      )}
-
-                      {editingPersonId !== person.id && (
-                        <>
-                          <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
-                            <div className="w-full pr-2 text-gray-700 text-sm">
-                              <div>
-                                <span>{person.address.address0}, </span>
-                                {person.address.address1 && (
-                                  <span>{person.address.address1}</span>
-                                )}
-                              </div>
-                              <div>
-                                {person.address.address2 && (
-                                  <span>{person.address.address2}</span>
-                                )}
-                                {person.address.address3 && (
-                                  <span>
-                                    {person.address.address2 ? ',' : ''}{' '}
-                                    {person.address.address3}
-                                  </span>
-                                )}
-                              </div>
-                              <div>
-                                <span>{person.address.city}, </span>
-                                <span>
-                                  {USStates.find(
-                                    (item) =>
-                                      item.title === person.address.state
-                                  )?.value || ''}{' '}
-                                </span>
-                                <span>{person.address.zip}</span>
-                              </div>
-                              <div>{person.address.country}</div>
-                            </div>
-                          </div>
-                          <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
-                        </>
-                      )}
-                      {editingPersonId !== person.id && (
+                        <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
                         <div className="pl-2 flex items-center justify-end ml-auto">
                           <IconSettings
-                            onClick={() => setEditingPersonId(person.id)}
+                            onClick={() => {
+                              setAddPersonPressed(false);
+                              setEditingPersonId(person.id);
+                            }}
                             className="w-5 h-5 text-gray-700 ml-2 hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-180"
                           />
                           <IconTrashX
@@ -496,27 +398,36 @@ const AnnualReportReview = () => {
                             className="w-5 h-5 text-red-400 ml-2 hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-12"
                           />
                         </div>
-                      )}
+                      </div>
                     </div>
-                    {editingPersonId === person.id && (
-                      <>
-                        <div className="mb-2 font-bold text-sm">Address</div>
-                        <USAddressForm
-                          deleteAction={() => removePersonHandler(person.id)}
-                          cancelAction={() => setEditingPersonId(-1)}
-                          setFromState={updatePersonAddressHandler}
-                          heading={``}
-                          removeFocusEffect={true}
-                          requiredError={false}
-                          enableCountry={true}
-                          value={dataDuplicate.address}
-                        />
-                      </>
-                    )}
-                  </div>
-                ))}
+                  ) : (
+                    <PersonDataHandling
+                      key={rowIndex}
+                      person={person}
+                      closeModalHandler={() => {
+                        console.log('tut');
+                        setEditingPersonId(-1);
+                      }}
+                      removePersonHandler={removePersonHandler}
+                      submitProcess={updateExistedPersonHandler}
+                      isCreateProcess={false}
+                    />
+                  );
+                })}
+                {addPersonPressed && (
+                  <PersonDataHandling
+                    person={undefined}
+                    closeModalHandler={() => setAddPersonPressed(false)}
+                    submitProcess={addNewPersonHandler}
+                    isCreateProcess={true}
+                  />
+                )}
                 <button
                   type="button"
+                  onClick={() => {
+                    setEditingPersonId(-1);
+                    setAddPersonPressed(true);
+                  }}
                   className="ml-auto mt-10 flex items-center justify-center rounded-md group bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out"
                 >
                   Add Person

@@ -19,7 +19,7 @@ const SimpleSelect = ({ list, currentItem, valueHandler }: IProps) => {
         className="rounded-md border w-full border-gray-200 p-2 text-gray-900 focus:ring-none focus:outline-none text-center inline-flex items-center justify-between"
         type="button"
       >
-        <span className="text-base">{selected || 'Dropdown button'}</span>
+        <span className="text-base">{selected || 'Choose title'}</span>
         <ChevronDownIcon
           className={classNames(
             'w-4 h-4 text-gray-500 transition-all',

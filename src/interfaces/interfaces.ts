@@ -46,3 +46,14 @@ export interface ReportData {
   people: Person[];
   signed: string;
 }
+
+export type AddressFields = {
+  country?: string;
+  address0?: string;
+  address1?: string;
+  address2?: string;
+  address3?: string;
+  city?: string;
+  zip?: string;
+  state?: string;
+};

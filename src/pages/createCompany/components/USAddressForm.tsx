@@ -9,21 +9,11 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 // @ts-expect-error
 import CustomButton from '../../../components/shared/ButtonWithLoader/Button';
 import SectionHeading from './SectionHeading';
+import { AddressFields } from '../../../interfaces/interfaces';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
-
-type AddressFields = {
-  country?: string;
-  address0?: string;
-  address1?: string;
-  address2?: string;
-  address3?: string;
-  city?: string;
-  zip?: string;
-  state?: string;
-};
 
 interface IProps {
   setFromState: (value: AddressFields) => void;
