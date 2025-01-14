@@ -21,6 +21,8 @@ const statusBadge = (status: string) => {
       return 'bg-green-50 text-green-700 ring-green-600/20';
     case 'Cancelled':
       return 'bg-red-50 text-red-700 ring-red-600/20';
+    case 'Confirmation Needed':
+      return 'bg-red-50 text-red-700 ring-red-600/20';
     case 'Declined':
       return 'bg-gray-50 text-gray-700 ring-gray-600/20';
     case 'Confirmed':
@@ -74,6 +76,12 @@ const SubmitReviewStep = ({
                 state={reportData.state || 'Florida'}
               />
               {reportData.state}
+            </dd>
+          </div>
+          <div className="flex flex-col gap-y-1 border-l px-5">
+            <dt className="text-nowrap text-sm text-gray-500">Due Date</dt>
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+              May 1, {+reportData.year + 1}
             </dd>
           </div>
         </dl>
@@ -187,12 +195,12 @@ const SubmitReviewStep = ({
         </div>
       </div>
       <div className="mb-12">
-        <div className="group w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           People
           <button
             type="button"
             onClick={clickHandler}
-            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150"
+            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
           >
             Make Changes
           </button>

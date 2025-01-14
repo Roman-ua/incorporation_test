@@ -23,7 +23,6 @@ import {
 } from '@tabler/icons-react';
 import logo from '../../images/shared/bluelogo.svg';
 import smallLogo from '../../images/shared/round_logo.png';
-import { HiOutlineDocumentReport } from 'react-icons/hi';
 import PageSign from '../../components/shared/PageSign';
 import { FaSignature } from 'react-icons/fa6';
 import { Address, Person } from '../../interfaces/interfaces';
@@ -141,7 +140,7 @@ const AnnualReportReview = () => {
             alt="Your Company"
           />
         </div>
-        <div className="w-2/5 flex items-center justify-center font-semibold">
+        <div className="w-1/2 flex items-center justify-center font-semibold">
           {`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
         </div>
         <div className="w-1/4 pr-2" />
@@ -154,26 +153,38 @@ const AnnualReportReview = () => {
             visitedSteps={visitedSteps}
             setCurrentStep={setCurrentStep}
           />
-          {/*<div className="mt-auto">*/}
-          {/*  <span> Incorporate Now Inc</span>*/}
-          {/*  <span>*/}
-          {/*    100 S. Dixie Hwy, 3rd Floor West Palm Beach, FL 33401 United*/}
-          {/*    States*/}
-          {/*  </span>*/}
-          {/*  <span>Terms and Conditions Privacy Policy Service Agreement</span>*/}
-          {/*</div>*/}
+          <div className="fixed bottom-28 left-6 z-50 text-xs text-gray-500">
+            <span> Incorporate Now Inc</span>
+            <br />
+            <span>100 S. Dixie Hwy,</span>
+            <br />
+            <span>3rd Floor West Palm Beach,</span>
+            <br />
+            <span>FL 33401</span>
+            <br />
+            <span className="flex mb-2">United States</span>
+            <span className="hover:cursor-pointer hover:underline">
+              Terms and Conditions
+            </span>
+            <br />
+            <span className="hover:cursor-pointer hover:underline">
+              Privacy Policy
+            </span>
+            <br />
+            <span className="hover:cursor-pointer hover:underline">
+              Service Agreement
+            </span>
+          </div>
         </div>
-        <div className="w-2/5 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
+        <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-16">
           {currentStep === 0 && (
             <form onSubmit={submitStepHandler}>
               <>
                 <div className="mb-5">
                   <PageSign
                     titleSize={'text-2xl font-bold text-gray-900'}
-                    title={`DETAILS`}
-                    icon={
-                      <HiOutlineDocumentReport className="w-6 h-6 text-gray-900 mr-1" />
-                    }
+                    title={`Details`}
+                    icon={<></>}
                   />
                 </div>
                 <SectionHeading
@@ -274,7 +285,7 @@ const AnnualReportReview = () => {
               </>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-2/5 max-xl:w-full flex items-center justify-end">
+                <div className="w-1/2 max-xl:w-full flex items-center justify-end">
                   <ButtonWithArrow title={'Save'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
@@ -287,10 +298,8 @@ const AnnualReportReview = () => {
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`ADDRESS`}
-                  icon={
-                    <HiOutlineDocumentReport className="w-6 h-6 text-gray-900 mr-1" />
-                  }
+                  title={`Address`}
+                  icon={<></>}
                 />
               </div>
               <div className="mb-5">
@@ -313,7 +322,7 @@ const AnnualReportReview = () => {
               </div>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-2/5 max-xl:w-full flex items-center justify-between">
+                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(0)}
@@ -332,10 +341,8 @@ const AnnualReportReview = () => {
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`PEOPLE`}
-                  icon={
-                    <HiOutlineDocumentReport className="w-6 h-6 text-gray-900 mr-1" />
-                  }
+                  title={`People`}
+                  icon={<></>}
                 />
               </div>
               <>
@@ -518,10 +525,10 @@ const AnnualReportReview = () => {
               </>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-2/5 max-xl:w-full flex items-center justify-between">
+                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(1)}
+                    onClick={() => setCurrentStep(3)}
                     className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     Cancel
@@ -552,7 +559,7 @@ const AnnualReportReview = () => {
               />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-2/5 max-xl:w-full flex items-center justify-between">
+                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <div />
                   <ButtonWithArrow title={'Confirm'} />
                 </div>
