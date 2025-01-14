@@ -348,10 +348,12 @@ const AnnualReportReview = () => {
                     )}
                   >
                     {editingPersonId === person.id && (
-                      <IconX
+                      <div
                         onClick={() => setEditingPersonId(0)}
-                        className="w-5 h-5 text-gray-700 absolute top-6 right-6 hover:cursor-pointer border rounded-md p-0.5"
-                      />
+                        className="flex items-center justify-between absolute top-6 right-6 p-1 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconX className="w-4 h-4 text-gray-700" />
+                      </div>
                     )}
                     <div
                       className={classNames(
@@ -391,7 +393,9 @@ const AnnualReportReview = () => {
                       ) : (
                         <div className="w-full">
                           <div className="mb-5">
-                            <div className="mb-2 font-bold">Person</div>
+                            <div className="mb-2 font-bold text-sm">
+                              Name and Title
+                            </div>
                             <input
                               className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70"
                               type="text"
@@ -404,14 +408,35 @@ const AnnualReportReview = () => {
                               currentItem={person.title}
                             />
                           </div>
-                          <div className="mb-2">
-                            <div className="font-bold mb-2">Email</div>
+                          <div className="mb-5">
+                            <div className="font-bold mb-2 text-sm">Email</div>
                             <input
                               className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70"
                               type="text"
                               value={person.email}
                               disabled={true}
                             />
+                          </div>
+                          <div className="mb-3">
+                            <div className="mb-2 font-bold text-sm">Signer</div>
+                            <div className="flex items-center">
+                              <input
+                                onChange={() =>
+                                  signerCheckHandler(person.id, person.signer)
+                                }
+                                checked={person.signer}
+                                id="checked-checkbox"
+                                type="checkbox"
+                                value=""
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 hover:cursor-pointer"
+                              />
+                              <label
+                                htmlFor="checked-checkbox"
+                                className="text-xs font-semibold text-gray-700 ml-2"
+                              >
+                                Signatory of the Annual Report.
+                              </label>
+                            </div>
                           </div>
                         </div>
                       )}
@@ -468,7 +493,7 @@ const AnnualReportReview = () => {
                     </div>
                     {editingPersonId === person.id && (
                       <>
-                        <div className="mb-2 font-bold">Address</div>
+                        <div className="mb-2 font-bold text-sm">Address</div>
                         <USAddressForm
                           deleteAction={() => removePersonHandler(person.id)}
                           cancelAction={() => setEditingPersonId(-1)}
@@ -479,27 +504,6 @@ const AnnualReportReview = () => {
                           enableCountry={true}
                           value={dataDuplicate.address}
                         />
-                        <div className="mt-5">
-                          <div className="mb-2 font-bold">Signer</div>
-                          <div className="flex items-center">
-                            <input
-                              onChange={() =>
-                                signerCheckHandler(person.id, person.signer)
-                              }
-                              checked={person.signer}
-                              id="checked-checkbox"
-                              type="checkbox"
-                              value=""
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 hover:cursor-pointer"
-                            />
-                            <label
-                              htmlFor="checked-checkbox"
-                              className="text-xs font-semibold text-gray-700 ml-2"
-                            >
-                              Signatory of the Annual Report.
-                            </label>
-                          </div>
-                        </div>
                       </>
                     )}
                   </div>

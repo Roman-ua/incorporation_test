@@ -16,10 +16,10 @@ const SimpleSelect = ({ list, currentItem, valueHandler }: IProps) => {
     <div className="relative inline-block overflow-visible w-full">
       <button
         onClick={() => setOpenState(!openState)}
-        className="rounded-md border w-full border-gray-200 p-2 text-md text-gray-900 focus:ring-none focus:outline-none text-center inline-flex items-center justify-between"
+        className="rounded-md border w-full border-gray-200 p-2 text-gray-900 focus:ring-none focus:outline-none text-center inline-flex items-center justify-between"
         type="button"
       >
-        <span>{selected || 'Dropdown button'}</span>
+        <span className="text-base">{selected || 'Dropdown button'}</span>
         <ChevronDownIcon
           className={classNames(
             'w-4 h-4 text-gray-500 transition-all',
@@ -30,7 +30,7 @@ const SimpleSelect = ({ list, currentItem, valueHandler }: IProps) => {
 
       {openState && (
         <div className="mb-2 w-full top-11 absolute z-20 bg-white divide-y divide-gray-100 rounded-lg shadow ">
-          <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+          <ul className="py-2 text-gray-900 ">
             {list.map((item) => (
               <li
                 key={item}
@@ -40,7 +40,7 @@ const SimpleSelect = ({ list, currentItem, valueHandler }: IProps) => {
                   setOpenState(false);
                 }}
               >
-                <a href="#" className="block px-4 py-2">
+                <a href="#" className="block px-4 py-2 text-base">
                   {item}
                 </a>
               </li>

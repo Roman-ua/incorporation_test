@@ -33,6 +33,8 @@
         .img {max-width: 20px;width: 100%;padding-top: 3px;}
         .domain {text-decoration: none; color: #333 !important;}
         .decorationNone { text-decoration: none; color: #0984cf !important; }
+        .removeLinkDecoration { text-decoration: none !important; }
+
         .info {padding-left: 16px;}
         .footeLogo {display: flex; align-items: flex-start; justify-content: flex-start}
         .apple-link {margin-left: 10px; line-height: 10px}
@@ -52,7 +54,7 @@
             justify-content: center;
             border: 2px solid #fce4e7;
             color: #3a3838;
-            background-color: #fffaf8;
+            background-color: #fce4e7;
             width: fit-content !important;
             line-height: 11px !important;
         }
@@ -68,7 +70,7 @@
             align-items: center;
             justify-content: center;
             border: 2px solid #fce4e7;
-            color: #3a3838;
+            color: #b53c3c;
             background-color: #fce4e7;
             width: fit-content !important;
             line-height: 11px !important;
@@ -108,8 +110,8 @@
                 style="display:block"
                 class="headerLogo mb32"
             >
-            <span class="statusBadgeBold"> Confirmation Needed</span>
-            <span class="statusBadgeBoldSecond"> Confirmation Needed</span>
+            <a href="#" class="statusBadgeBold removeLinkDecoration"> Confirmation Needed</a>
+            <a href="#" class="statusBadgeBoldSecond removeLinkDecoration"> Confirmation Needed</a>
         </div>
         <div>
             <div class="header">
@@ -126,12 +128,6 @@
         </div>
 
         <div class="container">
-<!--            <div class="section">-->
-<!--                <div>-->
-<!--                    <div class="bold sectionTitle mb6">Annual Report Status</div>-->
-<!--                    <span class="statusBadgeBold"> Confirmation Needed</span>-->
-<!--                </div>-->
-<!--            </div>-->
             <div class="section">
                 <div>
                     <div class="bold sectionTitle mb6">Company</div>
