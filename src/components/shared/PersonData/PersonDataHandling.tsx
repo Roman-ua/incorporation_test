@@ -3,7 +3,7 @@ import { IconX } from '@tabler/icons-react';
 import SimpleSelect from '../SimpleSelect/SimpleSelect';
 import { mockReportData, mockTitleList } from '../../../mock/mockData';
 import USAddressForm from '../../../pages/createCompany/components/USAddressForm';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AddressFields, Person } from '../../../interfaces/interfaces';
 
 interface IProps {
@@ -43,7 +43,6 @@ const PersonDataHandling = ({
   submitProcess,
 }: IProps) => {
   const [localData, setLocalData] = useState<Person>(emptyValue);
-  const componentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (person) {
@@ -52,15 +51,6 @@ const PersonDataHandling = ({
       setLocalData(emptyValue);
     }
   }, [person]);
-
-  useEffect(() => {
-    if (componentRef.current) {
-      componentRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  }, []);
 
   const signerCheckHandler = (currentChecked: boolean) => {
     setLocalData((prevState) => {
@@ -102,13 +92,10 @@ const PersonDataHandling = ({
   };
 
   return (
-    <div
-      ref={componentRef}
-      className="border border-gray-200 rounded-md p-7 my-5 bg-white relative"
-    >
+    <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
       <div
         onClick={closeModalHandler}
-        className="flex items-center justify-between absolute top-6 right-6 p-1 border rounded-md hover:cursor-pointer"
+        className="flex items-center justify-between absolute top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
       >
         <IconX className="w-4 h-4 text-gray-700" />
       </div>
@@ -122,7 +109,7 @@ const PersonDataHandling = ({
             <div className="mb-2 font-bold text-sm">Name and Title</div>
             <input
               onChange={(e) => updatePersonDataHandler('name', e.target.value)}
-              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70 placeholder:text-gray-300 hover:placeholder:text-gray-400"
+              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-300 hover:placeholder:text-gray-400"
               type="text"
               placeholder="Full name"
               value={localData?.name}
@@ -138,7 +125,7 @@ const PersonDataHandling = ({
             <div className="font-bold mb-2 text-sm">Email</div>
             <input
               onChange={(e) => updatePersonDataHandler('email', e.target.value)}
-              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:opacity-70 placeholder:text-gray-300 hover:placeholder:text-gray-400"
+              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-300 hover:placeholder:text-gray-400"
               type="text"
               placeholder="Email"
               value={localData?.email}

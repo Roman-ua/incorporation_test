@@ -126,28 +126,6 @@ const AnnualReportReview = () => {
             visitedSteps={visitedSteps}
             setCurrentStep={setCurrentStep}
           />
-          <div className="fixed bottom-28 left-6 z-50 text-xs text-gray-500">
-            <span> Incorporate Now Inc</span>
-            <br />
-            <span>100 S. Dixie Hwy,</span>
-            <br />
-            <span>3rd Floor West Palm Beach,</span>
-            <br />
-            <span>FL 33401</span>
-            <br />
-            <span className="flex mb-2">United States</span>
-            <span className="hover:cursor-pointer hover:underline">
-              Terms and Conditions
-            </span>
-            <br />
-            <span className="hover:cursor-pointer hover:underline">
-              Privacy Policy
-            </span>
-            <br />
-            <span className="hover:cursor-pointer hover:underline">
-              Service Agreement
-            </span>
-          </div>
         </div>
         <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 0 && (
@@ -405,7 +383,6 @@ const AnnualReportReview = () => {
                       key={rowIndex}
                       person={person}
                       closeModalHandler={() => {
-                        console.log('tut');
                         setEditingPersonId(-1);
                       }}
                       removePersonHandler={removePersonHandler}
@@ -439,7 +416,11 @@ const AnnualReportReview = () => {
                 <div className="w-1/2 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(3)}
+                    onClick={() => {
+                      setAddPersonPressed(false);
+                      setEditingPersonId(-1);
+                      setCurrentStep(3);
+                    }}
                     className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     Cancel
