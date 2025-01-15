@@ -1,7 +1,7 @@
 import { classNames } from '../../../utils/helpers';
 import { IconX } from '@tabler/icons-react';
 import SimpleSelect from '../SimpleSelect/SimpleSelect';
-import { mockReportData, mockTitleList } from '../../../mock/mockData';
+import { mockTitleList } from '../../../mock/mockData';
 import USAddressForm from '../../../pages/createCompany/components/USAddressForm';
 import React, { useEffect, useState } from 'react';
 import { AddressFields, Person } from '../../../interfaces/interfaces';
@@ -91,7 +91,7 @@ const PersonDataHandling = ({
     });
   };
 
-  return (
+  return localData?.email || isCreateProcess ? (
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
       <div
         onClick={closeModalHandler}
@@ -109,7 +109,7 @@ const PersonDataHandling = ({
             <div className="mb-2 font-bold text-sm">Name and Title</div>
             <input
               onChange={(e) => updatePersonDataHandler('name', e.target.value)}
-              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-300 hover:placeholder:text-gray-400"
+              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:placeholder:text-gray-400 hover:cursor-pointer"
               type="text"
               placeholder="Full name"
               value={localData?.name}
@@ -125,7 +125,7 @@ const PersonDataHandling = ({
             <div className="font-bold mb-2 text-sm">Email</div>
             <input
               onChange={(e) => updatePersonDataHandler('email', e.target.value)}
-              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-300 hover:placeholder:text-gray-400"
+              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:placeholder:text-gray-400 hover:cursor-pointer"
               type="text"
               placeholder="Email"
               value={localData?.email}
@@ -166,9 +166,11 @@ const PersonDataHandling = ({
         removeFocusEffect={true}
         requiredError={false}
         enableCountry={true}
-        value={isCreateProcess ? localData?.address : mockReportData.address}
+        value={localData?.address}
       />
     </div>
+  ) : (
+    <></>
   );
 };
 

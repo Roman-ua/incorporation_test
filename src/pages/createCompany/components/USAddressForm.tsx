@@ -79,7 +79,7 @@ const USAddressForm = ({
     setIsOpenStates(value);
   };
 
-  const [country, setCountry] = useState('United States');
+  const [country, setCountry] = useState(value?.country);
   const [address, setAddress] = useState<{
     address0: string;
     [key: string]: string;
@@ -141,7 +141,7 @@ const USAddressForm = ({
   }, [value]);
 
   const inputCommonClasses =
-    'p-2 text-md border-b border-b-gray-200 bg-transparent placeholder:text-gray-300 hover:placeholder:text-gray-400 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
+    'p-2 text-md border-b border-b-gray-200 bg-transparent placeholder:text-gray-500 hover:placeholder:text-gray-400 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
   const moreFieldAllowed = (index: number) => {
     return index < 3 && index === addressFields.length - 1 && !disabledFlag;
   };
