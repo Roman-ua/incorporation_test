@@ -22,6 +22,7 @@ import { FaSignature } from 'react-icons/fa6';
 import { Person } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
 import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
+import UnsavedChanges from '../../components/shared/Modals/sharedModals/UnsavedChanges';
 
 const AnnualReportReview = () => {
   const [dataDuplicate] = useState(mockReportData);
@@ -46,6 +47,8 @@ const AnnualReportReview = () => {
   const [currentStep, setCurrentStep] = useState<number>(3);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0, 1, 2]);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [discardModal, setDiscardModal] = useState<boolean>(false);
+  const [dirtyFlag, setDirtyFlag] = useState(false);
 
   const submitStepHandler = () => {
     setCurrentStep((prevState) => {
@@ -55,6 +58,8 @@ const AnnualReportReview = () => {
   };
 
   const removePersonHandler = (id: number) => {
+    setDirtyFlag(true);
+
     setPeopleDataDuplicate((prevState) => {
       return prevState.filter((item) => item.id !== id);
     });
@@ -96,6 +101,14 @@ const AnnualReportReview = () => {
 
       return data;
     });
+  };
+
+  const cancelStepHandler = () => {
+    setAddPersonPressed(false);
+    setEditingPersonId(-1);
+    setCurrentStep(3);
+
+    setPeopleDataDuplicate(mockPeople);
   };
 
   return (
@@ -289,6 +302,12 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 2 && (
             <form onSubmit={submitStepHandler}>
+              <UnsavedChanges
+                open={discardModal}
+                setOpen={(value) => setDiscardModal(value)}
+                sectionTitle={'People section'}
+                discardHandler={cancelStepHandler}
+              />
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -366,6 +385,7 @@ const AnnualReportReview = () => {
                         <div className="pl-2 flex items-center justify-end ml-auto">
                           <IconSettings
                             onClick={() => {
+                              setDirtyFlag(true);
                               setAddPersonPressed(false);
                               setEditingPersonId(person.id);
                             }}
@@ -402,6 +422,7 @@ const AnnualReportReview = () => {
                 <button
                   type="button"
                   onClick={() => {
+                    setDirtyFlag(true);
                     setEditingPersonId(-1);
                     setAddPersonPressed(true);
                   }}
@@ -417,9 +438,11 @@ const AnnualReportReview = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      setAddPersonPressed(false);
-                      setEditingPersonId(-1);
-                      setCurrentStep(3);
+                      if (dirtyFlag) {
+                        setDiscardModal(true);
+                      } else {
+                        cancelStepHandler();
+                      }
                     }}
                     className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
