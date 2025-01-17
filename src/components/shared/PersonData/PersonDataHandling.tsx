@@ -43,6 +43,7 @@ const PersonDataHandling = ({
   submitProcess,
 }: IProps) => {
   const [localData, setLocalData] = useState<Person>(emptyValue);
+  const [mandatoryError, setMandatoryError] = useState(false);
 
   useEffect(() => {
     if (person) {
@@ -83,6 +84,7 @@ const PersonDataHandling = ({
       const data = { ...prevState };
 
       data.address = updatedAddress;
+      data.id = Math.floor(Math.random() * 90000) + 10000;
 
       submitProcess(data);
       closeModalHandler();
@@ -91,6 +93,14 @@ const PersonDataHandling = ({
     });
   };
 
+  const mandatoryErrorHandler = () => {
+    setMandatoryError(true);
+    const timer = setTimeout(() => {
+      setMandatoryError(false);
+      clearTimeout(timer);
+    }, 1500);
+  };
+  console.log(mandatoryError, 'mandatoryError');
   return localData?.email || isCreateProcess ? (
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
       <div
@@ -109,7 +119,10 @@ const PersonDataHandling = ({
             <div className="mb-2 font-bold text-sm">Name and Title</div>
             <input
               onChange={(e) => updatePersonDataHandler('name', e.target.value)}
-              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:placeholder:text-gray-400 hover:cursor-pointer"
+              className={classNames(
+                'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                mandatoryError && 'border-orange-300'
+              )}
               type="text"
               placeholder="Full name"
               value={localData?.name}
@@ -119,13 +132,16 @@ const PersonDataHandling = ({
               valueHandler={updatePersonTitleHandler}
               list={mockTitleList}
               currentItem={localData?.title}
+              mandatoryError={mandatoryError}
             />
           </div>
           <div className="mb-5">
             <div className="font-bold mb-2 text-sm">Email</div>
             <input
               onChange={(e) => updatePersonDataHandler('email', e.target.value)}
-              className="block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:placeholder:text-gray-400 hover:cursor-pointer"
+              className={classNames(
+                'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+              )}
               type="text"
               placeholder="Email"
               value={localData?.email}
@@ -155,6 +171,7 @@ const PersonDataHandling = ({
       </div>
       <div className="mb-2 font-bold text-sm">Address</div>
       <USAddressForm
+        isCreateUser={true}
         deleteAction={
           removePersonHandler
             ? () => removePersonHandler(localData?.id)
@@ -164,9 +181,11 @@ const PersonDataHandling = ({
         setFromState={updatePersonAddressHandler}
         heading={``}
         removeFocusEffect={true}
-        requiredError={false}
+        requiredError={mandatoryError}
         enableCountry={true}
         value={localData?.address}
+        additionalMandatoryCheck={!!localData.name && !!localData.title}
+        setMandatoryError={mandatoryErrorHandler}
       />
     </div>
   ) : (

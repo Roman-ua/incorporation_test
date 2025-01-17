@@ -52,12 +52,14 @@ const CustomButton = ({ discard, clickHandler, disabled, uniqId }) => {
       id={uniqId}
       onClick={() => {
         clickHandler();
-        setIsClicked(true);
+        if (!disabled) {
+          setIsClicked(true);
+        }
       }}
-      disabled={disabled}
       className={classNames(
-        'buttonHold flex items-center justify-between h-[35px] bg-mainBlue text-sm font-semibold text-white rounded-md mt-2 disabled:bg-gray-500',
-        isClicked ? 'pl-3 pr-2' : 'px-3'
+        'buttonHold flex items-center justify-between h-[35px] text-sm font-semibold text-white rounded-md mt-2',
+        isClicked ? 'pl-3 pr-2' : 'px-3',
+        disabled ? 'bg-gray-500' : 'bg-mainBlue'
       )}
     >
       <span>{isClicked ? 'Saved' : 'Save'}</span>

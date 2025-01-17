@@ -25,6 +25,9 @@ interface IProps {
   deleteAction?: () => void;
   removeFocusEffect?: boolean;
   cancelAction?: () => void;
+  isCreateUser?: boolean;
+  additionalMandatoryCheck?: boolean;
+  setMandatoryError?: () => void;
 }
 
 const addressFieldsMock = [
@@ -54,6 +57,9 @@ const USAddressForm = ({
   deleteAction,
   cancelAction,
   removeFocusEffect,
+  isCreateUser,
+  additionalMandatoryCheck,
+  setMandatoryError,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
@@ -79,7 +85,9 @@ const USAddressForm = ({
     setIsOpenStates(value);
   };
 
-  const [country, setCountry] = useState(value?.country);
+  const [country, setCountry] = useState(
+    isCreateUser ? value?.country : 'United States'
+  );
   const [address, setAddress] = useState<{
     address0: string;
     [key: string]: string;
@@ -108,10 +116,19 @@ const USAddressForm = ({
 
   const saveHandler = () => {
     if (
-      areFieldsValid({ country, address0: address.address0, city, zip, state })
+      areFieldsValid({
+        country,
+        address0: address.address0,
+        city,
+        zip,
+        state,
+      }) &&
+      (!isCreateUser || additionalMandatoryCheck)
     ) {
       setDone(true);
       setFromState({ country, ...address, city, zip, state });
+    } else if (typeof setMandatoryError === 'function') {
+      setMandatoryError();
     }
   };
 
@@ -141,7 +158,7 @@ const USAddressForm = ({
   }, [value]);
 
   const inputCommonClasses =
-    'p-2 text-md border-b border-b-gray-200 bg-transparent placeholder:text-gray-500 hover:placeholder:text-gray-400 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
+    'p-2 text-md border-b border-b-gray-200 bg-transparent placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
   const moreFieldAllowed = (index: number) => {
     return index < 3 && index === addressFields.length - 1 && !disabledFlag;
   };
@@ -159,7 +176,7 @@ const USAddressForm = ({
             focused && !removeFocusEffect
               ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]'
               : '',
-            requiredError ? 'border-red-500' : '',
+            requiredError ? 'border-orange-300' : '',
             !focused ? 'bg-inputBackground' : 'bg-white'
           )}
         >
@@ -271,14 +288,16 @@ const USAddressForm = ({
             wrapperExtraStyles={'rounded-b-0 border-0'}
           />
         </div>
-        <div className="ml-auto flex items-center justify-center w-full">
-          {deleteAction && (
+        <div className="ml-auto flex items-center justify-end w-full">
+          {deleteAction ? (
             <div
               onClick={deleteAction}
               className="rounded-md bg-red-50 px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-2 text-gray-900 shadow-sm hover:bg-red-100 hover:cursor-pointer transition-all ease-in-out duration-150"
             >
               Delete
             </div>
+          ) : (
+            <div className="w-1/2" />
           )}
           {cancelAction && (
             <button
@@ -294,13 +313,16 @@ const USAddressForm = ({
               discard={done}
               clickHandler={saveHandler}
               disabled={
-                !areFieldsValid({
-                  country,
-                  address0: address.address0,
-                  city,
-                  zip,
-                  state,
-                })
+                !(
+                  areFieldsValid({
+                    country,
+                    address0: address.address0,
+                    city,
+                    zip,
+                    state,
+                  }) &&
+                  (!isCreateUser || additionalMandatoryCheck)
+                )
               }
               uniqId={'USAddressForm'}
             />

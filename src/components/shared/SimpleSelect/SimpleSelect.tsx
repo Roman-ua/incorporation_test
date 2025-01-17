@@ -6,9 +6,15 @@ interface IProps {
   list: string[];
   currentItem: string;
   valueHandler: (item: string) => void;
+  mandatoryError: boolean;
 }
 
-const SimpleSelect = ({ list, currentItem, valueHandler }: IProps) => {
+const SimpleSelect = ({
+  list,
+  currentItem,
+  valueHandler,
+  mandatoryError,
+}: IProps) => {
   const [selected, setSelected] = React.useState(currentItem);
   const [openState, setOpenState] = React.useState(false);
 
@@ -16,7 +22,10 @@ const SimpleSelect = ({ list, currentItem, valueHandler }: IProps) => {
     <div className="relative inline-block overflow-visible w-full">
       <div
         onClick={() => setOpenState(!openState)}
-        className="rounded-md border w-full border-gray-200 p-2 focus:ring-none focus:outline-none text-center inline-flex items-center justify-between"
+        className={classNames(
+          'rounded-md border w-full border-gray-200 p-2 hover:cursor-pointer focus:ring-none focus:outline-none text-center inline-flex items-center justify-between',
+          mandatoryError && 'border-orange-300'
+        )}
       >
         <span
           className={classNames(

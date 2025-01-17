@@ -113,7 +113,7 @@ const CommonTextInput = ({
             name={name}
             id={id}
             className={classNames(
-              'bg-inputBackground outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-300 hover:placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mainBlue focus:bg-white max-sm:text-sm sm:leading-6 transition-all duration-150 ease-in-out hover:cursor-pointer',
+              'bg-inputBackground outline-0 block w-full text-md rounded-md font-bold border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-mainBlue focus:bg-white max-sm:text-sm sm:leading-6 transition-all duration-150 ease-in-out hover:cursor-pointer',
               isNameField ? 'text-lg py-2.5 px-4' : '',
               requiredError ? 'ring-2 ring-inset ring-red-500' : ''
             )}
