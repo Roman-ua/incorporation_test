@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
-import { TbMail, TbPuzzle } from 'react-icons/tb';
+import { TbMail, TbPuzzle, TbReportAnalytics } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
 import { BiBuildings, BiReceipt } from 'react-icons/bi';
@@ -35,6 +35,14 @@ const teams = [
     initial: 'C',
     current: false,
     icon: LuFileStack,
+  },
+  {
+    id: 1,
+    name: 'Annual Report Confirmation',
+    href: '/report_review',
+    initial: 'А',
+    current: false,
+    icon: TbReportAnalytics,
   },
 ];
 
