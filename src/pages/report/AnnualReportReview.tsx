@@ -89,15 +89,17 @@ const AnnualReportReview = () => {
   const addNewPersonHandler = (person: Person) => {
     setPeopleDataDuplicate((prevState) => {
       const data = [...prevState];
+      const personData = { ...person };
+      personData.id = Math.floor(Math.random() * 90000) + 10000;
 
-      if (person.signer) {
+      if (personData.signer) {
         const prevSignerIndex = data.findIndex((item) => item.signer);
         if (prevSignerIndex !== -1) {
           data[prevSignerIndex].signer = false;
         }
       }
 
-      data.push(person);
+      data.push(personData);
 
       return data;
     });

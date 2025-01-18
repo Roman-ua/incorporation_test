@@ -84,7 +84,6 @@ const PersonDataHandling = ({
       const data = { ...prevState };
 
       data.address = updatedAddress;
-      data.id = Math.floor(Math.random() * 90000) + 10000;
 
       submitProcess(data);
       closeModalHandler();
@@ -100,7 +99,7 @@ const PersonDataHandling = ({
       clearTimeout(timer);
     }, 1500);
   };
-  console.log(mandatoryError, 'mandatoryError');
+
   return localData?.email || isCreateProcess ? (
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
       <div
