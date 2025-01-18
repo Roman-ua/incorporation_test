@@ -24,7 +24,7 @@ const SimpleSelect = ({
         onClick={() => setOpenState(!openState)}
         className={classNames(
           'rounded-md border w-full border-gray-200 p-2 hover:cursor-pointer focus:ring-none focus:outline-none text-center inline-flex items-center justify-between',
-          mandatoryError && 'border-orange-300'
+          mandatoryError && !selected && 'ring-2 ring-inset ring-red-400'
         )}
       >
         <span

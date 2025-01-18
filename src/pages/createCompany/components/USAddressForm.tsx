@@ -163,6 +163,13 @@ const USAddressForm = ({
     return index < 3 && index === addressFields.length - 1 && !disabledFlag;
   };
 
+  const addressFiled = areFieldsValid({
+    country,
+    address0: address.address0,
+    city,
+    zip,
+    state,
+  });
   return (
     <>
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />
@@ -176,7 +183,9 @@ const USAddressForm = ({
             focused && !removeFocusEffect
               ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]'
               : '',
-            requiredError ? 'border-orange-300' : '',
+            requiredError && !addressFiled
+              ? 'ring-2 ring-inset ring-red-400'
+              : '',
             !focused ? 'bg-inputBackground' : 'bg-white'
           )}
         >

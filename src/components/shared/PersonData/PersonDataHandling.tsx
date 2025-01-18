@@ -121,7 +121,9 @@ const PersonDataHandling = ({
               onChange={(e) => updatePersonDataHandler('name', e.target.value)}
               className={classNames(
                 'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
-                mandatoryError && 'border-orange-300'
+                mandatoryError &&
+                  !localData?.name &&
+                  'ring-2 ring-inset ring-red-400'
               )}
               type="text"
               placeholder="Full name"
