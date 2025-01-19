@@ -127,7 +127,7 @@ const PersonDataHandling = ({
               type="text"
               placeholder="Full name"
               value={localData?.name}
-              disabled={!isCreateProcess}
+              disabled={person?.new ? false : !isCreateProcess}
             />
             <SimpleSelect
               valueHandler={updatePersonTitleHandler}
@@ -146,7 +146,7 @@ const PersonDataHandling = ({
               type="text"
               placeholder="Email"
               value={localData?.email}
-              disabled={!isCreateProcess}
+              disabled={person?.new ? false : !isCreateProcess}
             />
           </div>
           <div className="mb-3">

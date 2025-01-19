@@ -163,13 +163,6 @@ const USAddressForm = ({
     return index < 3 && index === addressFields.length - 1 && !disabledFlag;
   };
 
-  const addressFiled = areFieldsValid({
-    country,
-    address0: address.address0,
-    city,
-    zip,
-    state,
-  });
   return (
     <>
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />
@@ -183,9 +176,9 @@ const USAddressForm = ({
             focused && !removeFocusEffect
               ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]'
               : '',
-            requiredError && !addressFiled
-              ? 'ring-2 ring-inset ring-red-400'
-              : '',
+            // requiredError && !addressFiled
+            //   ? 'ring-2 ring-inset ring-red-400'
+            //   : '',
             !focused ? 'bg-inputBackground' : 'bg-white'
           )}
         >
@@ -202,7 +195,10 @@ const USAddressForm = ({
                   key={index}
                   className={classNames(
                     inputCommonClasses,
-                    `w-full ${index === 0 ? 'rounded-t-md' : ''} border-0`
+                    `w-full ${index === 0 ? 'rounded-t-md' : ''} border-0`,
+                    requiredError && index === 0 && !address[`address${index}`]
+                      ? 'ring-2 ring-inset ring-red-400'
+                      : ''
                   )}
                   type={field.type}
                   value={address[`address${index}`]}
@@ -240,7 +236,8 @@ const USAddressForm = ({
             <input
               className={classNames(
                 inputCommonClasses,
-                'w-full border-r border-t-0 border-l-0 border-r-gray-200'
+                'w-full border-r border-t-0 border-l-0 border-r-gray-200',
+                requiredError && !city ? 'ring-2 ring-inset ring-red-400' : ''
               )}
               type="text"
               value={city}
@@ -294,7 +291,7 @@ const USAddressForm = ({
             }
             inputExtraStyles={`${!enableCountry && 'opacity-40'} w-full `}
             disableDropDown={!enableCountry}
-            wrapperExtraStyles={'rounded-b-0 border-0'}
+            wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !state ? 'ring-2 ring-rounded-0 ring-inset ring-red-400' : ''}`}
           />
         </div>
         <div className="ml-auto flex items-center justify-end w-full">

@@ -91,6 +91,7 @@ const AnnualReportReview = () => {
       const data = [...prevState];
       const personData = { ...person };
       personData.id = Math.floor(Math.random() * 90000) + 10000;
+      personData.new = true;
 
       if (personData.signer) {
         const prevSignerIndex = data.findIndex((item) => item.signer);
