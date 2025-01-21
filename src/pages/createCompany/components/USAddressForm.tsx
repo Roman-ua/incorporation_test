@@ -35,16 +35,15 @@ const addressFieldsMock = [
   { title: 'Address', type: 'text' },
 ];
 
-const areFieldsValid = ({
-  country,
-  address0,
-  city,
-  zip,
-  state,
-}: AddressFields): boolean => {
-  return (
-    !!country && !!address0 && !!city && !!zip && zip.length >= 5 && !!state
-  );
+const areFieldsValid = (fields: {
+  [key: string]: string | number | undefined;
+}): boolean => {
+  return Object.entries(fields).every(([key, value]) => {
+    if (key === 'zip') {
+      return !!value && typeof value === 'string' && value.length >= 5;
+    }
+    return !!value;
+  });
 };
 
 const USAddressForm = ({
@@ -76,7 +75,6 @@ const USAddressForm = ({
 
     setIsOpen(value);
   };
-
   const openStateHandler = (value: boolean) => {
     if (isOpen) {
       setIsOpen(false);
@@ -102,6 +100,10 @@ const USAddressForm = ({
   const [zip, setZip] = useState(value?.zip || '');
   const [state, setState] = useState(value?.state || '');
 
+  const validationData = isCreateUser
+    ? { country, address0: address.address0, city, zip }
+    : { country, address0: address.address0, city, zip, state };
+
   const setZipHandler = (value: string) => {
     let cleanedValue = value.replace(/[^0-9-]/g, '');
 
@@ -113,16 +115,9 @@ const USAddressForm = ({
       setZip(cleanedValue);
     }
   };
-
   const saveHandler = () => {
     if (
-      areFieldsValid({
-        country,
-        address0: address.address0,
-        city,
-        zip,
-        state,
-      }) &&
+      areFieldsValid(validationData) &&
       (!isCreateUser || additionalMandatoryCheck)
     ) {
       setDone(true);
@@ -158,7 +153,7 @@ const USAddressForm = ({
   }, [value]);
 
   const inputCommonClasses =
-    'p-2 text-md border-b border-b-gray-200 bg-transparent placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
+    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
   const moreFieldAllowed = (index: number) => {
     return index < 3 && index === addressFields.length - 1 && !disabledFlag;
   };
@@ -176,9 +171,6 @@ const USAddressForm = ({
             focused && !removeFocusEffect
               ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]'
               : '',
-            // requiredError && !addressFiled
-            //   ? 'ring-2 ring-inset ring-red-400'
-            //   : '',
             !focused ? 'bg-inputBackground' : 'bg-white'
           )}
         >
@@ -197,8 +189,8 @@ const USAddressForm = ({
                     inputCommonClasses,
                     `w-full ${index === 0 ? 'rounded-t-md' : ''} border-0`,
                     requiredError && index === 0 && !address[`address${index}`]
-                      ? 'ring-2 ring-inset ring-red-400'
-                      : ''
+                      ? 'bg-red-50'
+                      : 'bg-transparent'
                   )}
                   type={field.type}
                   value={address[`address${index}`]}
@@ -237,7 +229,7 @@ const USAddressForm = ({
               className={classNames(
                 inputCommonClasses,
                 'w-full border-r border-t-0 border-l-0 border-r-gray-200',
-                requiredError && !city ? 'ring-2 ring-inset ring-red-400' : ''
+                requiredError && !city ? 'bg-red-50' : 'bg-transparent'
               )}
               type="text"
               value={city}
@@ -291,7 +283,7 @@ const USAddressForm = ({
             }
             inputExtraStyles={`${!enableCountry && 'opacity-40'} w-full `}
             disableDropDown={!enableCountry}
-            wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !state ? 'ring-2 ring-rounded-0 ring-inset ring-red-400' : ''}`}
+            wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !country ? 'bg-red-50' : 'bg-transparent'}`}
           />
         </div>
         <div className="ml-auto flex items-center justify-end w-full">
@@ -320,13 +312,7 @@ const USAddressForm = ({
               clickHandler={saveHandler}
               disabled={
                 !(
-                  areFieldsValid({
-                    country,
-                    address0: address.address0,
-                    city,
-                    zip,
-                    state,
-                  }) &&
+                  areFieldsValid(validationData) &&
                   (!isCreateUser || additionalMandatoryCheck)
                 )
               }

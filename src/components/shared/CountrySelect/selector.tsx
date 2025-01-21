@@ -66,7 +66,6 @@ export default function CountrySelector({
 
   const [query, setQuery] = useState('');
 
-  // const placeholder = id === 'states' ? 'Search a state' : 'Search a country';
   const emptyState = id === 'states' ? 'No state found' : 'No countries found';
   const emptyPlaceholder = id === 'states' ? 'State' : 'Country';
   return (
@@ -75,7 +74,7 @@ export default function CountrySelector({
         <button
           type="button"
           className={classNames(
-            disabled ? 'bg-neutral-100' : 'bg-transparent',
+            disabled && 'bg-neutral-100',
             'relative w-full border rounded-md pl-2 pr-8 py-2 text-left cursor-default focus:outline-none sm:text-md',
             wrapperExtraStyles || ''
           )}
