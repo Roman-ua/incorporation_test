@@ -31,7 +31,7 @@ const UnsavedChanges = ({
             <div className="p-6">
               <div className="flex items-center justify-between mb-7">
                 <span className="text-gray-900 text-lg font-bold">
-                  Cancel Changes?
+                  Discard Changes?
                 </span>
                 <IconX
                   onClick={() => setOpen(false)}

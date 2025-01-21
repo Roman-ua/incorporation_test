@@ -31,7 +31,7 @@ const RemoveConfirmation = ({
             <div className="p-6">
               <div className="flex items-center justify-between mb-7">
                 <span className="text-gray-900 text-lg font-bold">
-                  Delete Person
+                  Delete a Person
                 </span>
                 <IconX
                   onClick={() => setOpen(false)}
@@ -40,9 +40,8 @@ const RemoveConfirmation = ({
               </div>
 
               <div>
-                You are trying to delete
-                <span className="font-semibold"> {personName} </span>
-                Are you sure you want to proceed?
+                Are you sure you want to delete{' '}
+                <span className="font-semibold"> {personName}</span>?
               </div>
             </div>
             <div className="w-full bg-gray-100 py-3 px-5 rounded-b-lg">

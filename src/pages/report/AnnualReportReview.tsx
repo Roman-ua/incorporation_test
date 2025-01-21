@@ -58,6 +58,8 @@ const AnnualReportReview = () => {
   const [dirtyFlag, setDirtyFlag] = useState(false);
 
   const submitStepHandler = () => {
+    setDirtyFlag(false);
+
     setCurrentStep((prevState) => {
       setVisitedSteps([...visitedSteps, prevState]);
       return prevState + 1;
