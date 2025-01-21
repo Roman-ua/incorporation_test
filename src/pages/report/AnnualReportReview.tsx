@@ -476,7 +476,10 @@ const AnnualReportReview = () => {
                   >
                     Cancel
                   </button>
-                  <ButtonWithArrow title={'Save'} />
+                  <ButtonWithArrow
+                    disabled={addPersonPressed || editingPersonId != -1}
+                    title={'Save'}
+                  />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
               </div>
