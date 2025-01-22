@@ -218,7 +218,12 @@ const SubmitReviewStep = ({
               <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
                 {person.name[0]}
               </span>
-              <div className="text-sm flex flex-col items-start justify-start">
+              <div
+                className={classNames(
+                  'text-sm flex flex-col items-start justify-start',
+                  person.removed ? 'line-through decoration-2' : ''
+                )}
+              >
                 <span className="font-semibold flex items-center justify-start text-gray-900">
                   {person.name}{' '}
                   {person.signer && (
@@ -233,7 +238,12 @@ const SubmitReviewStep = ({
                 <span className="text-gray-400">{person.email}</span>
               </div>
             </div>
-            <div className="whitespace-nowrap w-1/2 flex items-center justify-start">
+            <div
+              className={classNames(
+                'whitespace-nowrap w-1/2 flex items-center justify-start',
+                person.removed ? 'line-through decoration-2' : ''
+              )}
+            >
               <div className="w-full pr-2 text-sm text-gray-800">
                 <div>
                   <span>{person.address.address0}, </span>

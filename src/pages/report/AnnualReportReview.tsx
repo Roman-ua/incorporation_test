@@ -76,6 +76,7 @@ const AnnualReportReview = () => {
   };
 
   const returnPersonHandler = (id: number) => {
+    setDirtyFlag(true);
     setPeopleDataDuplicate((prevState) => {
       const data = [...prevState];
       const currentPersonIndex = data.findIndex((person) => person.id === id);
