@@ -40,9 +40,7 @@ const UnsavedChanges = ({
               </div>
 
               <div>
-                {`You have unsaved changes in the ${sectionTitle}. Are you
-                sure you want to cancel without saving these changes? This
-                action cannot be undone.`}
+                {`You’ve made changes to the ${sectionTitle}. Would you like to discard those changes and cancel the edit process?`}
               </div>
             </div>
             <div className="w-full bg-gray-100 py-3 px-5 rounded-b-lg">
