@@ -281,7 +281,7 @@ const USAddressForm = ({
                 (option) => option.title === country
               ) as SelectMenuOption
             }
-            inputExtraStyles={`${!enableCountry && 'opacity-40'} w-full `}
+            inputExtraStyles={`${!enableCountry && 'opacity-40'} ${requiredError && !country ? 'bg-red-50 rounded-b-md' : 'bg-transparent'} w-full `}
             disableDropDown={!enableCountry}
             wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !country ? 'bg-red-50' : 'bg-transparent'}`}
           />
