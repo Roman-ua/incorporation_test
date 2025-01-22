@@ -23,7 +23,7 @@ import { Person } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
 import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
 import UnsavedChanges from '../../components/shared/Modals/sharedModals/UnsavedChanges';
-import RemoveConfirmation from '../../components/shared/Modals/sharedModals/RemoveConfirmation';
+import { FaUndoAlt } from 'react-icons/fa';
 
 const AnnualReportReview = () => {
   const [dataDuplicate] = useState(mockReportData);
@@ -50,11 +50,6 @@ const AnnualReportReview = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [discardModal, setDiscardModal] = useState<boolean>(false);
 
-  const [deletePersonModal, setDeletePersonModal] = useState<boolean>(false);
-  const [personForDeleting, setPersonForDeleting] = useState<Person | null>(
-    null
-  );
-
   const [dirtyFlag, setDirtyFlag] = useState(false);
 
   const submitStepHandler = () => {
@@ -70,7 +65,25 @@ const AnnualReportReview = () => {
     setDirtyFlag(true);
 
     setPeopleDataDuplicate((prevState) => {
-      return prevState.filter((item) => item.id !== id);
+      const data = [...prevState];
+      const currentPersonIndex = data.findIndex((person) => person.id === id);
+
+      if (currentPersonIndex !== -1) {
+        data[currentPersonIndex].removed = true;
+      }
+      return data;
+    });
+  };
+
+  const returnPersonHandler = (id: number) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
+      const currentPersonIndex = data.findIndex((person) => person.id === id);
+
+      if (currentPersonIndex !== -1) {
+        data[currentPersonIndex].removed = false;
+      }
+      return data;
     });
   };
 
@@ -121,11 +134,6 @@ const AnnualReportReview = () => {
     setCurrentStep(3);
 
     setPeopleDataDuplicate(mockPeople);
-  };
-
-  const proceedRemovePersonHandler = (person: Person) => {
-    removePersonHandler(person.id);
-    setDeletePersonModal(false);
   };
 
   return (
@@ -325,14 +333,6 @@ const AnnualReportReview = () => {
                 sectionTitle={'People section'}
                 discardHandler={cancelStepHandler}
               />
-              <RemoveConfirmation
-                open={deletePersonModal}
-                setOpen={(value) => setDeletePersonModal(value)}
-                personName={personForDeleting?.name || ''}
-                proceedHandler={() =>
-                  proceedRemovePersonHandler(personForDeleting as Person)
-                }
-              />
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -355,7 +355,8 @@ const AnnualReportReview = () => {
                           </span>
                           <div
                             className={classNames(
-                              'text-sm flex flex-col justify-start items-start'
+                              'text-sm flex flex-col justify-start items-start',
+                              person.removed ? 'line-through decoration-2' : ''
                             )}
                           >
                             <span className="font-bold flex items-center justify-start">
@@ -375,7 +376,12 @@ const AnnualReportReview = () => {
                           </div>
                         </div>
 
-                        <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
+                        <div
+                          className={classNames(
+                            'whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start',
+                            person.removed ? 'line-through decoration-2' : ''
+                          )}
+                        >
                           <div className="w-full pr-2 text-gray-700 text-sm">
                             <div>
                               <span>{person.address.address0}, </span>
@@ -407,23 +413,33 @@ const AnnualReportReview = () => {
                           </div>
                         </div>
                         <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
-                        <div className="pl-2 flex items-center justify-end ml-auto">
-                          <IconSettings
+                        {!person.removed ? (
+                          <div className="pl-2 flex items-center justify-end ml-auto">
+                            <IconSettings
+                              onClick={() => {
+                                setDirtyFlag(true);
+                                setAddPersonPressed(false);
+                                setEditingPersonId(person.id);
+                              }}
+                              className="w-5 h-5 text-gray-700 ml-2 hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-180"
+                            />
+                            <IconTrashX
+                              onClick={() => {
+                                removePersonHandler(person.id);
+                              }}
+                              className="w-5 h-5 text-red-400 ml-2 hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-12"
+                            />
+                          </div>
+                        ) : (
+                          <div
                             onClick={() => {
-                              setDirtyFlag(true);
-                              setAddPersonPressed(false);
-                              setEditingPersonId(person.id);
+                              returnPersonHandler(person.id);
                             }}
-                            className="w-5 h-5 text-gray-700 ml-2 hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-180"
-                          />
-                          <IconTrashX
-                            onClick={() => {
-                              setPersonForDeleting(person);
-                              setDeletePersonModal(true);
-                            }}
-                            className="w-5 h-5 text-red-400 ml-2 hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-12"
-                          />
-                        </div>
+                            className="pl-2 flex items-center justify-end ml-auto"
+                          >
+                            <FaUndoAlt className="w-4 h-4 text-gray-700 transition-all duration-350 ease-in-out hover:cursor-pointer hover:-rotate-[320deg]" />
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (

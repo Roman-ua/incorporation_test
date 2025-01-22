@@ -61,7 +61,7 @@ export const mockPeople = [
     name: 'Philip Moris',
     title: 'Accountant',
     added: false,
-    removed: true,
+    removed: false,
     email: 'example@gmail.com',
     signer: true,
     address: {
