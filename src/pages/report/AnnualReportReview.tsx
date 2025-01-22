@@ -31,7 +31,7 @@ const AnnualReportReview = () => {
     useState<Person[]>(mockPeople);
   const [agentDataDuplicate] = useState(mockAgent);
   const [confetti, setConfetti] = React.useState(false);
-
+  console.log(peopleDataDuplicate, 'peopleDataDuplicate log');
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!localStorage.getItem('confetti_success')) {
