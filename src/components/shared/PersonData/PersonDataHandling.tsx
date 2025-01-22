@@ -51,6 +51,10 @@ const PersonDataHandling = ({
     } else {
       setLocalData(emptyValue);
     }
+
+    return () => {
+      setMandatoryError(false);
+    };
   }, [person]);
 
   const signerCheckHandler = (currentChecked: boolean) => {
@@ -94,10 +98,10 @@ const PersonDataHandling = ({
 
   const mandatoryErrorHandler = () => {
     setMandatoryError(true);
-    const timer = setTimeout(() => {
-      setMandatoryError(false);
-      clearTimeout(timer);
-    }, 1500);
+    // const timer = setTimeout(() => {
+    //   setMandatoryError(false);
+    //   clearTimeout(timer);
+    // }, 1500);
   };
 
   return localData?.email || isCreateProcess ? (

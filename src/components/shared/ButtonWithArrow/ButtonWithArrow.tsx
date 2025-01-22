@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { classNames } from '../../../utils/helpers';
 
 interface IProps {
   title: string;
@@ -9,7 +10,10 @@ const ButtonWithArrow = ({ title, disabled }: IProps) => {
   return (
     <button
       disabled={disabled}
-      className="relative inline-flex rounded-md bg-mainBlue items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out group hover:bg-sideBarBlue disabled:bg-gray-500"
+      className={classNames(
+        'relative inline-flex rounded-md bg-mainBlue items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out hover:bg-sideBarBlue disabled:bg-gray-500',
+        !disabled && 'group'
+      )}
     >
       <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
         {title}

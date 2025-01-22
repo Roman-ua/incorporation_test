@@ -101,7 +101,7 @@ const USAddressForm = ({
   const [state, setState] = useState(value?.state || '');
 
   const validationData = isCreateUser
-    ? { country, address0: address.address0, city, zip }
+    ? { country, address0: address.address0, city }
     : { country, address0: address.address0, city, zip, state };
 
   const setZipHandler = (value: string) => {
