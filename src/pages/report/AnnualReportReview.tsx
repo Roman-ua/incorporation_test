@@ -357,18 +357,34 @@ const AnnualReportReview = () => {
                           <div
                             className={classNames(
                               'text-sm flex flex-col justify-start items-start',
-                              person.removed ? 'line-through decoration-2' : ''
+                              person.removed
+                                ? 'line-through decoration-gray-400 text-gray-400'
+                                : ''
                             )}
                           >
                             <span className="font-bold flex items-center justify-start">
                               {person.name}{' '}
                               {person.signer && (
                                 <TooltipWrapper tooltipText="Signer of the Annual Report">
-                                  <FaSignature className="w-4 h-4 text-gray-700 ml-2 hover:cursor-pointer" />
+                                  <FaSignature
+                                    className={classNames(
+                                      'w-4 h-4 ml-2 hover:cursor-pointer',
+                                      person.removed
+                                        ? 'text-gray-400'
+                                        : 'text-gray-700'
+                                    )}
+                                  />
                                 </TooltipWrapper>
                               )}
                             </span>
-                            <span className="text-gray-500 font-semibold">
+                            <span
+                              className={classNames(
+                                ' font-semibold',
+                                person.removed
+                                  ? 'text-gray-400'
+                                  : 'text-gray-500'
+                              )}
+                            >
                               {person.title}
                             </span>
                             <span className="text-gray-400">
@@ -380,10 +396,17 @@ const AnnualReportReview = () => {
                         <div
                           className={classNames(
                             'whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start',
-                            person.removed ? 'line-through decoration-2' : ''
+                            person.removed
+                              ? 'line-through decoration-gray-400 text-gray-400'
+                              : ''
                           )}
                         >
-                          <div className="w-full pr-2 text-gray-700 text-sm">
+                          <div
+                            className={classNames(
+                              'w-full pr-2 text-sm',
+                              person.removed ? 'text-gray-400' : 'text-gray-700'
+                            )}
+                          >
                             <div>
                               <span>{person.address.address0}, </span>
                               {person.address.address1 && (

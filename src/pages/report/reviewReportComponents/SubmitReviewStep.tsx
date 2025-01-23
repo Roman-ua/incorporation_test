@@ -221,18 +221,33 @@ const SubmitReviewStep = ({
               <div
                 className={classNames(
                   'text-sm flex flex-col items-start justify-start',
-                  person.removed ? 'line-through decoration-2' : ''
+                  person.removed ? 'line-through text-gray-400' : ''
                 )}
               >
-                <span className="font-semibold flex items-center justify-start text-gray-900">
+                <span
+                  className={classNames(
+                    'font-semibold flex items-center justify-start',
+                    person.removed ? 'text-gray-400' : 'text-gray-900'
+                  )}
+                >
                   {person.name}{' '}
                   {person.signer && (
                     <TooltipWrapper tooltipText="Signer of the Annual Report">
-                      <FaSignature className="w-4 h-4 text-gray-700 ml-2 hover:cursor-pointer" />
+                      <FaSignature
+                        className={classNames(
+                          'w-4 h-4 ml-2 hover:cursor-pointer',
+                          person.removed ? 'text-gray-400' : 'text-gray-700'
+                        )}
+                      />
                     </TooltipWrapper>
                   )}
                 </span>
-                <span className="text-gray-500 font-semibold text-xs">
+                <span
+                  className={classNames(
+                    ' font-semibold text-xs',
+                    person.removed ? 'text-gray-400' : 'text-gray-500'
+                  )}
+                >
                   {person.title}
                 </span>
                 <span className="text-gray-400">{person.email}</span>
@@ -241,10 +256,15 @@ const SubmitReviewStep = ({
             <div
               className={classNames(
                 'whitespace-nowrap w-1/2 flex items-center justify-start',
-                person.removed ? 'line-through decoration-2' : ''
+                person.removed ? 'line-through text-gray-400' : ''
               )}
             >
-              <div className="w-full pr-2 text-sm text-gray-800">
+              <div
+                className={classNames(
+                  'w-full pr-2 text-sm ',
+                  person.removed ? 'text-gray-400' : 'text-gray-800'
+                )}
+              >
                 <div>
                   <span>{person.address.address0}, </span>
                   {person.address.address1 && (
