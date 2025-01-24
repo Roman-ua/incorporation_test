@@ -445,13 +445,13 @@ const AnnualReportReview = () => {
                                 setAddPersonPressed(false);
                                 setEditingPersonId(person.id);
                               }}
-                              className="w-5 h-5 text-gray-700 ml-2 hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-180"
+                              className="w-6 h-6 p-1 text-gray-500 ml-2 rounded-sm hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:bg-gray-100"
                             />
                             <IconTrashX
                               onClick={() => {
                                 removePersonHandler(person.id);
                               }}
-                              className="w-5 h-5 text-red-400 ml-2 hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:rotate-12"
+                              className="w-6 h-6 p-1 text-red-400 ml-1 rounded-sm hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:bg-red-100"
                             />
                           </div>
                         ) : (
@@ -461,7 +461,7 @@ const AnnualReportReview = () => {
                             }}
                             className="pl-2 flex items-center justify-end ml-auto"
                           >
-                            <FaUndoAlt className="w-4 h-4 text-gray-700 transition-all duration-350 ease-in-out hover:cursor-pointer hover:-rotate-[320deg]" />
+                            <FaUndoAlt className="w-6 h-6 p-1.5 text-gray-500 rounded-sm transition-all duration-150 ease-in-out hover:text-gray-900 hover:cursor-pointer hover:bg-gray-100" />
                           </div>
                         )}
                       </div>
