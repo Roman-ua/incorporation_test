@@ -104,7 +104,7 @@ const PersonDataHandling = ({
     // }, 1500);
   };
 
-  return localData?.email || isCreateProcess ? (
+  return localData?.name || isCreateProcess ? (
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
       <div
         onClick={closeModalHandler}
