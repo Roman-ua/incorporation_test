@@ -345,7 +345,7 @@ const AnnualReportReview = () => {
                 {peopleDataDuplicate.map((person, rowIndex) => {
                   return editingPersonId !== person.id ? (
                     <div key={rowIndex}>
-                      <div className="flex py-3 group transition-all ease-in-out duration-150 items-start justify-start">
+                      <div className="flex py-3 transition-all ease-in-out duration-150 items-start justify-start">
                         <div
                           className={classNames(
                             'whitespace-nowrap w-[40%] max-sm:w-1/2 pr-2 flex  text-gray-900 justify-start items-start'
@@ -439,29 +439,33 @@ const AnnualReportReview = () => {
                         <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
                         {!person.removed ? (
                           <div className="pl-2 flex items-center justify-end ml-auto">
-                            <IconSettings
+                            <div
                               onClick={() => {
                                 setDirtyFlag(true);
                                 setAddPersonPressed(false);
                                 setEditingPersonId(person.id);
                               }}
-                              className="w-6 h-6 p-1 text-gray-500 ml-2 rounded-sm hover:text-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer hover:bg-gray-100"
-                            />
-                            <IconTrashX
+                              className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                            >
+                              <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                            </div>
+                            <div
                               onClick={() => {
                                 removePersonHandler(person.id);
                               }}
-                              className="w-6 h-6 p-1 text-red-400 ml-1 rounded-sm hover:text-red-700 transition-all duration-150 ease-in-out hover:cursor-pointer hover:bg-red-100"
-                            />
+                              className="ml-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                            >
+                              <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                            </div>
                           </div>
                         ) : (
                           <div
                             onClick={() => {
                               returnPersonHandler(person.id);
                             }}
-                            className="pl-2 flex items-center justify-end ml-auto"
+                            className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                           >
-                            <FaUndoAlt className="w-6 h-6 p-1.5 text-gray-500 rounded-sm transition-all duration-150 ease-in-out hover:text-gray-900 hover:cursor-pointer hover:bg-gray-100" />
+                            <FaUndoAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                           </div>
                         )}
                       </div>
