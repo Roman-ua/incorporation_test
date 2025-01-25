@@ -9,6 +9,7 @@ import SubmitReviewStep from './reviewReportComponents/SubmitReviewStep';
 import { USStates } from '../../constants/form/form';
 import TooltipWrapper from '../../components/shared/TooltipWrapper';
 import {
+  IconArrowBackUp,
   IconCircleCheckFilled,
   IconInfoCircle,
   IconPlus,
@@ -23,7 +24,6 @@ import { Person } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
 import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
 import UnsavedChanges from '../../components/shared/Modals/sharedModals/UnsavedChanges';
-import { FaUndoAlt } from 'react-icons/fa';
 
 const AnnualReportReview = () => {
   const [dataDuplicate] = useState(mockReportData);
@@ -465,7 +465,7 @@ const AnnualReportReview = () => {
                             }}
                             className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                           >
-                            <FaUndoAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                            <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                           </div>
                         )}
                       </div>
