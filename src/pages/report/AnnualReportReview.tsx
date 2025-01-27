@@ -157,7 +157,14 @@ const AnnualReportReview = () => {
         </div>
         <div className="w-1/4 pr-2" />
       </div>
-      <div className="min-h-[calc(100vh-65px)] bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20">
+      <div
+        className={classNames(
+          'bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20',
+          currentStep === 4
+            ? 'max-h-[calc(100vh-65px)] overflow-hidden'
+            : 'min-h-[calc(100vh-65px)]'
+        )}
+      >
         <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <ReviewStepsProgress
             editMode={editMode}
@@ -558,14 +565,37 @@ const AnnualReportReview = () => {
             </form>
           )}
           {currentStep === 4 && (
-            <div className="w-full flex items-center justify-start flex-col pt-32 max-lg:pt-10">
-              {confetti && <ConfettiAp />}
-              <IconCircleCheckFilled className="w-28 h-28 text-green-500" />
-              <div className="text-3xl font-semibold mt-4 text-gray-700">
-                Congratulations!
+            <div className="w-full relative">
+              <div className="w-full flex items-center justify-start flex-col max-lg:pt-10">
+                {confetti && <ConfettiAp />}
+                <IconCircleCheckFilled className="w-20 h-20 text-green-500" />
+                <div className="text-xl font-semibold mt-4 text-gray-700 mb-4">
+                  Thank You for Confirming Annual Report Details! 🎉
+                </div>
+                <div className="text-base mb-1 text-gray-700">
+                  Your order <span className="font-bold">ord_1234</span> has
+                  been successfully created.
+                </div>
+                <div className="text-base mb-4 text-gray-700">
+                  Our team will review and process your order within the next
+                  few days.
+                </div>
+                <div className="text-sm mb-1 text-gray-500">
+                  If you have any questions or need further assistance, feel
+                  free to contact our{' '}
+                  <span className="text-blue-400 hover:cursor-pointer">
+                    support team.
+                  </span>
+                </div>
               </div>
-              <div className="text-gray-700 mt-2">
-                We received your confirmation! Check your email
+              <div className="relative mt-10 max-sm:hidden">
+                <div className="absolute bottom-0 -right-10 -left-10 -top-5 border border-gray-200 rounded-md z-50 bg-transparrent" />
+                <SubmitReviewStep
+                  clickHandler={() => {}}
+                  reportData={dataDuplicate}
+                  agentReportData={agentDataDuplicate}
+                  peopleData={peopleDataDuplicate}
+                />
               </div>
             </div>
           )}
