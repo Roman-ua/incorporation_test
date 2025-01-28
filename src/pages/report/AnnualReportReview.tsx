@@ -32,16 +32,6 @@ const AnnualReportReview = () => {
   const [agentDataDuplicate] = useState(mockAgent);
   const [confetti, setConfetti] = React.useState(false);
   console.log(peopleDataDuplicate, 'peopleDataDuplicate log');
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!localStorage.getItem('confetti_success')) {
-        setConfetti(true);
-        localStorage.setItem('confetti_success', 'true');
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const [editingPersonId, setEditingPersonId] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
@@ -51,6 +41,17 @@ const AnnualReportReview = () => {
   const [discardModal, setDiscardModal] = useState<boolean>(false);
 
   const [dirtyFlag, setDirtyFlag] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!localStorage.getItem('confetti_success') && currentStep === 4) {
+        setConfetti(true);
+        localStorage.setItem('confetti_success', 'true');
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [currentStep]);
 
   const submitStepHandler = () => {
     setDirtyFlag(false);
@@ -157,12 +158,10 @@ const AnnualReportReview = () => {
         </div>
         <div className="w-1/4 pr-2" />
       </div>
+      {confetti && <ConfettiAp />}
       <div
         className={classNames(
-          'bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20',
-          currentStep === 4
-            ? 'max-h-[calc(100vh-65px)] overflow-hidden'
-            : 'min-h-[calc(100vh-65px)]'
+          'bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20 min-h-[calc(100vh-65px)]'
         )}
       >
         <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
@@ -550,6 +549,7 @@ const AnnualReportReview = () => {
                   setEditMode(true);
                   setCurrentStep(2);
                 }}
+                status={'Confirmation Needed'}
                 reportData={dataDuplicate}
                 agentReportData={agentDataDuplicate}
                 peopleData={peopleDataDuplicate}
@@ -567,7 +567,6 @@ const AnnualReportReview = () => {
           {currentStep === 4 && (
             <div className="w-full relative">
               <div className="w-full flex items-center justify-start flex-col max-lg:pt-10">
-                {confetti && <ConfettiAp />}
                 <IconCircleCheckFilled className="w-20 h-20 text-green-500" />
                 <div className="text-xl font-semibold mt-4 text-gray-700 mb-4">
                   Thank You for Confirming Annual Report Details! 🎉
@@ -588,11 +587,12 @@ const AnnualReportReview = () => {
                   </span>
                 </div>
               </div>
-              <div className="relative mt-10 max-sm:hidden">
-                <div className="absolute bottom-0 -right-10 -left-10 -top-5 border border-gray-200 rounded-md z-50 bg-transparrent" />
+              <div className="relative mt-10 max-sm:hidden px-6">
+                <div className="absolute -bottom-10 -right-5 -left-5 -top-5 border border-gray-200 rounded-md z-50 bg-transparrent" />
                 <SubmitReviewStep
                   clickHandler={() => {}}
                   reportData={dataDuplicate}
+                  status={'In Progress'}
                   agentReportData={agentDataDuplicate}
                   peopleData={peopleDataDuplicate}
                 />

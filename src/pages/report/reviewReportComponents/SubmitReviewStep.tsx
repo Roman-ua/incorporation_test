@@ -13,6 +13,7 @@ interface IProps {
   agentReportData: Agent;
   peopleData: Person[];
   clickHandler: () => void;
+  status: string;
 }
 
 const statusBadge = (status: string) => {
@@ -39,6 +40,7 @@ const SubmitReviewStep = ({
   agentReportData,
   peopleData,
   clickHandler,
+  status,
 }: IProps) => {
   return (
     <>
@@ -55,10 +57,10 @@ const SubmitReviewStep = ({
             <span
               className={classNames(
                 'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                statusBadge(reportData?.status)
+                statusBadge(status)
               )}
             >
-              {reportData?.status}
+              {status}
             </span>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
