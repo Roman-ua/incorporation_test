@@ -31,7 +31,6 @@ const AnnualReportReview = () => {
     useState<Person[]>(mockPeople);
   const [agentDataDuplicate] = useState(mockAgent);
   const [confetti, setConfetti] = React.useState(false);
-  console.log(peopleDataDuplicate, 'peopleDataDuplicate log');
 
   const [editingPersonId, setEditingPersonId] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
@@ -44,9 +43,8 @@ const AnnualReportReview = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!localStorage.getItem('confetti_success') && currentStep === 4) {
+      if (currentStep === 4) {
         setConfetti(true);
-        localStorage.setItem('confetti_success', 'true');
       }
     }, 300);
 
@@ -590,7 +588,6 @@ const AnnualReportReview = () => {
               <div className="relative mt-10 max-sm:hidden px-6">
                 <div className="absolute -bottom-10 -right-5 -left-5 -top-5 border border-gray-200 rounded-md z-50 bg-transparrent" />
                 <SubmitReviewStep
-                  clickHandler={() => {}}
                   reportData={dataDuplicate}
                   status={'In Progress'}
                   agentReportData={agentDataDuplicate}

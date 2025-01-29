@@ -12,7 +12,7 @@ interface IProps {
   reportData: ReportData;
   agentReportData: Agent;
   peopleData: Person[];
-  clickHandler: () => void;
+  clickHandler?: () => void;
   status: string;
 }
 
@@ -20,6 +20,8 @@ const statusBadge = (status: string) => {
   switch (status) {
     case 'Filed':
       return 'bg-green-50 text-green-700 ring-green-600/20';
+    case 'In Progress':
+      return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20';
     case 'Cancelled':
       return 'bg-red-50 text-red-700 ring-red-600/20';
     case 'Confirmation Needed':
@@ -199,13 +201,15 @@ const SubmitReviewStep = ({
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           People
-          <button
-            type="button"
-            onClick={clickHandler}
-            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
-          >
-            Make Changes
-          </button>
+          {clickHandler && (
+            <button
+              type="button"
+              onClick={clickHandler}
+              className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+            >
+              Make Changes
+            </button>
+          )}
         </div>
         {peopleData.map((person, rowIndex) => (
           <div
