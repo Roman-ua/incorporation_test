@@ -35,7 +35,7 @@ function classNames(...classes: (string | boolean)[]) {
 
 const CompanyPage = () => {
   const [copied, setCopied] = React.useState('');
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
   const localData = localStorage.getItem('finalFormData');
@@ -91,9 +91,12 @@ const CompanyPage = () => {
                 navigate(ROUTES.EIN);
               }
             }}
-            className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer"
+            className={classNames(
+              'text-nowrap text-base  tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer',
+              data?.taxId ? 'font-semibold' : 'hover:text-mainBlue'
+            )}
           >
-            {data?.taxId || 'Update Tax ID'}
+            {data?.taxId || 'Add EIN (Tax ID)'}
             {data?.taxId && (
               <>
                 <IoMdCheckmark

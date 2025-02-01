@@ -5,9 +5,9 @@ import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import { IconX } from '@tabler/icons-react';
 import DatePicker from './datePicker';
 import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../../../constants/navigation/routes';
-import { SelectCompany } from '../../SelectCompany/SelectCompany';
+// import { useNavigate } from 'react-router-dom';
+// import { ROUTES } from '../../../../constants/navigation/routes';
+// import { SelectCompany } from '../../SelectCompany/SelectCompany';
 
 interface IProps {
   open: boolean;
@@ -26,17 +26,17 @@ const labels = [
   'CP577',
   'CP577E',
 ];
+//
+// interface Option {
+//   value: string;
+//   label: string;
+// }
 
-interface Option {
-  value: string;
-  label: string;
-}
-
-const options: Option[] = [
-  { value: '1', label: 'ABC Company Inc' },
-  { value: '2', label: 'DM Company Inc' },
-  { value: '3', label: 'Some Company Inc' },
-];
+// const options: Option[] = [
+//   { value: '1', label: 'ABC Company Inc' },
+//   { value: '2', label: 'DM Company Inc' },
+//   { value: '3', label: 'Some Company Inc' },
+// ];
 
 // interface statusItem {
 //   title: string;
@@ -71,12 +71,12 @@ const AddEinModal = ({
   companyName,
   setTaxIdToCompany,
 }: IProps) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [einNumber, setEinNumber] = React.useState<string>('');
-  const [selectedCompany, setSelectedCompany] = React.useState<Option | null>(
-    null
-  );
+  // const [selectedCompany, setSelectedCompany] = React.useState<Option | null>(
+  //   null
+  // );
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>(
     companyName as string
   );
@@ -127,13 +127,15 @@ const AddEinModal = ({
                   <span className="text-gray-900 text-lg font-bold">
                     Add EIN (Tax ID)
                   </span>
-                  <IconX
+                  <div
                     onClick={() => setOpen(false)}
-                    className="w-5 h-5 text-gray-500 ml-auto hover:cursor-pointer hover:text-gray-700 transition-all ease-in-out duration-150"
-                  />
+                    className="flex items-center justify-between absolute top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                  >
+                    <IconX className="w-4 h-4 text-gray-700" />
+                  </div>
                 </div>
                 <div className="text-gray-700 text-sm mb-2 font-bold">
-                  EIN (Tax ID) Number:
+                  EIN (Tax ID) Number
                 </div>
                 <input
                   onChange={(e) => setEinNumber(e.target.value)}
@@ -144,27 +146,27 @@ const AddEinModal = ({
                   placeholder="EIN number"
                   value={einNumber}
                 />
-                {!isNumberOnly && (
-                  <div className="mt-6">
-                    <div className="text-gray-700 text-sm mb-2 font-bold">
-                      List of companies:
-                    </div>
-                    <SelectCompany
-                      options={options}
-                      value={selectedCompany}
-                      onChange={setSelectedCompany}
-                      placeholder="Choose company"
-                      onButtonClick={() => navigate(ROUTES.CREATE_COMPANY)}
-                      buttonText="+ Add Company"
-                    />
-                  </div>
-                )}
+                {/*{!isNumberOnly && (*/}
+                {/*  <div className="mt-6">*/}
+                {/*    <div className="text-gray-700 text-sm mb-2 font-bold">*/}
+                {/*      List of companies:*/}
+                {/*    </div>*/}
+                {/*    <SelectCompany*/}
+                {/*      options={options}*/}
+                {/*      value={selectedCompany}*/}
+                {/*      onChange={setSelectedCompany}*/}
+                {/*      placeholder="Choose company"*/}
+                {/*      onButtonClick={() => navigate(ROUTES.CREATE_COMPANY)}*/}
+                {/*      buttonText="+ Add Company"*/}
+                {/*    />*/}
+                {/*  </div>*/}
+                {/*)}*/}
                 {isNumberOnly && (
                   <div
                     className="text-sm font-semibold mt-4 hover:cursor-pointer hover:text-mainBlue w-full text-right"
                     onClick={() => setIsNumberOnly(false)}
                   >
-                    Provide confirmation
+                    Add verification document
                   </div>
                 )}
               </div>
@@ -172,7 +174,7 @@ const AddEinModal = ({
                 <div className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Upload EIN (Tax ID) Confirmation Document:
+                      Upload EIN (Tax ID) Confirmation Document
                     </div>
                   </div>
                   {selectedFile?.name ? (
@@ -203,13 +205,13 @@ const AddEinModal = ({
                   </div>
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Date on the file/document:
+                      Document date
                     </div>
                     <DatePicker />
                   </div>
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Company name on the document:
+                      Company name on the document
                     </div>
                     <input
                       onChange={(e) => setCompanyNameOnDock(e.target.value)}
@@ -224,13 +226,7 @@ const AddEinModal = ({
 
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Last Verification Date:
-                    </div>
-                    <DatePicker />
-                  </div>
-                  <div className="mt-6">
-                    <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Document type:
+                      Document type
                     </div>
                     <div className="flex items-center justify-start flex-wrap">
                       {labels.map((label) => (
