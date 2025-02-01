@@ -22,40 +22,41 @@ const labels = [
   'CP577E',
 ];
 
-interface statusItem {
-  title: string;
-  hoverStyles: string;
-  selectedStyles: string;
-}
-const statuses = [
-  {
-    title: 'Confirmation Needed',
-    hoverStyles: 'hover:text-yellow-700 hover:border-yellow-600',
-    selectedStyles: 'bg-yellow-100 text-yellow-700 border-yellow-600',
-  },
-  {
-    title: 'Confirmed',
-    hoverStyles: 'hover:text-green-700 hover:border-green-600',
-    selectedStyles: 'bg-green-100 text-green-700 border-green-600',
-  },
-  {
-    title: 'Archived',
-    hoverStyles: 'hover:text-gray-900 hover:border-gray-900',
-    selectedStyles: 'bg-gray-200 text-gray-900 border-gray-900',
-  },
-];
+// interface statusItem {
+//   title: string;
+//   hoverStyles: string;
+//   selectedStyles: string;
+// }
+// const statuses = [
+//   {
+//     title: 'Confirmation Needed',
+//     hoverStyles: 'hover:text-yellow-700 hover:border-yellow-600',
+//     selectedStyles: 'bg-yellow-100 text-yellow-700 border-yellow-600',
+//   },
+//   {
+//     title: 'Confirmed',
+//     hoverStyles: 'hover:text-green-700 hover:border-green-600',
+//     selectedStyles: 'bg-green-100 text-green-700 border-green-600',
+//   },
+//   {
+//     title: 'Archived',
+//     hoverStyles: 'hover:text-gray-900 hover:border-gray-900',
+//     selectedStyles: 'bg-gray-200 text-gray-900 border-gray-900',
+//   },
+// ];
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
+  const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>('');
   const [selectedDocType, setSelectedDocType] = React.useState('');
-  const [selectedDocStatus, setSelectedDocStatus] = React.useState<statusItem>({
-    title: '',
-    hoverStyles: '',
-    selectedStyles: '',
-  });
+  // const [selectedDocStatus, setSelectedDocStatus] = React.useState<statusItem>({
+  //   title: '',
+  //   hoverStyles: '',
+  //   selectedStyles: '',
+  // });
 
   const setSelectedDocTypeHandler = (label: string) => {
     if (selectedDocType === label) {
@@ -65,13 +66,13 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
     }
   };
 
-  const setSelectedDocStatusHandler = (status: statusItem) => {
-    if (selectedDocStatus.title === status.title) {
-      setSelectedDocStatus({ title: '', hoverStyles: '', selectedStyles: '' });
-    } else {
-      setSelectedDocStatus(status);
-    }
-  };
+  // const setSelectedDocStatusHandler = (status: statusItem) => {
+  //   if (selectedDocStatus.title === status.title) {
+  //     setSelectedDocStatus({ title: '', hoverStyles: '', selectedStyles: '' });
+  //   } else {
+  //     setSelectedDocStatus(status);
+  //   }
+  // };
 
   const {
     inputRef,
@@ -92,10 +93,12 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                 <span className="text-gray-900 text-lg font-bold">
                   Upload EIN (Tax ID) Confirmation Document
                 </span>
-                <IconX
+                <div
                   onClick={() => setOpen(false)}
-                  className="w-5 h-5 text-gray-500 ml-auto hover:cursor-pointer hover:text-gray-700 transition-all ease-in-out duration-150"
-                />
+                  className="flex items-center justify-between absolute top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                >
+                  <IconX className="w-4 h-4 text-gray-700" />
+                </div>
               </div>
               {selectedFile?.name ? (
                 <div className="w-full">
@@ -125,13 +128,27 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
               </div>
               <div className="mt-6">
                 <div className="text-gray-700 text-sm mb-2 font-bold">
-                  Document date:
+                  Document date
                 </div>
                 <DatePicker />
               </div>
               <div className="mt-6">
                 <div className="text-gray-700 text-sm mb-2 font-bold">
-                  Document type:
+                  Company name on the document
+                </div>
+                <input
+                  onChange={(e) => setCompanyNameOnDock(e.target.value)}
+                  className={classNames(
+                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                  )}
+                  type="text"
+                  placeholder="Company Name"
+                  value={companyNameOnDock}
+                />
+              </div>
+              <div className="mt-6">
+                <div className="text-gray-700 text-sm mb-2 font-bold">
+                  Document type
                 </div>
                 <div className="flex items-center justify-start flex-wrap">
                   {labels.map((label) => (
@@ -146,27 +163,6 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                       key={label}
                     >
                       {label}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="mt-6">
-                <div className="text-gray-700 text-sm mb-2 font-bold">
-                  EIN (Tax ID) status:
-                </div>
-                <div className="flex items-center justify-start flex-wrap">
-                  {statuses.map((item) => (
-                    <div
-                      onClick={() => setSelectedDocStatusHandler(item)}
-                      className={classNames(
-                        'text-sm font-bold py-1.5 px-3 border rounded mr-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
-                        selectedDocStatus.title === item.title
-                          ? item.selectedStyles
-                          : item.hoverStyles
-                      )}
-                      key={item.title}
-                    >
-                      {item.title}
                     </div>
                   ))}
                 </div>
