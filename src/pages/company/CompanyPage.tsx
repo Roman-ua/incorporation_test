@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionHeading from './components/SectionHeading';
 import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
@@ -12,6 +12,7 @@ import PageSign from '../../components/shared/PageSign';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import AnnualReportsListFL from './components/AnnualReportsListFL';
 import RelatedPeopleList from './components/RelatedPeopleList';
+import AddEinModal from '../../components/shared/Modals/addCompanyFile/AddEinModal';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -34,13 +35,24 @@ function classNames(...classes: (string | boolean)[]) {
 
 const CompanyPage = () => {
   const [copied, setCopied] = React.useState('');
+  const [open, setOpen] = useState(true);
+
   const navigate = useNavigate();
   const localData = localStorage.getItem('finalFormData');
   const data = localData ? JSON.parse(localData) : undefined;
-  console.log(data, 'data');
-  console.log(data?.registeredIn, 'data?.registeredIn');
+
+  const setTaxIdToCompany = (id: string) => {
+    data.taxId = id;
+  };
+
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
+      <AddEinModal
+        setOpen={setOpen}
+        open={open}
+        companyName={data.companyName || ''}
+        setTaxIdToCompany={setTaxIdToCompany}
+      />
       <PageSign
         title={'COMPANY'}
         icon={
@@ -72,36 +84,44 @@ const CompanyPage = () => {
           <dt className="text-nowrap text-sm text-gray-500">EIN (Tax ID)</dt>
           <dd
             onClick={(event) => {
-              event.preventDefault();
-              navigate(ROUTES.EIN);
+              if (!data?.taxId) {
+                setOpen(true);
+              } else {
+                event.preventDefault();
+                navigate(ROUTES.EIN);
+              }
             }}
             className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer"
           >
-            12-3456789
-            <IoMdCheckmark
-              className={classNames(
-                'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
-                copied ? 'opacity-100' : 'opacity-0'
-              )}
-            />
-            <MdOutlineCopyAll
-              onClick={(event) => {
-                event.stopPropagation();
-                setCopied('Copied!');
+            {data?.taxId || 'Update Tax ID'}
+            {data?.taxId && (
+              <>
+                <IoMdCheckmark
+                  className={classNames(
+                    'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
+                    copied ? 'opacity-100' : 'opacity-0'
+                  )}
+                />
+                <MdOutlineCopyAll
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setCopied('Copied!');
 
-                const timer = setTimeout(() => {
-                  clearTimeout(timer);
-                  setCopied('');
-                }, 700);
+                    const timer = setTimeout(() => {
+                      clearTimeout(timer);
+                      setCopied('');
+                    }, 700);
 
-                copyToClipboard('12-3456789');
-              }}
-              className={classNames(
-                'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
-                !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
-              )}
-            />
-            <MdOpenInNew className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
+                    copyToClipboard('12-3456789');
+                  }}
+                  className={classNames(
+                    'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
+                    !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
+                  )}
+                />
+                <MdOpenInNew className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
+              </>
+            )}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">

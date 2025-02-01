@@ -160,7 +160,7 @@ const DatePicker = () => {
     <div className="relative">
       <input
         ref={inputRef}
-        className="rounded border border-gray-300 px-2 py-1.5 w-full text-sm text-gray-900 focus:outline-none"
+        className="block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer"
         value={inputValue}
         onChange={(e) => validateDateInput(e.target.value, false)}
         onFocus={() => setOpen(true)}

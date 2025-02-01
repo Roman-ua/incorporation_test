@@ -7,6 +7,8 @@ interface IProps {
   currentItem: string;
   valueHandler: (item: string) => void;
   mandatoryError: boolean;
+  buttonTitle?: string;
+  buttonHandler?: () => void;
 }
 
 const SimpleSelect = ({
@@ -14,6 +16,8 @@ const SimpleSelect = ({
   currentItem,
   valueHandler,
   mandatoryError,
+  buttonTitle,
+  buttonHandler,
 }: IProps) => {
   const [selected, setSelected] = React.useState(currentItem);
   const [openState, setOpenState] = React.useState(false);
@@ -59,6 +63,16 @@ const SimpleSelect = ({
                 <span className="block px-4 py-2 text-base">{item}</span>
               </div>
             ))}
+            {buttonTitle && buttonHandler && (
+              <div
+                className="hover:cursor-pointer hover:bg-gray-50 border-t"
+                onClick={buttonHandler}
+              >
+                <span className="block px-4 py-2 text-base font-bold">
+                  {buttonTitle}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
