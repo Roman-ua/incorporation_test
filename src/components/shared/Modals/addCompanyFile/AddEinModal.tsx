@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import DropFileArea from './DropFileArea';
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import { IconX } from '@tabler/icons-react';
 import DatePicker from './datePicker';
 import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
-// import { useNavigate } from 'react-router-dom';
-// import { ROUTES } from '../../../../constants/navigation/routes';
-// import { SelectCompany } from '../../SelectCompany/SelectCompany';
+import { IFiles } from '../../../../interfaces/interfaces';
 
 interface IProps {
   open: boolean;
@@ -26,40 +24,6 @@ const labels = [
   'CP577',
   'CP577E',
 ];
-//
-// interface Option {
-//   value: string;
-//   label: string;
-// }
-
-// const options: Option[] = [
-//   { value: '1', label: 'ABC Company Inc' },
-//   { value: '2', label: 'DM Company Inc' },
-//   { value: '3', label: 'Some Company Inc' },
-// ];
-
-// interface statusItem {
-//   title: string;
-//   hoverStyles: string;
-//   selectedStyles: string;
-// }
-// const statuses = [
-//   {
-//     title: 'Confirmation Needed',
-//     hoverStyles: 'hover:text-yellow-700 hover:border-yellow-600',
-//     selectedStyles: 'bg-yellow-100 text-yellow-700 border-yellow-600',
-//   },
-//   {
-//     title: 'Confirmed',
-//     hoverStyles: 'hover:text-green-700 hover:border-green-600',
-//     selectedStyles: 'bg-green-100 text-green-700 border-green-600',
-//   },
-//   {
-//     title: 'Archived',
-//     hoverStyles: 'hover:text-gray-900 hover:border-gray-900',
-//     selectedStyles: 'bg-gray-200 text-gray-900 border-gray-900',
-//   },
-// ];
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -71,23 +35,14 @@ const AddEinModal = ({
   companyName,
   setTaxIdToCompany,
 }: IProps) => {
-  // const navigate = useNavigate();
-
   const [einNumber, setEinNumber] = React.useState<string>('');
-  // const [selectedCompany, setSelectedCompany] = React.useState<Option | null>(
-  //   null
-  // );
+  const [file, setFile] = React.useState<IFiles | null>(null);
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>(
     companyName as string
   );
-
   const [isNumberOnly, setIsNumberOnly] = React.useState(true);
   const [selectedDocType, setSelectedDocType] = React.useState('');
-  // const [selectedDocStatus, setSelectedDocStatus] = React.useState<statusItem>({
-  //   title: '',
-  //   hoverStyles: '',
-  //   selectedStyles: '',
-  // });
+  const [mandatoryError, setMandatoryError] = React.useState(false);
 
   const setSelectedDocTypeHandler = (label: string) => {
     if (selectedDocType === label) {
@@ -97,13 +52,37 @@ const AddEinModal = ({
     }
   };
 
-  // const setSelectedDocStatusHandler = (status: statusItem) => {
-  //   if (selectedDocStatus.title === status.title) {
-  //     setSelectedDocStatus({ title: '', hoverStyles: '', selectedStyles: '' });
-  //   } else {
-  //     setSelectedDocStatus(status);
-  //   }
-  // };
+  const cleanUpHandler = () => {
+    setEinNumber('');
+    setCompanyNameOnDock(companyName || '');
+    setIsNumberOnly(true);
+    setSelectedDocType('');
+    setFile(null);
+  };
+
+  const validationHandler = (flag: boolean) => {
+    if (flag) {
+      return !!einNumber;
+    } else {
+      return (
+        !!einNumber && !!selectedDocType && !!companyNameOnDock && !!file?.size
+      );
+    }
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value.length > 9) {
+      value = value.slice(0, 9);
+    }
+
+    if (value.length > 2) {
+      value = `${value.slice(0, 2)}-${value.slice(2)}`;
+    }
+
+    setEinNumber(value);
+  };
 
   const {
     inputRef,
@@ -112,6 +91,11 @@ const AddEinModal = ({
     handleFileDrop,
     deleteFileHandler,
   } = useFileUpload();
+
+  useEffect(() => {
+    setFile(selectedFile);
+  }, [selectedFile]);
+
   return (
     <Dialog open={open} onClose={setOpen} className="fixed z-10">
       <DialogBackdrop className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in" />
@@ -128,7 +112,10 @@ const AddEinModal = ({
                     Add EIN (Tax ID)
                   </span>
                   <div
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      cleanUpHandler();
+                      setOpen(false);
+                    }}
                     className="flex items-center justify-between absolute top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                   >
                     <IconX className="w-4 h-4 text-gray-700" />
@@ -138,29 +125,15 @@ const AddEinModal = ({
                   EIN (Tax ID) Number
                 </div>
                 <input
-                  onChange={(e) => setEinNumber(e.target.value)}
+                  onChange={(e) => handleInputChange(e)}
                   className={classNames(
-                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                    mandatoryError && !einNumber && 'bg-red-50'
                   )}
                   type="text"
                   placeholder="EIN number"
                   value={einNumber}
                 />
-                {/*{!isNumberOnly && (*/}
-                {/*  <div className="mt-6">*/}
-                {/*    <div className="text-gray-700 text-sm mb-2 font-bold">*/}
-                {/*      List of companies:*/}
-                {/*    </div>*/}
-                {/*    <SelectCompany*/}
-                {/*      options={options}*/}
-                {/*      value={selectedCompany}*/}
-                {/*      onChange={setSelectedCompany}*/}
-                {/*      placeholder="Choose company"*/}
-                {/*      onButtonClick={() => navigate(ROUTES.CREATE_COMPANY)}*/}
-                {/*      buttonText="+ Add Company"*/}
-                {/*    />*/}
-                {/*  </div>*/}
-                {/*)}*/}
                 {isNumberOnly && (
                   <div
                     className="text-sm font-semibold mt-4 hover:cursor-pointer hover:text-mainBlue w-full text-right"
@@ -193,6 +166,7 @@ const AddEinModal = ({
                       inputRef={inputRef}
                       handleFileDrop={handleFileDrop}
                       handleFileInput={handleFileInput}
+                      mandatoryError={mandatoryError}
                     />
                   )}
                   <div className="flex items-center justify-between mt-2">
@@ -216,7 +190,8 @@ const AddEinModal = ({
                     <input
                       onChange={(e) => setCompanyNameOnDock(e.target.value)}
                       className={classNames(
-                        'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                        'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                        mandatoryError && !companyNameOnDock && 'bg-red-50'
                       )}
                       type="text"
                       placeholder="Company Name"
@@ -236,7 +211,8 @@ const AddEinModal = ({
                             'text-sm font-bold text-gray-700 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
                             selectedDocType === label
                               ? 'bg-sideBarBlue text-white border-sideBarBlue'
-                              : 'border-gray-300 hover:border-sideBarBlue hover:text-sideBarBlue'
+                              : 'border-gray-300 hover:border-sideBarBlue hover:text-sideBarBlue',
+                            mandatoryError && !selectedDocType && 'bg-red-50'
                           )}
                           key={label}
                         >
@@ -252,6 +228,7 @@ const AddEinModal = ({
                 <div className="mr-auto flex items-center justify-end">
                   <div
                     onClick={() => {
+                      cleanUpHandler();
                       setOpen(false);
                     }}
                     className="block rounded-md bg-white px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:text-white hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
@@ -260,12 +237,19 @@ const AddEinModal = ({
                   </div>
                   <div
                     onClick={() => {
-                      if (isNumberOnly) {
+                      if (validationHandler(isNumberOnly)) {
                         setTaxIdToCompany(einNumber);
                         setOpen(false);
+                      } else {
+                        setMandatoryError(true);
                       }
                     }}
-                    className="ml-2 block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                    className={classNames(
+                      'ml-2 block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
+                      validationHandler(isNumberOnly)
+                        ? 'bg-mainBlue hover:bg-sideBarBlue'
+                        : 'bg-gray-500'
+                    )}
                   >
                     Save
                   </div>

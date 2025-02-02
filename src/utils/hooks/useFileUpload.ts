@@ -1,14 +1,5 @@
 import { useRef, useState } from 'react';
-
-interface IFiles {
-  id: number;
-  file: File | { name: string; link: string } | null;
-  name: string;
-  status: string;
-  dueDate: string;
-  size?: number;
-  format: string;
-}
+import { IFiles } from '../../interfaces/interfaces';
 
 const defaultFileStructure = {
   id: 0,

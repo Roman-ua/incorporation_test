@@ -58,3 +58,13 @@ export type AddressFields = {
   zip?: string;
   state?: string;
 };
+
+export interface IFiles {
+  id: number;
+  file: File | { name: string; link: string } | null;
+  name: string;
+  status: string;
+  dueDate: string;
+  size?: number;
+  format: string;
+}

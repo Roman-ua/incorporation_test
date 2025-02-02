@@ -34,15 +34,17 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const CompanyPage = () => {
+  const storageData = localStorage.getItem('finalFormData');
+  const localData = storageData ? JSON.parse(storageData) : undefined;
+
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
+  const [data, setData] = React.useState(localData);
 
   const navigate = useNavigate();
-  const localData = localStorage.getItem('finalFormData');
-  const data = localData ? JSON.parse(localData) : undefined;
 
   const setTaxIdToCompany = (id: string) => {
-    data.taxId = id;
+    setData({ ...data, taxId: id });
   };
 
   return data ? (

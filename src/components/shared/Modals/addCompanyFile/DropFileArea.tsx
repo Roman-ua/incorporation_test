@@ -1,12 +1,14 @@
 import React, { ChangeEvent, RefObject } from 'react';
 import { DragEventHandler } from 'react';
 import { IconUpload } from '@tabler/icons-react';
+import { classNames } from '../../../../utils/helpers';
 
 interface IProps {
   handleFileDrop: (file: File) => void;
   handleFileInput: (event: ChangeEvent<HTMLInputElement>) => void;
   inputRef: RefObject<HTMLInputElement>;
   loaderStatus: boolean;
+  mandatoryError?: boolean;
 }
 
 const FileDropArea = ({
@@ -14,6 +16,7 @@ const FileDropArea = ({
   handleFileInput,
   inputRef,
   loaderStatus,
+  mandatoryError,
 }: IProps) => {
   const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
@@ -39,7 +42,10 @@ const FileDropArea = ({
         className={`relative cursor-pointer rounded-md font-semibold text-gray-900 dark:text-white`}
       >
         <div
-          className={`flex justify-center rounded-lg border border-dashed border-gray-500/25 px-2 py-2`}
+          className={classNames(
+            `flex justify-center rounded-lg border border-dashed border-gray-500/25 px-2 py-2`,
+            mandatoryError ? 'bg-red-50' : ''
+          )}
         >
           <div className={`text-center flex flex-col items-center`}>
             <div className="rounded-full bg-gray-900 w-fit p-2 mt-0.5">
