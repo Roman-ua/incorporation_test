@@ -71,7 +71,7 @@ const CompanyPage = () => {
         </span>
       </div>
       <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
-        <div className="flex flex-col gap-y-1 pr-5">
+        <div className="flex flex-col gap-y-1 pr-6 mr-6">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
@@ -104,24 +104,26 @@ const CompanyPage = () => {
                 <IoMdCheckmark
                   className={classNames(
                     'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
-                    copied ? 'opacity-100' : 'opacity-0'
+                    copied === data?.taxId ? 'opacity-100' : 'opacity-0'
                   )}
                 />
                 <MdOutlineCopyAll
                   onClick={(event) => {
                     event.stopPropagation();
-                    setCopied('Copied!');
+                    setCopied(data?.taxId);
 
                     const timer = setTimeout(() => {
                       clearTimeout(timer);
                       setCopied('');
                     }, 700);
 
-                    copyToClipboard('12-3456789');
+                    copyToClipboard(data?.taxId);
                   }}
                   className={classNames(
                     'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
-                    !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
+                    copied !== data?.taxId
+                      ? 'opacity-0 group-hover:opacity-100'
+                      : 'opacity-0'
                   )}
                 />
                 <MdOpenInNew className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
@@ -129,13 +131,42 @@ const CompanyPage = () => {
             )}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5">
+        <div className="flex flex-col gap-y-1 border-l px-5 mr-6">
           <dt className="text-nowrap text-sm text-gray-500">Registration #</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700">
+          <dd className="text-base font-semibold tracking-tight text-gray-700 relative group pr-6 hover:cursor-pointer">
             {data?.registrationNumber}
+
+            <IoMdCheckmark
+              className={classNames(
+                'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
+                copied === data?.registrationNumber
+                  ? 'opacity-100'
+                  : 'opacity-0'
+              )}
+            />
+            <MdOutlineCopyAll
+              onClick={(event) => {
+                event.stopPropagation();
+                setCopied(data?.registrationNumber);
+
+                const timer = setTimeout(() => {
+                  clearTimeout(timer);
+                  setCopied('');
+                }, 700);
+
+                copyToClipboard(data?.registrationNumber);
+              }}
+              className={classNames(
+                'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
+                copied !== data?.registrationNumber
+                  ? 'opacity-0 group-hover:opacity-100'
+                  : 'opacity-0'
+              )}
+            />
+            <MdOpenInNew className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5">
+        <div className="flex flex-col gap-y-1 border-l px-5 mr-6">
           <dt className="text-nowrap text-sm text-gray-500">Type</dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {
@@ -144,7 +175,7 @@ const CompanyPage = () => {
             }
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5">
+        <div className="flex flex-col gap-y-1 border-l px-5 mr-6">
           <dt className="text-nowrap text-sm text-gray-500">State</dt>
           <dd className="text-nowrap text-base flex items-center font-semibold tracking-tight text-gray-700">
             <StateSolidIconHandler
