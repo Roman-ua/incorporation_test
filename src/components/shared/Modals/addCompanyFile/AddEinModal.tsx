@@ -5,14 +5,22 @@ import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import { IconX } from '@tabler/icons-react';
 import DatePicker from './datePicker';
 import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
-import { AddressFields, IFiles } from '../../../../interfaces/interfaces';
+import {
+  AddressFields,
+  IFiles,
+  UpdatedState,
+} from '../../../../interfaces/interfaces';
+import SimpleAddressForm from '../../SimpleAddressForm/SimpleAddressForm';
 
 interface IProps {
   open: boolean;
   setOpen: (value: boolean) => void;
   isOnlyNumber: boolean;
-  valueHandler: (key: string, value: string | number | AddressFields) => void;
   companyName?: string;
+  saveHandler: (data: UpdatedState) => void;
+  ein?: string;
+  docType?: string;
+  lastVerifDate?: string;
 }
 
 const labels = [
@@ -33,19 +41,32 @@ function classNames(...classes: (string | boolean)[]) {
 const AddEinModal = ({
   open,
   setOpen,
-  companyName,
-  valueHandler,
+  saveHandler,
   isOnlyNumber,
+  companyName,
+  lastVerifDate,
+  docType,
+  ein,
 }: IProps) => {
-  const [einNumber, setEinNumber] = React.useState<string>('');
+  const [einNumber, setEinNumber] = React.useState<string>(ein || '');
   const [file, setFile] = React.useState<IFiles | null>(null);
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>(
-    companyName as string
+    companyName || ''
   );
   const [isNumberOnly, setIsNumberOnly] = React.useState(isOnlyNumber);
-  const [selectedDocType, setSelectedDocType] = React.useState('');
+  const [selectedDocType, setSelectedDocType] = React.useState(docType || '');
   const [mandatoryError, setMandatoryError] = React.useState(false);
-
+  const [dateValue, setDateValue] = React.useState<string>(lastVerifDate || '');
+  const [address, setAddress] = React.useState<AddressFields>({
+    country: '',
+    address0: '',
+    address1: '',
+    address2: '',
+    address3: '',
+    city: '',
+    zip: '',
+    state: '',
+  });
   const setSelectedDocTypeHandler = (label: string) => {
     if (selectedDocType === label) {
       setSelectedDocType('');
@@ -59,6 +80,7 @@ const AddEinModal = ({
     setCompanyNameOnDock(companyName || '');
     setIsNumberOnly(true);
     setSelectedDocType('');
+    setMandatoryError(false);
     setFile(null);
   };
 
@@ -86,6 +108,13 @@ const AddEinModal = ({
     setEinNumber(value);
   };
 
+  const addressHandler = (key: string, value: string) => {
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
   const {
     inputRef,
     selectedFile,
@@ -97,6 +126,9 @@ const AddEinModal = ({
   useEffect(() => {
     setFile(selectedFile);
   }, [selectedFile]);
+
+  const inputCommonClasses =
+    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   return (
     <Dialog open={open} onClose={setOpen} className="fixed z-10">
@@ -183,7 +215,7 @@ const AddEinModal = ({
                     <div className="text-gray-700 text-sm mb-2 font-bold">
                       Document date
                     </div>
-                    <DatePicker />
+                    <DatePicker value={dateValue} setValue={setDateValue} />
                   </div>
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
@@ -223,6 +255,21 @@ const AddEinModal = ({
                       ))}
                     </div>
                   </div>
+
+                  {selectedDocType && selectedDocType !== 'Screenshot' && (
+                    <div className="mt-6">
+                      <div className="text-gray-700 text-sm mb-2 font-bold">
+                        Address On Document
+                      </div>
+                      <SimpleAddressForm
+                        disabledFlag={false}
+                        inputCommonClasses={inputCommonClasses}
+                        requiredError={mandatoryError}
+                        data={address}
+                        setData={addressHandler}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -240,7 +287,15 @@ const AddEinModal = ({
                   <div
                     onClick={() => {
                       if (validationHandler(isNumberOnly)) {
-                        valueHandler('taxId', einNumber);
+                        saveHandler({
+                          taxId: einNumber,
+                          companyName: companyNameOnDock,
+                          documentType: selectedDocType,
+                          lastVerifDate: dateValue,
+                          relatedDocument: selectedFile,
+                          relatedAddress: address,
+                        });
+                        cleanUpHandler();
                         setOpen(false);
                       } else {
                         setMandatoryError(true);

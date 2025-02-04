@@ -52,11 +52,7 @@ function classNames(...classes: (string | boolean)[]) {
 const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>('');
   const [selectedDocType, setSelectedDocType] = React.useState('');
-  // const [selectedDocStatus, setSelectedDocStatus] = React.useState<statusItem>({
-  //   title: '',
-  //   hoverStyles: '',
-  //   selectedStyles: '',
-  // });
+  const [dateValue, setDateValue] = React.useState<string>('');
 
   const setSelectedDocTypeHandler = (label: string) => {
     if (selectedDocType === label) {
@@ -130,7 +126,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                 <div className="text-gray-700 text-sm mb-2 font-bold">
                   Document date
                 </div>
-                <DatePicker />
+                <DatePicker value={dateValue} setValue={setDateValue} />
               </div>
               <div className="mt-6">
                 <div className="text-gray-700 text-sm mb-2 font-bold">

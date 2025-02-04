@@ -89,7 +89,11 @@ const customTheme = {
     },
   },
 };
-const DatePicker = () => {
+interface IProps {
+  value?: string;
+  setValue: (value: string) => void;
+}
+const DatePicker = ({ value, setValue }: IProps) => {
   const dateRef = React.useRef(null);
   const inputRef = React.useRef(null);
   const inputValueRef = React.useRef('');
@@ -98,13 +102,15 @@ const DatePicker = () => {
 
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string>(
-    format(today, 'MMMM dd, yyyy')
+    value || format(today, 'MMMM dd, yyyy')
   );
+
   const [calendarValue, setCalendarValue] = React.useState<Date | null>(today);
 
   const validateDateInput = (input: string, isKb: boolean) => {
     if (!isKb) {
       setInputValue(input);
+      setValue(input);
     }
 
     const formats = [
@@ -121,6 +127,7 @@ const DatePicker = () => {
 
       if (isValid(parsedDate) && isKb) {
         setInputValue(format(parsedDate as Date, 'MMMM dd, yyyy') || '');
+        setValue(format(parsedDate as Date, 'MMMM dd, yyyy') || '');
       }
 
       if (isValid(parsedDate)) {
@@ -179,6 +186,7 @@ const DatePicker = () => {
               const dataValue = date === null ? today : date;
               setCalendarValue(dataValue);
               setInputValue(format(dataValue as Date, 'MMMM dd, yyyy') || '');
+              setValue(format(dataValue as Date, 'MMMM dd, yyyy') || '');
               setOpen(false);
             }}
           />

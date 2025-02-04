@@ -9,7 +9,7 @@ import { FaHashtag } from 'react-icons/fa';
 import { IoMdCheckmark } from 'react-icons/io';
 import { copyToClipboard } from '../../utils/helpers';
 import AddEinModal from '../../components/shared/Modals/addCompanyFile/AddEinModal';
-import { AddressFields } from '../../interfaces/interfaces';
+import { MockData, UpdatedState } from '../../interfaces/interfaces';
 
 const mockStatuses = ['Confirmation Needed', 'Confirmed', 'Archived'];
 
@@ -18,7 +18,7 @@ const mockData = {
   status: 'Confirmation Needed',
   companyName: 'ABC Company Inc.',
   lastVerifDate: '',
-  documentType: [],
+  documentType: '',
   relatedAddress: {
     country: 'United States',
     address0: '',
@@ -29,7 +29,7 @@ const mockData = {
     zip: '',
     state: '',
   },
-  relatedDocuments: [],
+  relatedDocument: null,
 };
 // const mockFiles = [
 //   {
@@ -117,25 +117,36 @@ function classNames(...classes: (string | boolean)[]) {
 const Ein = () => {
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
-  const [data, setData] = React.useState(mockData);
+  const [data, setData] = React.useState<MockData>(mockData);
 
   const navigate = useNavigate();
 
-  const modalValueHandler = (
-    key: string,
-    value: string | number | AddressFields
-  ) => {
-    setData({ ...data, [key]: value });
-  };
+  const saveHandler = (updatedState: UpdatedState) => {
+    setData((prevData) => {
+      const newData = { ...prevData };
 
+      Object.keys(updatedState).forEach((key) => {
+        const typedKey = key as keyof MockData;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        newData[typedKey] = updatedState[typedKey];
+      });
+
+      return newData;
+    });
+  };
+  console.log(data, 'data');
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
       <AddEinModal
         isOnlyNumber={false}
         setOpen={setOpen}
         open={open}
-        valueHandler={modalValueHandler}
-        companyName={data.companyName || ''}
+        saveHandler={saveHandler}
+        ein={data?.taxId}
+        docType={data?.documentType}
+        lastVerifDate={data?.lastVerifDate}
+        companyName={data?.companyName || ''}
       />
       <PageSign
         title={'EIN (TAX ID)'}
@@ -156,7 +167,7 @@ const Ein = () => {
           }}
           className="text-2xl font-bold text-gray-700 group hover:cursor-pointer flex items-center relative pr-7"
         >
-          12-3456789
+          {data?.taxId || ''}
           <IoMdCheckmark
             className={classNames(
               'w-5 h-5 text-gray-500 group-hover:text-gray-500 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1.5',
@@ -202,25 +213,24 @@ const Ein = () => {
             Last verification date
           </dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
-            -
+            {data?.lastVerifDate || '-'}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Document Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center flex-wrap">
-            -{/*{mockFiles.map((file) => {*/}
-            {/*  return (*/}
-            {/*    <div*/}
-            {/*      key={file.id}*/}
-            {/*      className={classNames(*/}
-            {/*        'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',*/}
-            {/*        'bg-gray-100 text-gray-700 ring-gray-600/20'*/}
-            {/*      )}*/}
-            {/*    >*/}
-            {/*      {file.label}*/}
-            {/*    </div>*/}
-            {/*  );*/}
-            {/*})}*/}
+            {data?.documentType ? (
+              <div
+                className={classNames(
+                  'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',
+                  'bg-gray-100 text-gray-700 ring-gray-600/20'
+                )}
+              >
+                {data?.documentType}
+              </div>
+            ) : (
+              '-'
+            )}
           </dd>
         </div>
       </dl>

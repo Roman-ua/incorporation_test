@@ -68,3 +68,28 @@ export interface IFiles {
   size?: number;
   format: string;
 }
+
+export interface MockData {
+  taxId: string;
+  status: string;
+  companyName: string;
+  lastVerifDate: string;
+  documentType: string;
+  relatedAddress: Address;
+  relatedDocument: IFiles | null;
+}
+
+export interface MockCompany {
+  registeredIn: string;
+  companyName: string;
+  companyType: string;
+  registrationDate: string;
+  registrationNumber: string;
+  taxId: string;
+  status: string;
+  address: Address;
+}
+
+export type UpdatedCompanyState = Partial<MockCompany>;
+
+export type UpdatedState = Partial<MockData>;

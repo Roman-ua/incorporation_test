@@ -13,7 +13,11 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import AnnualReportsListFL from './components/AnnualReportsListFL';
 import RelatedPeopleList from './components/RelatedPeopleList';
 import AddEinModal from '../../components/shared/Modals/addCompanyFile/AddEinModal';
-import { AddressFields } from '../../interfaces/interfaces';
+import {
+  MockCompany,
+  MockData,
+  UpdatedCompanyState,
+} from '../../interfaces/interfaces';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -40,15 +44,23 @@ const CompanyPage = () => {
 
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
-  const [data, setData] = React.useState(localData);
+  const [data, setData] = React.useState<MockCompany>(localData);
 
   const navigate = useNavigate();
 
-  const modalValueHandler = (
-    key: string,
-    value: string | number | AddressFields
-  ) => {
-    setData({ ...data, [key]: value });
+  const saveHandler = (updatedState: UpdatedCompanyState) => {
+    setData((prevData) => {
+      const newData = { ...prevData };
+
+      Object.keys(updatedState).forEach((key) => {
+        const typedKey = key as keyof MockData;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        newData[typedKey] = updatedState[typedKey];
+      });
+
+      return newData;
+    });
   };
 
   return data ? (
@@ -58,7 +70,7 @@ const CompanyPage = () => {
         setOpen={setOpen}
         open={open}
         companyName={data.companyName || ''}
-        valueHandler={modalValueHandler}
+        saveHandler={saveHandler}
       />
       <PageSign
         title={'COMPANY'}
