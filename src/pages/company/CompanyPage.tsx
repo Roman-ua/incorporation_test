@@ -13,6 +13,7 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import AnnualReportsListFL from './components/AnnualReportsListFL';
 import RelatedPeopleList from './components/RelatedPeopleList';
 import AddEinModal from '../../components/shared/Modals/addCompanyFile/AddEinModal';
+import { AddressFields } from '../../interfaces/interfaces';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -43,17 +44,21 @@ const CompanyPage = () => {
 
   const navigate = useNavigate();
 
-  const setTaxIdToCompany = (id: string) => {
-    setData({ ...data, taxId: id });
+  const modalValueHandler = (
+    key: string,
+    value: string | number | AddressFields
+  ) => {
+    setData({ ...data, [key]: value });
   };
 
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
       <AddEinModal
+        isOnlyNumber={true}
         setOpen={setOpen}
         open={open}
         companyName={data.companyName || ''}
-        setTaxIdToCompany={setTaxIdToCompany}
+        valueHandler={modalValueHandler}
       />
       <PageSign
         title={'COMPANY'}
@@ -71,7 +76,7 @@ const CompanyPage = () => {
         </span>
       </div>
       <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
-        <div className="flex flex-col gap-y-1 pr-6 mr-6">
+        <div className="flex flex-col gap-y-1 pr-6">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
@@ -82,7 +87,7 @@ const CompanyPage = () => {
             {data?.status}
           </span>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5">
+        <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">EIN (Tax ID)</dt>
           <dd
             onClick={(event) => {
@@ -131,7 +136,7 @@ const CompanyPage = () => {
             )}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5 mr-6">
+        <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">Registration #</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700 relative group pr-6 hover:cursor-pointer">
             {data?.registrationNumber}
@@ -166,7 +171,7 @@ const CompanyPage = () => {
             <MdOpenInNew className="text-gray-500 text-sm ml-2 absolute -right-3 top-1 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5 mr-6">
+        <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">Type</dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {
@@ -175,7 +180,7 @@ const CompanyPage = () => {
             }
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5 mr-6">
+        <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">State</dt>
           <dd className="text-nowrap text-base flex items-center font-semibold tracking-tight text-gray-700">
             <StateSolidIconHandler
@@ -186,7 +191,7 @@ const CompanyPage = () => {
             {data?.registeredIn.split(' ')[2] || 'Florida'}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 border-l px-5">
+        <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">
             Registration Date
           </dt>

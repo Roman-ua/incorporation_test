@@ -5,13 +5,14 @@ import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import { IconX } from '@tabler/icons-react';
 import DatePicker from './datePicker';
 import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
-import { IFiles } from '../../../../interfaces/interfaces';
+import { AddressFields, IFiles } from '../../../../interfaces/interfaces';
 
 interface IProps {
   open: boolean;
   setOpen: (value: boolean) => void;
+  isOnlyNumber: boolean;
+  valueHandler: (key: string, value: string | number | AddressFields) => void;
   companyName?: string;
-  setTaxIdToCompany: (id: string) => void;
 }
 
 const labels = [
@@ -33,14 +34,15 @@ const AddEinModal = ({
   open,
   setOpen,
   companyName,
-  setTaxIdToCompany,
+  valueHandler,
+  isOnlyNumber,
 }: IProps) => {
   const [einNumber, setEinNumber] = React.useState<string>('');
   const [file, setFile] = React.useState<IFiles | null>(null);
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>(
     companyName as string
   );
-  const [isNumberOnly, setIsNumberOnly] = React.useState(true);
+  const [isNumberOnly, setIsNumberOnly] = React.useState(isOnlyNumber);
   const [selectedDocType, setSelectedDocType] = React.useState('');
   const [mandatoryError, setMandatoryError] = React.useState(false);
 
@@ -238,7 +240,7 @@ const AddEinModal = ({
                   <div
                     onClick={() => {
                       if (validationHandler(isNumberOnly)) {
-                        setTaxIdToCompany(einNumber);
+                        valueHandler('taxId', einNumber);
                         setOpen(false);
                       } else {
                         setMandatoryError(true);
