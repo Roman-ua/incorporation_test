@@ -62,14 +62,6 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
     }
   };
 
-  // const setSelectedDocStatusHandler = (status: statusItem) => {
-  //   if (selectedDocStatus.title === status.title) {
-  //     setSelectedDocStatus({ title: '', hoverStyles: '', selectedStyles: '' });
-  //   } else {
-  //     setSelectedDocStatus(status);
-  //   }
-  // };
-
   const {
     inputRef,
     selectedFile,

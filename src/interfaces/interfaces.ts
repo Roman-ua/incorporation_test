@@ -67,6 +67,7 @@ export interface IFiles {
   dueDate: string;
   size?: number;
   format: string;
+  dockType?: string;
 }
 
 export interface MockData {
@@ -74,8 +75,8 @@ export interface MockData {
   status: string;
   companyName: string;
   lastVerifDate: string;
-  documentType: string;
-  relatedAddress: Address;
+  documentType: string[];
+  relatedAddress: Address | null;
   relatedDocument: IFiles | null;
 }
 

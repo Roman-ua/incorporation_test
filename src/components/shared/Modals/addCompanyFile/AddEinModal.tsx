@@ -19,7 +19,7 @@ interface IProps {
   companyName?: string;
   saveHandler: (data: UpdatedState) => void;
   ein?: string;
-  docType?: string;
+  docType?: string[];
   lastVerifDate?: string;
 }
 
@@ -54,11 +54,11 @@ const AddEinModal = ({
     companyName || ''
   );
   const [isNumberOnly, setIsNumberOnly] = React.useState(isOnlyNumber);
-  const [selectedDocType, setSelectedDocType] = React.useState(docType || '');
+  const [selectedDocType, setSelectedDocType] = React.useState('');
   const [mandatoryError, setMandatoryError] = React.useState(false);
   const [dateValue, setDateValue] = React.useState<string>(lastVerifDate || '');
   const [address, setAddress] = React.useState<AddressFields>({
-    country: '',
+    country: 'United States',
     address0: '',
     address1: '',
     address2: '',
@@ -75,21 +75,16 @@ const AddEinModal = ({
     }
   };
 
-  const cleanUpHandler = () => {
-    setEinNumber('');
-    setCompanyNameOnDock(companyName || '');
-    setIsNumberOnly(true);
-    setSelectedDocType('');
-    setMandatoryError(false);
-    setFile(null);
-  };
-
   const validationHandler = (flag: boolean) => {
     if (flag) {
       return !!einNumber;
     } else {
       return (
-        !!einNumber && !!selectedDocType && !!companyNameOnDock && !!file?.size
+        !!einNumber &&
+        !!selectedDocType &&
+        !!companyNameOnDock &&
+        !!file?.size &&
+        !!dateValue
       );
     }
   };
@@ -120,12 +115,23 @@ const AddEinModal = ({
     selectedFile,
     handleFileInput,
     handleFileDrop,
+    cancelState,
     deleteFileHandler,
   } = useFileUpload();
 
   useEffect(() => {
     setFile(selectedFile);
   }, [selectedFile]);
+
+  const cleanUpHandler = () => {
+    setEinNumber('');
+    setCompanyNameOnDock(companyName || '');
+    setIsNumberOnly(isOnlyNumber);
+    setSelectedDocType('');
+    setMandatoryError(false);
+    cancelState();
+    setFile(null);
+  };
 
   const inputCommonClasses =
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
@@ -215,7 +221,11 @@ const AddEinModal = ({
                     <div className="text-gray-700 text-sm mb-2 font-bold">
                       Document date
                     </div>
-                    <DatePicker value={dateValue} setValue={setDateValue} />
+                    <DatePicker
+                      mandatoryError={mandatoryError}
+                      value={dateValue}
+                      setValue={setDateValue}
+                    />
                   </div>
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
@@ -266,6 +276,7 @@ const AddEinModal = ({
                         inputCommonClasses={inputCommonClasses}
                         requiredError={mandatoryError}
                         data={address}
+                        countryDisabled={true}
                         setData={addressHandler}
                       />
                     </div>
@@ -290,9 +301,15 @@ const AddEinModal = ({
                         saveHandler({
                           taxId: einNumber,
                           companyName: companyNameOnDock,
-                          documentType: selectedDocType,
+                          documentType: docType
+                            ? [...(docType as string[]), selectedDocType]
+                            : [selectedDocType],
                           lastVerifDate: dateValue,
-                          relatedDocument: selectedFile,
+                          relatedDocument: {
+                            ...selectedFile,
+                            dueDate: dateValue,
+                            dockType: selectedDocType,
+                          },
                           relatedAddress: address,
                         });
                         cleanUpHandler();

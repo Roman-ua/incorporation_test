@@ -17,6 +17,10 @@ const useFileUpload = () => {
     useState<IFiles>(defaultFileStructure);
   const [errorState, setErrorState] = useState<string>('');
 
+  const cancelState = () => {
+    setSelectedFile(defaultFileStructure);
+  };
+
   const dateHandler = () => {
     const date = new Date();
     const options = {
@@ -38,7 +42,7 @@ const useFileUpload = () => {
 
   const convertHandler = async (file: File) => {
     const fileName = file.name.split('.')[0];
-    const fileFormat = file.name.split('.')[1];
+    const fileFormat = file.type.split('/')[1];
     const formData = new FormData();
     formData.append('file', file as File);
     setSelectedFile({
@@ -56,7 +60,7 @@ const useFileUpload = () => {
     if (errorState) {
       setErrorState('');
     }
-
+    console.log(e.target.files, 'e.target.files');
     if (e.target.files) {
       const file = e.target.files[0];
       await convertHandler(file);
@@ -74,6 +78,7 @@ const useFileUpload = () => {
     inputRef,
     errorState,
     selectedFile,
+    cancelState,
     deleteFileHandler,
     setErrorState,
     handleFileInput,

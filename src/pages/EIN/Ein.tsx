@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
-// import SectionHeading from '../company/components/SectionHeading';
-// import { USStates } from '../../constants/form/form';
+import SectionHeading from '../company/components/SectionHeading';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 import PageSign from '../../components/shared/PageSign';
@@ -10,6 +9,9 @@ import { IoMdCheckmark } from 'react-icons/io';
 import { copyToClipboard } from '../../utils/helpers';
 import AddEinModal from '../../components/shared/Modals/addCompanyFile/AddEinModal';
 import { MockData, UpdatedState } from '../../interfaces/interfaces';
+import { USStates } from '../../constants/form/form';
+import ActionUploadBlock from './components/ActionUploadBlock';
+import EinFilesSection from './components/FilesSection';
 
 const mockStatuses = ['Confirmation Needed', 'Confirmed', 'Archived'];
 
@@ -18,85 +20,11 @@ const mockData = {
   status: 'Confirmation Needed',
   companyName: 'ABC Company Inc.',
   lastVerifDate: '',
-  documentType: '',
-  relatedAddress: {
-    country: 'United States',
-    address0: '',
-    address1: '',
-    address2: '',
-    address3: '',
-    city: '',
-    zip: '',
-    state: '',
-  },
+  documentType: [],
+  relatedAddress: null,
   relatedDocument: null,
 };
-// const mockFiles = [
-//   {
-//     id: 1,
-//     icon: 'pdf',
-//     name: 'File One',
-//     label: 'CP575A',
-//     type: 'pdf',
-//     date: '2021-05-23',
-//   },
-//   {
-//     id: 2,
-//     icon: 'Screenshot',
-//     name: 'File Two',
-//     label: 'Screenshot',
-//     type: 'jpg',
-//     date: '2021-05-23',
-//   },
-//   {
-//     id: 3,
-//     icon: 'CP575G',
-//     name: 'File Three',
-//     label: 'CP575G',
-//     type: 'xls',
-//     date: '2021-05-23',
-//   },
-//   {
-//     id: 4,
-//     icon: '147C',
-//     name: 'File Four',
-//     label: '147C',
-//     type: 'xlsx',
-//     date: '2021-05-23',
-//   },
-//   {
-//     id: 5,
-//     icon: 'Faxed SS-4',
-//     name: 'File Five',
-//     label: 'Faxed SS-4',
-//     type: 'xls',
-//     date: '2021-05-23',
-//   },
-//   {
-//     id: 6,
-//     icon: 'W-9',
-//     name: 'File Six',
-//     label: 'W-9',
-//     type: 'pdf',
-//     date: '2021-05-23',
-//   },
-//   {
-//     id: 7,
-//     icon: 'CP577',
-//     name: 'File Seven',
-//     label: 'CP577',
-//     type: 'jpg',
-//     date: '2021-05-23',
-//   },
-//   {
-//     id: 8,
-//     icon: 'CP577E',
-//     name: 'File Eight',
-//     label: 'CP577E',
-//     type: 'pdf',
-//     date: '2021-05-23',
-//   },
-// ];
+
 const statusBadge = (status: string) => {
   switch (status) {
     case 'Confirmation Needed':
@@ -219,58 +147,75 @@ const Ein = () => {
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Document Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center flex-wrap">
-            {data?.documentType ? (
-              <div
-                className={classNames(
-                  'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',
-                  'bg-gray-100 text-gray-700 ring-gray-600/20'
-                )}
-              >
-                {data?.documentType}
-              </div>
-            ) : (
-              '-'
-            )}
+            {data?.documentType?.length
+              ? data.documentType.map((item) => (
+                  <div
+                    key={item}
+                    className={classNames(
+                      'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',
+                      'bg-gray-100 text-gray-700 ring-gray-600/20'
+                    )}
+                  >
+                    {item}
+                  </div>
+                ))
+              : '-'}
           </dd>
         </div>
       </dl>
 
-      <div className="w-full flex items-center justify-center pb-2 pr-2 mt-8">
-        <div
-          className="block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer bg-mainBlue hover:bg-sideBarBlue"
-          onClick={() => setOpen(true)}
-        >
-          Upload Confirmation Document
+      {!data?.relatedDocument && (
+        <div className="w-full flex items-center justify-center pb-2 pr-2 mt-8">
+          <ActionUploadBlock setOpen={() => setOpen(true)} />
         </div>
-      </div>
+      )}
 
-      {/*<SectionHeading title="Related Address" />*/}
-      {/*<div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">*/}
-      {/*  <>*/}
-      {/*    <div>*/}
-      {/*      <span>{data.address.address0}, </span>*/}
-      {/*      {data.address.address1 && <span>{data.address.address1}</span>}*/}
-      {/*    </div>*/}
-      {/*    <div>*/}
-      {/*      {data.address.address2 && <span>{data.address.address2}</span>}*/}
-      {/*      {data.address.address3 && (*/}
-      {/*        <span>*/}
-      {/*          {data.address.address2 ? ',' : ''} {data.address.address3}*/}
-      {/*        </span>*/}
-      {/*      )}*/}
-      {/*    </div>*/}
-      {/*    <div>*/}
-      {/*      <span>{data.address.city}, </span>*/}
-      {/*      <span>*/}
-      {/*        {USStates.find((item) => item.title === data.address.state)*/}
-      {/*          ?.value || ''}{' '}*/}
-      {/*      </span>*/}
-      {/*      <span>{data.address.zip}</span>*/}
-      {/*    </div>*/}
-      {/*    <div>{data.address.country}</div>*/}
-      {/*  </>*/}
-      {/*</div>*/}
-      {/*<SectionHeading title="Documents" />*/}
+      {data.relatedAddress && data.relatedAddress?.address0 && (
+        <>
+          <SectionHeading title="Related Address" />
+          <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
+            <>
+              <div>
+                <span>{data.relatedAddress.address0}, </span>
+                {data.relatedAddress.address1 && (
+                  <span>{data.relatedAddress.address1}</span>
+                )}
+              </div>
+              <div>
+                {data.relatedAddress.address2 && (
+                  <span>{data.relatedAddress.address2}</span>
+                )}
+                {data.relatedAddress.address3 && (
+                  <span>
+                    {data.relatedAddress.address2 ? ',' : ''}{' '}
+                    {data.relatedAddress.address3}
+                  </span>
+                )}
+              </div>
+              <div>
+                <span>{data.relatedAddress.city}, </span>
+                <span>
+                  {USStates.find(
+                    (item) => item.title === data.relatedAddress?.state
+                  )?.value || ''}{' '}
+                </span>
+                <span>{data.relatedAddress.zip}</span>
+              </div>
+              <div>{data.relatedAddress.country}</div>
+            </>
+          </div>
+        </>
+      )}
+
+      {data?.relatedDocument && (
+        <>
+          <SectionHeading
+            title="Documents"
+            clickHandler={() => setOpen(true)}
+          />
+          <EinFilesSection files={[data.relatedDocument]} />
+        </>
+      )}
     </div>
   ) : (
     <></>

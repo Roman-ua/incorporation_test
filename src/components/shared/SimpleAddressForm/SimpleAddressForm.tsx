@@ -13,6 +13,7 @@ interface IProps {
   inputCommonClasses: string;
   requiredError: boolean;
   data: AddressFields;
+  countryDisabled: boolean;
   setData: (key: string, value: string) => void;
 }
 
@@ -25,6 +26,7 @@ const SimpleAddressForm = ({
   disabledFlag,
   inputCommonClasses,
   requiredError,
+  countryDisabled,
   data,
   setData,
 }: IProps) => {
@@ -178,11 +180,12 @@ const SimpleAddressForm = ({
         onChange={(val) => setData('country', val)}
         selectedValue={
           COUNTRIES.find(
-            (option) => option.title === data?.country
+            (option) => option.title === 'United States'
           ) as SelectMenuOption
         }
-        inputExtraStyles={`${requiredError && !data?.country ? 'bg-red-50 rounded-b-md' : 'bg-transparent'} w-full `}
-        wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !data?.country ? 'bg-red-50' : 'bg-transparent'}`}
+        disableDropDown={countryDisabled}
+        inputExtraStyles={`${countryDisabled && 'opacity-40'} w-full `}
+        wrapperExtraStyles={`rounded-b-0 border-0`}
       />
     </div>
   );

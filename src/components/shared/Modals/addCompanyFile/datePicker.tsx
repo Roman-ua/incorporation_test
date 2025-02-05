@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Datepicker } from 'flowbite-react';
 import { format, isValid, parse, startOfToday } from 'date-fns';
 import useOutsideClick from '../../../../utils/hooks/useOutsideClick';
+import { classNames } from '../../../../utils/helpers';
 
 const customTheme = {
   root: {
@@ -91,9 +92,10 @@ const customTheme = {
 };
 interface IProps {
   value?: string;
+  mandatoryError?: boolean;
   setValue: (value: string) => void;
 }
-const DatePicker = ({ value, setValue }: IProps) => {
+const DatePicker = ({ value, setValue, mandatoryError }: IProps) => {
   const dateRef = React.useRef(null);
   const inputRef = React.useRef(null);
   const inputValueRef = React.useRef('');
@@ -101,11 +103,9 @@ const DatePicker = ({ value, setValue }: IProps) => {
   const today = startOfToday();
 
   const [open, setOpen] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState<string>(
-    value || format(today, 'MMMM dd, yyyy')
-  );
+  const [inputValue, setInputValue] = React.useState<string>(value || '');
 
-  const [calendarValue, setCalendarValue] = React.useState<Date | null>(today);
+  const [calendarValue, setCalendarValue] = React.useState<Date | null>(null);
 
   const validateDateInput = (input: string, isKb: boolean) => {
     if (!isKb) {
@@ -126,8 +126,8 @@ const DatePicker = ({ value, setValue }: IProps) => {
       const parsedDate = parse(input, formatI, new Date());
 
       if (isValid(parsedDate) && isKb) {
-        setInputValue(format(parsedDate as Date, 'MMMM dd, yyyy') || '');
-        setValue(format(parsedDate as Date, 'MMMM dd, yyyy') || '');
+        setInputValue(format(parsedDate as Date, 'MMMM dd, yyyy'));
+        setValue(format(parsedDate as Date, 'MMMM dd, yyyy'));
       }
 
       if (isValid(parsedDate)) {
@@ -167,12 +167,16 @@ const DatePicker = ({ value, setValue }: IProps) => {
     <div className="relative">
       <input
         ref={inputRef}
-        className="block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer"
+        className={classNames(
+          'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer',
+          mandatoryError && !inputValue ? 'bg-red-50' : 'bg-white'
+        )}
         value={inputValue}
         onChange={(e) => validateDateInput(e.target.value, false)}
         onFocus={() => setOpen(true)}
         type="text"
         onKeyDown={handleKeyDown}
+        placeholder="Choose Date" // Добавлен placeholder
       />
       {open && (
         <div ref={dateRef} className="absolute left-0 top-10">
@@ -183,10 +187,16 @@ const DatePicker = ({ value, setValue }: IProps) => {
             inline
             theme={customTheme}
             onChange={(date) => {
-              const dataValue = date === null ? today : date;
-              setCalendarValue(dataValue);
-              setInputValue(format(dataValue as Date, 'MMMM dd, yyyy') || '');
-              setValue(format(dataValue as Date, 'MMMM dd, yyyy') || '');
+              if (date === null) {
+                setInputValue('');
+                setValue('');
+                setCalendarValue(null);
+              } else {
+                const formattedDate = format(date, 'MMMM dd, yyyy');
+                setInputValue(formattedDate);
+                setValue(formattedDate);
+                setCalendarValue(date);
+              }
               setOpen(false);
             }}
           />
