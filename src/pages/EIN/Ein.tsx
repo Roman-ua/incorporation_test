@@ -152,8 +152,7 @@ const Ein = () => {
                   <div
                     key={item}
                     className={classNames(
-                      'text-nowrap flex items-center text-xs px-2 font-medium rounded ring-1 ring-inset leading-5 mr-1 mb-1',
-                      'bg-gray-100 text-gray-700 ring-gray-600/20'
+                      'text-nowrap flex items-center text-xs px-2 py-1 font-medium rounded-md ring-1 ring-inset mr-1 mb-1 bg-gray-100 text-gray-700 ring-gray-600/20'
                     )}
                   >
                     {item}
@@ -211,9 +210,13 @@ const Ein = () => {
         <>
           <SectionHeading
             title="Documents"
+            btnTitle="Upload Confirmation Document"
             clickHandler={() => setOpen(true)}
           />
-          <EinFilesSection files={[data.relatedDocument]} />
+          <EinFilesSection
+            files={[data.relatedDocument]}
+            address={data.relatedAddress}
+          />
         </>
       )}
     </div>
