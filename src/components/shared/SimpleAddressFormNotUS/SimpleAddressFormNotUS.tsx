@@ -42,13 +42,13 @@ const SimpleAddressFormNotUS = ({
   };
 
   const setZipHandler = (value: string) => {
-    const cleanedValue = value.replace(/[^0-9-]/g, '');
+    // const cleanedValue = value.replace(/[^a-zA-Z0-9-]/g, '');
 
     if (
-      (VALIDATORS.ZIP_CODE.test(cleanedValue) || cleanedValue === '') &&
-      cleanedValue.length <= 5
+      (VALIDATORS.ZIP_CODE.test(value) || value === '') &&
+      value.length <= 5
     ) {
-      setData('zip', cleanedValue);
+      setData('zip', value);
     }
   };
 
@@ -115,7 +115,7 @@ const SimpleAddressFormNotUS = ({
         <input
           className={classNames(
             inputCommonClasses,
-            'w-full border-r border-t-0 border-l-0 border-r-gray-200',
+            'border-r border-t-0 border-l-0 border-r-gray-200 w-1/2',
             requiredError && !data?.city ? 'bg-red-50' : 'bg-transparent'
           )}
           type="text"
@@ -128,7 +128,7 @@ const SimpleAddressFormNotUS = ({
         <input
           className={classNames(
             inputCommonClasses,
-            'w-full border-r-0 border-t-0 border-l-0 border-r-gray-200',
+            'border-r-0 border-t-0 border-l-0 border-r-gray-200 w-[30%]',
             requiredError && !data?.city ? 'bg-red-50' : 'bg-transparent'
           )}
           type="text"
@@ -141,14 +141,14 @@ const SimpleAddressFormNotUS = ({
         <input
           className={classNames(
             inputCommonClasses,
-            'min-w-[110px] max-w-[110px] border-t-0 border-r-0 border-l-gray-200'
+            'w-[20%] border-t-0 border-r-0 border-l-gray-200'
           )}
           type="text"
           value={data?.zip}
           disabled={disabledFlag}
           onChange={(e) => setZipHandler(e.target.value)}
           data-1p-ignore={true}
-          placeholder="Zip Code"
+          placeholder="Postal Code"
         />
       </div>
       <CountrySelector

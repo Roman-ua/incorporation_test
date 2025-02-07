@@ -33,7 +33,7 @@ const USAddressFormElements = () => {
       />
       <div className="mt-10" />
       <SectionHeading
-        text={'Not US Address Form'}
+        text={'International Address Form'}
         status={!!Object.keys(state).length}
         hideStatus={true}
       />

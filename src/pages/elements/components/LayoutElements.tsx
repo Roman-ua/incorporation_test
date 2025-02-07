@@ -12,7 +12,6 @@ const LayoutElements = () => {
         setOpen={() => {}}
         cancelHandler={() => {}}
         submitHandler={() => {}}
-        deleteAction={() => {}}
       >
         <div className="py-5">Modal content</div>
       </ModalLayout>

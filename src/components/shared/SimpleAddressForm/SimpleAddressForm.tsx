@@ -52,13 +52,12 @@ const SimpleAddressForm = ({
   };
 
   const setZipHandler = (value: string) => {
-    let cleanedValue = value.replace(/[^0-9-]/g, '');
+    const cleanedValue = value.replace(/[^0-9-]/g, '');
 
-    if (cleanedValue.length > 5 && cleanedValue[5] !== '-') {
-      cleanedValue = cleanedValue.slice(0, 5) + '-' + cleanedValue.slice(5);
-    }
-
-    if (VALIDATORS.ZIP_CODE.test(cleanedValue) || cleanedValue === '') {
+    if (
+      (VALIDATORS.ZIP_CODE.test(cleanedValue) || cleanedValue === '') &&
+      cleanedValue.length <= 5
+    ) {
       setData('zip', cleanedValue);
     }
   };
