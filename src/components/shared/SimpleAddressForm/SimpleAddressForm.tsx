@@ -147,8 +147,9 @@ const SimpleAddressForm = ({
               (option) => option.title === data?.state
             ) as SelectMenuOption
           }
+          removeSearch={true}
           disableDropDown={disabledFlag}
-          inputExtraStyles={'min-w-[80px] max-w-[80px]'}
+          inputExtraStyles={'min-w-[110px] max-w-[110px]'}
           wrapperExtraStyles={'rounded-none border-t-0 border-l-0 border-r-0'}
         />
         <input

@@ -17,6 +17,7 @@ export interface CountrySelectorProps {
   inputExtraStyles?: string;
   wrapperExtraStyles?: string;
   disableDropDown?: boolean;
+  removeSearch?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -35,6 +36,7 @@ export default function CountrySelector({
   inputExtraStyles,
   wrapperExtraStyles,
   disableDropDown = false,
+  removeSearch,
 }: CountrySelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -129,20 +131,22 @@ export default function CountrySelector({
               aria-labelledby="listbox-label"
               aria-activedescendant="listbox-option-3"
             >
-              <div className="sticky top-0 z-10 bg-white">
-                <li className=" text-gray-900 cursor-default select-none relative py-2 px-2">
-                  <input
-                    type="text"
-                    name="search"
-                    autoComplete={'off'}
-                    ref={inputRef}
-                    className="block w-full sm:text-sm focus:outline-none"
-                    placeholder={'Search'}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                </li>
-                <hr />
-              </div>
+              {!removeSearch && (
+                <div className="sticky top-0 z-10 bg-white">
+                  <li className=" text-gray-900 cursor-default select-none relative py-2 px-2">
+                    <input
+                      type="text"
+                      name="search"
+                      autoComplete={'off'}
+                      ref={inputRef}
+                      className="block w-full sm:text-sm focus:outline-none focus:ring-0 focus:border-gray-200 rounded-md"
+                      placeholder={'Search'}
+                      onChange={(e) => setQuery(e.target.value)}
+                    />
+                  </li>
+                  <hr />
+                </div>
+              )}
 
               <div
                 className={

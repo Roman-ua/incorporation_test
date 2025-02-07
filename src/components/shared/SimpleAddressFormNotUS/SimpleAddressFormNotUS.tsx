@@ -42,13 +42,13 @@ const SimpleAddressFormNotUS = ({
   };
 
   const setZipHandler = (value: string) => {
-    // const cleanedValue = value.replace(/[^a-zA-Z0-9-]/g, '');
+    const cleanedValue = value.replace(/[^a-zA-Z0-9- ]/g, '');
 
     if (
-      (VALIDATORS.ZIP_CODE.test(value) || value === '') &&
-      value.length <= 5
+      (VALIDATORS.POSTAL_CODE.test(cleanedValue) || cleanedValue === '') &&
+      cleanedValue.length <= 10
     ) {
-      setData('zip', value);
+      setData('zip', cleanedValue);
     }
   };
 
