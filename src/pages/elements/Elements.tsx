@@ -5,11 +5,11 @@ import JoinedCardsElements from './components/JoinedCardsElements';
 import StateCardsElements from './components/StateCardsElements';
 import CustomCheckBox from './components/CustomCheckBox';
 import SeparatedCardsElements from './components/SeparatedCardsElements';
-import AddressFormElements from './components/AddressFormElements';
 import USAddressFormElements from './components/USAddressFormElements';
 import StateIcons from './components/StateIcons';
 import FilesSection from './components/FilesSection';
 import Buttons from './components/Buttons';
+import LayoutElements from './components/LayoutElements';
 
 const Elements = () => {
   return (
@@ -17,8 +17,8 @@ const Elements = () => {
       <SectionStatus />
       <CustomCheckBox />
       <StateIcons />
-      <AddressFormElements />
       <USAddressFormElements />
+      <LayoutElements />
       <InputWithButton />
       <JoinedCardsElements />
       <SeparatedCardsElements />

@@ -1,6 +1,5 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import CountrySelector from '../CountrySelect/selector';
-import { USStates } from '../../../constants/form/form';
 import { SelectMenuOption } from '../CountrySelect/types';
 import { COUNTRIES } from '../CountrySelect/countries';
 import React, { useState } from 'react';
@@ -13,7 +12,6 @@ interface IProps {
   inputCommonClasses: string;
   requiredError: boolean;
   data: AddressFields;
-  countryDisabled: boolean;
   setData: (key: string, value: string) => void;
 }
 
@@ -22,11 +20,10 @@ const addressFieldsMock = [
   { title: 'Address', type: 'text' },
 ];
 
-const SimpleAddressForm = ({
+const SimpleAddressFormNotUS = ({
   disabledFlag,
   inputCommonClasses,
   requiredError,
-  countryDisabled,
   data,
   setData,
 }: IProps) => {
@@ -43,22 +40,14 @@ const SimpleAddressForm = ({
 
     setIsOpen(value);
   };
-  const openStateHandler = (value: boolean) => {
-    if (isOpen) {
-      setIsOpen(false);
-    }
-
-    setIsOpenStates(value);
-  };
 
   const setZipHandler = (value: string) => {
-    let cleanedValue = value.replace(/[^0-9-]/g, '');
+    const cleanedValue = value.replace(/[^0-9-]/g, '');
 
-    if (cleanedValue.length > 5 && cleanedValue[5] !== '-') {
-      cleanedValue = cleanedValue.slice(0, 5) + '-' + cleanedValue.slice(5);
-    }
-
-    if (VALIDATORS.ZIP_CODE.test(cleanedValue) || cleanedValue === '') {
+    if (
+      (VALIDATORS.ZIP_CODE.test(cleanedValue) || cleanedValue === '') &&
+      cleanedValue.length <= 5
+    ) {
       setData('zip', cleanedValue);
     }
   };
@@ -136,21 +125,18 @@ const SimpleAddressForm = ({
           data-1p-ignore={true}
           placeholder="City"
         />
-        <CountrySelector
-          id={'states'}
-          open={isOpenStates}
-          list={USStates}
-          withIcon={false}
-          onToggle={() => openStateHandler(!isOpenStates)}
-          onChange={(val) => setData('state', val)}
-          selectedValue={
-            USStates.find(
-              (option) => option.title === data?.state
-            ) as SelectMenuOption
-          }
-          disableDropDown={disabledFlag}
-          inputExtraStyles={'min-w-[80px] max-w-[80px]'}
-          wrapperExtraStyles={'rounded-none border-t-0 border-l-0 border-r-0'}
+        <input
+          className={classNames(
+            inputCommonClasses,
+            'w-full border-r-0 border-t-0 border-l-0 border-r-gray-200',
+            requiredError && !data?.city ? 'bg-red-50' : 'bg-transparent'
+          )}
+          type="text"
+          value={data?.state}
+          disabled={disabledFlag}
+          onChange={(e) => setData('state', e.target.value)}
+          data-1p-ignore={true}
+          placeholder="State/Province"
         />
         <input
           className={classNames(
@@ -174,15 +160,15 @@ const SimpleAddressForm = ({
         onChange={(val) => setData('country', val)}
         selectedValue={
           COUNTRIES.find(
-            (option) => option.title === 'United States'
+            (option) => option.title === data.country
           ) as SelectMenuOption
         }
-        disableDropDown={countryDisabled}
-        inputExtraStyles={`${countryDisabled && 'opacity-40'} w-full `}
+        disableDropDown={false}
+        inputExtraStyles={`w-full `}
         wrapperExtraStyles={`rounded-b-0 border-0`}
       />
     </div>
   );
 };
 
-export default SimpleAddressForm;
+export default SimpleAddressFormNotUS;

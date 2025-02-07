@@ -103,7 +103,7 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const FilesSection = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
