@@ -2,9 +2,11 @@ import { classNames } from '../../../utils/helpers';
 import { IconX } from '@tabler/icons-react';
 import SimpleSelect from '../SimpleSelect/SimpleSelect';
 import { mockTitleList } from '../../../mock/mockData';
-import USAddressForm from '../../../pages/createCompany/components/USAddressForm';
 import React, { useEffect, useState } from 'react';
 import { AddressFields, Person } from '../../../interfaces/interfaces';
+import SwitchButton from '../SwitchButton/SwitchButton';
+import SimpleAddressForm from '../SimpleAddressForm/SimpleAddressForm';
+import SimpleAddressFormNotUS from '../SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 
 interface IProps {
   person: Person | undefined;
@@ -35,6 +37,21 @@ const emptyValue = {
   },
 };
 
+const notMandatoryFields = ['address1', 'address2', 'address3'];
+
+const areFieldsValid = (fields: {
+  [key: string]: string | number | undefined;
+}): boolean => {
+  return Object.entries(fields).every(([key, value]) => {
+    if (notMandatoryFields.includes(key)) return true;
+
+    if (key === 'zip') {
+      return !!value && typeof value === 'string' && value.length >= 5;
+    }
+    return !!value;
+  });
+};
+
 const PersonDataHandling = ({
   person,
   isCreateProcess,
@@ -44,6 +61,19 @@ const PersonDataHandling = ({
 }: IProps) => {
   const [localData, setLocalData] = useState<Person>(emptyValue);
   const [mandatoryError, setMandatoryError] = useState(false);
+  const [selected, setSelected] = useState<1 | 2>(1);
+  const [address, setAddress] = React.useState<AddressFields>(
+    person?.address || {
+      country: 'United States',
+      address0: '',
+      address1: '',
+      address2: '',
+      address3: '',
+      city: '',
+      zip: '',
+      state: '',
+    }
+  );
 
   useEffect(() => {
     if (person) {
@@ -83,6 +113,13 @@ const PersonDataHandling = ({
     });
   };
 
+  const addressHandler = (key: string, value: string) => {
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
   const updatePersonAddressHandler = (updatedAddress: AddressFields) => {
     setLocalData((prevState) => {
       const data = { ...prevState };
@@ -96,13 +133,8 @@ const PersonDataHandling = ({
     });
   };
 
-  const mandatoryErrorHandler = () => {
-    setMandatoryError(true);
-    // const timer = setTimeout(() => {
-    //   setMandatoryError(false);
-    //   clearTimeout(timer);
-    // }, 1500);
-  };
+  const inputCommonClasses =
+    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   return localData?.name || isCreateProcess ? (
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
@@ -172,24 +204,71 @@ const PersonDataHandling = ({
           </div>
         </div>
       </div>
-      <div className="mb-2 font-bold text-sm">Address</div>
-      <USAddressForm
-        isCreateUser={true}
-        deleteAction={
-          removePersonHandler
-            ? () => removePersonHandler(localData?.id)
-            : undefined
-        }
-        cancelAction={closeModalHandler}
-        setFromState={updatePersonAddressHandler}
-        heading={``}
-        removeFocusEffect={true}
-        requiredError={mandatoryError}
-        enableCountry={true}
-        value={localData?.address}
-        additionalMandatoryCheck={!!localData.name && !!localData.title}
-        setMandatoryError={mandatoryErrorHandler}
-      />
+      <div className="mb-2 flex items-center justify-between">
+        <span className="font-bold text-sm">Address</span>
+        <SwitchButton
+          option1="US Address"
+          option2="Other"
+          selected={selected}
+          onSelect={setSelected}
+        />
+      </div>
+      {selected === 1 ? (
+        <SimpleAddressForm
+          disabledFlag={false}
+          inputCommonClasses={inputCommonClasses}
+          requiredError={mandatoryError}
+          countryDisabled={true}
+          data={address}
+          setData={addressHandler}
+        />
+      ) : (
+        <SimpleAddressFormNotUS
+          disabledFlag={false}
+          inputCommonClasses={inputCommonClasses}
+          requiredError={mandatoryError}
+          data={address}
+          setData={addressHandler}
+        />
+      )}
+      <div className="flex items-center justify-end w-full py-2">
+        {removePersonHandler && localData?.id ? (
+          <div
+            onClick={() => removePersonHandler(localData?.id)}
+            className="mr-auto block rounded-md bg-red-50 border-red-50 px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:bg-red-100 hover:border-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+          >
+            Delete
+          </div>
+        ) : (
+          <div className="w-1/2" />
+        )}
+        {closeModalHandler && (
+          <div
+            onClick={closeModalHandler}
+            className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+          >
+            Cancel
+          </div>
+        )}
+        <div
+          onClick={() => {
+            console.log(address, 'address');
+            if (areFieldsValid(address)) {
+              updatePersonAddressHandler(address);
+            } else {
+              setMandatoryError(true);
+            }
+          }}
+          className={classNames(
+            'block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
+            areFieldsValid(address)
+              ? 'bg-mainBlue hover:bg-sideBarBlue '
+              : 'bg-gray-600'
+          )}
+        >
+          Save
+        </div>
+      </div>
     </div>
   ) : (
     <></>
