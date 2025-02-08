@@ -48,7 +48,7 @@ const SimpleAddressFormNotUS = ({
       (VALIDATORS.POSTAL_CODE.test(cleanedValue) || cleanedValue === '') &&
       cleanedValue.length <= 10
     ) {
-      setData('zip', cleanedValue);
+      setData('zip', cleanedValue.toUpperCase());
     }
   };
 
