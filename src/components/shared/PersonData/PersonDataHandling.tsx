@@ -37,6 +37,28 @@ const emptyValue = {
   },
 };
 
+const defaultUS = {
+  country: 'United States',
+  address0: '',
+  address1: '',
+  address2: '',
+  address3: '',
+  city: '',
+  zip: '',
+  state: '',
+};
+
+const defaultOther = {
+  country: '',
+  address0: '',
+  address1: '',
+  address2: '',
+  address3: '',
+  city: '',
+  zip: '',
+  state: '',
+};
+
 const notMandatoryFields = ['address1', 'address2', 'address3'];
 
 const areFieldsValid = (fields: {
@@ -63,16 +85,7 @@ const PersonDataHandling = ({
   const [mandatoryError, setMandatoryError] = useState(false);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>(
-    person?.address || {
-      country: 'United States',
-      address0: '',
-      address1: '',
-      address2: '',
-      address3: '',
-      city: '',
-      zip: '',
-      state: '',
-    }
+    person?.address || defaultUS
   );
 
   useEffect(() => {
@@ -86,6 +99,16 @@ const PersonDataHandling = ({
       setMandatoryError(false);
     };
   }, [person]);
+
+  const formTypeHandler = (value: 1 | 2) => {
+    if (value === 1) {
+      setAddress(defaultUS);
+    } else {
+      setAddress(defaultOther);
+    }
+
+    setSelected(value);
+  };
 
   const signerCheckHandler = (currentChecked: boolean) => {
     setLocalData((prevState) => {
@@ -210,7 +233,7 @@ const PersonDataHandling = ({
           option1="US Address"
           option2="Other"
           selected={selected}
-          onSelect={setSelected}
+          onSelect={formTypeHandler}
         />
       </div>
       {selected === 1 ? (
