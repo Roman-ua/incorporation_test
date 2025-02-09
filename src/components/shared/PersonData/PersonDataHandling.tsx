@@ -227,7 +227,7 @@ const PersonDataHandling = ({
           </div>
         </div>
       </div>
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2 flex items-end justify-between">
         <span className="font-bold text-sm">Address</span>
         <SwitchButton
           option1="US Address"
@@ -286,7 +286,7 @@ const PersonDataHandling = ({
             'block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
             areFieldsValid(address)
               ? 'bg-mainBlue hover:bg-sideBarBlue '
-              : 'bg-gray-600'
+              : 'bg-gray-500'
           )}
         >
           Save
