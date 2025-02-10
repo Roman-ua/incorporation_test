@@ -11,7 +11,10 @@ function classNames(...classes: (string | boolean)[]) {
 
 const ActionUploadBlock = ({ setOpen }: IProps) => {
   return (
-    <div className="relative transform rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95">
+    <div
+      onClick={setOpen}
+      className="relative transform rounded-lg bg-white text-left shadow-[0_3px_10px_rgb(0,0,0,0.1)] border border-gray-200 transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95 hover:cursor-pointer"
+    >
       <div className={'pt-6 pl-6 pr-6'}>
         <div className="flex items-center justify-between">
           <span className="text-gray-900 text-lg font-bold">
@@ -21,7 +24,6 @@ const ActionUploadBlock = ({ setOpen }: IProps) => {
       </div>
       <div className="p-6">
         <div
-          onClick={setOpen}
           className={`bg-white rounded-lg hover:bg-blue-50 transition-all duration-150 ease-in-out`}
         >
           <label
@@ -57,19 +59,6 @@ const ActionUploadBlock = ({ setOpen }: IProps) => {
             Supported formats: PDF, JPEG
           </span>
           <span className="text-xs text-gray-500">Maximum size: 25mb</span>
-        </div>
-      </div>
-
-      <div className="w-full bg-gray-100 py-3 px-5 rounded-b-lg">
-        <div className="mr-auto flex items-center justify-end">
-          <div
-            onClick={setOpen}
-            className={classNames(
-              'bg-mainBlue hover:bg-sideBarBlue ml-2 block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer'
-            )}
-          >
-            Upload
-          </div>
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import {
   UpdatedState,
 } from '../../../../interfaces/interfaces';
 import SimpleAddressForm from '../../SimpleAddressForm/SimpleAddressForm';
+import { truncateString } from '../../../../utils/helpers';
 
 interface IProps {
   open: boolean;
@@ -194,7 +195,7 @@ const AddEinModal = ({
                     <div className="w-full">
                       <FileDownloadProgress
                         deleteFileHandler={deleteFileHandler}
-                        fileName={selectedFile.name}
+                        fileName={truncateString(selectedFile.name, 15)}
                         fileSize={`${selectedFile?.size} MB`}
                         fileFormat={selectedFile.format}
                         duration={3}

@@ -209,7 +209,7 @@ const Ein = () => {
       {data?.relatedDocument && (
         <>
           <SectionHeading
-            title="Documents"
+            title="Confirmation Document"
             btnTitle="Upload Confirmation Document"
             clickHandler={() => setOpen(true)}
           />
