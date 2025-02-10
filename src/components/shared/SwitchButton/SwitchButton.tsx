@@ -24,10 +24,10 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
           e.preventDefault();
           onSelect(1);
         }}
-        className={`px-2 py-1 rounded-md text-sm font-medium transition-all duration-200 ${
+        className={`px-2 py-1 rounded-md text-sm font-medium transition-all duration-200 ease-in-out ${
           selected === 1
-            ? 'bg-white text-gray-900 font-semibold shadow-sm'
-            : 'text-gray-500 hover:text-gray-700'
+            ? 'bg-white text-gray-900 shadow-sm'
+            : 'text-gray-400 hover:text-gray-900'
         }`}
       >
         {option1}
@@ -37,10 +37,10 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
           e.preventDefault();
           onSelect(2);
         }}
-        className={`px-2 py-1 rounded-md text-sm font-medium transition-all duration-200 ${
+        className={`px-2 py-1 rounded-md text-sm font-medium transition-all duration-200 ease-in-out ${
           selected === 2
-            ? 'bg-white text-gray-900 font-semibold shadow-sm'
-            : 'text-gray-500 hover:text-gray-700'
+            ? 'bg-white text-gray-900 shadow-sm'
+            : 'text-gray-400 hover:text-gray-900'
         }`}
       >
         {option2}
