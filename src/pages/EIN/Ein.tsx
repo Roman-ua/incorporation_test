@@ -214,7 +214,11 @@ const Ein = () => {
             clickHandler={() => setOpen(true)}
           />
           <EinFilesSection
-            files={[data.relatedDocument]}
+            files={[
+              data.relatedDocument,
+              data.relatedDocument,
+              data.relatedDocument,
+            ]}
             address={data.relatedAddress}
           />
         </>
