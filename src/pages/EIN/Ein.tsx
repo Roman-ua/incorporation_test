@@ -13,8 +13,6 @@ import { USStates } from '../../constants/form/form';
 import ActionUploadBlock from './components/ActionUploadBlock';
 import EinFilesSection from './components/FilesSection';
 
-const mockStatuses = ['Confirmation Needed', 'Confirmed', 'Archived'];
-
 const mockData = {
   taxId: '12-3456789',
   status: 'Confirmation Needed',
@@ -59,11 +57,18 @@ const Ein = () => {
         // @ts-expect-error
         newData[typedKey] = updatedState[typedKey];
       });
+      console.log(newData, 'newData');
 
+      if (
+        newData.relatedDocument &&
+        newData.relatedDocument?.dockType !== 'Screenshot'
+      ) {
+        newData.status = 'Confirmed';
+      }
       return newData;
     });
   };
-  console.log(data, 'data');
+
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
       <AddEinModal
@@ -120,10 +125,10 @@ const Ein = () => {
           <span
             className={classNames(
               'text-nowrap w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-              statusBadge(mockStatuses[0])
+              statusBadge(data?.status)
             )}
           >
-            {mockStatuses[0]}
+            {data.status}
           </span>
         </div>
         <div className="flex flex-col gap-y-1 border-l pl-5 pr-3">
