@@ -220,7 +220,7 @@ const AddEinModal = ({
                   </div>
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Document date
+                      Document Date
                     </div>
                     <DatePicker
                       mandatoryError={mandatoryError}
@@ -230,7 +230,7 @@ const AddEinModal = ({
                   </div>
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Company name on the document
+                      Company Name on the Document
                     </div>
                     <input
                       onChange={(e) => setCompanyNameOnDock(e.target.value)}
@@ -246,7 +246,7 @@ const AddEinModal = ({
 
                   <div className="mt-6">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Document type
+                      Document Type
                     </div>
                     <div className="flex items-center justify-start flex-wrap">
                       {labels.map((label) => (
@@ -270,7 +270,7 @@ const AddEinModal = ({
                   {selectedDocType && selectedDocType !== 'Screenshot' && (
                     <div className="mt-6">
                       <div className="text-gray-700 text-sm mb-2 font-bold">
-                        Address On Document
+                        Address on the Document
                       </div>
                       <SimpleAddressForm
                         disabledFlag={false}

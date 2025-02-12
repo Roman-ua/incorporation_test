@@ -35,19 +35,28 @@ import { MdOutlineFileDownload } from 'react-icons/md';
 interface IProps {
   files: IFiles[];
   address: AddressFields | null;
+  companyName: string;
 }
 
-const EinFilesSection = ({ files, address }: IProps) => {
+const EinFilesSection = ({ files, address, companyName }: IProps) => {
   return (
     <div className="w-full mb-20">
+      <div className="flex pt-2 text-sm text-gray-500">
+        <div className="w-[20%]">Document Date</div>
+        <div className="w-[15%]">Document Type</div>
+        <div className="w-[60%]">Address on the Document</div>
+      </div>
       {files.map((file, index) => {
         return (
           <div
             key={index}
-            className={`flex py-5 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
+            className={`flex py-2.5 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
           >
-            <div className="w-[15%] pr-2 flex items-center justify-start font-bold text-gray-900">
+            <div className="w-[20%] pr-2 flex flex-col items-start justify-start font-bold text-gray-900">
               {file.dueDate}
+              <span className="font-normal text-gray-700 text-xs">
+                {companyName}
+              </span>
             </div>
             <div className="w-[15%] px-2 flex items-center justify-start">
               <span
@@ -74,7 +83,7 @@ const EinFilesSection = ({ files, address }: IProps) => {
                     {USStates.find((item) => item.title === address.state)
                       ?.value || ''}{' '}
                   </span>
-                  <span>{address.zip}</span>
+                  <span>{address.zip}, </span>
                   <span>{address.country}</span>
                 </div>
               )}

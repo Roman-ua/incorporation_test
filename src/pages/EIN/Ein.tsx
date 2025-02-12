@@ -143,7 +143,7 @@ const Ein = () => {
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-nowrap text-sm text-gray-500">
-            Last verification date
+            Last Verification Date
           </dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {data?.lastVerifDate || '-'}
@@ -216,6 +216,7 @@ const Ein = () => {
           <SectionHeading
             title="Confirmation Document"
             btnTitle="Upload Confirmation Document"
+            removeMargin={true}
             clickHandler={() => setOpen(true)}
           />
           <EinFilesSection
@@ -225,6 +226,7 @@ const Ein = () => {
               data.relatedDocument,
             ]}
             address={data.relatedAddress}
+            companyName={data.companyName}
           />
         </>
       )}
