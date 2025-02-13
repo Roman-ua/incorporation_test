@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import { IconX } from '@tabler/icons-react';
+import XBtn from '../../buttons/XBtn';
 
 interface IProps {
   open: boolean;
@@ -33,10 +33,7 @@ const UnsavedChanges = ({
                 <span className="text-gray-900 text-lg font-bold">
                   Discard Changes?
                 </span>
-                <IconX
-                  onClick={() => setOpen(false)}
-                  className="w-5 h-5 text-gray-500 ml-auto hover:cursor-pointer hover:text-gray-700 transition-all ease-in-out duration-150"
-                />
+                <XBtn clickHandler={() => setOpen(false)} />
               </div>
 
               <div>

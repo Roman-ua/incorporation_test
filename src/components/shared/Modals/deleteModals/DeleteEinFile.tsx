@@ -1,6 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import { IconX } from '@tabler/icons-react';
 import React from 'react';
+import XBtn from '../../buttons/XBtn';
 
 interface IProps {
   open: boolean;
@@ -27,12 +27,7 @@ const DeleteEinFileModal = ({ open, setOpen, proceedHandler }: IProps) => {
                 <span className="text-gray-900 text-lg font-bold">
                   Delete Confirmation Document?
                 </span>
-                <div
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between absolute top-5 right-5 p-1.5 hover:cursor-pointer"
-                >
-                  <IconX className="w-4 h-4 text-gray-700" />
-                </div>
+                <XBtn clickHandler={() => setOpen(false)} />
               </div>
 
               <div>

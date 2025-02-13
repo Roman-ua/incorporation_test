@@ -2,7 +2,6 @@ import React, { ChangeEvent, useEffect } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import DropFileArea from './DropFileArea';
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
-import { IconX } from '@tabler/icons-react';
 import DatePicker from './datePicker';
 import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
 import {
@@ -12,6 +11,7 @@ import {
 } from '../../../../interfaces/interfaces';
 import SimpleAddressForm from '../../SimpleAddressForm/SimpleAddressForm';
 import { truncateString } from '../../../../utils/helpers';
+import XBtn from '../../buttons/XBtn';
 
 interface IProps {
   open: boolean;
@@ -152,15 +152,12 @@ const AddEinModal = ({
                   <span className="text-gray-900 text-lg font-bold">
                     Add EIN (Tax ID)
                   </span>
-                  <div
-                    onClick={() => {
+                  <XBtn
+                    clickHandler={() => {
                       cleanUpHandler();
                       setOpen(false);
                     }}
-                    className="flex items-center justify-between absolute top-5 right-5 p-1.5 hover:cursor-pointer"
-                  >
-                    <IconX className="w-4 h-4 text-gray-700" />
-                  </div>
+                  />
                 </div>
                 <div className="text-gray-700 text-sm mb-2 font-bold">
                   EIN (Tax ID) Number

@@ -1,5 +1,4 @@
 import { classNames } from '../../../utils/helpers';
-import { IconX } from '@tabler/icons-react';
 import SimpleSelect from '../SimpleSelect/SimpleSelect';
 import { mockTitleList } from '../../../mock/mockData';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +6,7 @@ import { AddressFields, Person } from '../../../interfaces/interfaces';
 import SwitchButton from '../SwitchButton/SwitchButton';
 import SimpleAddressForm from '../SimpleAddressForm/SimpleAddressForm';
 import SimpleAddressFormNotUS from '../SimpleAddressFormNotUS/SimpleAddressFormNotUS';
+import XBtn from '../buttons/XBtn';
 
 interface IProps {
   person: Person | undefined;
@@ -161,12 +161,7 @@ const PersonDataHandling = ({
 
   return localData?.name || isCreateProcess ? (
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
-      <div
-        onClick={closeModalHandler}
-        className="flex items-center justify-between absolute top-5 right-5 p-1.5 hover:cursor-pointer"
-      >
-        <IconX className="w-4 h-4 text-gray-700" />
-      </div>
+      <XBtn clickHandler={closeModalHandler} />
       <div
         className={classNames(
           `flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`

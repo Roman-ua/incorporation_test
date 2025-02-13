@@ -2,9 +2,9 @@ import React from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import DropFileArea from './DropFileArea';
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
-import { IconX } from '@tabler/icons-react';
 import DatePicker from './datePicker';
 import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
+import XBtn from '../../buttons/XBtn';
 
 interface IProps {
   open: boolean;
@@ -81,12 +81,7 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                 <span className="text-gray-900 text-lg font-bold">
                   Upload EIN (Tax ID) Confirmation Document
                 </span>
-                <div
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between absolute top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                >
-                  <IconX className="w-4 h-4 text-gray-700" />
-                </div>
+                <XBtn clickHandler={() => setOpen(false)} />
               </div>
               {selectedFile?.name ? (
                 <div className="w-full">

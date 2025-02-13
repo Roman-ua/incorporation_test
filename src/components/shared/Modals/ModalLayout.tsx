@@ -1,5 +1,5 @@
-import { IconX } from '@tabler/icons-react';
 import React from 'react';
+import XBtn from '../buttons/XBtn';
 
 interface IProps {
   title: string;
@@ -24,12 +24,7 @@ const ModalLayout = ({
       <div className="p-5">
         <div className="flex items-center justify-between mb-5">
           <span className="text-gray-900 text-lg font-bold">{title}</span>
-          <div
-            onClick={() => setOpen(false)}
-            className="flex items-center justify-between absolute top-5 right-5 p-1.5 hover:cursor-pointer"
-          >
-            <IconX className="w-4 h-4 text-gray-700" />
-          </div>
+          <XBtn clickHandler={() => setOpen(false)} />
         </div>
         {children}
       </div>
