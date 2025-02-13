@@ -15,6 +15,8 @@ import EinFilesSection from './components/FilesSection';
 import DeleteEinFileModal from '../../components/shared/Modals/deleteModals/DeleteEinFile';
 import { useRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
+import { IconPencilExclamation } from '@tabler/icons-react';
+import UpdateEinNumberModal from './components/ChangeEinNumberModal';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -37,6 +39,7 @@ const Ein = () => {
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const [openUpdateEin, setOpenUpdateEin] = useState(false);
 
   const [data, setData] = useRecoilState(EinState);
 
@@ -80,6 +83,14 @@ const Ein = () => {
         setOpen={setOpenDeleteConfirmation}
         proceedHandler={() => {}}
       />
+      <UpdateEinNumberModal
+        open={openUpdateEin}
+        setOpen={setOpenUpdateEin}
+        value={data.taxId}
+        proceedHandler={(newValue) => {
+          setData((prev) => ({ ...prev, taxId: newValue }));
+        }}
+      />
       <PageSign
         title={'EIN (TAX ID)'}
         icon={<FaHashtag className="w-3 h-3 text-gray-400 mr-1" />}
@@ -118,7 +129,7 @@ const Ein = () => {
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
-      <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
+      <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll group/parrent">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
@@ -164,6 +175,12 @@ const Ein = () => {
                 ))
               : '-'}
           </dd>
+        </div>
+        <div className="opacity-0 group-hover/parrent:opacity-100 ml-auto flex flex-col gap-y-1">
+          <IconPencilExclamation
+            onClick={() => setOpenUpdateEin(true)}
+            className="w-5 h-5 text-gray-500 hover:text-gray-700 hover:cursor-pointer"
+          />
         </div>
       </dl>
 
