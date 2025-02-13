@@ -157,7 +157,7 @@ const AddEinModal = ({
                       cleanUpHandler();
                       setOpen(false);
                     }}
-                    className="flex items-center justify-between absolute top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    className="flex items-center justify-between absolute top-5 right-5 p-1.5 hover:cursor-pointer"
                   >
                     <IconX className="w-4 h-4 text-gray-700" />
                   </div>
@@ -292,7 +292,7 @@ const AddEinModal = ({
                       cleanUpHandler();
                       setOpen(false);
                     }}
-                    className="block rounded-md bg-white px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:text-white hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                    className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   >
                     Cancel
                   </div>

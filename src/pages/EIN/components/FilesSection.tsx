@@ -35,16 +35,23 @@ import { MdOutlineFileDownload } from 'react-icons/md';
 interface IProps {
   files: IFiles[];
   address: AddressFields | null;
+  removeFileHandler: () => void;
   companyName: string;
 }
 
-const EinFilesSection = ({ files, address, companyName }: IProps) => {
+const EinFilesSection = ({
+  files,
+  address,
+  companyName,
+  removeFileHandler,
+}: IProps) => {
   return (
     <div className="w-full mb-20">
       <div className="flex pt-2 text-sm text-gray-500">
-        <div className="w-[20%]">Document Date</div>
-        <div className="w-[15%]">Document Type</div>
-        <div className="w-[60%]">Address on the Document</div>
+        <div className="w-[20%] pr-2">Document Date</div>
+        <div className="w-[15%] px-2">Document Type</div>
+        <div className="w-[60%] px-2">Address on the Document</div>
+        <div className="pl-2 w-[72px] ml-auto" />
       </div>
       {files.map((file, index) => {
         return (
@@ -71,8 +78,8 @@ const EinFilesSection = ({ files, address, companyName }: IProps) => {
               {address && address.address0 && (
                 <div>
                   <span>{address.address0}, </span>
-                  {address.address1 && <span>{address.address1}</span>}
-                  {address.address2 && <span>{address.address2}</span>}
+                  {address.address1 && <span>{address.address1} </span>}
+                  {address.address2 && <span>{address.address2} </span>}
                   {address.address3 && (
                     <span>
                       {address.address2 ? ',' : ''} {address.address3}
@@ -96,7 +103,7 @@ const EinFilesSection = ({ files, address, companyName }: IProps) => {
                 <MdOutlineFileDownload className="w-4 h-4 text-gray-500 group-hover/download:text-gray-900 transition-all easy-in-out duration-150" />
               </div>
               <div
-                onClick={() => {}}
+                onClick={removeFileHandler}
                 className="ml-1 group/remove h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
               >
                 <IconTrashX className="w-4 h-4 text-red-500 group-hover/remove:text-red-700 transition-all easy-in-out duration-150" />

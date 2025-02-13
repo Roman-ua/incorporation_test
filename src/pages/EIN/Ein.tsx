@@ -12,6 +12,7 @@ import { MockData, UpdatedState } from '../../interfaces/interfaces';
 import { USStates } from '../../constants/form/form';
 import ActionUploadBlock from './components/ActionUploadBlock';
 import EinFilesSection from './components/FilesSection';
+import DeleteEinFileModal from '../../components/shared/Modals/deleteModals/DeleteEinFile';
 
 const mockData = {
   taxId: '12-3456789',
@@ -43,6 +44,8 @@ function classNames(...classes: (string | boolean)[]) {
 const Ein = () => {
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+
   const [data, setData] = React.useState<MockData>(mockData);
 
   const navigate = useNavigate();
@@ -80,6 +83,11 @@ const Ein = () => {
         docType={data?.documentType}
         lastVerifDate={data?.lastVerifDate}
         companyName={data?.companyName || ''}
+      />
+      <DeleteEinFileModal
+        open={openDeleteConfirmation}
+        setOpen={setOpenDeleteConfirmation}
+        proceedHandler={() => {}}
       />
       <PageSign
         title={'EIN (TAX ID)'}
@@ -225,6 +233,7 @@ const Ein = () => {
               data.relatedDocument,
               data.relatedDocument,
             ]}
+            removeFileHandler={() => setOpenDeleteConfirmation(true)}
             address={data.relatedAddress}
             companyName={data.companyName}
           />

@@ -163,7 +163,7 @@ const PersonDataHandling = ({
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
       <div
         onClick={closeModalHandler}
-        className="flex items-center justify-between absolute top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+        className="flex items-center justify-between absolute top-5 right-5 p-1.5 hover:cursor-pointer"
       >
         <IconX className="w-4 h-4 text-gray-700" />
       </div>
