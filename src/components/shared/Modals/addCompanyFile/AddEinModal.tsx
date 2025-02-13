@@ -125,7 +125,6 @@ const AddEinModal = ({
   }, [selectedFile]);
 
   const cleanUpHandler = () => {
-    setEinNumber('');
     setCompanyNameOnDock(companyName || '');
     setIsNumberOnly(isOnlyNumber);
     setSelectedDocType('');
@@ -163,6 +162,7 @@ const AddEinModal = ({
                   EIN (Tax ID) Number
                 </div>
                 <input
+                  disabled={!isNumberOnly && !!einNumber}
                   onChange={(e) => handleInputChange(e)}
                   className={classNames(
                     'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',

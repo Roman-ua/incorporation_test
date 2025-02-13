@@ -78,8 +78,8 @@ const EinFilesSection = ({
               {address && address.address0 && (
                 <div>
                   <span>{address.address0}, </span>
-                  {address.address1 && <span>{address.address1} </span>}
-                  {address.address2 && <span>{address.address2} </span>}
+                  {address.address1 && <span>{address.address1}, </span>}
+                  {address.address2 && <span>{address.address2}</span>}
                   {address.address3 && (
                     <span>
                       {address.address2 ? ',' : ''} {address.address3}

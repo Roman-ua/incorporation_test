@@ -28,7 +28,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'react', 'prettier', 'import'],
+  plugins: ['@typescript-eslint', 'react', 'prettier', 'import', 'react-hooks'],
   rules: {
     'import/extensions': [
       'error',
@@ -41,5 +41,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
 };

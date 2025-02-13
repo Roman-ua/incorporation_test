@@ -18,6 +18,8 @@ import {
   MockData,
   UpdatedCompanyState,
 } from '../../interfaces/interfaces';
+import { useSetRecoilState } from 'recoil';
+import EinState from '../../state/atoms/EIN';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -42,6 +44,8 @@ const CompanyPage = () => {
   const storageData = localStorage.getItem('finalFormData');
   const localData = storageData ? JSON.parse(storageData) : undefined;
 
+  const setEinState = useSetRecoilState(EinState);
+
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
   const [data, setData] = React.useState<MockCompany>(localData);
@@ -61,6 +65,11 @@ const CompanyPage = () => {
 
       return newData;
     });
+
+    setEinState((prev) => ({
+      ...prev,
+      taxId: updatedState.taxId || '',
+    }));
   };
 
   return data ? (

@@ -13,16 +13,8 @@ import { USStates } from '../../constants/form/form';
 import ActionUploadBlock from './components/ActionUploadBlock';
 import EinFilesSection from './components/FilesSection';
 import DeleteEinFileModal from '../../components/shared/Modals/deleteModals/DeleteEinFile';
-
-const mockData = {
-  taxId: '12-3456789',
-  status: 'Confirmation Needed',
-  companyName: 'ABC Company Inc.',
-  lastVerifDate: '',
-  documentType: [],
-  relatedAddress: null,
-  relatedDocument: null,
-};
+import { useRecoilState } from 'recoil';
+import EinState from '../../state/atoms/EIN';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -46,7 +38,7 @@ const Ein = () => {
   const [open, setOpen] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
-  const [data, setData] = React.useState<MockData>(mockData);
+  const [data, setData] = useRecoilState(EinState);
 
   const navigate = useNavigate();
 
@@ -60,7 +52,6 @@ const Ein = () => {
         // @ts-expect-error
         newData[typedKey] = updatedState[typedKey];
       });
-      console.log(newData, 'newData');
 
       if (
         newData.relatedDocument &&
