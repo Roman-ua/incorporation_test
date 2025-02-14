@@ -85,7 +85,10 @@ const EinFilesSection = ({
                       {address.address2 ? ',' : ''} {address.address3}
                     </span>
                   )}
-                  <span>{address.city}, </span>
+                  <span>
+                    {address.address3 ? ', ' : ''}
+                    {address.city},{' '}
+                  </span>
                   <span>
                     {USStates.find((item) => item.title === address.state)
                       ?.value || ''}{' '}
