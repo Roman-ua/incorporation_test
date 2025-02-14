@@ -15,7 +15,6 @@ import EinFilesSection from './components/FilesSection';
 import DeleteEinFileModal from '../../components/shared/Modals/deleteModals/DeleteEinFile';
 import { useRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
-import { IconPencilExclamation } from '@tabler/icons-react';
 import UpdateEinNumberModal from './components/ChangeEinNumberModal';
 
 const statusBadge = (status: string) => {
@@ -177,10 +176,13 @@ const Ein = () => {
           </dd>
         </div>
         <div className="opacity-0 group-hover/parrent:opacity-100 ml-auto flex flex-col gap-y-1">
-          <IconPencilExclamation
+          <button
+            type="button"
             onClick={() => setOpenUpdateEin(true)}
-            className="w-5 h-5 text-gray-500 hover:text-gray-700 hover:cursor-pointer"
-          />
+            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+          >
+            Change EIN
+          </button>
         </div>
       </dl>
 

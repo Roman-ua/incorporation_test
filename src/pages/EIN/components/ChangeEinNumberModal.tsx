@@ -77,7 +77,7 @@ const UpdateEinNumberModal = ({
                   Cancel
                 </div>
                 <button
-                  disabled={!einValue}
+                  disabled={!einValue || einValue === value}
                   onClick={() => {
                     proceedHandler(einValue);
                     setOpen(false);
