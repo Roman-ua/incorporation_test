@@ -175,13 +175,13 @@ const Ein = () => {
               : '-'}
           </dd>
         </div>
-        <div className="opacity-0 group-hover/parrent:opacity-100 ml-auto flex flex-col gap-y-1">
+        <div className="opacity-100 group-hover/parrent:opacity-100 ml-auto mt-auto">
           <button
             type="button"
             onClick={() => setOpenUpdateEin(true)}
-            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+            className="mb-1 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
           >
-            Change EIN
+            Change
           </button>
         </div>
       </dl>
