@@ -128,7 +128,7 @@ const Ein = () => {
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
-      <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll group/parrent">
+      <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Status</dt>
           <span
@@ -175,13 +175,13 @@ const Ein = () => {
               : '-'}
           </dd>
         </div>
-        <div className="opacity-0 group-hover/parrent:opacity-100 ml-auto mt-auto">
+        <div className="ml-auto mt-auto">
           <button
             type="button"
             onClick={() => setOpenUpdateEin(true)}
-            className="mb-1 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+            className="opacity-0 hover:opacity-100 mb-1 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
           >
-            Change
+            Edit
           </button>
         </div>
       </dl>
