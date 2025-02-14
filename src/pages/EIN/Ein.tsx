@@ -175,7 +175,7 @@ const Ein = () => {
               : '-'}
           </dd>
         </div>
-        <div className="opacity-100 group-hover/parrent:opacity-100 ml-auto mt-auto">
+        <div className="opacity-0 group-hover/parrent:opacity-100 ml-auto mt-auto">
           <button
             type="button"
             onClick={() => setOpenUpdateEin(true)}
