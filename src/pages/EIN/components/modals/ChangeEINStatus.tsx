@@ -17,15 +17,15 @@ const list = ['Confirmation Needed', 'Confirmed', 'Cancelled'];
 const btnStyleHandler = (status: string) => {
   switch (status) {
     case 'Confirmation Needed':
-      return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20';
+      return 'bg-yellow-50 text-yellow-700 border-yellow-600/20';
     case 'Confirmed':
-      return 'bg-green-50 text-green-700 ring-green-600/20';
+      return 'bg-green-50 text-green-700 border-green-600/20';
     case 'Archived':
-      return 'bg-grey-50 text-grey-700 ring-grey-600/20';
+      return 'bg-grey-50 text-grey-700 border-grey-600/20';
     case 'Cancelled':
-      return 'bg-red-50 text-red-700 ring-red-600/20';
+      return 'bg-red-50 text-red-700 border-red-600/20';
     default:
-      return 'bg-grey-50 text-grey-700 ring-grey-600/20';
+      return 'bg-grey-50 text-grey-700 border-grey-600/20';
   }
 };
 
@@ -57,21 +57,15 @@ const ChangeEINStatus = ({
                 cancelHandler={() => setOpen(false)}
                 submitHandler={submit}
               >
-                {/*<SimpleSelect*/}
-                {/*  list={list}*/}
-                {/*  currentItem={currentStatus}*/}
-                {/*  valueHandler={setCurrentStatus}*/}
-                {/*  mandatoryError={false}*/}
-                {/*/>*/}
                 <div className="flex items-center justify-start flex-wrap">
                   {list.map((label) => (
                     <div
                       onClick={() => setCurrentStatus(label)}
                       className={classNames(
-                        'text-sm font-bold text-gray-700 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
+                        'text-sm font-bold text-gray-500 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
                         currentStatus === label
                           ? btnStyleHandler(currentStatus)
-                          : 'border-gray-300 hover:border-sideBarBlue hover:text-sideBarBlue'
+                          : 'border-gray-300 hover:border-gray-700 hover:text-gray-700'
                       )}
                       key={label}
                     >

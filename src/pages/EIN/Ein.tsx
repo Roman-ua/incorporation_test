@@ -193,13 +193,17 @@ const Ein = () => {
           </dd>
         </div>
         <div className="ml-auto mt-auto">
-          <button
-            type="button"
+          <IconSettings
             onClick={() => setOpenUpdateEin(true)}
-            className="opacity-0 hover:opacity-100 mb-1 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
-          >
-            Edit
-          </button>
+            className="opacity-0 hover:opacity-100 mb-1 w-4.5 h-4.5 text-gray-700 ml-1 hover:cursor-pointer"
+          />
+          {/*<button*/}
+          {/*  type="button"*/}
+          {/*  onClick={() => setOpenUpdateEin(true)}*/}
+          {/*  className="opacity-0 hover:opacity-100 mb-1 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"*/}
+          {/*>*/}
+          {/*  Edit*/}
+          {/*</button>*/}
         </div>
       </dl>
 
