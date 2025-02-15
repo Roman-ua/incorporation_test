@@ -1,9 +1,9 @@
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import React, { useState } from 'react';
 import ModalLayout from '../../../../components/shared/Modals/ModalLayout';
-import SimpleSelect from '../../../../components/shared/SimpleSelect/SimpleSelect';
 import { SetterOrUpdater } from 'recoil';
 import { IEin } from '../../../../state/atoms/EIN';
+import { classNames } from '../../../../utils/helpers';
 
 interface IProps {
   open: boolean;
@@ -13,6 +13,22 @@ interface IProps {
 }
 
 const list = ['Confirmation Needed', 'Confirmed', 'Cancelled'];
+
+const btnStyleHandler = (status: string) => {
+  switch (status) {
+    case 'Confirmation Needed':
+      return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20';
+    case 'Confirmed':
+      return 'bg-green-50 text-green-700 ring-green-600/20';
+    case 'Archived':
+      return 'bg-grey-50 text-grey-700 ring-grey-600/20';
+    case 'Cancelled':
+      return 'bg-red-50 text-red-700 ring-red-600/20';
+    default:
+      return 'bg-grey-50 text-grey-700 ring-grey-600/20';
+  }
+};
+
 const ChangeEINStatus = ({
   open,
   setOpen,
@@ -41,12 +57,28 @@ const ChangeEINStatus = ({
                 cancelHandler={() => setOpen(false)}
                 submitHandler={submit}
               >
-                <SimpleSelect
-                  list={list}
-                  currentItem={currentStatus}
-                  valueHandler={setCurrentStatus}
-                  mandatoryError={false}
-                />
+                {/*<SimpleSelect*/}
+                {/*  list={list}*/}
+                {/*  currentItem={currentStatus}*/}
+                {/*  valueHandler={setCurrentStatus}*/}
+                {/*  mandatoryError={false}*/}
+                {/*/>*/}
+                <div className="flex items-center justify-start flex-wrap">
+                  {list.map((label) => (
+                    <div
+                      onClick={() => setCurrentStatus(label)}
+                      className={classNames(
+                        'text-sm font-bold text-gray-700 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
+                        currentStatus === label
+                          ? btnStyleHandler(currentStatus)
+                          : 'border-gray-300 hover:border-sideBarBlue hover:text-sideBarBlue'
+                      )}
+                      key={label}
+                    >
+                      {label}
+                    </div>
+                  ))}
+                </div>
               </ModalLayout>
             </DialogPanel>
           </div>
