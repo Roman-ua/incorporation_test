@@ -1,6 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import React from 'react';
-import XBtn from '../../buttons/XBtn';
+import XBtn from '../../../../components/shared/buttons/XBtn';
 
 interface IProps {
   open: boolean;

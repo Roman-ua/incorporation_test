@@ -12,7 +12,7 @@ import PageSign from '../../components/shared/PageSign';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import AnnualReportsListFL from './components/AnnualReportsListFL';
 import RelatedPeopleList from './components/RelatedPeopleList';
-import AddEinModal from '../../components/shared/Modals/addCompanyFile/AddEinModal';
+import AddEinModal from '../EIN/components/modals/AddEinModal';
 import {
   MockCompany,
   MockData,

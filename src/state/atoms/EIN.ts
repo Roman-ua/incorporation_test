@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { Address, IFiles } from '../../interfaces/interfaces';
 
-interface Ein {
+export interface IEin {
   taxId: string;
   status: string;
   companyName: string;
@@ -11,7 +11,7 @@ interface Ein {
   relatedDocument: IFiles | null;
 }
 
-const EinState = atom<Ein>({
+const EinState = atom<IEin>({
   key: 'EinState',
   default: {
     taxId: '12-3456789',

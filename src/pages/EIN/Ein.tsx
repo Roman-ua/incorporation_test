@@ -7,15 +7,17 @@ import PageSign from '../../components/shared/PageSign';
 import { FaHashtag } from 'react-icons/fa';
 import { IoMdCheckmark } from 'react-icons/io';
 import { copyToClipboard } from '../../utils/helpers';
-import AddEinModal from '../../components/shared/Modals/addCompanyFile/AddEinModal';
+import AddEinModal from './components/modals/AddEinModal';
 import { MockData, UpdatedState } from '../../interfaces/interfaces';
 import { USStates } from '../../constants/form/form';
 import ActionUploadBlock from './components/ActionUploadBlock';
 import EinFilesSection from './components/FilesSection';
-import DeleteEinFileModal from '../../components/shared/Modals/deleteModals/DeleteEinFile';
+import DeleteEinFileModal from './components/modals/DeleteEinFile';
 import { useRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
 import UpdateEinNumberModal from './components/ChangeEinNumberModal';
+import { IconSettings } from '@tabler/icons-react';
+import ChangeEINStatus from './components/modals/ChangeEINStatus';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -25,6 +27,8 @@ const statusBadge = (status: string) => {
       return 'bg-green-50 text-green-700 ring-green-600/20';
     case 'Archived':
       return 'bg-grey-50 text-grey-700 ring-grey-600/20';
+    case 'Cancelled':
+      return 'bg-red-50 text-red-700 ring-red-600/20';
     default:
       return 'bg-grey-50 text-grey-700 ring-grey-600/20';
   }
@@ -39,6 +43,7 @@ const Ein = () => {
   const [open, setOpen] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [openUpdateEin, setOpenUpdateEin] = useState(false);
+  const [openUpdateEinStatus, setOpenUpdateEinStatus] = useState(false);
 
   const [data, setData] = useRecoilState(EinState);
 
@@ -90,6 +95,12 @@ const Ein = () => {
           setData((prev) => ({ ...prev, taxId: newValue }));
         }}
       />
+      <ChangeEINStatus
+        prevStatus={data?.status}
+        open={openUpdateEinStatus}
+        setOpen={setOpenUpdateEinStatus}
+        submitHandler={setData}
+      />
       <PageSign
         title={'EIN (TAX ID)'}
         icon={<FaHashtag className="w-3 h-3 text-gray-400 mr-1" />}
@@ -129,8 +140,14 @@ const Ein = () => {
         </span>
       </div>
       <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
-        <div className="flex flex-col gap-y-1 pr-5">
-          <dt className="text-sm text-gray-500">Status</dt>
+        <div className="flex flex-col gap-y-1 pr-5 group/status">
+          <dt className="text-sm text-gray-500 flex items-center justify-start transition-all duration-150 ease-in-out">
+            <span>Status</span>
+            <IconSettings
+              onClick={() => setOpenUpdateEinStatus(true)}
+              className="opacity-0 group-hover/status:opacity-100 w-3.5 h-3.5 text-gray-500 ml-1 hover:cursor-pointer"
+            />
+          </dt>
           <span
             className={classNames(
               'text-nowrap w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',

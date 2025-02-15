@@ -20,7 +20,7 @@ const ModalLayout = ({
   deleteAction,
 }: IProps) => {
   return (
-    <div className="relative transform rounded-lg bg-white text-left shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95">
+    <>
       <div className="p-5">
         <div className="flex items-center justify-between mb-5">
           <span className="text-gray-900 text-lg font-bold">{title}</span>
@@ -58,7 +58,7 @@ const ModalLayout = ({
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

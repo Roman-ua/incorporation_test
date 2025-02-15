@@ -1,17 +1,17 @@
 import React, { ChangeEvent, useEffect } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import DropFileArea from './DropFileArea';
+import DropFileArea from '../../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
-import DatePicker from './datePicker';
-import FileDownloadProgress from '../../../../pages/createCompany/components/UploadedFile';
+import DatePicker from '../../../../components/shared/Modals/addCompanyFile/datePicker';
+import FileDownloadProgress from '../../../createCompany/components/UploadedFile';
 import {
   AddressFields,
   IFiles,
   UpdatedState,
 } from '../../../../interfaces/interfaces';
-import SimpleAddressForm from '../../SimpleAddressForm/SimpleAddressForm';
+import SimpleAddressForm from '../../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import { truncateString } from '../../../../utils/helpers';
-import XBtn from '../../buttons/XBtn';
+import XBtn from '../../../../components/shared/buttons/XBtn';
 
 interface IProps {
   open: boolean;
