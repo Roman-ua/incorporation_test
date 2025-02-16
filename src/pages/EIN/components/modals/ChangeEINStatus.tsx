@@ -57,7 +57,7 @@ const ChangeEINStatus = ({
                 cancelHandler={() => setOpen(false)}
                 submitHandler={submit}
               >
-                <div className="flex items-center justify-start flex-wrap">
+                <div className="flex items-center justify-start flex-wrap gap-2">
                   {list.map((label) => (
                     <div
                       onClick={() => setCurrentStatus(label)}
