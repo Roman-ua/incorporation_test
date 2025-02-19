@@ -36,23 +36,20 @@ const statusBadge = (status: string) => {
   }
 };
 
-const RelatedPeopleList = () => {
+interface IProps {
+  addPersonHandler: () => void;
+}
+
+const RelatedPeopleList = ({ addPersonHandler }: IProps) => {
   return (
     <>
-      <SectionHeading title="People" removeMargin={true} />
+      <SectionHeading
+        title="People"
+        removeMargin={true}
+        clickHandler={addPersonHandler}
+        btnTitle="New Person"
+      />
       <div className="w-full overflow-hidden mb-12 hover:cursor-pointer">
-        {/*<div className="flex bg-gray-200 text-gray-800 font-semibold">*/}
-        {/*  {Array.from({ length: mock.length }).map((_, index) => (*/}
-        {/*    <div*/}
-        {/*      key={index}*/}
-        {/*      className="w-[23%] p-2 border-r border-gray-300 text-center"*/}
-        {/*    >*/}
-        {/*      Column {index + 1}*/}
-        {/*    </div>*/}
-        {/*  ))}*/}
-        {/*  <div className="w-[8%] p-2 text-center">Action</div>*/}
-        {/*</div>*/}
-
         <div>
           {people.map((person, rowIndex) => (
             <div

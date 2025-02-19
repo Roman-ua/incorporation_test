@@ -20,6 +20,7 @@ import {
 } from '../../interfaces/interfaces';
 import { useSetRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
+import { AddPersonModal } from './modals/AddPersonToCompanyModal';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -48,6 +49,7 @@ const CompanyPage = () => {
 
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
+  const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [data, setData] = React.useState<MockCompany>(localData);
 
   const navigate = useNavigate();
@@ -80,6 +82,11 @@ const CompanyPage = () => {
         open={open}
         companyName={data.companyName || ''}
         saveHandler={saveHandler}
+      />
+      <AddPersonModal
+        isOpen={openAddPersonModal}
+        onClose={() => setOpenAddPersonModal(false)}
+        onAdd={() => {}}
       />
       <PageSign
         title={'COMPANY'}
@@ -274,7 +281,7 @@ const CompanyPage = () => {
           <div>{data.address.country}</div>
         </>
       </div>
-      <RelatedPeopleList />
+      <RelatedPeopleList addPersonHandler={() => setOpenAddPersonModal(true)} />
       {data?.registeredIn.split(' ')[2] === 'Florida' && (
         <AnnualReportsListFL />
       )}
