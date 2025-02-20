@@ -84,6 +84,7 @@ const CompanyPage = () => {
         saveHandler={saveHandler}
       />
       <AddPersonModal
+        companyType={data.companyType}
         isOpen={openAddPersonModal}
         onClose={() => setOpenAddPersonModal(false)}
         onAdd={() => {}}

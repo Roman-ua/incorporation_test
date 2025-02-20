@@ -179,7 +179,7 @@ const DatePicker = ({ value, setValue, mandatoryError }: IProps) => {
         placeholder="Choose Date" // Добавлен placeholder
       />
       {open && (
-        <div ref={dateRef} className="absolute left-0 top-10">
+        <div ref={dateRef} className="absolute left-0 top-10 z-40">
           <Datepicker
             value={calendarValue}
             defaultValue={today}

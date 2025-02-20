@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
-import { Upload } from 'lucide-react';
 import { classNames } from '../../../utils/helpers';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
@@ -11,6 +10,7 @@ import { AddressFields } from '../../../interfaces/interfaces';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import XBtn from '../../../components/shared/buttons/XBtn';
+import { AvatarUpload } from '../components/AddPersonPhoto';
 
 export interface Person {
   id: string;
@@ -33,17 +33,9 @@ export interface Person {
 interface AddPersonModalProps {
   isOpen: boolean;
   onClose: () => void;
+  companyType: string;
   onAdd: (person: Person) => void;
 }
-
-const titles = [
-  'Software Engineer',
-  'Product Manager',
-  'Marketing Manager',
-  'Sales Representative',
-  'HR Manager',
-  'Operations Manager',
-];
 
 const defaultUS = {
   country: 'United States',
@@ -67,11 +59,24 @@ const defaultOther = {
   state: '',
 };
 
+const incTitles = [
+  'Director',
+  'Secretary',
+  'Treasurer',
+  'CEO',
+  'CFO',
+  'President',
+];
+
+const llcTitles = ['Authorized Member (AMBR)', 'Manager'];
+
 export function AddPersonModal({
+  companyType,
   isOpen,
   onClose,
   onAdd,
 }: AddPersonModalProps) {
+  console.log(companyType, 'companyType');
   const [mandatoryError, setMandatoryError] = useState<boolean>(false);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
@@ -182,9 +187,9 @@ export function AddPersonModal({
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="flex gap-6">
-                  <div className="flex-1 space-y-6">
+                  <div className="flex-1 space-y-5">
                     <div>
-                      <div className="mb-2 font-bold text-sm">Full Name</div>
+                      <div className="mb-1 font-bold text-sm">Full Name</div>
                       <input
                         onChange={(e) =>
                           setFormData({ ...formData, fullName: e.target.value })
@@ -200,7 +205,7 @@ export function AddPersonModal({
                     </div>
 
                     <div>
-                      <div className="font-bold mb-2 text-sm">Email</div>
+                      <div className="font-bold mb-1 text-sm">Email</div>
                       <input
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
@@ -214,8 +219,8 @@ export function AddPersonModal({
                       />
                       <div className="mt-2">
                         <Checkbox
-                          wrapperClass={'h-4 w-4'}
-                          iconClass={'h-2 w-2'}
+                          wrapperClass={'h-4 w-4 min-w-4 min-h-4'}
+                          iconClass={'h-2.5 w-2.5'}
                           id={`Send invitation`}
                           title={'Send invitation'}
                           underInput={true}
@@ -233,14 +238,17 @@ export function AddPersonModal({
                     <div>
                       <div className="font-bold mb-2 text-sm">Titles</div>
                       <div className="mt-2 grid grid-cols-2 gap-y-1 gap-x-20 w-full">
-                        {titles.map((title, index) => (
+                        {(companyType === 'Corporation'
+                          ? incTitles
+                          : llcTitles
+                        ).map((title, index) => (
                           <Checkbox
                             key={index}
                             id={`${index}`}
                             title={title}
                             underInput={false}
-                            iconClass={'h-3 w-3'}
                             wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
+                            iconClass={'h-3 w-3'}
                             checked={formData.titles.includes(title)}
                             onChange={(value) => {
                               const newTitles = value
@@ -254,28 +262,19 @@ export function AddPersonModal({
                     </div>
                   </div>
 
-                  <div className="w-48 space-y-4">
-                    <div className="aspect-square rounded-lg border-2 border-dashed border-gray-300 p-2 flex flex-col items-center justify-center">
-                      {formData.picture ? (
-                        <img
-                          src={formData.picture}
-                          alt="Preview"
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <div className="text-center">
-                          <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                          <p className="mt-1 text-sm text-gray-500">
-                            Upload photo
-                          </p>
-                        </div>
-                      )}
+                  <div>
+                    <div className="font-bold mb-1 text-sm text-white">
+                      Photo
                     </div>
+
+                    <AvatarUpload />
                   </div>
                 </div>
 
                 <div>
-                  <div className="font-bold mb-2 text-sm">Document Date</div>
+                  <div className="font-bold mb-2 text-sm">
+                    Date Added to the Company
+                  </div>
                   <DatePicker
                     mandatoryError={mandatoryError}
                     value={dateValue}
