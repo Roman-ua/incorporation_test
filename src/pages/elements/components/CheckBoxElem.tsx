@@ -16,7 +16,7 @@ const CheckBoxElem = () => {
         status={false}
         hideStatus
       />
-      <div className="flex items-center justify-start gap-2">
+      <div className="flex flex-col items-start justify-start gap-2">
         <Checkbox
           id={`simple`}
           title={'Simple check'}

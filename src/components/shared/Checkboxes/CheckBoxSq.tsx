@@ -28,7 +28,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onChange(!checked);
       }}
       className={classNames(
-        underInput ? 'py-1' : 'py-3 px-3.5 hover:bg-gray-200/50',
+        underInput ? 'py-1' : 'py-2 px-2 hover:bg-gray-200/50',
         'w-fit flex items-center justify-start gap-x-2.5 rounded-md  transition-all duration-150 ease-in-out hover:cursor-pointer'
       )}
     >
