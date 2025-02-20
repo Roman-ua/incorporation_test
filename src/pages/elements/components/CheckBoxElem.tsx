@@ -61,7 +61,7 @@ const CheckBoxElem = () => {
           wrapperClass={'h-4 w-4 min-w-4 min-h-4'}
           id={`Send invitation`}
           title={'Send invitation'}
-          iconClass={'h-2 w-2'}
+          iconClass={'h-2.5 w-2.5'}
           underInput={true}
           checked={checkedUnder}
           onChange={(value) => setCheckedUnder(value)}
