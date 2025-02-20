@@ -8,6 +8,7 @@ interface CheckboxProps {
   checked: boolean;
   wrapperClass: string;
   underInput: boolean;
+  iconClass: string;
   onChange: (checked: boolean) => void;
 }
 
@@ -18,6 +19,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   underInput,
   wrapperClass,
+  iconClass,
 }) => {
   return (
     <div
@@ -26,8 +28,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onChange(!checked);
       }}
       className={classNames(
-        underInput ? 'py-1' : 'py-3 px-3.5 hover:bg-gray-50',
-        'w-fit flex items-center justify-start  rounded-md  transition-all duration-150 ease-in-out hover:cursor-pointer'
+        underInput ? 'py-1' : 'py-3 px-3.5 hover:bg-gray-200/50',
+        'w-fit flex items-center justify-start gap-x-2.5 rounded-md  transition-all duration-150 ease-in-out hover:cursor-pointer'
       )}
     >
       <button
@@ -41,12 +43,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <div
           className={`absolute transform transition-all duration-300 ${checked ? 'scale-100 opacity-100 animate-check-bounce' : 'scale-0 opacity-0'}`}
         >
-          <Check className="w-3 h-3 text-white" strokeWidth={3} />
+          <Check
+            className={classNames(iconClass, 'text-white font-semibold')}
+            strokeWidth={4}
+          />
         </div>
       </button>
-      <div className="text-sm font-semibold ml-2 whitespace-nowrap">
-        {title}
-      </div>
+      <div className="text-sm font-semibold whitespace-nowrap">{title}</div>
     </div>
   );
 };

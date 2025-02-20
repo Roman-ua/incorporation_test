@@ -215,6 +215,7 @@ export function AddPersonModal({
                       <div className="mt-2">
                         <Checkbox
                           wrapperClass={'h-4 w-4'}
+                          iconClass={'h-2 w-2'}
                           id={`Send invitation`}
                           title={'Send invitation'}
                           underInput={true}
@@ -238,6 +239,7 @@ export function AddPersonModal({
                             id={`${index}`}
                             title={title}
                             underInput={false}
+                            iconClass={'h-3 w-3'}
                             wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
                             checked={formData.titles.includes(title)}
                             onChange={(value) => {
