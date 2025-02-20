@@ -11,12 +11,14 @@ import FilesSection from './components/FilesSection';
 import Buttons from './components/Buttons';
 import LayoutElements from './components/LayoutElements';
 import SwitchElements from './components/SwitchElements';
+import CheckBoxElem from './components/CheckBoxElem';
 
 const Elements = () => {
   return (
     <div className="p-10">
       <SectionStatus />
       <CustomCheckBox />
+      <CheckBoxElem />
       <SwitchElements />
       <StateIcons />
       <USAddressFormElements />

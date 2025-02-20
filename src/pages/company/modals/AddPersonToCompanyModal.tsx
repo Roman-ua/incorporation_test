@@ -217,6 +217,7 @@ export function AddPersonModal({
                           wrapperClass={'h-4 w-4'}
                           id={`Send invitation`}
                           title={'Send invitation'}
+                          underInput={true}
                           checked={formData.sendInvitation}
                           onChange={(value) =>
                             setFormData({
@@ -230,12 +231,13 @@ export function AddPersonModal({
 
                     <div>
                       <div className="font-bold mb-2 text-sm">Titles</div>
-                      <div className="mt-2 grid grid-cols-2 gap-y-2 gap-x-20 w-full">
+                      <div className="mt-2 grid grid-cols-2 gap-y-1 gap-x-20 w-full">
                         {titles.map((title, index) => (
                           <Checkbox
                             key={index}
                             id={`${index}`}
                             title={title}
+                            underInput={false}
                             wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
                             checked={formData.titles.includes(title)}
                             onChange={(value) => {
