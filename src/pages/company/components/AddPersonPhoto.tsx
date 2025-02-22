@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { X, Camera } from 'lucide-react';
+import { Camera } from 'lucide-react';
 
 interface AvatarUploadProps {
   onFileSelect?: (file: File) => void;
@@ -56,13 +56,13 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex items-center jusify-start gap-6">
       <div
         className={`relative group cursor-pointer border border-dashed border-gray-200
-          ${preview ? 'w-36 h-32' : 'w-36 h-32'}
-          rounded-lg overflow-hidden transition-all duration-500 ease-out
+          ${preview ? 'w-32 h-32' : 'w-32 h-32'}
+          rounded-full overflow-hidden transition-all duration-500 ease-out
           ${isDragging ? 'scale-102 ring-2 ring-blue-500 ring-offset-4' : ''}
-          hover:shadow-lg`}
+          hover:shadow-sm`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -76,17 +76,6 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
               className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300" />
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                removeImage();
-              }}
-              className="absolute top-3 right-3 p-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-lg opacity-0
-                group-hover:opacity-100 transition-all duration-300 hover:bg-red-500 hover:text-white
-                transform translate-x-2 group-hover:translate-x-0"
-            >
-              <X size={14} />
-            </button>
           </>
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center transform transition-all duration-300">
@@ -97,14 +86,37 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
               />
               <Camera className="w-8 h-8 text-gray-900 relative" />
             </div>
-            <span className="mt-3 text-sm text-gray-900 py-1 px-1.5 bg-gray-200 rounded-md hover:bg-gray-300 hover:cursor-pointer transition-all duration-150 ease-in-out">
-              Choose a Photo
-            </span>
             <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
               <span>or drag it here</span>
             </div>
           </div>
         )}
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <span
+            onClick={triggerFileInput}
+            className="w-fit block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+          >
+            Choose a Photo
+          </span>
+
+          {preview && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                removeImage();
+              }}
+              className="w-fit mr-auto block rounded-md bg-red-50 border-red-50 px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:bg-red-100 hover:border-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+            >
+              Delete Photo
+            </button>
+          )}
+        </div>
+        <div className="text-xs text-gray-500">
+          Image should be at least 400 x 400 as a png or jpeg file
+        </div>
       </div>
 
       <input

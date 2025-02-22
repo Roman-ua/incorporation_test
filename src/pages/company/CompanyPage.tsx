@@ -21,6 +21,7 @@ import {
 import { useSetRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
 import { AddPersonModal } from './modals/AddPersonToCompanyModal';
+// import { format } from 'date-fns';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -41,6 +42,36 @@ function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+// const people = [
+//   {
+//     id: '1',
+//     picture: '',
+//     fullName: 'Lindsay Walton',
+//     titles: ['Accountant'],
+//     email: 'lindsay.walton@example.com',
+//     role: 'Member',
+//     status: 'Active',
+//     type: 'US',
+//     sendInvitation: true,
+//     dateAdded: format(new Date(), 'yyyy-MM-dd'),
+//     address: {},
+//   },
+//   {
+//     id: '2',
+//     picture: '',
+//     fullName: 'Clark Kent',
+//     titles: ['Manager', 'Director', 'Secretary', 'CTO'],
+//     email: 'clark.kent@example.com',
+//     role: 'Owner',
+//     type: 'Other',
+//     status: 'Inactive',
+//     sendInvitation: true,
+//     dateAdded: format(new Date(), 'yyyy-MM-dd'),
+//     address: {},
+//   },
+//   // More people...
+// ];
+
 const CompanyPage = () => {
   const storageData = localStorage.getItem('finalFormData');
   const localData = storageData ? JSON.parse(storageData) : undefined;
@@ -51,6 +82,7 @@ const CompanyPage = () => {
   const [open, setOpen] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [data, setData] = React.useState<MockCompany>(localData);
+  const [peopleState, setPeopleState] = React.useState([]);
 
   const navigate = useNavigate();
 
@@ -87,7 +119,10 @@ const CompanyPage = () => {
         companyType={data.companyType}
         isOpen={openAddPersonModal}
         onClose={() => setOpenAddPersonModal(false)}
-        onAdd={() => {}}
+        onAdd={(
+          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          person //@ts-expect-error
+        ) => setPeopleState((prevState) => [...prevState, person])}
       />
       <PageSign
         title={'COMPANY'}
@@ -282,7 +317,10 @@ const CompanyPage = () => {
           <div>{data.address.country}</div>
         </>
       </div>
-      <RelatedPeopleList addPersonHandler={() => setOpenAddPersonModal(true)} />
+      <RelatedPeopleList
+        peopleState={peopleState}
+        addPersonHandler={() => setOpenAddPersonModal(true)}
+      />
       {data?.registeredIn.split(' ')[2] === 'Florida' && (
         <AnnualReportsListFL />
       )}

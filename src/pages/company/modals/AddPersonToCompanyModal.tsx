@@ -11,6 +11,7 @@ import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import XBtn from '../../../components/shared/buttons/XBtn';
 import { AvatarUpload } from '../components/AddPersonPhoto';
+import { validateEmail } from '../../../utils/validators';
 
 export interface Person {
   id: string;
@@ -19,6 +20,7 @@ export interface Person {
   sendInvitation: boolean;
   titles: string[];
   dateAdded: string;
+  status: string;
   address: {
     type: 'US' | 'Other';
     street?: string;
@@ -61,12 +63,28 @@ const defaultOther = {
 
 const incTitles = [
   'Director',
-  'Secretary',
-  'Treasurer',
   'CEO',
+  'Treasurer',
   'CFO',
+  'Secretary',
   'President',
 ];
+
+const defaultPerson = {
+  fullName: '',
+  email: '',
+  sendInvitation: true,
+  titles: [] as string[],
+  dateAdded: format(new Date(), 'yyyy-MM-dd'),
+  addressType: 'US' as 'US' | 'Other',
+  status: 'Inactive',
+  street: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  country: '',
+  picture: '',
+};
 
 const llcTitles = ['Authorized Member (AMBR)', 'Manager'];
 
@@ -76,26 +94,21 @@ export function AddPersonModal({
   onClose,
   onAdd,
 }: AddPersonModalProps) {
-  console.log(companyType, 'companyType');
   const [mandatoryError, setMandatoryError] = useState<boolean>(false);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
   const [dateValue, setDateValue] = React.useState<string>('');
-  console.log(setMandatoryError, 'setMandatoryError');
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    sendInvitation: true,
-    titles: [] as string[],
-    dateAdded: format(new Date(), 'yyyy-MM-dd'),
-    addressType: 'US' as 'US' | 'Other',
-    street: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: '',
-    picture: '',
-  });
+  const [error, setError] = React.useState<string>('');
+  const [formData, setFormData] = useState(defaultPerson);
+
+  const cleanFormHandler = () => {
+    setFormData(defaultPerson);
+    setError('');
+    setDateValue('');
+    setAddress(defaultUS);
+    setSelected(1);
+    setMandatoryError(false);
+  };
 
   const formTypeHandler = (value: 1 | 2) => {
     if (value === 1) {
@@ -123,6 +136,7 @@ export function AddPersonModal({
       sendInvitation: formData.sendInvitation,
       titles: formData.titles,
       dateAdded: formData.dateAdded,
+      status: formData.status,
       address: {
         type: formData.addressType,
         street: formData.street,
@@ -136,7 +150,16 @@ export function AddPersonModal({
         'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400',
     };
     onAdd(person);
+    cleanFormHandler();
     onClose();
+  };
+
+  const handleBlurEmail = () => {
+    if (validateEmail(formData.email)) {
+      setError('');
+    } else {
+      setError('Email is not valid');
+    }
   };
 
   const inputCommonClasses =
@@ -173,7 +196,7 @@ export function AddPersonModal({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle bg-white shadow-xl rounded-md relative z-40"
+              className="inline-block w-full max-w-xl p-6 my-8 text-left align-middle bg-white shadow-xl rounded-md relative z-40"
             >
               <div className="flex justify-between items-center mb-6">
                 <Dialog.Title
@@ -185,9 +208,12 @@ export function AddPersonModal({
                 <XBtn clickHandler={onClose} />
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form className="space-y-6">
                 <div className="flex gap-6">
                   <div className="flex-1 space-y-5">
+                    <div>
+                      <AvatarUpload />
+                    </div>
                     <div>
                       <div className="mb-1 font-bold text-sm">Full Name</div>
                       <input
@@ -200,21 +226,27 @@ export function AddPersonModal({
                         )}
                         type="text"
                         placeholder="Full name"
+                        data-1p-ignore={true}
                         value={formData?.fullName}
                       />
                     </div>
 
-                    <div>
+                    <div className="relative">
                       <div className="font-bold mb-1 text-sm">Email</div>
                       <input
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
+                        onChange={(e) => {
+                          if (error) {
+                            setError('');
+                          }
+                          setFormData({ ...formData, email: e.target.value });
+                        }}
                         className={classNames(
                           'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                         )}
                         type="text"
+                        onBlur={handleBlurEmail}
                         placeholder="Email"
+                        data-1p-ignore={true}
                         value={formData.email}
                       />
                       <div className="mt-2">
@@ -233,11 +265,16 @@ export function AddPersonModal({
                           }
                         />
                       </div>
+                      {error && (
+                        <span className="text-red-500 text-sm font-semibold absolute bottom-1 right-0">
+                          {error}
+                        </span>
+                      )}
                     </div>
 
                     <div>
                       <div className="font-bold mb-2 text-sm">Titles</div>
-                      <div className="mt-2 grid grid-cols-2 gap-y-1 gap-x-20 w-full">
+                      <div className="mt-2 grid grid-cols-2 gap-y-1 gap-x-4 w-fit">
                         {(companyType === 'Corporation'
                           ? incTitles
                           : llcTitles
@@ -260,14 +297,6 @@ export function AddPersonModal({
                         ))}
                       </div>
                     </div>
-                  </div>
-
-                  <div>
-                    <div className="font-bold mb-1 text-sm text-white">
-                      Photo
-                    </div>
-
-                    <AvatarUpload />
                   </div>
                 </div>
 
@@ -322,13 +351,13 @@ export function AddPersonModal({
                 <div className="mr-auto flex items-center justify-end">
                   <div className="w-1/2" />
                   <div
-                    onClick={() => {}}
+                    onClick={onClose}
                     className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   >
                     Cancel
                   </div>
                   <div
-                    onClick={() => {}}
+                    onClick={handleSubmit}
                     className="block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   >
                     Submit

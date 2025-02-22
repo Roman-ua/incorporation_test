@@ -2,24 +2,7 @@ import SectionHeading from './SectionHeading';
 import { LuArrowUpRight } from 'react-icons/lu';
 import React from 'react';
 import { classNames } from '../../../utils/helpers';
-
-const people = [
-  {
-    name: 'Lindsay Walton',
-    title: 'Accountant',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-    status: 'Active',
-  },
-  {
-    name: 'Clark Kent',
-    title: 'Manager, Director, Secretary, CTO',
-    email: 'clark.kent@example.com',
-    role: 'Owner',
-    status: 'Inactive',
-  },
-  // More people...
-];
+import { Person } from '../modals/AddPersonToCompanyModal';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -38,9 +21,10 @@ const statusBadge = (status: string) => {
 
 interface IProps {
   addPersonHandler: () => void;
+  peopleState: Person[];
 }
 
-const RelatedPeopleList = ({ addPersonHandler }: IProps) => {
+const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
   return (
     <>
       <SectionHeading
@@ -51,22 +35,27 @@ const RelatedPeopleList = ({ addPersonHandler }: IProps) => {
       />
       <div className="w-full overflow-hidden mb-12 hover:cursor-pointer">
         <div>
-          {people.map((person, rowIndex) => (
+          {peopleState.map((person, rowIndex) => (
             <div
               key={rowIndex}
               className={`flex py-3 group transition-all ease-in-out duration-150`}
             >
               <div className="whitespace-nowrap overflow-hidden w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
                 <span className="mr-2 w-8 h-8 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
-                  {person.name[0]}
+                  {person.fullName[0]}
                 </span>
-                {person.name}
+                {person.fullName}
               </div>
               <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start text-gray-900">
                 {person.email}
               </div>
               <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-start">
-                {person.title}
+                {person.titles.map((title, index) => (
+                  <span key={title} className="pr-1">
+                    {title}
+                    {index < person.titles.length - 1 ? ',' : ''}
+                  </span>
+                ))}
               </div>
               <div className="whitespace-nowrap overflow-hidden w-[24%] px-2 flex items-center justify-end text-gray-900">
                 <span
