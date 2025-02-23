@@ -8,7 +8,6 @@ import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/Simp
 import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import { AddressFields } from '../../../interfaces/interfaces';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
-import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import XBtn from '../../../components/shared/buttons/XBtn';
 import { AvatarUpload } from '../components/AddPersonPhoto';
 import { validateEmail } from '../../../utils/validators';
@@ -97,14 +96,12 @@ export function AddPersonModal({
   const [mandatoryError, setMandatoryError] = useState<boolean>(false);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
-  const [dateValue, setDateValue] = React.useState<string>('');
   const [error, setError] = React.useState<string>('');
   const [formData, setFormData] = useState(defaultPerson);
 
   const cleanFormHandler = () => {
     setFormData(defaultPerson);
     setError('');
-    setDateValue('');
     setAddress(defaultUS);
     setSelected(1);
     setMandatoryError(false);
@@ -129,6 +126,12 @@ export function AddPersonModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.fullName || !formData.titles.length) {
+      setMandatoryError(true);
+      return;
+    }
+
     const person: Person = {
       id: crypto.randomUUID(),
       fullName: formData.fullName,
@@ -160,6 +163,10 @@ export function AddPersonModal({
     } else {
       setError('Email is not valid');
     }
+  };
+
+  const disabledButtonFlag = () => {
+    return !formData.fullName || formData.titles.length <= 0;
   };
 
   const inputCommonClasses =
@@ -255,6 +262,7 @@ export function AddPersonModal({
                           iconClass={'h-2.5 w-2.5'}
                           id={`Send invitation`}
                           title={'Send invitation'}
+                          mandatoryError={false}
                           underInput={true}
                           checked={formData.sendInvitation}
                           onChange={(value) =>
@@ -286,6 +294,9 @@ export function AddPersonModal({
                             underInput={false}
                             wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
                             iconClass={'h-3 w-3'}
+                            mandatoryError={
+                              mandatoryError && formData.titles.length <= 0
+                            }
                             checked={formData.titles.includes(title)}
                             onChange={(value) => {
                               const newTitles = value
@@ -298,17 +309,6 @@ export function AddPersonModal({
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div>
-                  <div className="font-bold mb-2 text-sm">
-                    Date Added to the Company
-                  </div>
-                  <DatePicker
-                    mandatoryError={mandatoryError}
-                    value={dateValue}
-                    setValue={setDateValue}
-                  />
                 </div>
 
                 <div>
@@ -331,7 +331,7 @@ export function AddPersonModal({
                       <SimpleAddressForm
                         disabledFlag={false}
                         inputCommonClasses={inputCommonClasses}
-                        requiredError={mandatoryError}
+                        requiredError={false}
                         countryDisabled={true}
                         data={address}
                         setData={addressHandler}
@@ -340,7 +340,7 @@ export function AddPersonModal({
                       <SimpleAddressFormNotUS
                         disabledFlag={false}
                         inputCommonClasses={inputCommonClasses}
-                        requiredError={mandatoryError}
+                        requiredError={false}
                         data={address}
                         setData={addressHandler}
                       />
@@ -358,7 +358,12 @@ export function AddPersonModal({
                   </div>
                   <div
                     onClick={handleSubmit}
-                    className="block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                    className={classNames(
+                      !disabledButtonFlag()
+                        ? 'bg-mainBlue hover:bg-sideBarBlue '
+                        : 'bg-gray-500',
+                      'block rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer'
+                    )}
                   >
                     Submit
                   </div>

@@ -8,6 +8,7 @@ interface CheckboxProps {
   checked: boolean;
   wrapperClass: string;
   underInput: boolean;
+  mandatoryError: boolean;
   iconClass: string;
   onChange: (checked: boolean) => void;
 }
@@ -19,6 +20,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   underInput,
   wrapperClass,
+  mandatoryError,
   iconClass,
 }) => {
   return (
@@ -29,6 +31,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       }}
       className={classNames(
         underInput ? 'py-1' : 'py-2 px-2 hover:bg-gray-200/50',
+        mandatoryError ? 'bg-red-50' : '',
         'flex items-center justify-start gap-x-2.5 rounded-md  transition-all duration-150 ease-in-out hover:cursor-pointer'
       )}
     >

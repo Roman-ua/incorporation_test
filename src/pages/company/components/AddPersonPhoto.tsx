@@ -59,7 +59,7 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
     <div className="flex items-center jusify-start gap-6">
       <div
         className={`relative group cursor-pointer border border-dashed border-gray-200
-          ${preview ? 'w-32 h-32' : 'w-32 h-32'}
+          ${preview ? 'w-24 h-24' : 'w-24 h-24'}
           rounded-full overflow-hidden transition-all duration-500 ease-out
           ${isDragging ? 'scale-102 ring-2 ring-blue-500 ring-offset-4' : ''}
           hover:shadow-sm`}
@@ -84,10 +84,7 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
                 className="absolute -inset-4 rounded-full opacity-20
                 group-hover:opacity-40 blur-lg transition-opacity duration-300"
               />
-              <Camera className="w-8 h-8 text-gray-900 relative" />
-            </div>
-            <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
-              <span>or drag it here</span>
+              <Camera className="w-8 h-8 text-gray-700 relative" />
             </div>
           </div>
         )}

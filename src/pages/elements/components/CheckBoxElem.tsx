@@ -18,6 +18,7 @@ const CheckBoxElem = () => {
       />
       <div className="flex flex-col items-start justify-start gap-2">
         <Checkbox
+          mandatoryError={false}
           id={`simple`}
           title={'Simple check'}
           underInput={false}
@@ -29,6 +30,7 @@ const CheckBoxElem = () => {
           }}
         />
         <Checkbox
+          mandatoryError={false}
           id={`simple`}
           title={'Simple check 2'}
           underInput={false}
@@ -40,6 +42,7 @@ const CheckBoxElem = () => {
           }}
         />
         <Checkbox
+          mandatoryError={false}
           id={`simple`}
           title={'Simple check 3'}
           underInput={false}
@@ -58,6 +61,7 @@ const CheckBoxElem = () => {
       />
       <div className="mt-2">
         <Checkbox
+          mandatoryError={false}
           wrapperClass={'h-4 w-4 min-w-4 min-h-4'}
           iconClass={'h-2.5 w-2.5'}
           id={`Send invitation`}
