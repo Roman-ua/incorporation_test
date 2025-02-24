@@ -49,6 +49,7 @@ export interface ReportData {
 }
 
 export type AddressFields = {
+  type?: string;
   country?: string;
   address0?: string;
   address1?: string;

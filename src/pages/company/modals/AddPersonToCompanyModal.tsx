@@ -20,14 +20,7 @@ export interface Person {
   titles: string[];
   dateAdded: string;
   status: string;
-  address: {
-    type: 'US' | 'Other';
-    street?: string;
-    city?: string;
-    state?: string;
-    zipCode?: string;
-    country?: string;
-  };
+  address: AddressFields;
   picture: string;
 }
 
@@ -141,14 +134,7 @@ export function AddPersonModal({
       titles: formData.titles,
       dateAdded: formData.dateAdded,
       status: formData.status,
-      address: {
-        type: formData.addressType,
-        street: formData.street,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        country: formData.country,
-      },
+      address: address,
       picture:
         formData.picture ||
         'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400',
@@ -170,9 +156,8 @@ export function AddPersonModal({
     return !formData.fullName || formData.titles.length <= 0 || fullNameError;
   };
 
-  const fullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const fullNameValidator = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
-    setFormData({ ...formData, fullName: e.target.value });
 
     // Regex: Ensures at least two words (first and last name) with a space in between
     const fullNameRegex = /^[A-Za-z]+ [A-Za-z]+$/;
@@ -181,6 +166,14 @@ export function AddPersonModal({
       setFullNameError('');
     } else {
       setFullNameError('Provide first name and last name.');
+    }
+  };
+
+  const fullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, fullName: e.target.value });
+
+    if (fullNameError) {
+      setFullNameError('');
     }
   };
 
@@ -246,6 +239,7 @@ export function AddPersonModal({
                         )}
                         type="text"
                         placeholder="Full name"
+                        onBlur={fullNameValidator}
                         data-1p-ignore={true}
                         value={formData?.fullName}
                       />

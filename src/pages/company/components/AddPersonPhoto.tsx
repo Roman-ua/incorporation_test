@@ -94,9 +94,9 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
         <div className="flex items-center gap-4 mb-1">
           <span
             onClick={triggerFileInput}
-            className="w-fit text-sm font-bold underline text-gray-700 hover:text-gray-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
+            className="w-fit text-sm font-bold text-gray-700 hover:text-gray-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
           >
-            Choose a Photo
+            {preview ? 'Change' : 'Select image'}
           </span>
 
           {preview && (
@@ -112,7 +112,7 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
           )}
         </div>
         <div className="text-xs text-gray-500">
-          Image should be at least 400 x 400 as a png or jpeg file
+          Image should be at least 400 x 400 px as a png or jpeg file.
         </div>
       </div>
 
