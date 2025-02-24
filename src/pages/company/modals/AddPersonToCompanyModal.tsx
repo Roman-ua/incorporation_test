@@ -97,6 +97,7 @@ export function AddPersonModal({
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
   const [error, setError] = React.useState<string>('');
+  const [fullNameError, setFullNameError] = React.useState<string>('');
   const [formData, setFormData] = useState(defaultPerson);
 
   const cleanFormHandler = () => {
@@ -127,7 +128,7 @@ export function AddPersonModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.fullName || !formData.titles.length) {
+    if (!formData.fullName || !formData.titles.length || fullNameError) {
       setMandatoryError(true);
       return;
     }
@@ -166,7 +167,21 @@ export function AddPersonModal({
   };
 
   const disabledButtonFlag = () => {
-    return !formData.fullName || formData.titles.length <= 0;
+    return !formData.fullName || formData.titles.length <= 0 || fullNameError;
+  };
+
+  const fullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+    setFormData({ ...formData, fullName: e.target.value });
+
+    // Regex: Ensures at least two words (first and last name) with a space in between
+    const fullNameRegex = /^[A-Za-z]+ [A-Za-z]+$/;
+
+    if (!value || fullNameRegex.test(value)) {
+      setFullNameError('');
+    } else {
+      setFullNameError('Provide first name and last name.');
+    }
   };
 
   const inputCommonClasses =
@@ -221,12 +236,10 @@ export function AddPersonModal({
                     <div>
                       <AvatarUpload />
                     </div>
-                    <div>
+                    <div className="relative">
                       <div className="mb-1 font-bold text-sm">Full Name</div>
                       <input
-                        onChange={(e) =>
-                          setFormData({ ...formData, fullName: e.target.value })
-                        }
+                        onChange={fullNameHandler}
                         className={classNames(
                           'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
                           mandatoryError && !formData?.fullName && 'bg-red-50'
@@ -236,6 +249,11 @@ export function AddPersonModal({
                         data-1p-ignore={true}
                         value={formData?.fullName}
                       />
+                      {fullNameError && (
+                        <span className="text-red-500 text-sm font-semibold absolute -bottom-6 right-0">
+                          {fullNameError}
+                        </span>
+                      )}
                     </div>
 
                     <div className="relative">

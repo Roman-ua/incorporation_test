@@ -56,10 +56,10 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
   };
 
   return (
-    <div className="flex items-center jusify-start gap-6">
+    <div className="flex items-center jusify-start gap-4">
       <div
         className={`relative group cursor-pointer border border-dashed border-gray-200
-          ${preview ? 'w-24 h-24' : 'w-24 h-24'}
+          ${preview ? 'w-12 h-12' : 'w-12 h-12'}
           rounded-full overflow-hidden transition-all duration-500 ease-out
           ${isDragging ? 'scale-102 ring-2 ring-blue-500 ring-offset-4' : ''}
           hover:shadow-sm`}
@@ -84,17 +84,17 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
                 className="absolute -inset-4 rounded-full opacity-20
                 group-hover:opacity-40 blur-lg transition-opacity duration-300"
               />
-              <Camera className="w-8 h-8 text-gray-700 relative" />
+              <Camera className="w-4 h-4 text-gray-700 relative" />
             </div>
           </div>
         )}
       </div>
 
       <div>
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-1">
           <span
             onClick={triggerFileInput}
-            className="w-fit block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+            className="w-fit text-sm font-bold underline text-gray-700 hover:text-gray-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
           >
             Choose a Photo
           </span>
