@@ -91,7 +91,7 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
       </div>
 
       <div>
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center gap-4 mb-1">
           <span
             onClick={triggerFileInput}
             className="w-fit text-sm font-bold underline text-gray-700 hover:text-gray-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
@@ -105,7 +105,7 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
                 e.stopPropagation();
                 removeImage();
               }}
-              className="w-fit mr-auto block rounded-md bg-red-50 border-red-50 px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:bg-red-100 hover:border-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+              className="text-sm font-bold text-red-700 hover:text-red-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
             >
               Delete Photo
             </button>
