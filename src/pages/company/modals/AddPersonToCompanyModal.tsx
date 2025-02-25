@@ -148,7 +148,7 @@ export function AddPersonModal({
     if (validateEmail(formData.email)) {
       setError('');
     } else {
-      setError('Email is not valid');
+      setError('Provide a valid email.');
     }
   };
 
@@ -187,7 +187,7 @@ export function AddPersonModal({
           as={motion.div}
           static
           open={isOpen}
-          onClose={onClose}
+          onClose={() => {}}
           className="fixed inset-0 z-50 overflow-y-auto"
         >
           <div className="min-h-screen px-4 text-center">
@@ -234,8 +234,10 @@ export function AddPersonModal({
                       <input
                         onChange={fullNameHandler}
                         className={classNames(
-                          'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
-                          mandatoryError && !formData?.fullName && 'bg-red-50'
+                          'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                          mandatoryError && !formData?.fullName
+                            ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
+                            : 'focus:ring-mainBlue'
                         )}
                         type="text"
                         placeholder="Full name"
@@ -286,7 +288,7 @@ export function AddPersonModal({
                         />
                       </div>
                       {error && (
-                        <span className="text-red-500 text-sm font-semibold absolute bottom-1 right-0">
+                        <span className="text-red-500 text-sm font-semibold absolute bottom-3 right-0">
                           {error}
                         </span>
                       )}

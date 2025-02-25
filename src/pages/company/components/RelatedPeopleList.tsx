@@ -39,7 +39,7 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
           {peopleState.map((person, rowIndex) => (
             <div
               key={rowIndex}
-              className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`}
+              className={`flex pt-4 group transition-all ease-in-out duration-150 items-start justify-start`}
             >
               <div
                 className={classNames(
@@ -56,7 +56,7 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
                   <span className="text-gray-400">{person.email}</span>
                 </div>
               </div>
-              <div className="whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
+              <div className="whitespace-nowrap w-[34%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
                 <div className="w-full pr-2 text-gray-700 text-sm">
                   <div>
                     <span>{person.address.address0}, </span>
@@ -87,7 +87,7 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
                   <div>{person.address.country}</div>
                 </div>
               </div>
-              <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start">
+              <div className="whitespace-nowrap w-[18%] max-lg:hidden px-2 flex items-center justify-start flex-wrap">
                 {person.titles.map((title, index) => (
                   <span key={title} className="pr-1">
                     {title}

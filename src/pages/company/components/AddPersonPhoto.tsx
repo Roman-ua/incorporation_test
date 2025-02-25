@@ -107,7 +107,7 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
               }}
               className="text-sm font-bold text-red-700 hover:text-red-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
             >
-              Delete Photo
+              Delete
             </button>
           )}
         </div>
