@@ -100,6 +100,8 @@ export function AddPersonModal({
     setAddress(defaultUS);
     setSelected(1);
     setMandatoryError(false);
+    setIsNotValidEmail(false);
+    setFullNameError('');
   };
 
   const formTypeHandler = (value: 1 | 2) => {
@@ -146,7 +148,7 @@ export function AddPersonModal({
   };
 
   const handleBlurEmail = () => {
-    if (validateEmail(formData.email)) {
+    if (validateEmail(formData.email) || !formData.email) {
       setIsNotValidEmail(false);
       setError('');
     } else {
@@ -162,8 +164,7 @@ export function AddPersonModal({
   const fullNameValidator = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
 
-    // Regex: Ensures at least two words (first and last name) with a space in between
-    const fullNameRegex = /^[A-Za-z]+ [A-Za-z]+$/;
+    const fullNameRegex = /^[A-Za-zА-Яа-яЁё]+(\s+[A-Za-zА-Яа-яЁё]+)+$/;
 
     if (!value || fullNameRegex.test(value)) {
       setFullNameError('');
@@ -239,7 +240,7 @@ export function AddPersonModal({
                         className={classNames(
                           'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
                           fullNameError &&
-                            'border-red-400 focus:ring-red-400 focus:border-red-400',
+                            'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
                           mandatoryError && !formData?.fullName
                             ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
                             : 'focus:ring-mainBlue'
@@ -269,7 +270,7 @@ export function AddPersonModal({
                         }}
                         className={classNames(
                           isNotValidEmail &&
-                            'border-red-400 focus:ring-red-400 focus:border-red-400',
+                            'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
                           'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                         )}
                         type="text"
@@ -373,7 +374,10 @@ export function AddPersonModal({
                 <div className="mr-auto flex items-center justify-end">
                   <div className="w-1/2" />
                   <div
-                    onClick={onClose}
+                    onClick={() => {
+                      cleanFormHandler();
+                      onClose();
+                    }}
                     className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   >
                     Cancel
