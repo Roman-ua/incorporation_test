@@ -43,10 +43,10 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
             >
               <div
                 className={classNames(
-                  'whitespace-nowrap max-lg:w-[34%] max-sm:w-1/2 pr-2 flex items-center justify-start  text-gray-900 w-[28%]'
+                  'whitespace-nowrap max-lg:w-[24%] max-sm:w-1/2 pr-2 flex items-center justify-start  text-gray-900 w-[20%]'
                 )}
               >
-                <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
+                <span className="mr-4 min-w-7 capitalize min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
                   {person.fullName[0]}
                 </span>
                 <div className="text-sm flex flex-col items-start justify-start">
@@ -56,44 +56,46 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
                   <span className="text-gray-400">{person.email}</span>
                 </div>
               </div>
-              <div className="whitespace-nowrap w-[34%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start">
-                <div className="w-full pr-2 text-gray-700 text-sm">
-                  <div>
-                    <span>{person.address.address0}, </span>
-                    {person.address.address1 && (
-                      <span>{person.address.address1}</span>
-                    )}
-                  </div>
-                  <div>
-                    {person.address.address2 && (
-                      <span>{person.address.address2}</span>
-                    )}
-                    {person.address.address3 && (
-                      <span>
-                        {person.address.address2 ? ',' : ''}{' '}
-                        {person.address.address3}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <span>{person.address.city}, </span>
-                    <span>
-                      {USStates.find(
-                        (item) => item.title === person.address.state
-                      )?.value || ''}{' '}
-                    </span>
-                    <span>{person.address.zip}</span>
-                  </div>
-                  <div>{person.address.country}</div>
-                </div>
-              </div>
-              <div className="whitespace-nowrap w-[18%] max-lg:hidden px-2 flex items-center justify-start flex-wrap">
+              <div className="whitespace-nowrap w-[18%] max-lg:hidden px-2 mr-16 flex items-center justify-start flex-wrap">
                 {person.titles.map((title, index) => (
                   <span key={title} className="pr-1">
                     {title}
                     {index < person.titles.length - 1 ? ',' : ''}
                   </span>
                 ))}
+              </div>
+              <div className="whitespace-nowrap w-[30%] max-lg:w-[30%] max-sm:w-1/2 px-2 flex items-center justify-start">
+                {person.address.address0 && (
+                  <div className="w-full pr-2 text-gray-700 text-sm">
+                    <div>
+                      <span>{person.address.address0}, </span>
+                      {person.address.address1 && (
+                        <span>{person.address.address1}</span>
+                      )}
+                    </div>
+                    <div>
+                      {person.address.address2 && (
+                        <span>{person.address.address2}</span>
+                      )}
+                      {person.address.address3 && (
+                        <span>
+                          {person.address.address2 ? ',' : ''}{' '}
+                          {person.address.address3}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <span>{person.address.city}, </span>
+                      <span>
+                        {USStates.find(
+                          (item) => item.title === person.address.state
+                        )?.value || ''}{' '}
+                      </span>
+                      <span>{person.address.zip}</span>
+                    </div>
+                    <div>{person.address.country}</div>
+                  </div>
+                )}
               </div>
               <div className="pl-2 flex items-center justify-end ml-auto">
                 <span

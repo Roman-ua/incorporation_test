@@ -91,6 +91,7 @@ export function AddPersonModal({
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
   const [error, setError] = React.useState<string>('');
   const [fullNameError, setFullNameError] = React.useState<string>('');
+  const [isNotValidEmail, setIsNotValidEmail] = React.useState<boolean>(false);
   const [formData, setFormData] = useState(defaultPerson);
 
   const cleanFormHandler = () => {
@@ -146,8 +147,10 @@ export function AddPersonModal({
 
   const handleBlurEmail = () => {
     if (validateEmail(formData.email)) {
+      setIsNotValidEmail(false);
       setError('');
     } else {
+      setIsNotValidEmail(true);
       setError('Provide a valid email.');
     }
   };
@@ -235,6 +238,8 @@ export function AddPersonModal({
                         onChange={fullNameHandler}
                         className={classNames(
                           'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                          fullNameError &&
+                            'border-red-400 focus:ring-red-400 focus:border-red-400',
                           mandatoryError && !formData?.fullName
                             ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
                             : 'focus:ring-mainBlue'
@@ -257,11 +262,14 @@ export function AddPersonModal({
                       <input
                         onChange={(e) => {
                           if (error) {
+                            setIsNotValidEmail(false);
                             setError('');
                           }
                           setFormData({ ...formData, email: e.target.value });
                         }}
                         className={classNames(
+                          isNotValidEmail &&
+                            'border-red-400 focus:ring-red-400 focus:border-red-400',
                           'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                         )}
                         type="text"
