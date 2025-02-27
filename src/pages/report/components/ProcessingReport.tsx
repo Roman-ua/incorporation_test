@@ -142,7 +142,7 @@ const ProcessingReport = () => {
           />
         </div>
         <div className="mx-auto">
-          <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="bg-gray-100 px-6 py-8 text-gray-900">
               <p className="mt-2 opacity-90">
                 Follow these steps to process customer orders and annual reports
