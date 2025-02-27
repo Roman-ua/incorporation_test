@@ -65,7 +65,7 @@ const incTitles = [
 const defaultPerson = {
   fullName: '',
   email: '',
-  sendInvitation: true,
+  sendInvitation: false,
   titles: [] as string[],
   dateAdded: format(new Date(), 'yyyy-MM-dd'),
   addressType: 'US' as 'US' | 'Other',
