@@ -24,6 +24,7 @@ import { Person } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
 import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
 import UnsavedChanges from '../../components/shared/Modals/sharedModals/UnsavedChanges';
+import ProcessingReport from './components/ProcessingReport';
 
 const AnnualReportReview = () => {
   const [dataDuplicate] = useState(mockReportData);
@@ -43,7 +44,7 @@ const AnnualReportReview = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (currentStep === 4) {
+      if (currentStep === 5) {
         setConfetti(true);
       }
     }, 300);
@@ -563,6 +564,11 @@ const AnnualReportReview = () => {
             </form>
           )}
           {currentStep === 4 && (
+            <div className="w-full relative">
+              <ProcessingReport />
+            </div>
+          )}
+          {currentStep === 5 && (
             <div className="w-full relative">
               <div className="w-full flex items-center justify-start flex-col max-lg:pt-10">
                 <IconCircleCheckFilled className="w-20 h-20 text-green-500" />

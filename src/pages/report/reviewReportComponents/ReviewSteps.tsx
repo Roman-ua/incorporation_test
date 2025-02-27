@@ -24,9 +24,14 @@ const stepsData = [
     id: 3,
   },
   {
-    name: 'Confirmed 🎉',
+    name: 'Processing',
     status: 'upcoming',
     id: 4,
+  },
+  {
+    name: 'Confirmed 🎉',
+    status: 'upcoming',
+    id: 5,
   },
 ];
 
@@ -52,7 +57,7 @@ const ReviewStepsProgress = ({
 
     const currentStepIndex = data.findIndex((item) => item.id === currentStep);
     data[currentStepIndex].status =
-      data[currentStepIndex].id === 4 ? 'complete' : 'current';
+      data[currentStepIndex].id === 5 ? 'complete' : 'current';
 
     data.forEach((item, index) => {
       if (!visitedSteps.includes(item.id) && item.id !== currentStep) {
@@ -95,7 +100,7 @@ const ReviewStepsProgress = ({
                   <div
                     className={classNames(
                       'absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-200 max-lg:-right-4 max-lg:top-2 max-lg:left-auto max-lg:h-0.5 max-lg:w-2',
-                      currentStep === 4 ? 'bg-green-400' : 'bg-gray-200'
+                      currentStep === 5 ? 'bg-green-400' : 'bg-gray-200'
                     )}
                     aria-hidden="true"
                   />
@@ -105,13 +110,13 @@ const ReviewStepsProgress = ({
                     <span
                       className={classNames(
                         'relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-gray-200',
-                        currentStep === 4 ? 'bg-green-400' : 'bg-gray-200'
+                        currentStep === 5 ? 'bg-green-400' : 'bg-gray-200'
                       )}
                     >
                       <CheckIcon
                         className={classNames(
                           'h-2.5 w-2.5 font-bold',
-                          currentStep === 4 ? 'text-white' : 'text-gray-700'
+                          currentStep === 5 ? 'text-white' : 'text-gray-700'
                         )}
                         aria-hidden="true"
                       />
