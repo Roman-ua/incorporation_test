@@ -9,7 +9,7 @@ import {
   // File,
   FileText,
   // CheckCircle,
-  ChevronRight,
+  // ChevronRight,
   // ChevronDown,
   Upload,
   X,
@@ -87,7 +87,7 @@ const steps = [
 ];
 
 const ProcessingReport = () => {
-  const [activeStep, setActiveStep] = useState<number | null>(null);
+  // const [activeStep, setActiveStep] = useState<number | null>(null);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<{ [key: number]: File[] }>(
     {}
@@ -95,9 +95,9 @@ const ProcessingReport = () => {
 
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
-  const toggleStep = (index: number) => {
-    setActiveStep(activeStep === index ? null : index);
-  };
+  // const toggleStep = (index: number) => {
+  //   setActiveStep(activeStep === index ? null : index);
+  // };
 
   const markAsCompleted = (index: number) => {
     if (completedSteps.includes(index)) {
@@ -144,6 +144,19 @@ const ProcessingReport = () => {
             icon={<></>}
           />
         </div>
+        <div className="flex items-center mb-5">
+          <div className="bg-gray-700 px-3 py-1 text-white rounded-full text-sm font-medium">
+            {completedSteps.length} of {steps.length} tasks completed
+          </div>
+          <div className="ml-4 bg-white h-2 flex-1 rounded-full overflow-hidden">
+            <div
+              className="bg-blue-400 h-full transition-all duration-500 ease-out"
+              style={{
+                width: `${(completedSteps.length / steps.length) * 100}%`,
+              }}
+            ></div>
+          </div>
+        </div>
         <div className="space-y-4 mb-8">
           {steps.map((step, index) => (
             <div
@@ -156,7 +169,7 @@ const ProcessingReport = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  toggleStep(index);
+                  // toggleStep(index);
                 }}
               >
                 <Checkbox
@@ -180,20 +193,22 @@ const ProcessingReport = () => {
                 </div>
 
                 <div className="flex-shrink-0 ml-2 text-gray-400">
-                  <ChevronRight
-                    className={`w-5 h-5 transition-transform duration-200 ${
-                      activeStep === index ? 'transform rotate-90' : ''
-                    }`}
-                  />
+                  <span className="text-gray-700 font-bold">{index + 1}</span>
+                  {/*<ChevronRight*/}
+                  {/*  className={`w-5 h-5 transition-transform duration-200 ${*/}
+                  {/*    activeStep === index ? 'transform rotate-90' : ''*/}
+                  {/*  }`}*/}
+                  {/*/>*/}
                 </div>
               </div>
 
               {/* Task details */}
               <div
                 className={`overflow-hidden transition-all duration-300 ${
-                  activeStep === index
-                    ? 'max-h-96 border-t border-gray-200'
-                    : 'max-h-0'
+                  'max-h-96 border-t border-gray-200'
+                  // activeStep === index
+                  //   ? 'max-h-96 border-t border-gray-200'
+                  //   : 'max-h-0'
                 }`}
               >
                 <div className="px-4 py-3 bg-gray-50">
@@ -250,7 +265,7 @@ const ProcessingReport = () => {
                           e.stopPropagation();
                           triggerFileInput(index);
                         }}
-                        className="inline-flex items-center text-xs font-medium text-blue-500 hover:text-blue-600"
+                        className="inline-flex px-3 py-2 hover:bg-gray-100 rounded-md items-center text-xs font-medium text-blue-500 hover:text-blue-600 transition-all duration-200 ease-in-out"
                       >
                         <Upload className="w-3.5 h-3.5 mr-1" />
                         {step.fileUploadLabel || 'Upload file'}

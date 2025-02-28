@@ -37,14 +37,14 @@ const AnnualReportReview = () => {
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
   const [currentStep, setCurrentStep] = useState<number>(3);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0, 1, 2]);
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(true); // TO DO need to change to false for make steps logic works
   const [discardModal, setDiscardModal] = useState<boolean>(false);
 
   const [dirtyFlag, setDirtyFlag] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (currentStep === 5) {
+      if (currentStep === 4) {
         setConfetti(true);
       }
     }, 300);
@@ -565,11 +565,6 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 4 && (
             <div className="w-full relative">
-              <ProcessingReport />
-            </div>
-          )}
-          {currentStep === 5 && (
-            <div className="w-full relative">
               <div className="w-full flex items-center justify-start flex-col max-lg:pt-10">
                 <IconCircleCheckFilled className="w-20 h-20 text-green-500" />
                 <div className="text-xl font-semibold mt-4 text-gray-700 mb-4">
@@ -602,6 +597,11 @@ const AnnualReportReview = () => {
                   />
                 </div>
               </div>
+            </div>
+          )}
+          {currentStep === 5 && (
+            <div className="w-full relative">
+              <ProcessingReport />
             </div>
           )}
         </div>
