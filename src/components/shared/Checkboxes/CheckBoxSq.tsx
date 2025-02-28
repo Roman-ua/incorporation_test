@@ -27,6 +27,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     <div
       onClick={(e) => {
         e.preventDefault();
+        e.stopPropagation();
         onChange(!checked);
       }}
       className={classNames(

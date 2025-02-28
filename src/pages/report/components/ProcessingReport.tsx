@@ -6,15 +6,18 @@ import {
   Users,
   DollarSign,
   Save,
-  File,
+  // File,
   FileText,
-  CheckCircle,
+  // CheckCircle,
   ChevronRight,
-  ChevronDown,
+  // ChevronDown,
   Upload,
   X,
+  // Check,
+  FileIcon,
 } from 'lucide-react';
 import PageSign from '../../../components/shared/PageSign';
+import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 
 const steps = [
   {
@@ -141,194 +144,123 @@ const ProcessingReport = () => {
             icon={<></>}
           />
         </div>
-        <div className="mx-auto">
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="bg-gray-100 px-6 py-8 text-gray-900">
-              <p className="mt-2 opacity-90">
-                Follow these steps to process customer orders and annual reports
-              </p>
-              <div className="mt-4 flex items-center">
-                <div className="bg-gray-700 px-3 py-1 text-white rounded-full text-sm font-medium">
-                  {completedSteps.length} of {steps.length} tasks completed
+        <div className="space-y-4 mb-8">
+          {steps.map((step, index) => (
+            <div
+              key={index}
+              className="border border-gray-200 rounded-md overflow-hidden"
+            >
+              {/* Task header */}
+              <div
+                className="px-4 py-3 flex items-center cursor-pointer bg-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  toggleStep(index);
+                }}
+              >
+                <Checkbox
+                  wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
+                  iconClass={'h-3 w-3'}
+                  id={`Send invitation`}
+                  title={''}
+                  mandatoryError={false}
+                  underInput={true}
+                  checked={completedSteps.includes(index)}
+                  onChange={() => markAsCompleted(index)}
+                />
+
+                <div className="flex-grow ml-1">
+                  <h3 className="text font-medium text-gray-700">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-0.5">
+                    {step.description}
+                  </p>
                 </div>
-                <div className="ml-4 bg-white h-2 flex-1 rounded-full overflow-hidden">
-                  <div
-                    className="bg-green-400 h-full transition-all duration-500 ease-out"
-                    style={{
-                      width: `${(completedSteps.length / steps.length) * 100}%`,
-                    }}
-                  ></div>
+
+                <div className="flex-shrink-0 ml-2 text-gray-400">
+                  <ChevronRight
+                    className={`w-5 h-5 transition-transform duration-200 ${
+                      activeStep === index ? 'transform rotate-90' : ''
+                    }`}
+                  />
                 </div>
               </div>
-            </div>
 
-            <div className="divide-y divide-gray-200">
-              {steps.map((step, index) => (
-                <div
-                  key={index}
-                  className={`transition-all duration-300 ${
-                    completedSteps.includes(index) ? '' : 'bg-white'
-                  }`}
-                >
-                  <div
-                    className="px-6 py-4 cursor-pointer flex items-center"
-                    onClick={() => toggleStep(index)}
-                  >
-                    <div
-                      className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mr-4 transition-colors duration-300 ${'bg-gray-100 text-gray-600'}`}
-                    >
-                      {step.icon}
-                    </div>
-                    <div className="flex-grow">
-                      <h3 className="text-lg font-medium text-gray-900">
-                        {step.title}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {step.description}
-                      </p>
-                    </div>
-                    <div className="flex items-center ml-4">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          markAsCompleted(index);
-                        }}
-                        className={`mr-3 w-6 h-6 flex-shrink-0 transition-all duration-300 ${
-                          completedSteps.includes(index)
-                            ? 'text-green-500 hover:text-green-700'
-                            : 'text-gray-400 hover:text-gray-600'
-                        }`}
-                      >
-                        <CheckCircle className="w-full h-full" />
-                      </button>
-                      {activeStep === index ? (
-                        <ChevronDown className="w-5 h-5 text-gray-400" />
-                      ) : (
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
-                      )}
-                    </div>
-                  </div>
+              {/* Task details */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  activeStep === index
+                    ? 'max-h-96 border-t border-gray-200'
+                    : 'max-h-0'
+                }`}
+              >
+                <div className="px-4 py-3 bg-gray-50">
+                  <p className="text-sm text-gray-700 mb-4">{step.details}</p>
 
-                  <div
-                    className={`px-6 py-4 bg-gray-50 overflow-hidden transition-all duration-500 ease-in-out ${
-                      activeStep === index
-                        ? 'max-h-96 opacity-100'
-                        : 'max-h-0 opacity-0'
-                    }`}
-                  >
-                    <div className="pl-14">
-                      <p className="text-gray-700">{step.details}</p>
-                      {step.hasFileUpload && (
-                        <div className="mt-4">
-                          <input
-                            type="file"
-                            ref={(el) => (fileInputRefs.current[index] = el)}
-                            onChange={(e) => handleFileUpload(index, e)}
-                            className="hidden"
-                            multiple
-                          />
+                  {/* File upload section */}
+                  {step.hasFileUpload && (
+                    <div className="mt-3">
+                      <input
+                        type="file"
+                        ref={(el) => (fileInputRefs.current[index] = el)}
+                        onChange={(e) => handleFileUpload(index, e)}
+                        className="hidden"
+                        multiple
+                      />
 
-                          <div className="mt-2">
-                            {uploadedFiles[index]?.length > 0 ? (
-                              <div className="space-y-2">
-                                <p className="text-sm font-medium text-gray-700">
-                                  Uploaded files:
-                                </p>
-                                <div className="space-y-2">
-                                  {uploadedFiles[index].map(
-                                    (file, fileIndex) => (
-                                      <div
-                                        key={fileIndex}
-                                        className="flex items-center p-2 bg-white rounded-md border border-gray-200 group"
-                                      >
-                                        <File className="w-5 h-5 text-blue-500 mr-2" />
-                                        <span className="text-sm text-gray-700 flex-grow truncate">
-                                          {file.name}
-                                        </span>
-                                        <span className="text-xs text-gray-500 mx-2">
-                                          {(file.size / 1024).toFixed(1)} KB
-                                        </span>
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            removeFile(index, fileIndex);
-                                          }}
-                                          className="p-1 rounded-full text-gray-400 hover:text-gray-900 transition-colors duration-200"
-                                        >
-                                          <X className="w-4 h-4" />
-                                        </button>
-                                      </div>
-                                    )
-                                  )}
-                                </div>
+                      {/* Uploaded files list */}
+                      {uploadedFiles[index]?.length > 0 && (
+                        <div className="mb-3">
+                          <p className="text-xs font-medium text-gray-500 mb-2">
+                            Files:
+                          </p>
+                          <div className="space-y-1">
+                            {uploadedFiles[index].map((file, fileIndex) => (
+                              <div
+                                key={fileIndex}
+                                className="flex items-center py-1 px-2 bg-white rounded border border-gray-200 text-sm"
+                              >
+                                <FileIcon className="w-3.5 h-3.5 text-gray-500 mr-2" />
+                                <span className="text-xs text-gray-700 flex-grow truncate">
+                                  {file.name}
+                                </span>
+                                <span className="text-xs text-gray-500 mx-2">
+                                  {(file.size / 1024).toFixed(0)} KB
+                                </span>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    removeFile(index, fileIndex);
+                                  }}
+                                  className="p-1 text-gray-400 hover:text-gray-700"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
                               </div>
-                            ) : null}
-
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                triggerFileInput(index);
-                              }}
-                              className="mt-3 flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-300"
-                            >
-                              <Upload className="w-4 h-4 mr-2" />
-                              {step.fileUploadLabel || 'Upload File'}
-                            </button>
+                            ))}
                           </div>
                         </div>
                       )}
-                      <div className="mt-4 flex space-x-3">
-                        <button
-                          className="block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (
-                              step.hasFileUpload &&
-                              (!uploadedFiles[index] ||
-                                uploadedFiles[index].length === 0)
-                            ) {
-                              return;
-                            }
-                            if (!completedSteps.includes(index)) {
-                              markAsCompleted(index);
-                            }
-                            if (index < steps.length - 1) {
-                              setActiveStep(index + 1);
-                            }
-                          }}
-                        >
-                          {completedSteps.includes(index)
-                            ? 'Completed'
-                            : 'Mark as Complete'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
 
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-              <div className="flex justify-between items-center">
-                <p className="text-sm text-gray-500">
-                  {completedSteps.length === steps.length
-                    ? 'All tasks completed! 🎉'
-                    : `${steps.length - completedSteps.length} tasks remaining`}
-                </p>
-                <button
-                  className={`px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300 ${
-                    completedSteps.length === steps.length
-                      ? 'bg-green-600 text-white hover:bg-green-700'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
-                >
-                  {completedSteps.length === steps.length
-                    ? 'Process Complete'
-                    : 'Save Progress'}
-                </button>
+                      {/* Upload button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          triggerFileInput(index);
+                        }}
+                        className="inline-flex items-center text-xs font-medium text-blue-500 hover:text-blue-600"
+                      >
+                        <Upload className="w-3.5 h-3.5 mr-1" />
+                        {step.fileUploadLabel || 'Upload file'}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
