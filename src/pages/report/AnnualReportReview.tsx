@@ -171,7 +171,7 @@ const AnnualReportReview = () => {
             setCurrentStep={setCurrentStep}
           />
         </div>
-        <div className="w-1/2 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
+        <div className="w-2/3 max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 0 && (
             <form onSubmit={submitStepHandler}>
               <>

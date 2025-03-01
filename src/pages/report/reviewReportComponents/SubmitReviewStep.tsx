@@ -58,7 +58,7 @@ const SubmitReviewStep = ({
             <dt className="text-nowrap text-sm text-gray-500">Status</dt>
             <span
               className={classNames(
-                'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+                'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset whitespace-nowrap',
                 statusBadge(status)
               )}
             >
@@ -69,6 +69,12 @@ const SubmitReviewStep = ({
             <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
               {reportData.companyName}
+            </dd>
+          </div>
+          <div className="flex flex-col gap-y-1 border-l px-5">
+            <dt className="text-nowrap text-sm text-gray-500">Due Date</dt>
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+              May 1, {+reportData.year + 1}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
@@ -83,51 +89,14 @@ const SubmitReviewStep = ({
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
-            <dt className="text-nowrap text-sm text-gray-500">Due Date</dt>
+            <dt className="text-nowrap text-sm text-gray-500">
+              {dockFieldHandler(reportData.state)}
+            </dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
-              May 1, {+reportData.year + 1}
+              {reportData.registrationNumber}
             </dd>
           </div>
         </dl>
-      </div>
-      <div className="mb-12">
-        <SectionHeading title="Details" textSettings={'text-base'} />
-        <div className="flex items-start justify-start max-lg:flex-col">
-          <div className="w-full max-lg:mb-3">
-            <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
-                Year
-              </div>
-              <div className="w-1/2 pr-2 text-gray-800 text-sm">
-                {reportData.year}
-              </div>
-            </div>
-            <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
-                Company Name
-              </div>
-              <div className="w-1/2 pr-2 text-gray-800 text-sm">
-                {reportData.companyName}
-              </div>
-            </div>
-            <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
-                State
-              </div>
-              <div className="w-1/2 pr-2 text-gray-800 text-sm">
-                {reportData.state}
-              </div>
-            </div>
-            <div className="w-full flex items-start justify-between pb-2">
-              <div className="w-1/2 text-sm pr-2 text-nowrap text-gray-500">
-                {dockFieldHandler(reportData.state)}
-              </div>
-              <div className="w-1/2 pr-2 text-gray-800 text-sm">
-                {reportData.registrationNumber}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div className="mb-12">
         <SectionHeading title="Address" textSettings={'text-base'} />
