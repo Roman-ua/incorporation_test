@@ -16,6 +16,7 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 interface IProps {
+  id: string;
   setFromState: (value: AddressFields) => void;
   value?: AddressFields;
   requiredError?: boolean;
@@ -47,6 +48,7 @@ const areFieldsValid = (fields: {
 };
 
 const USAddressForm = ({
+  id,
   setFromState,
   value,
   requiredError,
@@ -316,7 +318,7 @@ const USAddressForm = ({
                   (!isCreateUser || additionalMandatoryCheck)
                 )
               }
-              uniqId={'USAddressForm'}
+              uniqId={id}
             />
           )}
         </div>

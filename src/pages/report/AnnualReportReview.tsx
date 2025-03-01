@@ -303,6 +303,7 @@ const AnnualReportReview = () => {
               </div>
               <div className="mb-5">
                 <USAddressForm
+                  id={'address'}
                   disabledFlag={!editMode}
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedAddress')
@@ -314,6 +315,7 @@ const AnnualReportReview = () => {
               </div>
               <div className="mb-5">
                 <USAddressForm
+                  id={'mailingAddress'}
                   disabledFlag={!editMode}
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedMailingAddress')
