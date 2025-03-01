@@ -25,6 +25,53 @@ import ConfettiAp from '../../components/shared/Confetti';
 import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
 import UnsavedChanges from '../../components/shared/Modals/sharedModals/UnsavedChanges';
 import ProcessingReport from './components/ProcessingReport';
+import XBtn from '../../components/shared/buttons/XBtn';
+
+const RenderAddress = (removed: boolean, address: AddressFields) => {
+  return (
+    <>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        <span>{address.address0}, </span>
+        {address.address1 && <span>{address.address1}</span>}
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        {address.address2 && <span>{address.address2}</span>}
+        {address.address3 && (
+          <span>
+            {address.address2 ? ',' : ''} {address.address3}
+          </span>
+        )}
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        <span>{address.city}, </span>
+        <span>
+          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+        </span>
+        <span>{address.zip}</span>
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        {address.country}
+      </div>
+      <div className="my-4" />
+    </>
+  );
+};
 
 const AnnualReportReview = () => {
   const [dataDuplicate, setDataDuplicate] =
@@ -35,6 +82,7 @@ const AnnualReportReview = () => {
   const [confetti, setConfetti] = React.useState(false);
 
   const [editingPersonId, setEditingPersonId] = useState(-1);
+  const [editingAddressType, setEditingAddressType] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
   const [currentStep, setCurrentStep] = useState<number>(3);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([0, 1, 2]);
@@ -133,6 +181,7 @@ const AnnualReportReview = () => {
   const cancelStepHandler = () => {
     setAddPersonPressed(false);
     setEditingPersonId(-1);
+    setEditingAddressType(-1);
     setCurrentStep(3);
 
     setPeopleDataDuplicate(mockPeople);
@@ -140,6 +189,7 @@ const AnnualReportReview = () => {
 
   const updateAddressHandler = (data: AddressFields, key: string) => {
     setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
+    setEditingAddressType(-1);
   };
   return (
     <>
@@ -301,33 +351,91 @@ const AnnualReportReview = () => {
                   icon={<></>}
                 />
               </div>
-              <div className="mb-5">
-                <USAddressForm
-                  id={'address'}
-                  disabledFlag={!editMode}
-                  setFromState={(data) =>
-                    updateAddressHandler(data, 'updatedAddress')
-                  }
-                  heading={'Main Address'}
-                  requiredError={false}
-                  value={dataDuplicate.updatedAddress || mockReportData.address}
-                />
+
+              <div className="flex items-start justify-between gap-12">
+                <div className="mb-5 w-1/2">
+                  {editingAddressType === 0 ? (
+                    <div className="border border-gray-200 rounded-md p-4 bg-white relative">
+                      <XBtn clickHandler={() => setEditingAddressType(-1)} />
+                      <USAddressForm
+                        id={'address'}
+                        disabledFlag={!editMode}
+                        setFromState={(data) =>
+                          updateAddressHandler(data, 'updatedAddress')
+                        }
+                        heading={'Main Address'}
+                        requiredError={false}
+                        value={
+                          dataDuplicate.updatedAddress || mockReportData.address
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="mb-1 w-full flex items-center justify-between">
+                        <span className="text-sm text-gray-500 ">
+                          Main Address
+                        </span>
+                        <div
+                          onClick={() => {
+                            setEditingAddressType(0);
+                          }}
+                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      </div>
+                      {RenderAddress(
+                        false,
+                        dataDuplicate.updatedAddress || mockReportData.address
+                      )}
+                    </>
+                  )}
+                </div>
+                <div className="mb-5 w-1/2">
+                  {editingAddressType === 1 ? (
+                    <div className="border border-gray-200 rounded-md p-4 bg-white relative">
+                      <XBtn clickHandler={() => setEditingAddressType(-1)} />
+                      <USAddressForm
+                        id={'mailingAddress'}
+                        disabledFlag={!editMode}
+                        setFromState={(data) =>
+                          updateAddressHandler(data, 'updatedMailingAddress')
+                        }
+                        heading={'Mailing Address'}
+                        requiredError={false}
+                        value={
+                          dataDuplicate.updatedMailingAddress ||
+                          mockReportData.mailingAddress
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="mb-1 w-full flex items-center justify-between">
+                        <span className="text-sm text-gray-500 ">
+                          Mailing Address
+                        </span>
+                        <div
+                          onClick={() => {
+                            setEditingAddressType(1);
+                          }}
+                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      </div>
+
+                      {RenderAddress(
+                        false,
+                        dataDuplicate.updatedMailingAddress ||
+                          mockReportData.mailingAddress
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
-              <div className="mb-5">
-                <USAddressForm
-                  id={'mailingAddress'}
-                  disabledFlag={!editMode}
-                  setFromState={(data) =>
-                    updateAddressHandler(data, 'updatedMailingAddress')
-                  }
-                  heading={'Mailing Address'}
-                  requiredError={false}
-                  value={
-                    dataDuplicate.updatedMailingAddress ||
-                    mockReportData.mailingAddress
-                  }
-                />
-              </div>
+
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
                 <div className="w-2/3 max-xl:w-full flex items-center justify-between">
