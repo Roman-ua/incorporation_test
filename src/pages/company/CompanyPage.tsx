@@ -21,6 +21,7 @@ import {
 import { useSetRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
 import { AddPersonModal } from './modals/AddPersonToCompanyModal';
+import AddReportProcess from '../report/components/AddReportProcess';
 // import { format } from 'date-fns';
 
 const statusBadge = (status: string) => {
@@ -81,6 +82,7 @@ const CompanyPage = () => {
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
+  const [addReportModal, setOpenAddReportModal] = useState(false);
   const [data, setData] = React.useState<MockCompany>(localData);
   const [peopleState, setPeopleState] = React.useState([]);
 
@@ -123,6 +125,11 @@ const CompanyPage = () => {
           //eslint-disable-next-line @typescript-eslint/ban-ts-comment
           person //@ts-expect-error
         ) => setPeopleState((prevState) => [...prevState, person])}
+      />
+      <AddReportProcess
+        saveHandler={() => {}}
+        setOpen={setOpenAddReportModal}
+        open={addReportModal}
       />
       <PageSign
         title={'COMPANY'}
@@ -322,7 +329,9 @@ const CompanyPage = () => {
         addPersonHandler={() => setOpenAddPersonModal(true)}
       />
       {data?.registeredIn.split(' ')[2] === 'Florida' && (
-        <AnnualReportsListFL />
+        <AnnualReportsListFL
+          addReportModal={() => setOpenAddReportModal(true)}
+        />
       )}
     </div>
   ) : (

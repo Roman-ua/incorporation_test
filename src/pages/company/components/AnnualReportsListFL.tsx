@@ -55,12 +55,21 @@ const statusBadge = (status: string) => {
   }
 };
 
-const AnnualReportsListFL = () => {
+interface IProps {
+  addReportModal: () => void;
+}
+
+const AnnualReportsListFL = ({ addReportModal }: IProps) => {
   const navigate = useNavigate();
 
   return (
     <>
-      <SectionHeading title="Annual Reports" removeMargin={true} />
+      <SectionHeading
+        title="Annual Reports"
+        removeMargin={true}
+        clickHandler={addReportModal}
+        btnTitle="Add Report"
+      />
       <div className="w-full overflow-hidden mb-12">
         {/*<div className="flex bg-gray-200 text-gray-800 font-semibold">*/}
         {/*  {Array.from({ length: mock.length }).map((_, index) => (*/}

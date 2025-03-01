@@ -25,7 +25,6 @@ interface IProps {
 }
 
 const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
-  console.log(peopleState, 'peopleState');
   return (
     <>
       <SectionHeading
