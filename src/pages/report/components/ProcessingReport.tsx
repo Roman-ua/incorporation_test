@@ -13,6 +13,10 @@ import {
 } from 'lucide-react';
 import PageSign from '../../../components/shared/PageSign';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
+import { ReportData } from '../../../interfaces/interfaces';
+import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
+import { mockAgent } from '../../../mock/mockData';
+import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
 
 const steps = [
   {
@@ -81,7 +85,11 @@ const steps = [
   },
 ];
 
-const ProcessingReport = () => {
+interface IProps {
+  data: ReportData;
+}
+
+const ProcessingReport = ({ data }: IProps) => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<{ [key: number]: File[] }>(
     {}
@@ -124,6 +132,9 @@ const ProcessingReport = () => {
     }
   };
 
+  const inputCommonClasses =
+    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
+
   return (
     <div className="min-h-screen">
       <div className="mx-auto px-4 pb-12">
@@ -136,12 +147,9 @@ const ProcessingReport = () => {
         </div>
         <div className="space-y-4 mb-8">
           {steps.map((step, index) => (
-            <div
-              key={index}
-              className="border border-gray-200 rounded-md overflow-hidden"
-            >
+            <div key={index} className="border border-gray-200 rounded-md">
               {/* Task header */}
-              <div className="px-4 py-3 flex items-center cursor-pointer bg-white">
+              <div className="px-4 py-3 flex items-center cursor-pointer bg-white rounded-md">
                 <Checkbox
                   wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
                   iconClass={'h-3 w-3'}
@@ -171,13 +179,69 @@ const ProcessingReport = () => {
               <div
                 className={`overflow-hidden transition-all duration-300 ${
                   !completedSteps.includes(index)
-                    ? 'max-h-96 border-t border-gray-200'
+                    ? 'border-t border-gray-200'
                     : 'max-h-0'
                 }`}
               >
                 <div className="px-4 py-3 bg-gray-50">
                   <p className="text-sm text-gray-700 mb-4">{step.details}</p>
 
+                  {step.title === 'Check Company Address' && (
+                    <div className="mt-3">
+                      <div className="mt-3">
+                        <div className="text-gray-700 text-sm mb-2 font-bold">
+                          Main Address
+                        </div>
+                        <SimpleAddressForm
+                          disabledFlag={false}
+                          inputCommonClasses={inputCommonClasses}
+                          requiredError={false}
+                          data={data.address}
+                          countryDisabled={true}
+                          setData={() => {}}
+                        />
+                      </div>
+                      <div className="mt-3">
+                        <div className="text-gray-700 text-sm mb-2 font-bold">
+                          Mailing Address
+                        </div>
+                        <SimpleAddressForm
+                          disabledFlag={false}
+                          inputCommonClasses={inputCommonClasses}
+                          requiredError={false}
+                          data={data.mailingAddress}
+                          countryDisabled={true}
+                          setData={() => {}}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {step.title === 'Check Registered Agent' && (
+                    <div className="mt-3">
+                      <div className="text-gray-700 text-sm mb-1 font-bold">
+                        Name
+                      </div>
+                      <p className="font-bold text-gray-900">
+                        {mockAgent.name}
+                      </p>
+                      <div className="text-gray-700 text-sm mb-2 font-bold mt-3">
+                        Address
+                      </div>
+                      <SimpleAddressForm
+                        disabledFlag={false}
+                        inputCommonClasses={inputCommonClasses}
+                        requiredError={false}
+                        data={mockAgent.address}
+                        countryDisabled={true}
+                        setData={() => {}}
+                      />
+                    </div>
+                  )}
+                  {step.title === 'Check Company Representatives' && (
+                    <div className="mt-3">
+                      <ProcessingReportPeopleSection />
+                    </div>
+                  )}
                   {/* File upload section */}
                   {step.hasFileUpload && (
                     <div className="mt-3">

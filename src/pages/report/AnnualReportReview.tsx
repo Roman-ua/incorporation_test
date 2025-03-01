@@ -601,7 +601,7 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 5 && (
             <div className="w-full relative">
-              <ProcessingReport />
+              <ProcessingReport data={dataDuplicate} />
             </div>
           )}
         </div>
