@@ -17,6 +17,7 @@ export const mockReportData = {
     zip: '35203',
     state: 'Alabama',
   },
+  updatedAddress: null,
   mailingAddress: {
     country: 'United States',
     address0: '1234 Elm St',
@@ -27,6 +28,7 @@ export const mockReportData = {
     zip: '35203',
     state: 'Alabama',
   },
+  updatedMailingAddress: null,
   companyName: 'ABC Company Inc',
   registrationNumber: 'L23000056354',
   file: 'rep_2021',

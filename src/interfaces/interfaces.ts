@@ -38,6 +38,8 @@ export interface ReportData {
   confirmationLinks: string[];
   address: Address;
   mailingAddress: Address;
+  updatedAddress: Address | null;
+  updatedMailingAddress: Address | null;
   companyName: string;
   registrationNumber: string;
   file: string;

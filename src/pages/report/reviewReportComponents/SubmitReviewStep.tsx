@@ -1,6 +1,11 @@
 import SectionHeading from '../../company/components/SectionHeading';
 import React from 'react';
-import { Agent, Person, ReportData } from '../../../interfaces/interfaces';
+import {
+  AddressFields,
+  Agent,
+  Person,
+  ReportData,
+} from '../../../interfaces/interfaces';
 import { USStates } from '../../../constants/form/form';
 import { classNames, dockFieldHandler } from '../../../utils/helpers';
 import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
@@ -12,7 +17,8 @@ interface IProps {
   reportData: ReportData;
   agentReportData: Agent;
   peopleData: Person[];
-  clickHandler?: () => void;
+  clickHandlerPeople?: () => void;
+  clickHandlerAddress?: () => void;
   status: string;
 }
 
@@ -37,11 +43,58 @@ const statusBadge = (status: string) => {
   }
 };
 
+const RenderAddress = (removed: boolean, address: AddressFields) => {
+  return (
+    <>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        <span>{address.address0}, </span>
+        {address.address1 && <span>{address.address1}</span>}
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        {address.address2 && <span>{address.address2}</span>}
+        {address.address3 && (
+          <span>
+            {address.address2 ? ',' : ''} {address.address3}
+          </span>
+        )}
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        <span>{address.city}, </span>
+        <span>
+          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+        </span>
+        <span>{address.zip}</span>
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        {address.country}
+      </div>
+      <div className="my-4" />
+    </>
+  );
+};
+
 const SubmitReviewStep = ({
   reportData,
   agentReportData,
   peopleData,
-  clickHandler,
+  clickHandlerPeople,
+  clickHandlerAddress,
   status,
 }: IProps) => {
   return (
@@ -99,70 +152,42 @@ const SubmitReviewStep = ({
         </dl>
       </div>
       <div className="mb-12">
-        <SectionHeading title="Address" textSettings={'text-base'} />
+        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+          Address
+          {clickHandlerAddress && (
+            <button
+              type="button"
+              onClick={clickHandlerAddress}
+              className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+            >
+              Make Changes
+            </button>
+          )}
+        </div>
         <div className="w-full flex items-start justify-start max-lg:flex-col">
           <div className="w-1/2 flex items-start justify-start pb-2 max-lg:w-full">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Main Address</div>
-              <div className="text-gray-800">
-                <span>{reportData.address.address0}, </span>
-                {reportData.address.address1 && (
-                  <span>{reportData.address.address1}</span>
+              {reportData.updatedAddress &&
+                RenderAddress(
+                  false,
+                  reportData.updatedAddress as AddressFields
                 )}
-              </div>
-              <div className="text-gray-800">
-                {reportData.address.address2 && (
-                  <span>{reportData.address.address2}</span>
-                )}
-                {reportData.address.address3 && (
-                  <span>
-                    {reportData.address.address2 ? ',' : ''}{' '}
-                    {reportData.address.address3}
-                  </span>
-                )}
-              </div>
-              <div className="text-gray-800">
-                <span>{reportData.address.city}, </span>
-                <span>
-                  {USStates.find(
-                    (item) => item.title === reportData.address.state
-                  )?.value || ''}{' '}
-                </span>
-                <span>{reportData.address.zip}</span>
-              </div>
-              <div className="text-gray-800">{reportData.address.country}</div>
+              {RenderAddress(!!reportData.updatedAddress, reportData.address)}
             </div>
           </div>
           <div className="w-1/2 flex items-start justify-between pb-2 ">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Mailing Address</div>
-              <div className="text-gray-800">
-                <span>{reportData.address.address0}, </span>
-                {reportData.address.address1 && (
-                  <span>{reportData.address.address1}</span>
+              {reportData.updatedMailingAddress &&
+                RenderAddress(
+                  false,
+                  reportData.updatedMailingAddress as AddressFields
                 )}
-              </div>
-              <div className="text-gray-800">
-                {reportData.address.address2 && (
-                  <span>{reportData.address.address2}</span>
-                )}
-                {reportData.address.address3 && (
-                  <span>
-                    {reportData.address.address2 ? ',' : ''}{' '}
-                    {reportData.address.address3}
-                  </span>
-                )}
-              </div>
-              <div className="text-gray-800">
-                <span>{reportData.address.city}, </span>
-                <span>
-                  {USStates.find(
-                    (item) => item.title === reportData.address.state
-                  )?.value || ''}{' '}
-                </span>
-                <span>{reportData.address.zip}</span>
-              </div>
-              <div className="text-gray-800">{reportData.address.country}</div>
+              {RenderAddress(
+                !!reportData.updatedMailingAddress,
+                reportData.mailingAddress
+              )}
             </div>
           </div>
         </div>
@@ -170,10 +195,10 @@ const SubmitReviewStep = ({
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           People
-          {clickHandler && (
+          {clickHandlerPeople && (
             <button
               type="button"
-              onClick={clickHandler}
+              onClick={clickHandlerPeople}
               className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
             >
               Make Changes

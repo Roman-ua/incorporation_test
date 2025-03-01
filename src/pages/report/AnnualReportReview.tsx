@@ -20,14 +20,15 @@ import logo from '../../images/shared/bluelogo.svg';
 import smallLogo from '../../images/shared/round_logo.png';
 import PageSign from '../../components/shared/PageSign';
 import { FaSignature } from 'react-icons/fa6';
-import { Person } from '../../interfaces/interfaces';
+import { AddressFields, Person, ReportData } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
 import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
 import UnsavedChanges from '../../components/shared/Modals/sharedModals/UnsavedChanges';
 import ProcessingReport from './components/ProcessingReport';
 
 const AnnualReportReview = () => {
-  const [dataDuplicate] = useState(mockReportData);
+  const [dataDuplicate, setDataDuplicate] =
+    useState<ReportData>(mockReportData);
   const [peopleDataDuplicate, setPeopleDataDuplicate] =
     useState<Person[]>(mockPeople);
   const [agentDataDuplicate] = useState(mockAgent);
@@ -137,6 +138,9 @@ const AnnualReportReview = () => {
     setPeopleDataDuplicate(mockPeople);
   };
 
+  const updateAddressHandler = (data: AddressFields, key: string) => {
+    setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
+  };
   return (
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
@@ -280,7 +284,7 @@ const AnnualReportReview = () => {
               </>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex items-center justify-end">
+                <div className="w-2/3 max-xl:w-full flex items-center justify-end">
                   <ButtonWithArrow title={'Save'} />
                 </div>
                 <div className="w-1/4 pr-2 max-lg:hidden" />
@@ -299,25 +303,32 @@ const AnnualReportReview = () => {
               </div>
               <div className="mb-5">
                 <USAddressForm
-                  disabledFlag={true}
-                  setFromState={() => {}}
+                  disabledFlag={!editMode}
+                  setFromState={(data) =>
+                    updateAddressHandler(data, 'updatedAddress')
+                  }
                   heading={'Main Address'}
                   requiredError={false}
-                  value={dataDuplicate.address}
+                  value={dataDuplicate.updatedAddress || mockReportData.address}
                 />
               </div>
               <div className="mb-5">
                 <USAddressForm
-                  disabledFlag={true}
-                  setFromState={() => {}}
+                  disabledFlag={!editMode}
+                  setFromState={(data) =>
+                    updateAddressHandler(data, 'updatedMailingAddress')
+                  }
                   heading={'Mailing Address'}
                   requiredError={false}
-                  value={dataDuplicate.address}
+                  value={
+                    dataDuplicate.updatedMailingAddress ||
+                    mockReportData.mailingAddress
+                  }
                 />
               </div>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
+                <div className="w-2/3 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setCurrentStep(0)}
@@ -511,7 +522,7 @@ const AnnualReportReview = () => {
               </>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
+                <div className="w-2/3 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => {
@@ -544,9 +555,13 @@ const AnnualReportReview = () => {
                 />
               </div>
               <SubmitReviewStep
-                clickHandler={() => {
+                clickHandlerPeople={() => {
                   setEditMode(true);
                   setCurrentStep(2);
+                }}
+                clickHandlerAddress={() => {
+                  setEditMode(true);
+                  setCurrentStep(1);
                 }}
                 status={'Confirmation Needed'}
                 reportData={dataDuplicate}
@@ -555,7 +570,7 @@ const AnnualReportReview = () => {
               />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-1/2 max-xl:w-full flex items-center justify-between">
+                <div className="w-2/3 max-xl:w-full flex items-center justify-between">
                   <div />
                   <ButtonWithArrow title={'Confirm'} />
                 </div>
