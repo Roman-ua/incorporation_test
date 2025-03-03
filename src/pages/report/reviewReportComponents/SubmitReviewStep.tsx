@@ -164,30 +164,55 @@ const SubmitReviewStep = ({
             </button>
           )}
         </div>
-        <div className="w-full flex items-start justify-start max-lg:flex-col">
-          <div className="w-1/2 flex items-start justify-start pb-2 max-lg:w-full">
+        <div className="w-full flex items-start flex-col justify-start gap-3 max-lg:flex-col">
+          <div className="w-full">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Main Address</div>
-              {reportData.updatedAddress &&
-                RenderAddress(
-                  false,
-                  reportData.updatedAddress as AddressFields
+              <div className="flex items-start justify-start gap-12">
+                {reportData.updatedAddress && (
+                  <div className="w-1/4">
+                    {RenderAddress(
+                      false,
+                      reportData.updatedAddress as AddressFields
+                    )}
+                  </div>
                 )}
-              {RenderAddress(!!reportData.updatedAddress, reportData.address)}
+                {reportData.updatedAddress && status === 'In Progress' ? (
+                  <div />
+                ) : (
+                  <div>
+                    {RenderAddress(
+                      !!reportData.updatedAddress,
+                      reportData.address
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="w-1/2 flex items-start justify-between pb-2 ">
+          <div className="w-full">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Mailing Address</div>
-              {reportData.updatedMailingAddress &&
-                RenderAddress(
-                  false,
-                  reportData.updatedMailingAddress as AddressFields
+              <div className="flex items-start justify-start gap-12">
+                {reportData.updatedMailingAddress && (
+                  <div className="w-1/4">
+                    {RenderAddress(
+                      false,
+                      reportData.updatedMailingAddress as AddressFields
+                    )}
+                  </div>
                 )}
-              {RenderAddress(
-                !!reportData.updatedMailingAddress,
-                reportData.mailingAddress
-              )}
+                {reportData.updatedAddress && status === 'In Progress' ? (
+                  <div />
+                ) : (
+                  <div>
+                    {RenderAddress(
+                      !!reportData.updatedMailingAddress,
+                      reportData.mailingAddress
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

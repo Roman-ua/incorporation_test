@@ -184,10 +184,20 @@ const AnnualReportReview = () => {
     setEditingAddressType(-1);
     setCurrentStep(3);
 
-    setPeopleDataDuplicate(mockPeople);
+    if (currentStep === 2) {
+      setPeopleDataDuplicate(mockPeople);
+    }
+    if (currentStep === 1) {
+      setDataDuplicate((prevState) => ({
+        ...prevState,
+        updatedAddress: null,
+        updatedMailingAddress: null,
+      }));
+    }
   };
 
   const updateAddressHandler = (data: AddressFields, key: string) => {
+    setDirtyFlag(true);
     setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
     setEditingAddressType(-1);
   };
@@ -348,6 +358,12 @@ const AnnualReportReview = () => {
 
           {currentStep === 1 && (
             <form onSubmit={submitStepHandler}>
+              <UnsavedChanges
+                open={discardModal}
+                setOpen={(value) => setDiscardModal(value)}
+                sectionTitle={'Address section'}
+                discardHandler={cancelStepHandler}
+              />
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -356,8 +372,8 @@ const AnnualReportReview = () => {
                 />
               </div>
 
-              <div className="flex items-start justify-between gap-12">
-                <div className="mb-5 w-1/2">
+              <div className="flex items-start flex-col justify-start gap-6">
+                <div className="mb-5 w-full">
                   {editingAddressType === 0 ? (
                     <div className="border border-gray-200 rounded-md p-4 bg-white relative">
                       <XBtn clickHandler={() => setEditingAddressType(-1)} />
@@ -390,6 +406,7 @@ const AnnualReportReview = () => {
                         )}
                         <div
                           onClick={() => {
+                            setDirtyFlag(true);
                             setEditingAddressType(0);
                           }}
                           className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
@@ -397,19 +414,26 @@ const AnnualReportReview = () => {
                           <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                         </div>
                       </div>
-                      {RenderAddress(
-                        false,
-                        dataDuplicate.updatedAddress || dataDuplicate.address
-                      )}
-                      {dataDuplicate.updatedAddress &&
-                        RenderAddress(
-                          !!dataDuplicate.updatedAddress,
-                          dataDuplicate.address
-                        )}
+                      <div className="flex items-start justify-start gap-12">
+                        <div className="w-1/4">
+                          {RenderAddress(
+                            false,
+                            dataDuplicate.updatedAddress ||
+                              dataDuplicate.address
+                          )}
+                        </div>
+                        <div>
+                          {dataDuplicate.updatedAddress &&
+                            RenderAddress(
+                              !!dataDuplicate.updatedAddress,
+                              dataDuplicate.address
+                            )}
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
-                <div className="mb-5 w-1/2">
+                <div className="mb-5 w-full">
                   {editingAddressType === 1 ? (
                     <div className="border border-gray-200 rounded-md p-4 bg-white relative">
                       <XBtn clickHandler={() => setEditingAddressType(-1)} />
@@ -443,6 +467,7 @@ const AnnualReportReview = () => {
                         )}
                         <div
                           onClick={() => {
+                            setDirtyFlag(true);
                             setEditingAddressType(1);
                           }}
                           className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
@@ -450,17 +475,22 @@ const AnnualReportReview = () => {
                           <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                         </div>
                       </div>
-
-                      {RenderAddress(
-                        false,
-                        dataDuplicate.updatedMailingAddress ||
-                          dataDuplicate.mailingAddress
-                      )}
-                      {dataDuplicate.updatedMailingAddress &&
-                        RenderAddress(
-                          !!dataDuplicate.updatedMailingAddress,
-                          dataDuplicate.mailingAddress
-                        )}
+                      <div className="flex items-start justify-start gap-12">
+                        <div className="w-1/4">
+                          {RenderAddress(
+                            false,
+                            dataDuplicate.updatedMailingAddress ||
+                              dataDuplicate.mailingAddress
+                          )}
+                        </div>
+                        <div>
+                          {dataDuplicate.updatedMailingAddress &&
+                            RenderAddress(
+                              !!dataDuplicate.updatedMailingAddress,
+                              dataDuplicate.mailingAddress
+                            )}
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
@@ -471,7 +501,13 @@ const AnnualReportReview = () => {
                 <div className="w-2/3 max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(0)}
+                    onClick={() => {
+                      if (dirtyFlag) {
+                        setDiscardModal(true);
+                      } else {
+                        cancelStepHandler();
+                      }
+                    }}
                     className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     Cancel
