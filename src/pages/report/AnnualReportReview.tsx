@@ -191,6 +191,10 @@ const AnnualReportReview = () => {
     setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
     setEditingAddressType(-1);
   };
+
+  const undoAddress = (key: string) => {
+    setDataDuplicate((prevState) => ({ ...prevState, [key]: null }));
+  };
   return (
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
@@ -376,6 +380,14 @@ const AnnualReportReview = () => {
                         <span className="text-sm text-gray-500 ">
                           Main Address
                         </span>
+                        {dataDuplicate.updatedAddress && (
+                          <div
+                            onClick={() => undoAddress('updatedAddress')}
+                            className="group ml-auto mr-2 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                          >
+                            <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                          </div>
+                        )}
                         <div
                           onClick={() => {
                             setEditingAddressType(0);
@@ -387,8 +399,13 @@ const AnnualReportReview = () => {
                       </div>
                       {RenderAddress(
                         false,
-                        dataDuplicate.updatedAddress || mockReportData.address
+                        dataDuplicate.updatedAddress || dataDuplicate.address
                       )}
+                      {dataDuplicate.updatedAddress &&
+                        RenderAddress(
+                          !!dataDuplicate.updatedAddress,
+                          dataDuplicate.address
+                        )}
                     </>
                   )}
                 </div>
@@ -406,7 +423,7 @@ const AnnualReportReview = () => {
                         requiredError={false}
                         value={
                           dataDuplicate.updatedMailingAddress ||
-                          mockReportData.mailingAddress
+                          dataDuplicate.mailingAddress
                         }
                       />
                     </div>
@@ -416,6 +433,14 @@ const AnnualReportReview = () => {
                         <span className="text-sm text-gray-500 ">
                           Mailing Address
                         </span>
+                        {dataDuplicate.updatedMailingAddress && (
+                          <div
+                            onClick={() => undoAddress('updatedMailingAddress')}
+                            className="group ml-auto mr-2 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                          >
+                            <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                          </div>
+                        )}
                         <div
                           onClick={() => {
                             setEditingAddressType(1);
@@ -429,8 +454,13 @@ const AnnualReportReview = () => {
                       {RenderAddress(
                         false,
                         dataDuplicate.updatedMailingAddress ||
-                          mockReportData.mailingAddress
+                          dataDuplicate.mailingAddress
                       )}
+                      {dataDuplicate.updatedMailingAddress &&
+                        RenderAddress(
+                          !!dataDuplicate.updatedMailingAddress,
+                          dataDuplicate.mailingAddress
+                        )}
                     </>
                   )}
                 </div>
