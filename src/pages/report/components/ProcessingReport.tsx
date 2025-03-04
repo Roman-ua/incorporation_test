@@ -137,7 +137,7 @@ const ProcessingReport = ({ data }: IProps) => {
 
   return (
     <div className="min-h-screen">
-      <div className="mx-auto px-4 pb-12">
+      <div className="mx-auto pb-12">
         <div className="mb-5">
           <PageSign
             titleSize={'text-2xl font-bold text-gray-900'}
