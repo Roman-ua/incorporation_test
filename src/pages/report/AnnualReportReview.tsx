@@ -208,7 +208,7 @@ const AnnualReportReview = () => {
   return (
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
-        <div className="w-1/5 max-lg:w-fit pr-2">
+        <div className="w-[200px] max-lg:w-fit pr-2">
           <img
             className="h-6 w-auto max-lg:hidden"
             src={logo}
@@ -220,10 +220,10 @@ const AnnualReportReview = () => {
             alt="Your Company"
           />
         </div>
-        <div className="w-[765px] flex items-center justify-center font-semibold">
+        <div className="w-[870px] flex items-center justify-center font-semibold">
           {`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
         </div>
-        <div className="w-1/5 pr-2" />
+        <div className="w-[200px] pr-2" />
       </div>
       {confetti && <ConfettiAp />}
       <div
@@ -231,7 +231,7 @@ const AnnualReportReview = () => {
           'bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20 min-h-[calc(100vh-65px)]'
         )}
       >
-        <div className="w-1/5 pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
+        <div className="w-[200px] pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
           <ReviewStepsProgress
             editMode={editMode}
             currentStep={currentStep}
@@ -239,7 +239,7 @@ const AnnualReportReview = () => {
             setCurrentStep={setCurrentStep}
           />
         </div>
-        <div className="w-[765px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
+        <div className="w-[870px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 0 && (
             <form onSubmit={submitStepHandler}>
               <>
@@ -347,11 +347,11 @@ const AnnualReportReview = () => {
                 </div>
               </>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-[765px] max-xl:w-full flex items-center justify-end">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-end">
                   <ButtonWithArrow title={'Save'} />
                 </div>
-                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
@@ -497,8 +497,8 @@ const AnnualReportReview = () => {
               </div>
 
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
-                <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-[765px] max-xl:w-full flex items-center justify-between">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => {
@@ -514,7 +514,7 @@ const AnnualReportReview = () => {
                   </button>
                   <ButtonWithArrow title={'Save'} />
                 </div>
-                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
@@ -697,8 +697,8 @@ const AnnualReportReview = () => {
                 </button>
               </>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-[765px] max-xl:w-full flex items-center justify-between">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => {
@@ -717,7 +717,7 @@ const AnnualReportReview = () => {
                     title={'Save'}
                   />
                 </div>
-                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
@@ -745,12 +745,12 @@ const AnnualReportReview = () => {
                 peopleData={peopleDataDuplicate}
               />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-[765px] max-xl:w-full flex items-center justify-between">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
                   <div />
                   <ButtonWithArrow title={'Confirm'} />
                 </div>
-                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
@@ -794,17 +794,17 @@ const AnnualReportReview = () => {
             <div className="w-full relative">
               <ProcessingReport data={dataDuplicate} />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                <div className="w-1/5 pr-2 max-lg:hidden" />
-                <div className="w-[765px] max-xl:w-full flex items-center justify-between">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
                   <div />
                   <ButtonWithArrow title={'Submit'} />
                 </div>
-                <div className="w-1/5 pr-2 max-lg:hidden" />
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </div>
           )}
         </div>
-        <div className="w-1/5" />
+        <div className="w-[200px]" />
       </div>
     </>
   );

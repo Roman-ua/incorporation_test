@@ -100,17 +100,7 @@ const SubmitReviewStep = ({
   return (
     <>
       <div className="w-full flex items-start justify-center max-lg:flex-col">
-        <dl
-          className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll pb-1
-            [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-1
-            [&::-webkit-scrollbar-track]:rounded-full
-            [&::-webkit-scrollbar-track]:bg-gray-100
-            [&::-webkit-scrollbar-thumb]:rounded-full
-            [&::-webkit-scrollbar-thumb]:bg-gray-300
-            dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-            dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
-           "
-        >
+        <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll pb-1">
           <div className="flex flex-col gap-y-1 pr-5">
             <dt className="text-sm text-gray-500">Year</dt>
             <dd className="text-sm font-semibold tracking-tight text-gray-800">

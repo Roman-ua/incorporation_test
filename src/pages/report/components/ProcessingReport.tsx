@@ -95,9 +95,6 @@ const ProcessingReport = ({ data }: IProps) => {
   const [uploadedFiles, setUploadedFiles] = useState<{ [key: number]: File[] }>(
     {}
   );
-
-  const [reportFlowOpened, setReportFlowOpened] = useState<boolean>(false);
-
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
   const markAsCompleted = (index: number) => {
@@ -152,7 +149,10 @@ const ProcessingReport = ({ data }: IProps) => {
           {steps.map((step, index) => (
             <div key={index} className="border border-gray-200 rounded-md">
               {/* Task header */}
-              <div className="px-4 py-3 flex items-center cursor-pointer bg-white rounded-md">
+              <div
+                onClick={() => markAsCompleted(index)}
+                className="px-6 py-4 flex items-center cursor-pointer bg-white rounded-md"
+              >
                 <Checkbox
                   wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
                   iconClass={'h-3 w-3'}
@@ -186,7 +186,7 @@ const ProcessingReport = ({ data }: IProps) => {
                     : 'max-h-0 hidden'
                 }`}
               >
-                <div className="px-4 py-3 bg-gray-50">
+                <div className="px-6 py-4 bg-gray-50">
                   <p className="text-sm text-gray-700 mb-4">{step.details}</p>
 
                   {step.title === 'Check Company Address' && (
@@ -247,22 +247,17 @@ const ProcessingReport = ({ data }: IProps) => {
                   )}
                   {step.title === 'Save Annual Report' && (
                     <div className="mt-3">
-                      {reportFlowOpened && (
-                        <AddReportDocShort data={data} agentdata={mockAgent} />
-                      )}
+                      <AddReportDocShort data={data} agentdata={mockAgent} />
                       <div className="w-full flex items-center justify-end mt-8">
                         <div
                           onClick={() => {
-                            setReportFlowOpened(!reportFlowOpened);
-                            if (reportFlowOpened) {
-                              markAsCompleted(index);
-                            }
+                            markAsCompleted(index);
                           }}
                           className={classNames(
                             'bg-mainBlue hover:bg-sideBarBlue ml-2 block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer'
                           )}
                         >
-                          {reportFlowOpened ? 'Submit' : 'Process Data'}
+                          Submit
                         </div>
                       </div>
                     </div>
