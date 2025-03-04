@@ -225,8 +225,8 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
         <div className="mb-6">
           <ProcessingReportPeopleSection disableEdit={true} />
         </div>
-        <SectionHeading title="State ID" textSettings={'text-base'} />
-        <div className="mb-6">
+        <SectionHeading title="Report Details" textSettings={'text-base'} />
+        <div className="mb-4">
           <input
             onChange={(e) => setDocumentNumber(e.target.value)}
             className={classNames(
@@ -237,15 +237,14 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
             value={documentNumber}
           />
         </div>
-        <SectionHeading title="Document Date" textSettings={'text-base'} />
-        <div className="mb-6">
+        <div className="mb-4">
           <DatePicker
             mandatoryError={false}
             value={dateValue}
             setValue={setDateValue}
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-4">
           {selectedFile?.name ? (
             <div className="w-full">
               <FileDownloadProgress
