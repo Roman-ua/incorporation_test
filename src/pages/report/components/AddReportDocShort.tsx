@@ -20,47 +20,6 @@ import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
 
-export const mockReportData = {
-  id: 1,
-  year: 2021,
-  status: 'Confirmation Needed',
-  filingDate: 'February 12, 2021',
-  confirmedBy: 'John Doe',
-  relatedOrder: 'ord_12312',
-  attachedFiles: true,
-  confirmationLinks: [],
-  address: {
-    country: 'United States',
-    address0: '1234 Elm St',
-    address1: 'Apt 5B',
-    address2: '',
-    address3: '',
-    city: 'Birmingham',
-    zip: '35203',
-    state: 'Alabama',
-  },
-  updatedAddress: null,
-  mailingAddress: {
-    country: 'United States',
-    address0: '1234 Elm St',
-    address1: 'Apt 5B',
-    address2: '',
-    address3: '',
-    city: 'Birmingham',
-    zip: '35203',
-    state: 'Alabama',
-  },
-  updatedMailingAddress: null,
-  companyName: 'ABC Company Inc',
-  registrationNumber: 'L23000056354',
-  file: 'rep_2021',
-  confirmFile: 'Confirmation_file',
-  state: 'Florida',
-  stateId: '12323342CC',
-  people: [],
-  signed: 'John Doe',
-};
-
 interface IProps {
   data: ReportData;
   agentdata: Agent;
@@ -68,7 +27,7 @@ interface IProps {
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
   return (
-    <>
+    <div className="text-sm">
       <div
         className={classNames(
           removed ? 'line-through text-gray-400' : 'text-gray-800'
@@ -108,12 +67,20 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
         {address.country}
       </div>
       <div className="my-4" />
-    </>
+    </div>
   );
 };
 
+const today = new Date();
+
+const formattedDate = today.toLocaleDateString('en-US', {
+  month: 'long',
+  day: '2-digit',
+  year: 'numeric',
+});
+
 const AddReportDocShort = ({ data, agentdata }: IProps) => {
-  const [dateValue, setDateValue] = React.useState<string>('');
+  const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
   const [documentNumber, setDocumentNumber] = React.useState<string>('');
   const [file, setFile] = React.useState<IFiles | null>(null);
   console.log(file, 'file');
@@ -136,7 +103,7 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
           title={'Company Information'}
           textSettings={'text-base'}
         />
-        <div className="flex items-start justify-start mb-12 max-lg:flex-col">
+        <div className="flex items-start justify-start mb-6 max-lg:flex-col">
           <div className="w-full max-lg:mb-3">
             <div className="w-full flex items-start justify-between pb-2">
               <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
@@ -172,15 +139,48 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
             </div>
           </div>
         </div>
+        <SectionHeading title={'Address'} textSettings={'text-base'} />
+        <div className="flex items-start justify-start mb-6 max-lg:flex-col gap-44 max-lg:gap-6">
+          <div>
+            <div className="mb-1 w-full flex items-center justify-between">
+              <span className="text-sm text-gray-500 ">Main Address</span>
+            </div>
+            <div className="flex items-start justify-start gap-16">
+              <div className="w-full">
+                {RenderAddress(false, data.updatedAddress || data.address)}
+              </div>
+            </div>
+          </div>
+          <div className="ml-2">
+            <div className="mb-1 w-full flex items-center justify-between">
+              <span className="text-sm text-gray-500 ">Mailing Address</span>
+            </div>
+            <div className="flex items-start justify-start gap-12">
+              <div className="w-full">
+                {RenderAddress(
+                  false,
+                  data.updatedMailingAddress || data.mailingAddress
+                )}
+              </div>
+              <div>
+                {data.updatedMailingAddress &&
+                  RenderAddress(
+                    !!data.updatedMailingAddress,
+                    data.mailingAddress
+                  )}
+              </div>
+            </div>
+          </div>
+        </div>
         <SectionHeading title="Registered Agent" textSettings={'text-base'} />
-        <div className="w-full flex items-start justify-start mb-12 max-lg:flex-col">
-          <div className="w-2/3 flex items-start justify-between pb-2 max-lg:w-full">
+        <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col gap-40 max-lg:gap-6">
+          <div className="flex items-start justify-between pb-2 max-lg:w-full">
             <div className="pr-1 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Name</div>
               <div className="font-semibold">{agentdata.name}</div>
             </div>
           </div>
-          <div className="flex items-start justify-start pb-2 w-full">
+          <div className="flex items-start justify-start pb-2 ml-1">
             <div className="w-full pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Address</div>
               <div>
@@ -222,45 +222,10 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
           </div>
         </div>
         <SectionHeading title="People" textSettings={'text-base'} />
-        <div className="mb-12">
+        <div className="mb-6">
           <ProcessingReportPeopleSection disableEdit={true} />
         </div>
-        <>
-          <SectionHeading title={'Address'} textSettings={'text-base'} />
-          <div className="flex items-start justify-start mb-12 max-lg:flex-col gap-32">
-            <div>
-              <div className="mb-1 w-full flex items-center justify-between">
-                <span className="text-sm text-gray-500 ">Main Address</span>
-              </div>
-              <div className="flex items-start justify-start gap-16">
-                <div className="w-full">
-                  {RenderAddress(false, data.updatedAddress || data.address)}
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="mb-1 w-full flex items-center justify-between">
-                <span className="text-sm text-gray-500 ">Mailing Address</span>
-              </div>
-              <div className="flex items-start justify-start gap-12">
-                <div className="w-full">
-                  {RenderAddress(
-                    false,
-                    data.updatedMailingAddress || data.mailingAddress
-                  )}
-                </div>
-                <div>
-                  {data.updatedMailingAddress &&
-                    RenderAddress(
-                      !!data.updatedMailingAddress,
-                      data.mailingAddress
-                    )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-        <SectionHeading title="Document Number" textSettings={'text-base'} />
+        <SectionHeading title="State ID" textSettings={'text-base'} />
         <div className="mb-6">
           <input
             onChange={(e) => setDocumentNumber(e.target.value)}
@@ -268,7 +233,7 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
               'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
             )}
             type="text"
-            placeholder="Document Number"
+            placeholder="State ID"
             value={documentNumber}
           />
         </div>
@@ -280,11 +245,6 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
             setValue={setDateValue}
           />
         </div>
-
-        <SectionHeading
-          title="Upload Report Document"
-          textSettings={'text-base'}
-        />
         <div className="mb-6">
           {selectedFile?.name ? (
             <div className="w-full">

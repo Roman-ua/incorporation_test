@@ -18,8 +18,6 @@ import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/Simp
 import { mockAgent } from '../../../mock/mockData';
 import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
 import AddReportDocShort from './AddReportDocShort';
-import { classNames } from '../../../utils/helpers';
-
 const steps = [
   {
     title: 'Open Government Website',
@@ -71,8 +69,7 @@ const steps = [
     title: 'Save Annual Report',
     description: 'Download and save a copy of the completed Annual Report.',
     icon: <Save className="w-6 h-6" />,
-    details:
-      "Once all information has been verified and submitted, download a PDF copy of the completed Annual Report. Upload this document to the company's digital records system with appropriate naming conventions for easy retrieval.",
+    details: '',
     hasFileUpload: false,
   },
   {
@@ -248,18 +245,6 @@ const ProcessingReport = ({ data }: IProps) => {
                   {step.title === 'Save Annual Report' && (
                     <div className="mt-3">
                       <AddReportDocShort data={data} agentdata={mockAgent} />
-                      <div className="w-full flex items-center justify-end mt-8">
-                        <div
-                          onClick={() => {
-                            markAsCompleted(index);
-                          }}
-                          className={classNames(
-                            'bg-mainBlue hover:bg-sideBarBlue ml-2 block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer'
-                          )}
-                        >
-                          Submit
-                        </div>
-                      </div>
                     </div>
                   )}
                   {/* File upload section */}
