@@ -13,8 +13,10 @@ import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithA
 import React, { useState } from 'react';
 import { Person } from '../../interfaces/interfaces';
 import { mockPeople } from '../../mock/mockData';
-
-const ProcessingReportPeopleSection = () => {
+interface IProps {
+  disableEdit: boolean;
+}
+const ProcessingReportPeopleSection = ({ disableEdit }: IProps) => {
   const [peopleDataDuplicate, setPeopleDataDuplicate] =
     useState<Person[]>(mockPeople);
   const [editingPersonId, setEditingPersonId] = useState(-1);
@@ -157,36 +159,38 @@ const ProcessingReportPeopleSection = () => {
                 </div>
               </div>
               <div className="whitespace-nowrap w-[24%] max-lg:hidden px-2 flex items-center justify-start"></div>
-              {!person.removed ? (
-                <div className="pl-2 flex items-center justify-end ml-auto">
-                  <div
-                    onClick={() => {
-                      // setDirtyFlag(true);
-                      // setAddPersonPressed(false);
-                      setEditingPersonId(person.id);
-                    }}
-                    className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                  >
-                    <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                  </div>
-                  <div
-                    onClick={() => {
-                      removePersonHandler(person.id);
-                    }}
-                    className="ml-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                  >
-                    <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
-                  </div>
-                </div>
-              ) : (
-                <div
-                  onClick={() => {
-                    returnPersonHandler(person.id);
-                  }}
-                  className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                >
-                  <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                </div>
+              {!disableEdit && (
+                <>
+                  {!person.removed ? (
+                    <div className="pl-2 flex items-center justify-end ml-auto">
+                      <div
+                        onClick={() => {
+                          setEditingPersonId(person.id);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                      <div
+                        onClick={() => {
+                          removePersonHandler(person.id);
+                        }}
+                        className="ml-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        returnPersonHandler(person.id);
+                      }}
+                      className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    >
+                      <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -203,46 +207,16 @@ const ProcessingReportPeopleSection = () => {
           />
         );
       })}
-      {/*{addPersonPressed && (*/}
-      {/*  <PersonDataHandling*/}
-      {/*    person={undefined}*/}
-      {/*    closeModalHandler={() => setAddPersonPressed(false)}*/}
-      {/*    submitProcess={addNewPersonHandler}*/}
-      {/*    isCreateProcess={true}*/}
-      {/*  />*/}
-      {/*)}*/}
-      {/*<button*/}
-      {/*  type="button"*/}
-      {/*  onClick={() => {*/}
-      {/*    // setDirtyFlag(true);*/}
-      {/*    setEditingPersonId(-1);*/}
-      {/*    // setAddPersonPressed(true);*/}
-      {/*  }}*/}
-      {/*  className="ml-auto mt-10 flex items-center justify-center rounded-md group bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out"*/}
-      {/*>*/}
-      {/*  Add Person*/}
-      {/*  <IconPlus className="w-5 h-5 text-white ml-2 group-hover:rotate-90 transition-all duration-350 ease-in-out" />*/}
-      {/*</button>*/}
       <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
         <div className="w-1/5 pr-2 max-lg:hidden" />
         <div className="w-1/2 max-xl:w-full flex items-center justify-between">
           <button
             type="button"
-            onClick={() => {
-              // if (dirtyFlag) {
-              //   setDiscardModal(true);
-              // } else {
-              //   cancelStepHandler();
-              // }
-            }}
             className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           >
             Cancel
           </button>
-          <ButtonWithArrow
-            // disabled={addPersonPressed || editingPersonId != -1}
-            title={'Save'}
-          />
+          <ButtonWithArrow title={'Save'} />
         </div>
         <div className="w-1/4 pr-2 max-lg:hidden" />
       </div>

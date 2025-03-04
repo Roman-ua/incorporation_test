@@ -17,6 +17,8 @@ import { ReportData } from '../../../interfaces/interfaces';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import { mockAgent } from '../../../mock/mockData';
 import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
+import AddReportDocShort from './AddReportDocShort';
+import { classNames } from '../../../utils/helpers';
 
 const steps = [
   {
@@ -71,8 +73,7 @@ const steps = [
     icon: <Save className="w-6 h-6" />,
     details:
       "Once all information has been verified and submitted, download a PDF copy of the completed Annual Report. Upload this document to the company's digital records system with appropriate naming conventions for easy retrieval.",
-    hasFileUpload: true,
-    fileUploadLabel: 'Upload annual report',
+    hasFileUpload: false,
   },
   {
     title: 'Invoice Customer',
@@ -94,6 +95,8 @@ const ProcessingReport = ({ data }: IProps) => {
   const [uploadedFiles, setUploadedFiles] = useState<{ [key: number]: File[] }>(
     {}
   );
+
+  const [reportFlowOpened, setReportFlowOpened] = useState<boolean>(false);
 
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
@@ -177,10 +180,10 @@ const ProcessingReport = ({ data }: IProps) => {
 
               {/* Task details */}
               <div
-                className={`overflow-hidden transition-all duration-300 ${
+                className={`transition-all duration-300 ${
                   !completedSteps.includes(index)
                     ? 'border-t border-gray-200'
-                    : 'max-h-0'
+                    : 'max-h-0 hidden'
                 }`}
               >
                 <div className="px-4 py-3 bg-gray-50">
@@ -239,7 +242,29 @@ const ProcessingReport = ({ data }: IProps) => {
                   )}
                   {step.title === 'Check Company Representatives' && (
                     <div className="mt-3">
-                      <ProcessingReportPeopleSection />
+                      <ProcessingReportPeopleSection disableEdit={false} />
+                    </div>
+                  )}
+                  {step.title === 'Save Annual Report' && (
+                    <div className="mt-3">
+                      {reportFlowOpened && (
+                        <AddReportDocShort data={data} agentdata={mockAgent} />
+                      )}
+                      <div className="w-full flex items-center justify-end mt-8">
+                        <div
+                          onClick={() => {
+                            setReportFlowOpened(!reportFlowOpened);
+                            if (reportFlowOpened) {
+                              markAsCompleted(index);
+                            }
+                          }}
+                          className={classNames(
+                            'bg-mainBlue hover:bg-sideBarBlue ml-2 block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer'
+                          )}
+                        >
+                          {reportFlowOpened ? 'Submit' : 'Process Data'}
+                        </div>
+                      </div>
                     </div>
                   )}
                   {/* File upload section */}
