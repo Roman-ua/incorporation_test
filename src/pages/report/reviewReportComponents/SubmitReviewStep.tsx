@@ -1,4 +1,3 @@
-import SectionHeading from '../../company/components/SectionHeading';
 import React, { useState } from 'react';
 import {
   AddressFields,
@@ -14,11 +13,13 @@ import {
   IconArrowBackUp,
   IconInfoCircle,
   IconSettings,
+  IconTrashX,
 } from '@tabler/icons-react';
 import { FaSignature } from 'react-icons/fa6';
-import XBtn from '../../../components/shared/buttons/XBtn';
+// import XBtn from '../../../components/shared/buttons/XBtn';
 import USAddressForm from '../../createCompany/components/USAddressForm';
 import { mockReportData } from '../../../mock/mockData';
+import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 
 interface IProps {
   reportData: ReportData;
@@ -105,9 +106,9 @@ const SubmitReviewStep = ({
   status,
 }: IProps) => {
   const [dataDuplicate, setDataDuplicate] = useState<ReportData>(reportData);
+
   const [addressIsEdditing, setAddressIsEdditing] = React.useState(false);
   const [editingAddressType, setEditingAddressType] = useState(-1);
-
   const undoAddress = (key: string) => {
     setDataDuplicate((prevState) => ({ ...prevState, [key]: null }));
   };
@@ -115,6 +116,79 @@ const SubmitReviewStep = ({
     setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
     setEditingAddressType(-1);
   };
+
+  const [peopleDataDuplicate, setPeopleDataDuplicate] =
+    useState<Person[]>(peopleData);
+  const [peopleIsEdditing, setPeopleIsEdditing] = React.useState(false);
+  const [editingPersonId, setEditingPersonId] = useState(-1);
+  const [addPersonPressed, setAddPersonPressed] = React.useState(false);
+  const returnPersonHandler = (id: number) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
+      const currentPersonIndex = data.findIndex((person) => person.id === id);
+
+      if (currentPersonIndex !== -1) {
+        data[currentPersonIndex].removed = false;
+      }
+      return data;
+    });
+  };
+  const removePersonHandler = (id: number) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
+      const currentPersonIndex = data.findIndex((person) => person.id === id);
+
+      if (currentPersonIndex !== -1) {
+        data[currentPersonIndex].removed = true;
+      }
+      return data;
+    });
+  };
+  const updateExistedPersonHandler = (person: Person) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
+      const currentItemIndex = prevState.findIndex(
+        (item) => item.id === person.id
+      );
+
+      if (person.signer) {
+        const prevSignerIndex = data.findIndex((item) => item.signer);
+        if (prevSignerIndex !== -1) {
+          data[prevSignerIndex].signer = false;
+        }
+      }
+
+      if (currentItemIndex !== -1) {
+        data[currentItemIndex] = person;
+      }
+      return data;
+    });
+  };
+  const addNewPersonHandler = (person: Person) => {
+    setPeopleDataDuplicate((prevState) => {
+      const data = [...prevState];
+      const personData = { ...person };
+      personData.id = Math.floor(Math.random() * 90000) + 10000;
+      personData.new = true;
+
+      if (personData.signer) {
+        const prevSignerIndex = data.findIndex((item) => item.signer);
+        if (prevSignerIndex !== -1) {
+          data[prevSignerIndex].signer = false;
+        }
+      }
+
+      data.push(personData);
+
+      return data;
+    });
+  };
+
+  const [agentDataDuplicate, setAgentDataDuplicate] =
+    React.useState(agentReportData);
+  const [agentEditing, setAgentEditing] = React.useState(false);
+
+  console.log(setAgentDataDuplicate, 'setAgentDataDuplicate');
   return (
     <>
       <div className="w-full flex items-start justify-center max-lg:flex-col">
@@ -170,14 +244,20 @@ const SubmitReviewStep = ({
         </dl>
       </div>
 
-      {/*//*/}
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           Address
           {clickHandlerAddress && (
             <button
               type="button"
-              onClick={() => setAddressIsEdditing(!addressIsEdditing)}
+              onClick={() => {
+                if (!addressIsEdditing) {
+                  setAddressIsEdditing(true);
+                } else {
+                  setAddressIsEdditing(false);
+                  setEditingAddressType(-1);
+                }
+              }}
               className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
             >
               {addressIsEdditing ? 'Complete' : 'Make Changes'}
@@ -187,15 +267,15 @@ const SubmitReviewStep = ({
         <div className="w-full flex items-start justify-start gap-3 max-lg:flex-col">
           <div className="w-full">
             {editingAddressType === 0 ? (
-              <div className="border border-gray-200 rounded-md p-4 bg-white relative">
-                <XBtn clickHandler={() => setEditingAddressType(-1)} />
+              <div className="border border-gray-200 rounded-md p-2 bg-white relative">
+                {/*<XBtn clickHandler={() => setEditingAddressType(-1)} />*/}
                 <USAddressForm
                   id={'address'}
                   disabledFlag={false}
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedAddress')
                   }
-                  heading={'Main Address'}
+                  heading={''}
                   requiredError={false}
                   value={dataDuplicate.updatedAddress || mockReportData.address}
                 />
@@ -246,15 +326,15 @@ const SubmitReviewStep = ({
           </div>
           <div className="w-full">
             {editingAddressType === 1 ? (
-              <div className="border border-gray-200 rounded-md p-4 bg-white relative">
-                <XBtn clickHandler={() => setEditingAddressType(-1)} />
+              <div className="border border-gray-200 rounded-md p-2 bg-white relative">
+                {/*<XBtn clickHandler={() => setEditingAddressType(-1)} />*/}
                 <USAddressForm
                   id={'mailingAddress'}
                   disabledFlag={false}
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedMailingAddress')
                   }
-                  heading={'Mailing Address'}
+                  heading={''}
                   requiredError={false}
                   value={
                     dataDuplicate.updatedMailingAddress ||
@@ -310,178 +390,210 @@ const SubmitReviewStep = ({
           </div>
         </div>
       </div>
-
-      {/*//*/}
-
-      <div className="mb-12">
-        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
-          Address
-          {clickHandlerAddress && (
-            <button
-              type="button"
-              onClick={clickHandlerAddress}
-              className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
-            >
-              Make Changes
-            </button>
-          )}
-        </div>
-        <div className="w-full flex items-start justify-start gap-3 max-lg:flex-col">
-          <div className="w-full">
-            <div className="pr-2 text-gray-700 text-sm">
-              <div className="text-sm text-gray-500 mb-1">Main Address</div>
-              <div>
-                {dataDuplicate.updatedAddress &&
-                  RenderAddress(
-                    false,
-                    dataDuplicate.updatedAddress as AddressFields
-                  )}
-                {dataDuplicate.updatedAddress && status === 'In Progress' ? (
-                  <div />
-                ) : (
-                  RenderAddress(
-                    !!dataDuplicate.updatedAddress,
-                    dataDuplicate.address
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="w-full">
-            <div className="pr-2 text-gray-700 text-sm">
-              <div className="text-sm text-gray-500 mb-1">Mailing Address</div>
-              <div>
-                {dataDuplicate.updatedMailingAddress &&
-                  RenderAddress(
-                    false,
-                    dataDuplicate.updatedMailingAddress as AddressFields
-                  )}
-                {dataDuplicate.updatedAddress && status === 'In Progress' ? (
-                  <div />
-                ) : (
-                  RenderAddress(
-                    !!dataDuplicate.updatedMailingAddress,
-                    dataDuplicate.mailingAddress
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           People
-          {clickHandlerPeople && (
-            <button
-              type="button"
-              onClick={clickHandlerPeople}
-              className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
-            >
-              Make Changes
-            </button>
-          )}
-        </div>
-        {peopleData.map((person, rowIndex) => (
-          <div
-            key={rowIndex}
-            className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start w-full`}
-          >
-            <div
-              className={classNames(
-                'whitespace-nowrap w-1/2 pr-2 flex items-start justify-start  text-gray-900'
-              )}
-            >
-              <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
-                {person.name[0]}
-              </span>
+          <div className="flex items-center justify-end ml-auto">
+            {peopleIsEdditing && (
               <div
-                className={classNames(
-                  'text-sm flex flex-col items-start justify-start',
-                  person.removed ? 'line-through text-gray-400' : ''
-                )}
+                onClick={() => setAddPersonPressed(true)}
+                className="mr-1 min-w-28 text-center rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150 hover:cursor-pointer"
               >
-                <span
-                  className={classNames(
-                    'font-semibold flex items-center justify-start',
-                    person.removed ? 'text-gray-400' : 'text-gray-900'
-                  )}
-                >
-                  {person.name}{' '}
-                  {person.signer && (
-                    <TooltipWrapper tooltipText="Signer of the Annual Report">
-                      <FaSignature
-                        className={classNames(
-                          'w-4 h-4 ml-2 hover:cursor-pointer',
-                          person.removed ? 'text-gray-400' : 'text-gray-700'
-                        )}
-                      />
-                    </TooltipWrapper>
-                  )}
-                </span>
-                <span
-                  className={classNames(
-                    ' font-semibold text-xs',
-                    person.removed ? 'text-gray-400' : 'text-gray-500'
-                  )}
-                >
-                  {person.title}
-                </span>
-                <span className="text-gray-400">{person.email}</span>
+                Add Person
               </div>
-            </div>
-            <div
-              className={classNames(
-                'whitespace-nowrap w-1/2 flex items-center justify-start',
-                person.removed ? 'line-through text-gray-400' : ''
-              )}
-            >
-              <div
-                className={classNames(
-                  'w-full pr-2 text-sm ',
-                  person.removed ? 'text-gray-400' : 'text-gray-800'
-                )}
+            )}
+            {clickHandlerPeople && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (!peopleIsEdditing) {
+                    setPeopleIsEdditing(true);
+                  } else {
+                    setPeopleIsEdditing(false);
+                    setEditingAddressType(-1);
+                  }
+                }}
+                className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
               >
-                <div>
-                  <span>{person.address.address0}, </span>
-                  {person.address.address1 && (
-                    <span>{person.address.address1}</span>
-                  )}
-                </div>
-                <div>
-                  {person.address.address2 && (
-                    <span>{person.address.address2}</span>
-                  )}
-                  {person.address.address3 && (
-                    <span>
-                      {person.address.address2 ? ',' : ''}{' '}
-                      {person.address.address3}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <span>{person.address.city}, </span>
-                  <span>
-                    {USStates.find(
-                      (item) => item.title === person.address.state
-                    )?.value || ''}{' '}
-                  </span>
-                  <span>{person.address.zip}</span>
-                </div>
-                <div>{person.address.country}</div>
-              </div>
-            </div>
+                {peopleIsEdditing ? 'Complete' : 'Make Changes'}
+              </button>
+            )}
           </div>
+        </div>
+        {addPersonPressed && (
+          <PersonDataHandling
+            person={undefined}
+            closeModalHandler={() => setAddPersonPressed(false)}
+            submitProcess={addNewPersonHandler}
+            isCreateProcess={true}
+          />
+        )}
+        {peopleDataDuplicate.map((person, rowIndex) => (
+          <>
+            {editingPersonId !== person.id ? (
+              <div
+                key={rowIndex}
+                className={`flex py-3 group transition-all ease-in-out duration-150 items-start justify-start w-full`}
+              >
+                <div
+                  className={classNames(
+                    'whitespace-nowrap w-1/2 pr-2 flex items-start justify-start  text-gray-900'
+                  )}
+                >
+                  <span className="mr-4 uppercase min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">
+                    {person.name[0]}
+                  </span>
+                  <div
+                    className={classNames(
+                      'text-sm flex flex-col items-start justify-start',
+                      person.removed ? 'line-through text-gray-400' : ''
+                    )}
+                  >
+                    <span
+                      className={classNames(
+                        'font-semibold flex items-center justify-start',
+                        person.removed ? 'text-gray-400' : 'text-gray-900'
+                      )}
+                    >
+                      {person.name}{' '}
+                      {person.signer && (
+                        <TooltipWrapper tooltipText="Signer of the Annual Report">
+                          <FaSignature
+                            className={classNames(
+                              'w-4 h-4 ml-2 hover:cursor-pointer',
+                              person.removed ? 'text-gray-400' : 'text-gray-700'
+                            )}
+                          />
+                        </TooltipWrapper>
+                      )}
+                    </span>
+                    <span
+                      className={classNames(
+                        ' font-semibold text-xs',
+                        person.removed ? 'text-gray-400' : 'text-gray-500'
+                      )}
+                    >
+                      {person.title}
+                    </span>
+                    <span className="text-gray-400">{person.email}</span>
+                  </div>
+                </div>
+                <div
+                  className={classNames(
+                    'whitespace-nowrap w-1/2 flex items-center justify-start',
+                    person.removed ? 'line-through text-gray-400' : ''
+                  )}
+                >
+                  <div
+                    className={classNames(
+                      'w-full pr-2 text-sm ',
+                      person.removed ? 'text-gray-400' : 'text-gray-800'
+                    )}
+                  >
+                    <div>
+                      <span>{person.address.address0}, </span>
+                      {person.address.address1 && (
+                        <span>{person.address.address1}</span>
+                      )}
+                    </div>
+                    <div>
+                      {person.address.address2 && (
+                        <span>{person.address.address2}</span>
+                      )}
+                      {person.address.address3 && (
+                        <span>
+                          {person.address.address2 ? ',' : ''}{' '}
+                          {person.address.address3}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <span>{person.address.city}, </span>
+                      <span>
+                        {USStates.find(
+                          (item) => item.title === person.address.state
+                        )?.value || ''}{' '}
+                      </span>
+                      <span>{person.address.zip}</span>
+                    </div>
+                    <div>{person.address.country}</div>
+                  </div>
+                </div>
+                {peopleIsEdditing && (
+                  <>
+                    {!person.removed ? (
+                      <div className="pl-2 flex items-center justify-end ml-auto">
+                        <div
+                          onClick={() => {
+                            setAddPersonPressed(false);
+                            setEditingPersonId(person.id);
+                          }}
+                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                        <div
+                          onClick={() => {
+                            removePersonHandler(person.id);
+                          }}
+                          className="ml-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => {
+                          returnPersonHandler(person.id);
+                        }}
+                        className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ) : (
+              <PersonDataHandling
+                key={rowIndex}
+                person={person}
+                closeModalHandler={() => {
+                  setEditingPersonId(-1);
+                }}
+                removePersonHandler={removePersonHandler}
+                submitProcess={updateExistedPersonHandler}
+                isCreateProcess={false}
+              />
+            )}
+          </>
         ))}
       </div>
+
       <div className="mb-12">
-        <SectionHeading title="Registered Agent" textSettings={'text-base'} />
+        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+          Registered Agent
+          <button
+            type="button"
+            onClick={() => {
+              if (!agentEditing) {
+                setAgentEditing(true);
+              } else {
+                setAgentEditing(false);
+              }
+            }}
+            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+          >
+            {agentEditing ? 'Complete' : 'Make Changes'}
+          </button>
+        </div>
+
         <div className="w-full flex items-start justify-start mb-12 max-lg:flex-col">
           <div className="w-1/2 flex items-start justify-between pb-2 max-lg:w-full">
             <div className="pr-1 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Name</div>
               <div className="font-semibold text-gray-800">
-                {agentReportData.name}
+                {agentDataDuplicate.name}
               </div>
             </div>
           </div>
@@ -489,40 +601,40 @@ const SubmitReviewStep = ({
             <div className="w-full pr-2 text-gray-800 text-sm">
               <div className="text-sm text-gray-500 mb-1">Address</div>
               <div>
-                <span>{agentReportData.address.address0}, </span>
-                {agentReportData.address.address1 && (
-                  <span>{agentReportData.address.address1}</span>
+                <span>{agentDataDuplicate.address.address0}, </span>
+                {agentDataDuplicate.address.address1 && (
+                  <span>{agentDataDuplicate.address.address1}</span>
                 )}
               </div>
               <div>
-                {agentReportData.address.address2 && (
-                  <span>{agentReportData.address.address2}</span>
+                {agentDataDuplicate.address.address2 && (
+                  <span>{agentDataDuplicate.address.address2}</span>
                 )}
-                {agentReportData.address.address3 && (
+                {agentDataDuplicate.address.address3 && (
                   <span>
-                    {agentReportData.address.address2 ? ',' : ''}{' '}
-                    {agentReportData.address.address3}
+                    {agentDataDuplicate.address.address2 ? ',' : ''}{' '}
+                    {agentDataDuplicate.address.address3}
                   </span>
                 )}
               </div>
               <div>
-                <span>{agentReportData.address.city}, </span>
+                <span>{agentDataDuplicate.address.city}, </span>
                 <span>
                   {USStates.find(
-                    (item) => item.title === agentReportData.address.state
+                    (item) => item.title === agentDataDuplicate.address.state
                   )?.value || ''}{' '}
                 </span>
-                <span>{agentReportData.address.zip}</span>
-                {agentReportData.address?.county && (
+                <span>{agentDataDuplicate.address.zip}</span>
+                {agentDataDuplicate.address?.county && (
                   <span>
-                    , {agentReportData.address?.county}
+                    , {agentDataDuplicate.address?.county}
                     <TooltipWrapper tooltipText="County">
                       <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
                     </TooltipWrapper>
                   </span>
                 )}
               </div>
-              <div>{agentReportData.address.country}</div>
+              <div>{agentDataDuplicate.address.country}</div>
             </div>
           </div>
         </div>
