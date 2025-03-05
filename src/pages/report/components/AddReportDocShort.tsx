@@ -84,6 +84,14 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
   const [documentNumber, setDocumentNumber] = React.useState<string>('');
   const [file, setFile] = React.useState<IFiles | null>(null);
   console.log(file, 'file');
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (value.length <= 12) {
+      setDocumentNumber(value);
+    }
+  };
+
   const {
     inputRef,
     selectedFile,
@@ -216,12 +224,14 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
         <div className="mb-6">
           <ProcessingReportPeopleSection disableEdit={true} />
         </div>
-        <SectionHeading title="Report Details" textSettings={'text-base'} />
+        <div className="text-sm text-gray-700 mb-3">
+          Provide State ID and Annual Report filing date.
+        </div>
         <div className="mb-4">
           <input
-            onChange={(e) => setDocumentNumber(e.target.value)}
+            onChange={handleInputChange}
             className={classNames(
-              'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+              'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
             )}
             type="text"
             placeholder="State ID"

@@ -165,9 +165,16 @@ const ProcessingReport = ({ data }: IProps) => {
                   <h3 className="text font-medium text-gray-700">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-0.5">
-                    {step.description}
-                  </p>
+                  {step.title === 'Save Annual Report' ? (
+                    <p className="text-sm text-gray-500 mt-0.5">
+                      Download and save {data.year} Annual Report for{' '}
+                      {data.companyName}
+                    </p>
+                  ) : (
+                    <p className="text-sm text-gray-500 mt-0.5">
+                      {step.description}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex-shrink-0 ml-2 text-gray-400">
