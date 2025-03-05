@@ -164,28 +164,20 @@ const SubmitReviewStep = ({
             </button>
           )}
         </div>
-        <div className="w-full flex items-start flex-col justify-start gap-3 max-lg:flex-col">
+        <div className="w-full flex items-start justify-start gap-3 max-lg:flex-col">
           <div className="w-full">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Main Address</div>
-              <div className="flex items-start justify-start gap-12">
-                {reportData.updatedAddress && (
-                  <div className="w-1/4">
-                    {RenderAddress(
-                      false,
-                      reportData.updatedAddress as AddressFields
-                    )}
-                  </div>
-                )}
+              <div>
+                {reportData.updatedAddress &&
+                  RenderAddress(
+                    false,
+                    reportData.updatedAddress as AddressFields
+                  )}
                 {reportData.updatedAddress && status === 'In Progress' ? (
                   <div />
                 ) : (
-                  <div>
-                    {RenderAddress(
-                      !!reportData.updatedAddress,
-                      reportData.address
-                    )}
-                  </div>
+                  RenderAddress(!!reportData.updatedAddress, reportData.address)
                 )}
               </div>
             </div>
@@ -193,24 +185,19 @@ const SubmitReviewStep = ({
           <div className="w-full">
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Mailing Address</div>
-              <div className="flex items-start justify-start gap-12">
-                {reportData.updatedMailingAddress && (
-                  <div className="w-1/4">
-                    {RenderAddress(
-                      false,
-                      reportData.updatedMailingAddress as AddressFields
-                    )}
-                  </div>
-                )}
+              <div>
+                {reportData.updatedMailingAddress &&
+                  RenderAddress(
+                    false,
+                    reportData.updatedMailingAddress as AddressFields
+                  )}
                 {reportData.updatedAddress && status === 'In Progress' ? (
                   <div />
                 ) : (
-                  <div>
-                    {RenderAddress(
-                      !!reportData.updatedMailingAddress,
-                      reportData.mailingAddress
-                    )}
-                  </div>
+                  RenderAddress(
+                    !!reportData.updatedMailingAddress,
+                    reportData.mailingAddress
+                  )
                 )}
               </div>
             </div>

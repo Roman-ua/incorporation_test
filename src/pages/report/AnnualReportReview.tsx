@@ -372,7 +372,7 @@ const AnnualReportReview = () => {
                 />
               </div>
 
-              <div className="flex items-start flex-col justify-start gap-6">
+              <div className="flex items-start max-xl:flex-col justify-start gap-20">
                 <div className="mb-5 w-full">
                   {editingAddressType === 0 ? (
                     <div className="border border-gray-200 rounded-md p-4 bg-white relative">
@@ -396,38 +396,39 @@ const AnnualReportReview = () => {
                         <span className="text-sm text-gray-500 ">
                           Main Address
                         </span>
-                        {dataDuplicate.updatedAddress && (
-                          <div
-                            onClick={() => undoAddress('updatedAddress')}
-                            className="group ml-auto mr-2 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                          >
-                            <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                          </div>
-                        )}
-                        <div
-                          onClick={() => {
-                            setDirtyFlag(true);
-                            setEditingAddressType(0);
-                          }}
-                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                        </div>
                       </div>
-                      <div className="flex items-start justify-start gap-12">
-                        <div className="w-1/4">
+                      <div className="flex items-start justify-between">
+                        <div>
                           {RenderAddress(
                             false,
                             dataDuplicate.updatedAddress ||
                               dataDuplicate.address
                           )}
-                        </div>
-                        <div>
                           {dataDuplicate.updatedAddress &&
                             RenderAddress(
                               !!dataDuplicate.updatedAddress,
                               dataDuplicate.address
                             )}
+                        </div>
+
+                        <div className="flex items-center justify-end">
+                          {dataDuplicate.updatedAddress && (
+                            <div
+                              onClick={() => undoAddress('updatedAddress')}
+                              className="group ml-auto mr-2 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                            >
+                              <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                            </div>
+                          )}
+                          <div
+                            onClick={() => {
+                              setDirtyFlag(true);
+                              setEditingAddressType(0);
+                            }}
+                            className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                          >
+                            <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                          </div>
                         </div>
                       </div>
                     </>
@@ -457,38 +458,41 @@ const AnnualReportReview = () => {
                         <span className="text-sm text-gray-500 ">
                           Mailing Address
                         </span>
-                        {dataDuplicate.updatedMailingAddress && (
-                          <div
-                            onClick={() => undoAddress('updatedMailingAddress')}
-                            className="group ml-auto mr-2 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                          >
-                            <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                          </div>
-                        )}
-                        <div
-                          onClick={() => {
-                            setDirtyFlag(true);
-                            setEditingAddressType(1);
-                          }}
-                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                        </div>
                       </div>
-                      <div className="flex items-start justify-start gap-12">
-                        <div className="w-1/4">
+                      <div className="flex items-start justify-between">
+                        <div>
                           {RenderAddress(
                             false,
                             dataDuplicate.updatedMailingAddress ||
                               dataDuplicate.mailingAddress
                           )}
-                        </div>
-                        <div>
                           {dataDuplicate.updatedMailingAddress &&
                             RenderAddress(
                               !!dataDuplicate.updatedMailingAddress,
                               dataDuplicate.mailingAddress
                             )}
+                        </div>
+
+                        <div className="flex items-center justify-end">
+                          {dataDuplicate.updatedMailingAddress && (
+                            <div
+                              onClick={() =>
+                                undoAddress('updatedMailingAddress')
+                              }
+                              className="group ml-auto mr-2 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                            >
+                              <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                            </div>
+                          )}
+                          <div
+                            onClick={() => {
+                              setDirtyFlag(true);
+                              setEditingAddressType(1);
+                            }}
+                            className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                          >
+                            <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                          </div>
                         </div>
                       </div>
                     </>

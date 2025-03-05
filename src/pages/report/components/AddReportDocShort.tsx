@@ -140,7 +140,7 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
           </div>
         </div>
         <SectionHeading title={'Address'} textSettings={'text-base'} />
-        <div className="flex items-start justify-start mb-6 max-lg:flex-col gap-44 max-lg:gap-6">
+        <div className="flex items-start justify-start mb-6 max-lg:flex-col gap-28 max-lg:gap-6">
           <div>
             <div className="mb-1 w-full flex items-center justify-between">
               <span className="text-sm text-gray-500 ">Main Address</span>
@@ -156,19 +156,10 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
               <span className="text-sm text-gray-500 ">Mailing Address</span>
             </div>
             <div className="flex items-start justify-start gap-12">
-              <div className="w-full">
-                {RenderAddress(
-                  false,
-                  data.updatedMailingAddress || data.mailingAddress
-                )}
-              </div>
-              <div>
-                {data.updatedMailingAddress &&
-                  RenderAddress(
-                    !!data.updatedMailingAddress,
-                    data.mailingAddress
-                  )}
-              </div>
+              {RenderAddress(
+                false,
+                data.updatedMailingAddress || data.mailingAddress
+              )}
             </div>
           </div>
         </div>
