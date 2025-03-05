@@ -1,5 +1,5 @@
 import SectionHeading from '../../company/components/SectionHeading';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AddressFields,
   Agent,
@@ -10,8 +10,15 @@ import { USStates } from '../../../constants/form/form';
 import { classNames, dockFieldHandler } from '../../../utils/helpers';
 import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
 import TooltipWrapper from '../../../components/shared/TooltipWrapper';
-import { IconInfoCircle } from '@tabler/icons-react';
+import {
+  IconArrowBackUp,
+  IconInfoCircle,
+  IconSettings,
+} from '@tabler/icons-react';
 import { FaSignature } from 'react-icons/fa6';
+import XBtn from '../../../components/shared/buttons/XBtn';
+import USAddressForm from '../../createCompany/components/USAddressForm';
+import { mockReportData } from '../../../mock/mockData';
 
 interface IProps {
   reportData: ReportData;
@@ -97,6 +104,17 @@ const SubmitReviewStep = ({
   clickHandlerAddress,
   status,
 }: IProps) => {
+  const [dataDuplicate, setDataDuplicate] = useState<ReportData>(reportData);
+  const [addressIsEdditing, setAddressIsEdditing] = React.useState(false);
+  const [editingAddressType, setEditingAddressType] = useState(-1);
+
+  const undoAddress = (key: string) => {
+    setDataDuplicate((prevState) => ({ ...prevState, [key]: null }));
+  };
+  const updateAddressHandler = (data: AddressFields, key: string) => {
+    setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
+    setEditingAddressType(-1);
+  };
   return (
     <>
       <div className="w-full flex items-start justify-center max-lg:flex-col">
@@ -104,7 +122,7 @@ const SubmitReviewStep = ({
           <div className="flex flex-col gap-y-1 pr-5">
             <dt className="text-sm text-gray-500">Year</dt>
             <dd className="text-sm font-semibold tracking-tight text-gray-800">
-              {reportData?.year}
+              {dataDuplicate?.year}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
@@ -121,13 +139,13 @@ const SubmitReviewStep = ({
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
-              {reportData.companyName}
+              {dataDuplicate.companyName}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Due Date</dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
-              May 1, {+reportData.year + 1}
+              May 1, {+dataDuplicate.year + 1}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
@@ -135,22 +153,166 @@ const SubmitReviewStep = ({
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6 flex items-center justify-start">
               <StateSolidIconHandler
                 simpleIcon={true}
-                selectedState={reportData.state || 'Florida'}
-                state={reportData.state || 'Florida'}
+                selectedState={dataDuplicate.state || 'Florida'}
+                state={dataDuplicate.state || 'Florida'}
               />
-              {reportData.state}
+              {dataDuplicate.state}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">
-              {dockFieldHandler(reportData.state)}
+              {dockFieldHandler(dataDuplicate.state)}
             </dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
-              {reportData.registrationNumber}
+              {dataDuplicate.registrationNumber}
             </dd>
           </div>
         </dl>
       </div>
+
+      {/*//*/}
+      <div className="mb-12">
+        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+          Address
+          {clickHandlerAddress && (
+            <button
+              type="button"
+              onClick={() => setAddressIsEdditing(!addressIsEdditing)}
+              className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+            >
+              {addressIsEdditing ? 'Complete' : 'Make Changes'}
+            </button>
+          )}
+        </div>
+        <div className="w-full flex items-start justify-start gap-3 max-lg:flex-col">
+          <div className="w-full">
+            {editingAddressType === 0 ? (
+              <div className="border border-gray-200 rounded-md p-4 bg-white relative">
+                <XBtn clickHandler={() => setEditingAddressType(-1)} />
+                <USAddressForm
+                  id={'address'}
+                  disabledFlag={false}
+                  setFromState={(data) =>
+                    updateAddressHandler(data, 'updatedAddress')
+                  }
+                  heading={'Main Address'}
+                  requiredError={false}
+                  value={dataDuplicate.updatedAddress || mockReportData.address}
+                />
+              </div>
+            ) : (
+              <div className="pr-2 text-gray-700 text-sm">
+                <div className="text-sm text-gray-500 mb-1">Main Address</div>
+                <div className="flex items-start justify-between">
+                  <div>
+                    {dataDuplicate.updatedAddress &&
+                      RenderAddress(
+                        false,
+                        dataDuplicate.updatedAddress as AddressFields
+                      )}
+                    {dataDuplicate.updatedAddress &&
+                    status === 'In Progress' ? (
+                      <div />
+                    ) : (
+                      RenderAddress(
+                        !!dataDuplicate.updatedAddress,
+                        dataDuplicate.address
+                      )
+                    )}
+                  </div>
+                  {addressIsEdditing && (
+                    <div className="flex items-center justify-end flex-col">
+                      <div
+                        onClick={() => {
+                          setEditingAddressType(0);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                      {dataDuplicate.updatedAddress && (
+                        <div
+                          onClick={() => undoAddress('updatedAddress')}
+                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="w-full">
+            {editingAddressType === 1 ? (
+              <div className="border border-gray-200 rounded-md p-4 bg-white relative">
+                <XBtn clickHandler={() => setEditingAddressType(-1)} />
+                <USAddressForm
+                  id={'mailingAddress'}
+                  disabledFlag={false}
+                  setFromState={(data) =>
+                    updateAddressHandler(data, 'updatedMailingAddress')
+                  }
+                  heading={'Mailing Address'}
+                  requiredError={false}
+                  value={
+                    dataDuplicate.updatedMailingAddress ||
+                    dataDuplicate.mailingAddress
+                  }
+                />
+              </div>
+            ) : (
+              <div className="pr-2 text-gray-700 text-sm">
+                <div className="text-sm text-gray-500 mb-1">
+                  Mailing Address
+                </div>
+                <div className="flex items-start justify-between">
+                  <div>
+                    {dataDuplicate.updatedMailingAddress &&
+                      RenderAddress(
+                        false,
+                        dataDuplicate.updatedMailingAddress as AddressFields
+                      )}
+                    {dataDuplicate.updatedAddress &&
+                    status === 'In Progress' ? (
+                      <div />
+                    ) : (
+                      RenderAddress(
+                        !!dataDuplicate.updatedMailingAddress,
+                        dataDuplicate.mailingAddress
+                      )
+                    )}
+                  </div>
+                  {addressIsEdditing && (
+                    <div className="flex items-center justify-end flex-col">
+                      <div
+                        onClick={() => {
+                          setEditingAddressType(1);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                      {dataDuplicate.updatedMailingAddress && (
+                        <div
+                          onClick={() => undoAddress('updatedMailingAddress')}
+                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/*//*/}
+
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           Address
@@ -169,15 +331,18 @@ const SubmitReviewStep = ({
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Main Address</div>
               <div>
-                {reportData.updatedAddress &&
+                {dataDuplicate.updatedAddress &&
                   RenderAddress(
                     false,
-                    reportData.updatedAddress as AddressFields
+                    dataDuplicate.updatedAddress as AddressFields
                   )}
-                {reportData.updatedAddress && status === 'In Progress' ? (
+                {dataDuplicate.updatedAddress && status === 'In Progress' ? (
                   <div />
                 ) : (
-                  RenderAddress(!!reportData.updatedAddress, reportData.address)
+                  RenderAddress(
+                    !!dataDuplicate.updatedAddress,
+                    dataDuplicate.address
+                  )
                 )}
               </div>
             </div>
@@ -186,17 +351,17 @@ const SubmitReviewStep = ({
             <div className="pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Mailing Address</div>
               <div>
-                {reportData.updatedMailingAddress &&
+                {dataDuplicate.updatedMailingAddress &&
                   RenderAddress(
                     false,
-                    reportData.updatedMailingAddress as AddressFields
+                    dataDuplicate.updatedMailingAddress as AddressFields
                   )}
-                {reportData.updatedAddress && status === 'In Progress' ? (
+                {dataDuplicate.updatedAddress && status === 'In Progress' ? (
                   <div />
                 ) : (
                   RenderAddress(
-                    !!reportData.updatedMailingAddress,
-                    reportData.mailingAddress
+                    !!dataDuplicate.updatedMailingAddress,
+                    dataDuplicate.mailingAddress
                   )
                 )}
               </div>
