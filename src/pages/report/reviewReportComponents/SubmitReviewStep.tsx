@@ -186,8 +186,16 @@ const SubmitReviewStep = ({
 
   const [agentDataDuplicate, setAgentDataDuplicate] =
     React.useState(agentReportData);
+  const [editingAddressAgent, setEditingAddressAgent] = useState(false);
   const [agentEditing, setAgentEditing] = React.useState(false);
 
+  const updateAgentAddress = (data: AddressFields) => {
+    setAgentDataDuplicate((prevState) => ({
+      ...prevState,
+      address: { ...prevState.address, ...data },
+    }));
+    setEditingAddressAgent(false);
+  };
   console.log(setAgentDataDuplicate, 'setAgentDataDuplicate');
   return (
     <>
@@ -300,26 +308,31 @@ const SubmitReviewStep = ({
                       )
                     )}
                   </div>
-                  {addressIsEdditing && (
-                    <div className="flex items-center justify-end flex-col">
-                      <div
-                        onClick={() => {
-                          setEditingAddressType(0);
-                        }}
-                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                      >
-                        <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                      </div>
-                      {dataDuplicate.updatedAddress && (
-                        <div
-                          onClick={() => undoAddress('updatedAddress')}
-                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                        </div>
-                      )}
+                  <div
+                    className={classNames(
+                      'transform transition-all duration-300 ease-out flex items-center justify-end flex-col',
+                      addressIsEdditing
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-4 pointer-events-none'
+                    )}
+                  >
+                    <div
+                      onClick={() => {
+                        setEditingAddressType(0);
+                      }}
+                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    >
+                      <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                     </div>
-                  )}
+                    {dataDuplicate.updatedAddress && (
+                      <div
+                        onClick={() => undoAddress('updatedAddress')}
+                        className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -364,26 +377,31 @@ const SubmitReviewStep = ({
                       )
                     )}
                   </div>
-                  {addressIsEdditing && (
-                    <div className="flex items-center justify-end flex-col">
-                      <div
-                        onClick={() => {
-                          setEditingAddressType(1);
-                        }}
-                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                      >
-                        <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                      </div>
-                      {dataDuplicate.updatedMailingAddress && (
-                        <div
-                          onClick={() => undoAddress('updatedMailingAddress')}
-                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                        </div>
-                      )}
+                  <div
+                    className={classNames(
+                      'transform transition-all duration-300 ease-out flex items-center justify-end flex-col',
+                      addressIsEdditing
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-4 pointer-events-none'
+                    )}
+                  >
+                    <div
+                      onClick={() => {
+                        setEditingAddressType(1);
+                      }}
+                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    >
+                      <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                     </div>
-                  )}
+                    {dataDuplicate.updatedMailingAddress && (
+                      <div
+                        onClick={() => undoAddress('updatedMailingAddress')}
+                        className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -486,7 +504,7 @@ const SubmitReviewStep = ({
                 >
                   <div
                     className={classNames(
-                      'w-full pr-2 text-sm ',
+                      'w-full pr-2 text-sm ml-10',
                       person.removed ? 'text-gray-400' : 'text-gray-800'
                     )}
                   >
@@ -519,40 +537,45 @@ const SubmitReviewStep = ({
                     <div>{person.address.country}</div>
                   </div>
                 </div>
-                {peopleIsEdditing && (
-                  <>
-                    {!person.removed ? (
-                      <div className="pl-2 flex items-center justify-end ml-auto">
-                        <div
-                          onClick={() => {
-                            setAddPersonPressed(false);
-                            setEditingPersonId(person.id);
-                          }}
-                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                        </div>
-                        <div
-                          onClick={() => {
-                            removePersonHandler(person.id);
-                          }}
-                          className="ml-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
-                        </div>
-                      </div>
-                    ) : (
+                <div
+                  className={classNames(
+                    ' transform transition-all duration-300 ease-out',
+                    peopleIsEdditing
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-4 pointer-events-none'
+                  )}
+                >
+                  {!person.removed ? (
+                    <div className="pl-2 flex items-center justify-end ml-auto">
                       <div
                         onClick={() => {
-                          returnPersonHandler(person.id);
+                          setAddPersonPressed(false);
+                          setEditingPersonId(person.id);
                         }}
-                        className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                       >
-                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                       </div>
-                    )}
-                  </>
-                )}
+                      <div
+                        onClick={() => {
+                          removePersonHandler(person.id);
+                        }}
+                        className="ml-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        returnPersonHandler(person.id);
+                      }}
+                      className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    >
+                      <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <PersonDataHandling
@@ -580,6 +603,7 @@ const SubmitReviewStep = ({
                 setAgentEditing(true);
               } else {
                 setAgentEditing(false);
+                setEditingAddressAgent(false);
               }
             }}
             className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
@@ -588,8 +612,8 @@ const SubmitReviewStep = ({
           </button>
         </div>
 
-        <div className="w-full flex items-start justify-start mb-12 max-lg:flex-col">
-          <div className="w-1/2 flex items-start justify-between pb-2 max-lg:w-full">
+        <div className="w-full flex items-start justify-between mb-12 max-lg:flex-col">
+          <div className="w-full flex items-start justify-between pb-2 max-lg:w-full">
             <div className="pr-1 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Name</div>
               <div className="font-semibold text-gray-800">
@@ -597,45 +621,81 @@ const SubmitReviewStep = ({
               </div>
             </div>
           </div>
-          <div className="w-1/2 flex items-start justify-start pb-2">
-            <div className="w-full pr-2 text-gray-800 text-sm">
-              <div className="text-sm text-gray-500 mb-1">Address</div>
-              <div>
-                <span>{agentDataDuplicate.address.address0}, </span>
-                {agentDataDuplicate.address.address1 && (
-                  <span>{agentDataDuplicate.address.address1}</span>
-                )}
+          <div className="w-full flex items-start justify-end pb-2">
+            {editingAddressAgent ? (
+              <div className="border border-gray-200 rounded-md p-2 bg-white relative">
+                {/*<XBtn clickHandler={() => setEditingAddressType(-1)} />*/}
+                <USAddressForm
+                  id={'mailingAddress'}
+                  disabledFlag={false}
+                  setFromState={(data) => updateAgentAddress(data)}
+                  heading={''}
+                  requiredError={false}
+                  value={agentDataDuplicate.address}
+                />
               </div>
-              <div>
-                {agentDataDuplicate.address.address2 && (
-                  <span>{agentDataDuplicate.address.address2}</span>
-                )}
-                {agentDataDuplicate.address.address3 && (
-                  <span>
-                    {agentDataDuplicate.address.address2 ? ',' : ''}{' '}
-                    {agentDataDuplicate.address.address3}
-                  </span>
-                )}
+            ) : (
+              <div className="w-full pr-2 text-gray-800 text-sm">
+                <div className="text-sm text-gray-500 mb-1">Address</div>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div>
+                      <span>{agentDataDuplicate.address.address0}, </span>
+                      {agentDataDuplicate.address.address1 && (
+                        <span>{agentDataDuplicate.address.address1}</span>
+                      )}
+                    </div>
+                    <div>
+                      {agentDataDuplicate.address.address2 && (
+                        <span>{agentDataDuplicate.address.address2}</span>
+                      )}
+                      {agentDataDuplicate.address.address3 && (
+                        <span>
+                          {agentDataDuplicate.address.address2 ? ',' : ''}{' '}
+                          {agentDataDuplicate.address.address3}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <span>{agentDataDuplicate.address.city}, </span>
+                      <span>
+                        {USStates.find(
+                          (item) =>
+                            item.title === agentDataDuplicate.address.state
+                        )?.value || ''}{' '}
+                      </span>
+                      <span>{agentDataDuplicate.address.zip}</span>
+                      {agentDataDuplicate.address?.county && (
+                        <span>
+                          , {agentDataDuplicate.address?.county}
+                          <TooltipWrapper tooltipText="County">
+                            <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
+                          </TooltipWrapper>
+                        </span>
+                      )}
+                    </div>
+                    <div>{agentDataDuplicate.address.country}</div>
+                  </div>
+                  <div
+                    className={classNames(
+                      ' transform transition-all duration-300 ease-out',
+                      agentEditing
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-4 pointer-events-none'
+                    )}
+                  >
+                    <div
+                      onClick={() => {
+                        setEditingAddressAgent(true);
+                      }}
+                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    >
+                      <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <span>{agentDataDuplicate.address.city}, </span>
-                <span>
-                  {USStates.find(
-                    (item) => item.title === agentDataDuplicate.address.state
-                  )?.value || ''}{' '}
-                </span>
-                <span>{agentDataDuplicate.address.zip}</span>
-                {agentDataDuplicate.address?.county && (
-                  <span>
-                    , {agentDataDuplicate.address?.county}
-                    <TooltipWrapper tooltipText="County">
-                      <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
-                    </TooltipWrapper>
-                  </span>
-                )}
-              </div>
-              <div>{agentDataDuplicate.address.country}</div>
-            </div>
+            )}
           </div>
         </div>
       </div>
