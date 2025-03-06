@@ -4,21 +4,6 @@ import { classNames } from '../../../utils/helpers';
 
 const stepsData = [
   {
-    name: 'Details',
-    status: 'current',
-    id: 0,
-  },
-  {
-    name: 'Address',
-    status: 'upcoming',
-    id: 1,
-  },
-  {
-    name: 'People',
-    status: 'upcoming',
-    id: 2,
-  },
-  {
     name: 'Review',
     status: 'upcoming',
     id: 3,

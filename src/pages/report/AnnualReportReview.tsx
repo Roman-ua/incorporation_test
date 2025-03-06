@@ -85,7 +85,7 @@ const AnnualReportReview = () => {
   const [editingAddressType, setEditingAddressType] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
   const [currentStep, setCurrentStep] = useState<number>(3);
-  const [visitedSteps, setVisitedSteps] = useState<number[]>([0, 1, 2]);
+  const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
   const [editMode, setEditMode] = useState<boolean>(true); // TO DO need to change to false for make steps logic works
   const [discardModal, setDiscardModal] = useState<boolean>(false);
 
