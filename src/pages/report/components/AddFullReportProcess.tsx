@@ -1,23 +1,70 @@
-import { AddressFields, IFiles, Person } from '../../../interfaces/interfaces';
-import SectionHeading from '../../company/components/SectionHeading';
+import React, { useEffect, useState } from 'react';
+import ButtonWithArrow from '../../../components/shared/ButtonWithArrow/ButtonWithArrow';
 import {
   classNames,
   dockFieldHandler,
   truncateString,
 } from '../../../utils/helpers';
-import { USStates } from '../../../constants/form/form';
-import React, { useEffect } from 'react';
-import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
-import FileDownloadProgress from '../../createCompany/components/UploadedFile';
-import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
-import useFileUpload from '../../../utils/hooks/useFileUpload';
-import logo from '../../../images/shared/bluelogo.svg';
-import smallLogo from '../../../images/shared/round_logo.png';
+import PageSign from '../../../components/shared/PageSign';
+import { AddressFields, IFiles, Person } from '../../../interfaces/interfaces';
+import AddFullReportSteps from './AddFullReportSteps';
 import StateCards from '../../createCompany/components/StateCards';
 import { states } from '../../elements/components/StateCardsElements';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
-import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
+import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
+import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
+import useFileUpload from '../../../utils/hooks/useFileUpload';
+import FileDownloadProgress from '../../createCompany/components/UploadedFile';
+import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
+import SectionHeading from '../../company/components/SectionHeading';
+import { USStates } from '../../../constants/form/form';
+
+const today = new Date();
+const formattedDate = today.toLocaleDateString('en-US', {
+  month: 'long',
+  day: '2-digit',
+  year: 'numeric',
+});
+
+const mockData = {
+  id: 1,
+  year: 2021,
+  status: 'Need to File',
+  filingDate: 'February 12, 2021',
+  confirmedBy: 'John Doe',
+  relatedOrder: 'ord_12312',
+  attachedFiles: true,
+  confirmationLinks: [],
+  address: {
+    country: 'United States',
+    address0: '1234 Elm St',
+    address1: 'Apt 5B',
+    address2: '',
+    address3: '',
+    city: 'Birmingham',
+    zip: '35203',
+    state: 'Alabama',
+  },
+  mailingAddress: {
+    country: 'United States',
+    address0: '1234 Elm St',
+    address1: 'Apt 5B',
+    address2: '',
+    address3: '',
+    city: 'Birmingham',
+    zip: '35203',
+    state: 'Alabama',
+  },
+  companyName: 'ABC Company Inc',
+  registrationNumber: 'L23000056354',
+  file: 'rep_2021',
+  confirmFile: 'Confirmation_file',
+  stateId: '12323342CC',
+  state: 'Florida',
+  people: [],
+  signed: 'John Doe',
+};
 
 const defaultUS = {
   country: 'United States',
@@ -29,10 +76,9 @@ const defaultUS = {
   zip: '',
   state: '',
 };
-
 const RenderAddress = (removed: boolean, address: AddressFields) => {
   return (
-    <div className="text-sm">
+    <>
       <div
         className={classNames(
           removed ? 'line-through text-gray-400' : 'text-gray-800'
@@ -72,21 +118,11 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
         {address.country}
       </div>
       <div className="my-4" />
-    </div>
+    </>
   );
 };
 
-const today = new Date();
-
-const formattedDate = today.toLocaleDateString('en-US', {
-  month: 'long',
-  day: '2-digit',
-  year: 'numeric',
-});
-
 const AddFullReportProcess = () => {
-  const [completedSteps, setCompletedSteps] = React.useState<number[]>([]);
-  const [savedSteps, setSavedSteps] = React.useState<number[]>([]);
   const [reportYear, setReportYear] = React.useState<string>('');
   const [companyName, setCompanyName] = React.useState<string>('');
   const [dockNumber, setDockNumber] = React.useState<string>('');
@@ -106,7 +142,21 @@ const AddFullReportProcess = () => {
   const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
   const [file, setFile] = React.useState<IFiles | null>(null);
   console.log(file, 'file');
-  console.log(people, 'people');
+  const {
+    inputRef,
+    selectedFile,
+    handleFileInput,
+    handleFileDrop,
+    deleteFileHandler,
+  } = useFileUpload();
+
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
+
+  const setAgentAddressHandler = (key: string, value: string) => {
+    setAgentAddress({ ...agentAddress, [key]: value });
+  };
+
   const setAddressHandler = (key: string, value: string) => {
     setAddress({ ...address, [key]: value });
   };
@@ -115,22 +165,6 @@ const AddFullReportProcess = () => {
     setMailingAddress({ ...mailingAddress, [key]: value });
   };
 
-  const setAgentAddressHandler = (key: string, value: string) => {
-    setAgentAddress({ ...agentAddress, [key]: value });
-  };
-
-  useEffect(() => {
-    const lastElem = document.getElementById(`${completedSteps.at(-1)}`);
-
-    if (lastElem) {
-      lastElem.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'start',
-      });
-    }
-  }, [completedSteps]);
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     if (value.length <= 12) {
@@ -138,13 +172,27 @@ const AddFullReportProcess = () => {
     }
   };
 
-  const {
-    inputRef,
-    selectedFile,
-    handleFileInput,
-    handleFileDrop,
-    deleteFileHandler,
-  } = useFileUpload();
+  const submitStepHandler = () => {
+    setCurrentStep((prevState) => {
+      if (prevState === 4) return prevState;
+      setVisitedSteps([...visitedSteps, prevState]);
+      return prevState + 1;
+    });
+  };
+
+  const cancelStepHandler = () => {
+    // setCurrentStep(cu);
+    // if (currentStep === 2) {
+    //   setPeopleDataDuplicate(mockPeople);
+    // }
+    // if (currentStep === 1) {
+    //   setDataDuplicate((prevState) => ({
+    //     ...prevState,
+    //     updatedAddress: null,
+    //     updatedMailingAddress: null,
+    //   }));
+    // }
+  };
 
   useEffect(() => {
     setFile(selectedFile);
@@ -156,159 +204,104 @@ const AddFullReportProcess = () => {
   return (
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
-        <div className="w-[200px] max-lg:w-fit pr-2">
-          <img
-            className="h-6 w-auto max-lg:hidden"
-            src={logo}
-            alt="Your Company"
-          />
-          <img
-            className="h-6 w-auto lg:hidden"
-            src={smallLogo}
-            alt="Your Company"
-          />
-        </div>
+        <div className="w-[200px] max-lg:w-fit pr-2" />
         <div className="w-[870px] flex items-center justify-center font-semibold">
-          {`Annual Report Filing`}
+          Annual Report for
+          <span className="underline ml-1">{mockData.companyName}</span>
         </div>
         <div className="w-[200px] pr-2" />
       </div>
-
-      <div className="bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20 min-h-[calc(100vh-65px)]">
-        <div className="w-[200px]" />
+      <div
+        className={classNames(
+          'bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20 min-h-[calc(100vh-65px)]'
+        )}
+      >
+        <div className="w-[200px] pr-2 max-lg:w-full max-lg:pr-0 max-lg:mb-6">
+          <AddFullReportSteps
+            editMode={true}
+            currentStep={currentStep}
+            visitedSteps={visitedSteps}
+            setCurrentStep={setCurrentStep}
+          />
+        </div>
         <div className="w-[870px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
-          <div id={'1'} className="mb-16">
-            <SectionHeading
-              title={'Company Information'}
-              textSettings={'text-base'}
-            />
-            {!savedSteps.includes(1) ? (
+          {currentStep === 0 && (
+            <form onSubmit={submitStepHandler}>
               <>
-                <div className="mb-4 mt-1">
-                  <input
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    className={classNames(
-                      'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                    )}
-                    type="text"
-                    placeholder="Company Name"
-                    value={companyName}
+                <div className="mb-5">
+                  <PageSign
+                    titleSize={'text-2xl font-bold text-gray-900'}
+                    title={`Company Information`}
+                    icon={<></>}
                   />
                 </div>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="w-full">
-                    <div className="mb-4">
-                      <input
-                        onChange={(e) => setReportYear(e.target.value)}
-                        className={classNames(
-                          'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                        )}
-                        type="text"
-                        placeholder="Report Year"
-                        value={reportYear}
-                      />
+                <>
+                  <div className="mb-4 mt-1">
+                    <input
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      className={classNames(
+                        'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
+                      )}
+                      type="text"
+                      placeholder="Company Name"
+                      value={companyName}
+                    />
+                  </div>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="w-full">
+                      <div className="mb-4">
+                        <input
+                          onChange={(e) => setReportYear(e.target.value)}
+                          className={classNames(
+                            'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
+                          )}
+                          type="text"
+                          placeholder="Report Year"
+                          value={reportYear}
+                        />
+                      </div>
+                    </div>
+                    <div className="w-full">
+                      <div className="mb-4">
+                        <input
+                          onChange={handleInputChange}
+                          className={classNames(
+                            'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
+                          )}
+                          type="text"
+                          placeholder="Document Number"
+                          value={dockNumber}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="w-full">
-                    <div className="mb-4">
-                      <input
-                        onChange={handleInputChange}
-                        className={classNames(
-                          'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                        )}
-                        type="text"
-                        placeholder="Document Number"
-                        value={dockNumber}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <StateCards
-                  value={state}
-                  changeEvent={setState}
-                  state={states}
-                  title={''}
-                />
+                  <StateCards
+                    value={state}
+                    changeEvent={setState}
+                    state={states}
+                    title={''}
+                  />
+                </>
               </>
-            ) : (
-              <div className="flex items-start justify-start mb-6 max-lg:flex-col">
-                <div className="w-full max-lg:mb-3">
-                  <div className="w-full flex items-start justify-between pb-2">
-                    <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                      Year
-                    </div>
-                    <div className="w-full pr-2 text-gray-700 text-sm">
-                      {reportYear}
-                    </div>
-                  </div>
-                  <div className="w-full flex items-start justify-between pb-2">
-                    <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                      Company Name
-                    </div>
-                    <div className="w-full pr-2 text-gray-700 text-sm">
-                      {companyName}
-                    </div>
-                  </div>
-                  <div className="w-full flex items-start justify-between pb-2">
-                    <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                      State
-                    </div>
-                    <div className="w-full pr-2 text-gray-700 text-sm">
-                      {state}
-                    </div>
-                  </div>
-                  <div className="w-full flex items-start justify-between pb-2">
-                    <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                      {dockFieldHandler(state)}
-                    </div>
-                    <div className="w-full pr-2 text-gray-700 text-sm">
-                      {dockNumber}
-                    </div>
-                  </div>
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-end">
+                  <ButtonWithArrow title={'Save'} />
                 </div>
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
-            )}
-            {!savedSteps.includes(1) ? (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps([...savedSteps, 1]);
-                    setCompletedSteps([...completedSteps, 1]);
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Save
-                </div>
-              </div>
-            ) : (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps(savedSteps.filter((item) => item !== 1));
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md border border-gray-200 bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Edit
-                </div>
-              </div>
-            )}
-          </div>
-          <div
-            id={'2'}
-            className={classNames(
-              'mb-16 relative',
-              !completedSteps.includes(1) ? 'opacity-50' : 'opacity-100'
-            )}
-          >
-            <div
-              className={classNames(
-                'absolute left-0 top-0 right-0 bottom-0 z-40',
-                completedSteps.includes(1) && 'hidden'
-              )}
-            />
-            <SectionHeading title={'Address'} textSettings={'text-base'} />
+            </form>
+          )}
 
-            {!savedSteps.includes(2) ? (
+          {currentStep === 1 && (
+            <form onSubmit={submitStepHandler}>
+              <div className="mb-5">
+                <PageSign
+                  titleSize={'text-2xl font-bold text-gray-900'}
+                  title={`Address`}
+                  icon={<></>}
+                />
+              </div>
               <div className="flex items-start justify-start max-lg:flex-col gap-4 max-lg:gap-6">
                 <div className="w-full">
                   <div className="text-gray-700 text-sm mb-2 font-bold">
@@ -337,74 +330,33 @@ const AddFullReportProcess = () => {
                   />
                 </div>
               </div>
-            ) : (
-              <div className="flex items-start justify-start mb-6 max-lg:flex-col gap-28 max-lg:gap-6">
-                <div>
-                  <div className="mb-1 w-full flex items-center justify-between">
-                    <span className="text-sm text-gray-500 ">Main Address</span>
-                  </div>
-                  <div className="flex items-start justify-start gap-16">
-                    <div className="w-full">
-                      {RenderAddress(false, address)}
-                    </div>
-                  </div>
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cancelStepHandler();
+                    }}
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <ButtonWithArrow title={'Save'} />
                 </div>
-                <div className="ml-2">
-                  <div className="mb-1 w-full flex items-center justify-between">
-                    <span className="text-sm text-gray-500 ">
-                      Mailing Address
-                    </span>
-                  </div>
-                  <div className="flex items-start justify-start gap-12">
-                    {RenderAddress(false, mailingAddress)}
-                  </div>
-                </div>
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
-            )}
-            {!savedSteps.includes(2) ? (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps([...savedSteps, 2]);
-                    setCompletedSteps([...completedSteps, 2]);
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Save
-                </div>
+            </form>
+          )}
+          {currentStep === 2 && (
+            <form onSubmit={submitStepHandler}>
+              <div className="mb-5">
+                <PageSign
+                  titleSize={'text-2xl font-bold text-gray-900'}
+                  title={`Registered Agent`}
+                  icon={<></>}
+                />
               </div>
-            ) : (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps(savedSteps.filter((item) => item !== 2));
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md border border-gray-200 bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Edit
-                </div>
-              </div>
-            )}
-          </div>
-          <div
-            id={'3'}
-            className={classNames(
-              'mb-16 relative',
-              !completedSteps.includes(2) ? 'opacity-50' : 'opacity-100'
-            )}
-          >
-            <div
-              className={classNames(
-                'absolute left-0 top-0 right-0 bottom-0 z-40',
-                completedSteps.includes(2) && 'hidden'
-              )}
-            />
-
-            <SectionHeading
-              title="Registered Agent"
-              textSettings={'text-base'}
-            />
-            {!savedSteps.includes(3) ? (
               <div className="flex items-start justify-between max-lg:flex-col gap-4 max-lg:gap-6">
                 <input
                   onChange={(e) => setAgentName(e.target.value)}
@@ -426,72 +378,43 @@ const AddFullReportProcess = () => {
                   />
                 </div>
               </div>
-            ) : (
-              <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col gap-40 max-lg:gap-6">
-                <div className="flex items-start justify-between pb-2 max-lg:w-full">
-                  <div className="pr-1 text-gray-700 text-sm">
-                    <div className="text-sm text-gray-500 mb-1">Name</div>
-                    <div className="font-semibold">{agentName}</div>
-                  </div>
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cancelStepHandler();
+                    }}
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <ButtonWithArrow title={'Save'} />
                 </div>
-                <div className="flex items-start justify-start pb-2 ml-1">
-                  <div className="w-full pr-2 text-gray-700 text-sm">
-                    <div className="text-sm text-gray-500 mb-1">Address</div>
-                    {RenderAddress(false, agentAddress)}
-                  </div>
-                </div>
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
-            )}
-
-            {!savedSteps.includes(3) ? (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps([...savedSteps, 3]);
-                    setCompletedSteps([...completedSteps, 3]);
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Save
-                </div>
+            </form>
+          )}
+          {currentStep === 3 && (
+            <form onSubmit={submitStepHandler}>
+              <div className="mb-5">
+                <PageSign
+                  titleSize={'text-2xl font-bold text-gray-900'}
+                  title={`People`}
+                  icon={<></>}
+                />
               </div>
-            ) : (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps(savedSteps.filter((item) => item !== 3));
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md border border-gray-200 bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Edit
-                </div>
-              </div>
-            )}
-          </div>
-          <div
-            id={'4'}
-            className={classNames(
-              'mb-16 relative',
-              !completedSteps.includes(3) ? 'opacity-50' : 'opacity-100'
-            )}
-          >
-            <div
-              className={classNames(
-                'absolute left-0 top-0 right-0 bottom-0 z-40',
-                completedSteps.includes(3) && 'hidden'
+              {people.length ? (
+                <ProcessingReportPeopleSection
+                  disableEdit={true}
+                  propData={people}
+                />
+              ) : (
+                <></>
               )}
-            />
-            <SectionHeading title="People" textSettings={'text-base'} />
-            {people.length ? (
-              <ProcessingReportPeopleSection
-                disableEdit={true}
-                propData={people}
-              />
-            ) : (
-              <></>
-            )}
-            {!savedSteps.includes(4) ? (
               <PersonDataHandling
+                hideX={true}
                 person={undefined}
                 closeModalHandler={() => {}}
                 submitProcess={(person) =>
@@ -499,115 +422,200 @@ const AddFullReportProcess = () => {
                 }
                 isCreateProcess={true}
               />
-            ) : (
-              <></>
-            )}
-            {!savedSteps.includes(4) ? (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps([...savedSteps, 4]);
-                    setCompletedSteps([...completedSteps, 4]);
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Save
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cancelStepHandler();
+                    }}
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <ButtonWithArrow title={'Save'} />
                 </div>
+                <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
-            ) : (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps(savedSteps.filter((item) => item !== 4));
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md border border-gray-200 bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Edit
-                </div>
-              </div>
-            )}
-          </div>
-          <div
-            id={'5'}
-            className={classNames(
-              'mb-16 relative',
-              !completedSteps.includes(4) ? 'opacity-50' : 'opacity-100'
-            )}
-          >
-            <div
-              className={classNames(
-                'absolute left-0 top-0 right-0 bottom-0 z-40',
-                completedSteps.includes(4) && 'hidden'
-              )}
-            />
-            <SectionHeading
-              title="Provide State ID and Annual Report filing date"
-              textSettings={'text-base'}
-            />
-            <div className="mb-4 mt-1">
-              <input
-                onChange={(e) => setStateId(e.target.value)}
-                className={classNames(
-                  'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                )}
-                type="text"
-                placeholder="State ID"
-                value={stateId}
-              />
-            </div>
-            <div className="mb-4">
-              <DatePicker
-                mandatoryError={false}
-                value={dateValue}
-                setValue={setDateValue}
-              />
-            </div>
-            <div className="mb-4">
-              {selectedFile?.name ? (
-                <div className="w-full">
-                  <FileDownloadProgress
-                    deleteFileHandler={deleteFileHandler}
-                    fileName={truncateString(selectedFile.name, 15)}
-                    fileSize={`${selectedFile?.size} MB`}
-                    fileFormat={selectedFile.format}
-                    duration={3}
-                  />
-                </div>
-              ) : (
-                <DropFileArea
-                  loaderStatus={false}
-                  inputRef={inputRef}
-                  handleFileDrop={handleFileDrop}
-                  handleFileInput={handleFileInput}
-                  mandatoryError={false}
+            </form>
+          )}
+          {currentStep === 4 && (
+            <form onSubmit={submitStepHandler} className="w-full relative">
+              <div className="mb-5">
+                <PageSign
+                  titleSize={'text-2xl font-bold text-gray-900'}
+                  title={`Annual Report Details`}
+                  icon={<></>}
                 />
-              )}
-            </div>
-            {!savedSteps.includes(5) ? (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps([...savedSteps, 5]);
-                    setCompletedSteps([...completedSteps, 5]);
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Save
-                </div>
               </div>
-            ) : (
-              <div className="w-full">
-                <div
-                  onClick={() => {
-                    setSavedSteps(savedSteps.filter((item) => item !== 5));
-                  }}
-                  className="ml-auto mt-3 w-fit block rounded-md border border-gray-200 bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                >
-                  Edit
-                </div>
+              <div className="mb-4 mt-1">
+                <input
+                  onChange={(e) => setStateId(e.target.value)}
+                  className={classNames(
+                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
+                  )}
+                  type="text"
+                  placeholder="State ID"
+                  value={stateId}
+                />
               </div>
-            )}
-          </div>
+              <div className="mb-4">
+                <DatePicker
+                  mandatoryError={false}
+                  value={dateValue}
+                  setValue={setDateValue}
+                />
+              </div>
+              <div className="mb-4">
+                {selectedFile?.name ? (
+                  <div className="w-full">
+                    <FileDownloadProgress
+                      deleteFileHandler={deleteFileHandler}
+                      fileName={truncateString(selectedFile.name, 15)}
+                      fileSize={`${selectedFile?.size} MB`}
+                      fileFormat={selectedFile.format}
+                      duration={3}
+                    />
+                  </div>
+                ) : (
+                  <DropFileArea
+                    loaderStatus={false}
+                    inputRef={inputRef}
+                    handleFileDrop={handleFileDrop}
+                    handleFileInput={handleFileInput}
+                    mandatoryError={false}
+                  />
+                )}
+              </div>
+              <>
+                <SectionHeading
+                  title={'Company Information'}
+                  textSettings={'text-base'}
+                />
+                <div className="flex items-start justify-start mb-6 max-lg:flex-col">
+                  <div className="w-full max-lg:mb-3">
+                    <div className="w-full flex items-start justify-between pb-2">
+                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                        Year
+                      </div>
+                      <div className="w-full pr-2 text-gray-700 text-sm">
+                        {reportYear}
+                      </div>
+                    </div>
+                    <div className="w-full flex items-start justify-between pb-2">
+                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                        Company Name
+                      </div>
+                      <div className="w-full pr-2 text-gray-700 text-sm">
+                        {companyName}
+                      </div>
+                    </div>
+                    <div className="w-full flex items-start justify-between pb-2">
+                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                        State
+                      </div>
+                      <div className="w-full pr-2 text-gray-700 text-sm">
+                        {state}
+                      </div>
+                    </div>
+                    <div className="w-full flex items-start justify-between pb-2">
+                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                        {dockFieldHandler(state)}
+                      </div>
+                      <div className="w-full pr-2 text-gray-700 text-sm">
+                        {dockNumber}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+                  <div className="w-[200px] pr-2 max-lg:hidden" />
+                  <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                    <div />
+                    <ButtonWithArrow title={'Submit'} />
+                  </div>
+                  <div className="w-[200px] pr-2 max-lg:hidden" />
+                </div>
+              </>
+              <>
+                <SectionHeading title={'Address'} textSettings={'text-base'} />
+                <div className="flex items-start justify-start mb-6 max-lg:flex-col gap-28 max-lg:gap-6">
+                  <div>
+                    <div className="mb-1 w-full flex items-center justify-between">
+                      <span className="text-sm text-gray-500 ">
+                        Main Address
+                      </span>
+                    </div>
+                    <div className="flex items-start justify-start gap-16">
+                      <div className="w-full">
+                        {RenderAddress(false, address)}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ml-2">
+                    <div className="mb-1 w-full flex items-center justify-between">
+                      <span className="text-sm text-gray-500 ">
+                        Mailing Address
+                      </span>
+                    </div>
+                    <div className="flex items-start justify-start gap-12">
+                      <div className="w-full">
+                        {RenderAddress(false, mailingAddress)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+              <>
+                <SectionHeading
+                  title="Registered Agent"
+                  textSettings={'text-base'}
+                />
+                <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col gap-40 max-lg:gap-6">
+                  <div className="flex items-start justify-between pb-2 max-lg:w-full">
+                    <div className="pr-1 text-gray-700 text-sm">
+                      <div className="text-sm text-gray-500 mb-1">Name</div>
+                      <div className="font-semibold">{agentName}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start justify-start pb-2 ml-1">
+                    <div className="w-full pr-2 text-gray-700 text-sm">
+                      <div className="text-sm text-gray-500 mb-1">Address</div>
+                      {RenderAddress(false, agentAddress)}
+                    </div>
+                  </div>
+                </div>
+              </>
+              <>
+                <SectionHeading title="People" textSettings={'text-base'} />
+                {people.length ? (
+                  <ProcessingReportPeopleSection
+                    disableEdit={true}
+                    propData={people}
+                  />
+                ) : (
+                  <></>
+                )}
+              </>
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cancelStepHandler();
+                    }}
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <ButtonWithArrow title={'Submit'} />
+                </div>
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+              </div>
+            </form>
+          )}
         </div>
         <div className="w-[200px]" />
       </div>

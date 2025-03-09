@@ -14,6 +14,7 @@ interface IProps {
   removePersonHandler?: (id: number) => void;
   submitProcess: (person: Person) => void;
   isCreateProcess: boolean;
+  hideX?: boolean;
 }
 
 const emptyValue = {
@@ -80,6 +81,7 @@ const PersonDataHandling = ({
   closeModalHandler,
   removePersonHandler,
   submitProcess,
+  hideX,
 }: IProps) => {
   const [localData, setLocalData] = useState<Person>(emptyValue);
   const [mandatoryError, setMandatoryError] = useState(false);
@@ -164,7 +166,7 @@ const PersonDataHandling = ({
 
   return localData?.name || isCreateProcess ? (
     <div className="border border-gray-200 rounded-md p-7 my-5 bg-white relative">
-      <XBtn clickHandler={closeModalHandler} />
+      {!hideX && <XBtn clickHandler={closeModalHandler} />}
       <div
         className={classNames(
           `flex py-3 group transition-all ease-in-out duration-150 items-start justify-start`
