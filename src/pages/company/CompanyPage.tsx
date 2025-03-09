@@ -330,7 +330,7 @@ const CompanyPage = () => {
       />
       {data?.registeredIn.split(' ')[2] === 'Florida' && (
         <AnnualReportsListFL
-          addReportModal={() => setOpenAddReportModal(true)}
+          addReportModal={() => navigate(ROUTES.ANN_REPORT_ADD)}
         />
       )}
     </div>

@@ -10,16 +10,24 @@ import {
 } from '@tabler/icons-react';
 import PersonDataHandling from '../../components/shared/PersonData/PersonDataHandling';
 import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithArrow';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Person } from '../../interfaces/interfaces';
 import { mockPeople } from '../../mock/mockData';
 interface IProps {
   disableEdit: boolean;
+  propData?: Person[];
 }
-const ProcessingReportPeopleSection = ({ disableEdit }: IProps) => {
-  const [peopleDataDuplicate, setPeopleDataDuplicate] =
-    useState<Person[]>(mockPeople);
+const ProcessingReportPeopleSection = ({ disableEdit, propData }: IProps) => {
+  const [peopleDataDuplicate, setPeopleDataDuplicate] = useState<Person[]>(
+    propData || mockPeople
+  );
   const [editingPersonId, setEditingPersonId] = useState(-1);
+
+  useEffect(() => {
+    if (propData?.length) {
+      setPeopleDataDuplicate(propData);
+    }
+  }, [propData]);
 
   const removePersonHandler = (id: number) => {
     // setDirtyFlag(true);

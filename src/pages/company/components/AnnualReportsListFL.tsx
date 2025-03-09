@@ -71,18 +71,6 @@ const AnnualReportsListFL = ({ addReportModal }: IProps) => {
         btnTitle="Add Report"
       />
       <div className="w-full overflow-hidden mb-12">
-        {/*<div className="flex bg-gray-200 text-gray-800 font-semibold">*/}
-        {/*  {Array.from({ length: mock.length }).map((_, index) => (*/}
-        {/*    <div*/}
-        {/*      key={index}*/}
-        {/*      className="w-[23%] p-2 border-r border-gray-300 text-center"*/}
-        {/*    >*/}
-        {/*      Column {index + 1}*/}
-        {/*    </div>*/}
-        {/*  ))}*/}
-        {/*  <div className="w-[8%] p-2 text-center">Action</div>*/}
-        {/*</div>*/}
-
         <div>
           {mock.map((report, rowIndex) => (
             <div

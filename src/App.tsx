@@ -25,6 +25,7 @@ import Ein from './pages/EIN/Ein';
 import RenderEmails from './pages/emails/Emails';
 import ReportPage from './pages/report/ReportPage';
 import AnnualReportReview from './pages/report/AnnualReportReview';
+import AddFullReportProcess from './pages/report/components/AddFullReportProcess';
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
         <Route
           path={ROUTES.ANN_REPORT_REVIEW}
           element={<AnnualReportReview />}
+        />
+        <Route
+          path={ROUTES.ANN_REPORT_ADD}
+          element={<AddFullReportProcess />}
         />
         <Route element={<ProtectedRoute />}>
           <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
