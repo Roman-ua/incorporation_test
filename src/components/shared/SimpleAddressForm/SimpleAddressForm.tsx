@@ -149,13 +149,14 @@ const SimpleAddressForm = ({
           }
           removeSearch={true}
           disableDropDown={disabledFlag}
-          inputExtraStyles={'min-w-[110px] max-w-[110px]'}
+          inputExtraStyles={`${requiredError && !data.state ? 'bg-red-50' : 'bg-white'} min-w-[110px] max-w-[110px]`}
           wrapperExtraStyles={'rounded-none border-t-0 border-l-0 border-r-0'}
         />
         <input
           className={classNames(
             inputCommonClasses,
-            'min-w-[110px] max-w-[110px] border-t-0 border-r-0 border-l-gray-200'
+            'min-w-[110px] max-w-[110px] border-t-0 border-r-0 border-l-gray-200',
+            requiredError && !data?.zip ? 'bg-red-50' : 'bg-transparent'
           )}
           type="text"
           value={data?.zip}

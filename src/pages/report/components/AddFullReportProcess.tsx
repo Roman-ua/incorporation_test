@@ -19,6 +19,7 @@ import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import SectionHeading from '../../company/components/SectionHeading';
 import { USStates } from '../../../constants/form/form';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -123,6 +124,7 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
 };
 
 const AddFullReportProcess = () => {
+  const [mandatoryErrorStep, setMandatoryErrorStep] = useState<number>(-1);
   const [reportYear, setReportYear] = React.useState<string>('');
   const [companyName, setCompanyName] = React.useState<string>('');
   const [dockNumber, setDockNumber] = React.useState<string>('');
@@ -172,7 +174,64 @@ const AddFullReportProcess = () => {
     }
   };
 
-  const submitStepHandler = () => {
+  const handleChangeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Проверяем, что введены только цифры и длина не больше 4
+    if (/^\d{0,4}$/.test(value)) {
+      setReportYear(value);
+    }
+  };
+
+  const firstStepDisabled = () =>
+    !reportYear || !companyName || !dockNumber || !state;
+
+  const secondStepDisabled = () =>
+    !address.address0 || !mailingAddress.address0;
+
+  const thirdStepDisabled = () => !agentName || !agentAddress.address0;
+  const fourthStepDisabled = () => !people.length;
+  const fifthStepDisabled = () => !stateId || !file?.file;
+
+  const submitStepHandler = (
+    e: React.FormEvent<HTMLFormElement>,
+    step: number
+  ) => {
+    if (step === 0 && (!reportYear || !companyName || !dockNumber || !state)) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMandatoryErrorStep(step);
+      return;
+    }
+
+    if (step === 1 && (!address.address0 || !mailingAddress.address0)) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMandatoryErrorStep(step);
+      return;
+    }
+
+    if (step === 2 && (!agentAddress.address0 || !agentName)) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMandatoryErrorStep(step);
+      return;
+    }
+
+    if (step === 3 && !people.length) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMandatoryErrorStep(step);
+      return;
+    }
+
+    if ((step === 4 && !stateId) || !file?.file) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMandatoryErrorStep(step);
+      return;
+    }
+
     setCurrentStep((prevState) => {
       if (prevState === 4) return prevState;
       setVisitedSteps([...visitedSteps, prevState]);
@@ -226,7 +285,7 @@ const AddFullReportProcess = () => {
         </div>
         <div className="w-[870px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 0 && (
-            <form onSubmit={submitStepHandler}>
+            <form onSubmit={(e) => submitStepHandler(e, 0)}>
               <>
                 <div className="mb-5">
                   <PageSign
@@ -240,6 +299,9 @@ const AddFullReportProcess = () => {
                     <input
                       onChange={(e) => setCompanyName(e.target.value)}
                       className={classNames(
+                        mandatoryErrorStep === 0 && !companyName
+                          ? 'bg-red-50'
+                          : 'bg-white',
                         'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
                       )}
                       type="text"
@@ -251,8 +313,11 @@ const AddFullReportProcess = () => {
                     <div className="w-full">
                       <div className="mb-4">
                         <input
-                          onChange={(e) => setReportYear(e.target.value)}
+                          onChange={handleChangeYear}
                           className={classNames(
+                            mandatoryErrorStep === 0 && !reportYear
+                              ? 'bg-red-50'
+                              : 'bg-white',
                             'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
                           )}
                           type="text"
@@ -266,6 +331,9 @@ const AddFullReportProcess = () => {
                         <input
                           onChange={handleInputChange}
                           className={classNames(
+                            mandatoryErrorStep === 0 && !dockNumber
+                              ? 'bg-red-50'
+                              : 'bg-white',
                             'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
                           )}
                           type="text"
@@ -276,6 +344,7 @@ const AddFullReportProcess = () => {
                     </div>
                   </div>
                   <StateCards
+                    requiredError={mandatoryErrorStep === 0 && !state}
                     value={state}
                     changeEvent={setState}
                     state={states}
@@ -286,7 +355,19 @@ const AddFullReportProcess = () => {
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-[200px] pr-2 max-lg:hidden" />
                 <div className="w-[870px] max-xl:w-full flex items-center justify-end">
-                  <ButtonWithArrow title={'Save'} />
+                  <button
+                    className={classNames(
+                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
+                      firstStepDisabled()
+                        ? 'bg-gray-500'
+                        : 'bg-mainBlue hover:bg-sideBarBlue'
+                    )}
+                  >
+                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
+                      Save
+                    </span>
+                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
+                  </button>
                 </div>
                 <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
@@ -294,7 +375,7 @@ const AddFullReportProcess = () => {
           )}
 
           {currentStep === 1 && (
-            <form onSubmit={submitStepHandler}>
+            <form onSubmit={(e) => submitStepHandler(e, 1)}>
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -310,7 +391,7 @@ const AddFullReportProcess = () => {
                   <SimpleAddressForm
                     disabledFlag={false}
                     inputCommonClasses={inputCommonClasses}
-                    requiredError={false}
+                    requiredError={mandatoryErrorStep === 1}
                     data={address}
                     countryDisabled={true}
                     setData={setAddressHandler}
@@ -323,7 +404,7 @@ const AddFullReportProcess = () => {
                   <SimpleAddressForm
                     disabledFlag={false}
                     inputCommonClasses={inputCommonClasses}
-                    requiredError={false}
+                    requiredError={mandatoryErrorStep === 1}
                     data={mailingAddress}
                     countryDisabled={true}
                     setData={setMAilingAddressHandler}
@@ -342,14 +423,26 @@ const AddFullReportProcess = () => {
                   >
                     Cancel
                   </button>
-                  <ButtonWithArrow title={'Save'} />
+                  <button
+                    className={classNames(
+                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
+                      secondStepDisabled()
+                        ? 'bg-gray-500'
+                        : 'bg-mainBlue hover:bg-sideBarBlue'
+                    )}
+                  >
+                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
+                      Save
+                    </span>
+                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
+                  </button>
                 </div>
                 <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
           {currentStep === 2 && (
-            <form onSubmit={submitStepHandler}>
+            <form onSubmit={(e) => submitStepHandler(e, 2)}>
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -361,6 +454,9 @@ const AddFullReportProcess = () => {
                 <input
                   onChange={(e) => setAgentName(e.target.value)}
                   className={classNames(
+                    mandatoryErrorStep === 2 && !agentName
+                      ? 'bg-red-50'
+                      : 'bg-white',
                     'w-1/2 block rounded-md border  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
                   )}
                   type="text"
@@ -371,7 +467,7 @@ const AddFullReportProcess = () => {
                   <SimpleAddressForm
                     disabledFlag={false}
                     inputCommonClasses={inputCommonClasses}
-                    requiredError={false}
+                    requiredError={mandatoryErrorStep === 2}
                     data={agentAddress}
                     countryDisabled={true}
                     setData={setAgentAddressHandler}
@@ -390,14 +486,26 @@ const AddFullReportProcess = () => {
                   >
                     Cancel
                   </button>
-                  <ButtonWithArrow title={'Save'} />
+                  <button
+                    className={classNames(
+                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
+                      thirdStepDisabled()
+                        ? 'bg-gray-500'
+                        : 'bg-mainBlue hover:bg-sideBarBlue'
+                    )}
+                  >
+                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
+                      Save
+                    </span>
+                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
+                  </button>
                 </div>
                 <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
           {currentStep === 3 && (
-            <form onSubmit={submitStepHandler}>
+            <form onSubmit={(e) => submitStepHandler(e, 3)}>
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -405,6 +513,11 @@ const AddFullReportProcess = () => {
                   icon={<></>}
                 />
               </div>
+              {mandatoryErrorStep === 3 && !people.length && (
+                <div className="text-red-500 font-semibold">
+                  Should be added at least one person
+                </div>
+              )}
               {people.length ? (
                 <ProcessingReportPeopleSection
                   disableEdit={true}
@@ -434,14 +547,29 @@ const AddFullReportProcess = () => {
                   >
                     Cancel
                   </button>
-                  <ButtonWithArrow title={'Save'} />
+                  <button
+                    className={classNames(
+                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
+                      fourthStepDisabled()
+                        ? 'bg-gray-500'
+                        : 'bg-mainBlue hover:bg-sideBarBlue'
+                    )}
+                  >
+                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
+                      Save
+                    </span>
+                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
+                  </button>
                 </div>
                 <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
             </form>
           )}
           {currentStep === 4 && (
-            <form onSubmit={submitStepHandler} className="w-full relative">
+            <form
+              onSubmit={(e) => submitStepHandler(e, 4)}
+              className="w-full relative"
+            >
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -453,7 +581,10 @@ const AddFullReportProcess = () => {
                 <input
                   onChange={(e) => setStateId(e.target.value)}
                   className={classNames(
-                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
+                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0',
+                    mandatoryErrorStep === 4 && !stateId
+                      ? 'bg-red-50'
+                      : 'bg-white'
                   )}
                   type="text"
                   placeholder="State ID"
@@ -484,7 +615,7 @@ const AddFullReportProcess = () => {
                     inputRef={inputRef}
                     handleFileDrop={handleFileDrop}
                     handleFileInput={handleFileInput}
-                    mandatoryError={false}
+                    mandatoryError={mandatoryErrorStep === 4}
                   />
                 )}
               </div>
@@ -610,7 +741,19 @@ const AddFullReportProcess = () => {
                   >
                     Cancel
                   </button>
-                  <ButtonWithArrow title={'Submit'} />
+                  <button
+                    className={classNames(
+                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
+                      fifthStepDisabled()
+                        ? 'bg-gray-500'
+                        : 'bg-mainBlue hover:bg-sideBarBlue'
+                    )}
+                  >
+                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
+                      Submit
+                    </span>
+                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
+                  </button>
                 </div>
                 <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>
