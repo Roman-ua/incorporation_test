@@ -432,7 +432,6 @@ const CreateCompany = () => {
                   render={({ field }) => (
                     <div className="mb-16">
                       <USAddressForm
-                        id={'createCompany'}
                         setFromState={field.onChange}
                         value={field?.value}
                         requiredError={Object.keys(

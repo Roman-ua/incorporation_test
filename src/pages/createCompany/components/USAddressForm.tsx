@@ -5,9 +5,6 @@ import { SelectMenuOption } from '../../../components/shared/CountrySelect/types
 import { USStates } from '../../../constants/form/form';
 import { VALIDATORS } from '../../../constants/regexs';
 import { PlusIcon } from '@heroicons/react/24/outline';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import CustomButton from '../../../components/shared/ButtonWithLoader/Button';
 import SectionHeading from './SectionHeading';
 import { AddressFields } from '../../../interfaces/interfaces';
 
@@ -16,7 +13,6 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 interface IProps {
-  id: string;
   setFromState: (value: AddressFields) => void;
   value?: AddressFields;
   requiredError?: boolean;
@@ -29,6 +25,7 @@ interface IProps {
   isCreateUser?: boolean;
   additionalMandatoryCheck?: boolean;
   setMandatoryError?: () => void;
+  copyClickHandler?: (value: AddressFields) => void;
 }
 
 const addressFieldsMock = [
@@ -48,7 +45,6 @@ const areFieldsValid = (fields: {
 };
 
 const USAddressForm = ({
-  id,
   setFromState,
   value,
   requiredError,
@@ -61,6 +57,7 @@ const USAddressForm = ({
   isCreateUser,
   additionalMandatoryCheck,
   setMandatoryError,
+  copyClickHandler,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
@@ -288,39 +285,55 @@ const USAddressForm = ({
             wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !country ? 'bg-red-50' : 'bg-transparent'}`}
           />
         </div>
-        <div className="ml-auto flex items-center justify-end w-full">
-          {deleteAction ? (
-            <div
-              onClick={deleteAction}
-              className="rounded-md bg-red-50 px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-2 text-gray-900 shadow-sm hover:bg-red-100 hover:cursor-pointer transition-all ease-in-out duration-150"
-            >
-              Delete
-            </div>
-          ) : (
-            <div className="w-1/2" />
-          )}
-          {cancelAction && (
-            <button
-              type="button"
-              onClick={cancelAction}
-              className="mt-2 mr-2 ml-auto h-[35px] rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150"
-            >
-              Cancel
-            </button>
-          )}
-          {!disabledFlag && (
-            <CustomButton
-              discard={done}
-              clickHandler={saveHandler}
-              disabled={
-                !(
-                  areFieldsValid(validationData) &&
-                  (!isCreateUser || additionalMandatoryCheck)
-                )
-              }
-              uniqId={id}
-            />
-          )}
+        <div className="ml-auto flex items-center justify-between w-full">
+          <div className="flex items-center justify-start">
+            {deleteAction && (
+              <div
+                onClick={deleteAction}
+                className="rounded-md bg-red-50 px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-2 text-gray-900 shadow-sm hover:bg-red-100 hover:cursor-pointer transition-all ease-in-out duration-150"
+              >
+                Delete
+              </div>
+            )}
+            {copyClickHandler && (
+              <div
+                onClick={() =>
+                  copyClickHandler({ country, ...address, city, zip, state })
+                }
+                className="mt-2 rounded-md bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"
+              >
+                Copy to Mailing Address
+              </div>
+            )}
+          </div>
+          <div className="flex items-center justify-end">
+            {cancelAction && (
+              <button
+                type="button"
+                onClick={cancelAction}
+                className="mr-2 mt-2 ml-auto rounded-md bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150"
+              >
+                Cancel
+              </button>
+            )}
+            {!disabledFlag && (
+              <button
+                type="button"
+                onClick={saveHandler}
+                className={classNames(
+                  'mt-2 px-2.5 py-1 border rounded-md  text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150',
+                  !(
+                    areFieldsValid(validationData) &&
+                    (!isCreateUser || additionalMandatoryCheck)
+                  )
+                    ? 'bg-gray-200'
+                    : 'bg-white '
+                )}
+              >
+                Save
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>

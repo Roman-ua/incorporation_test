@@ -16,10 +16,10 @@ import {
   IconTrashX,
 } from '@tabler/icons-react';
 import { FaSignature } from 'react-icons/fa6';
-// import XBtn from '../../../components/shared/buttons/XBtn';
 import USAddressForm from '../../createCompany/components/USAddressForm';
 import { mockReportData } from '../../../mock/mockData';
 import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
+import { MdOutlineEditNote } from 'react-icons/md';
 
 interface IProps {
   reportData: ReportData;
@@ -102,19 +102,55 @@ const SubmitReviewStep = ({
   agentReportData,
   peopleData,
   clickHandlerPeople,
-  clickHandlerAddress,
   status,
 }: IProps) => {
   const [dataDuplicate, setDataDuplicate] = useState<ReportData>(reportData);
 
-  const [addressIsEdditing, setAddressIsEdditing] = React.useState(false);
-  const [editingAddressType, setEditingAddressType] = useState(-1);
+  const [emptyFlag, setEmptyFlag] = React.useState(false);
+  const [editingAddress, setEditingAddress] = useState(false);
+  const [editingMailingAddress, setEditingMailingAddress] = useState(false);
+
   const undoAddress = (key: string) => {
     setDataDuplicate((prevState) => ({ ...prevState, [key]: null }));
   };
+  const cancelAddress = (key: keyof ReportData) => {
+    setDataDuplicate((prevState) => {
+      if (prevState[key] !== null) {
+        return prevState;
+      }
+      return { ...prevState, [key]: null };
+    });
+
+    if (key === 'updatedMailingAddress') {
+      setEditingMailingAddress(false);
+    }
+
+    if (key === 'updatedAddress') {
+      setEditingAddress(false);
+    }
+    setEmptyFlag(false);
+  };
+
   const updateAddressHandler = (data: AddressFields, key: string) => {
     setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
-    setEditingAddressType(-1);
+
+    if (key === 'updatedMailingAddress') {
+      setEditingMailingAddress(false);
+    }
+
+    if (key === 'updatedAddress') {
+      setEditingAddress(false);
+    }
+
+    setEmptyFlag(false);
+  };
+
+  const copyToMailingAddress = (data: AddressFields) => {
+    setDataDuplicate((prevState) => ({
+      ...prevState,
+      updatedMailingAddress:
+        data || prevState.updatedAddress || prevState.address,
+    }));
   };
 
   const [peopleDataDuplicate, setPeopleDataDuplicate] =
@@ -196,7 +232,7 @@ const SubmitReviewStep = ({
     }));
     setEditingAddressAgent(false);
   };
-  console.log(setAgentDataDuplicate, 'setAgentDataDuplicate');
+
   return (
     <>
       <div className="w-full flex items-start justify-center max-lg:flex-col">
@@ -255,39 +291,28 @@ const SubmitReviewStep = ({
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           Address
-          {clickHandlerAddress && (
-            <button
-              type="button"
-              onClick={() => {
-                if (!addressIsEdditing) {
-                  setAddressIsEdditing(true);
-                } else {
-                  setAddressIsEdditing(false);
-                  setEditingAddressType(-1);
-                }
-              }}
-              className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
-            >
-              {addressIsEdditing ? 'Complete' : 'Make Changes'}
-            </button>
-          )}
         </div>
         <div className="w-full flex items-start justify-start gap-3 max-lg:flex-col">
           <div className="w-full">
-            {editingAddressType === 0 ? (
-              <div className="border border-gray-200 rounded-md p-2 bg-white relative">
-                {/*<XBtn clickHandler={() => setEditingAddressType(-1)} />*/}
+            {editingAddress ? (
+              <>
+                <div className="text-sm text-gray-500 mb-1">Main Address</div>
                 <USAddressForm
-                  id={'address'}
                   disabledFlag={false}
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedAddress')
                   }
+                  copyClickHandler={(data) => copyToMailingAddress(data)}
+                  cancelAction={() => cancelAddress('updatedAddress')}
                   heading={''}
                   requiredError={false}
-                  value={dataDuplicate.updatedAddress || mockReportData.address}
+                  value={
+                    emptyFlag
+                      ? {}
+                      : dataDuplicate.updatedAddress || mockReportData.address
+                  }
                 />
-              </div>
+              </>
             ) : (
               <div className="pr-2 text-gray-700 text-sm">
                 <div className="text-sm text-gray-500 mb-1">Main Address</div>
@@ -308,53 +333,66 @@ const SubmitReviewStep = ({
                       )
                     )}
                   </div>
-                  <div
-                    className={classNames(
-                      'transform transition-all duration-300 ease-out flex items-center justify-end flex-col',
-                      addressIsEdditing
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-4 pointer-events-none'
-                    )}
-                  >
+                  {status !== 'In Progress' && (
                     <div
-                      onClick={() => {
-                        setEditingAddressType(0);
-                      }}
-                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      className={classNames(
+                        'transform transition-all duration-300 ease-out flex items-center justify-end flex-col'
+                      )}
                     >
-                      <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                    </div>
-                    {dataDuplicate.updatedAddress && (
                       <div
-                        onClick={() => undoAddress('updatedAddress')}
-                        className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        onClick={() => {
+                          setEditingAddress(true);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                       >
-                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        <MdOutlineEditNote className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                       </div>
-                    )}
-                  </div>
+                      {dataDuplicate.updatedAddress ? (
+                        <div
+                          onClick={() => undoAddress('updatedAddress')}
+                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => {
+                            setEmptyFlag(true);
+                            setEditingAddress(true);
+                          }}
+                          className="mt-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
           </div>
           <div className="w-full">
-            {editingAddressType === 1 ? (
-              <div className="border border-gray-200 rounded-md p-2 bg-white relative">
-                {/*<XBtn clickHandler={() => setEditingAddressType(-1)} />*/}
+            {editingMailingAddress ? (
+              <>
+                <div className="text-sm text-gray-500 mb-1">
+                  Mailing Address
+                </div>
                 <USAddressForm
-                  id={'mailingAddress'}
                   disabledFlag={false}
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedMailingAddress')
                   }
+                  cancelAction={() => cancelAddress('updatedMailingAddress')}
                   heading={''}
                   requiredError={false}
                   value={
-                    dataDuplicate.updatedMailingAddress ||
-                    dataDuplicate.mailingAddress
+                    emptyFlag
+                      ? {}
+                      : dataDuplicate.updatedMailingAddress ||
+                        dataDuplicate.mailingAddress
                   }
                 />
-              </div>
+              </>
             ) : (
               <div className="pr-2 text-gray-700 text-sm">
                 <div className="text-sm text-gray-500 mb-1">
@@ -377,31 +415,40 @@ const SubmitReviewStep = ({
                       )
                     )}
                   </div>
-                  <div
-                    className={classNames(
-                      'transform transition-all duration-300 ease-out flex items-center justify-end flex-col',
-                      addressIsEdditing
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-4 pointer-events-none'
-                    )}
-                  >
+                  {status !== 'In Progress' && (
                     <div
-                      onClick={() => {
-                        setEditingAddressType(1);
-                      }}
-                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      className={classNames(
+                        'transform transition-all duration-300 ease-out flex items-center justify-end flex-col'
+                      )}
                     >
-                      <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                    </div>
-                    {dataDuplicate.updatedMailingAddress && (
                       <div
-                        onClick={() => undoAddress('updatedMailingAddress')}
-                        className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        onClick={() => {
+                          setEditingMailingAddress(true);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                       >
-                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        <MdOutlineEditNote className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                       </div>
-                    )}
-                  </div>
+                      {dataDuplicate.updatedMailingAddress ? (
+                        <div
+                          onClick={() => undoAddress('updatedMailingAddress')}
+                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => {
+                            setEmptyFlag(true);
+                            setEditingMailingAddress(true);
+                          }}
+                          className="mt-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -428,7 +475,8 @@ const SubmitReviewStep = ({
                     setPeopleIsEdditing(true);
                   } else {
                     setPeopleIsEdditing(false);
-                    setEditingAddressType(-1);
+                    setEditingMailingAddress(false);
+                    setEditingAddress(false);
                   }
                 }}
                 className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
@@ -626,7 +674,6 @@ const SubmitReviewStep = ({
               <div className="border border-gray-200 rounded-md p-2 bg-white relative">
                 {/*<XBtn clickHandler={() => setEditingAddressType(-1)} />*/}
                 <USAddressForm
-                  id={'mailingAddress'}
                   disabledFlag={false}
                   setFromState={(data) => updateAgentAddress(data)}
                   heading={''}
