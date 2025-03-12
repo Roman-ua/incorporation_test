@@ -13,7 +13,8 @@ import ConfettiAp from '../../components/shared/Confetti';
 import ProcessingReport from './components/ProcessingReport';
 
 const AnnualReportReview = () => {
-  const [dataDuplicate] = useState<ReportData>(mockReportData);
+  const [dataDuplicate, setDataDuplicate] =
+    useState<ReportData>(mockReportData);
   const [peopleDataDuplicate] = useState<Person[]>(mockPeople);
   const [agentDataDuplicate] = useState(mockAgent);
   const [confetti, setConfetti] = React.useState(false);
@@ -23,13 +24,10 @@ const AnnualReportReview = () => {
   const [editMode, setEditMode] = useState<boolean>(true); // TO DO need to change to false for make steps logic works
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (currentStep === 4) {
-        setConfetti(true);
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
+    if (currentStep === 4) {
+      const timer = setTimeout(() => setConfetti(true), 300);
+      return () => clearTimeout(timer);
+    }
   }, [currentStep]);
 
   const submitStepHandler = () => {
@@ -94,6 +92,7 @@ const AnnualReportReview = () => {
                 }}
                 status={'Confirmation Needed'}
                 reportData={dataDuplicate}
+                setReportData={setDataDuplicate}
                 agentReportData={agentDataDuplicate}
                 peopleData={peopleDataDuplicate}
               />
@@ -134,6 +133,7 @@ const AnnualReportReview = () => {
                 <div className="absolute -bottom-10 -right-5 -left-5 -top-5 border border-gray-200 rounded-md z-40 bg-transparrent" />
                 <div className="relative z-50">
                   <SubmitReviewStep
+                    setReportData={setDataDuplicate}
                     reportData={dataDuplicate}
                     status={'In Progress'}
                     agentReportData={agentDataDuplicate}

@@ -17,7 +17,6 @@ export interface CountrySelectorProps {
   inputExtraStyles?: string;
   wrapperExtraStyles?: string;
   disableDropDown?: boolean;
-  removeSearch?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -36,7 +35,6 @@ export default function CountrySelector({
   inputExtraStyles,
   wrapperExtraStyles,
   disableDropDown = false,
-  removeSearch,
 }: CountrySelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -68,8 +66,31 @@ export default function CountrySelector({
 
   const [query, setQuery] = useState('');
 
-  const emptyState = id === 'states' ? 'No state found' : 'No countries found';
   const emptyPlaceholder = id === 'states' ? 'State' : 'Country';
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (open && !disableDropDown) {
+        if (event.key === 'Backspace') {
+          setQuery((prevQuery) => prevQuery.slice(0, -1));
+        } else if (/^[a-zA-Z]$/.test(event.key)) {
+          setQuery((prevQuery) => prevQuery + event.key);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open, disableDropDown]);
+
+  useEffect(() => {
+    if (!open) {
+      setQuery('');
+    }
+  }, [open]);
+
   return (
     <div ref={ref} className={inputExtraStyles}>
       <div className="relative">
@@ -131,38 +152,19 @@ export default function CountrySelector({
               aria-labelledby="listbox-label"
               aria-activedescendant="listbox-option-3"
             >
-              {!removeSearch && (
-                <div className="sticky top-0 z-10 bg-white">
-                  <li className=" text-gray-900 cursor-default select-none relative py-2 px-2">
-                    <input
-                      type="text"
-                      name="search"
-                      autoComplete={'off'}
-                      ref={inputRef}
-                      className="block w-full sm:text-sm focus:outline-none focus:ring-0 focus:border-gray-200 rounded-md"
-                      placeholder={'Search'}
-                      onChange={(e) => setQuery(e.target.value)}
-                    />
-                  </li>
-                  <hr />
-                </div>
-              )}
-
               <div
                 className={
                   'max-h-64 scrollbar scrollbar-track-gray-100 scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-600 scrollbar-thumb-rounded scrollbar-thin overflow-y-scroll'
                 }
               >
                 {list.filter((country) =>
-                  country.title.toLowerCase().startsWith(query.toLowerCase())
+                  country.value.toLowerCase().startsWith(query.toLowerCase())
                 ).length === 0 ? (
-                  <li className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
-                    {emptyState}
-                  </li>
+                  <li className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9"></li>
                 ) : (
                   list
                     .filter((country) =>
-                      country.title
+                      country.value
                         .toLowerCase()
                         .startsWith(query.toLowerCase())
                     )

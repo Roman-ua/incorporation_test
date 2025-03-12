@@ -19,12 +19,13 @@ import { FaSignature } from 'react-icons/fa6';
 import USAddressForm from '../../createCompany/components/USAddressForm';
 import { mockReportData } from '../../../mock/mockData';
 import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
-import { MdOutlineEditNote } from 'react-icons/md';
+import { BiEditAlt } from 'react-icons/bi';
 
 interface IProps {
   reportData: ReportData;
   agentReportData: Agent;
   peopleData: Person[];
+  setReportData: React.Dispatch<React.SetStateAction<ReportData>>;
   clickHandlerPeople?: () => void;
   clickHandlerAddress?: () => void;
   status: string;
@@ -99,23 +100,24 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
 
 const SubmitReviewStep = ({
   reportData,
+  setReportData,
   agentReportData,
   peopleData,
   clickHandlerPeople,
   status,
 }: IProps) => {
-  const [dataDuplicate, setDataDuplicate] = useState<ReportData>(reportData);
-
   const [emptyFlag, setEmptyFlag] = React.useState(false);
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
+  const [addressCopied, setAddressCopied] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const undoAddress = (key: string) => {
-    setDataDuplicate((prevState) => ({ ...prevState, [key]: null }));
+    setReportData((prevState) => ({ ...prevState, [key]: null }));
   };
   const cancelAddress = (key: keyof ReportData) => {
-    setDataDuplicate((prevState) => {
-      if (prevState[key] !== null) {
+    setReportData((prevState) => {
+      if (prevState[key] !== null && !addressCopied) {
         return prevState;
       }
       return { ...prevState, [key]: null };
@@ -123,19 +125,22 @@ const SubmitReviewStep = ({
 
     if (key === 'updatedMailingAddress') {
       setEditingMailingAddress(false);
+      setAddressCopied(false);
     }
 
     if (key === 'updatedAddress') {
       setEditingAddress(false);
     }
+
     setEmptyFlag(false);
   };
 
   const updateAddressHandler = (data: AddressFields, key: string) => {
-    setDataDuplicate((prevState) => ({ ...prevState, [key]: data }));
+    setReportData((prevState) => ({ ...prevState, [key]: data }));
 
     if (key === 'updatedMailingAddress') {
       setEditingMailingAddress(false);
+      setAddressCopied(false);
     }
 
     if (key === 'updatedAddress') {
@@ -146,20 +151,38 @@ const SubmitReviewStep = ({
   };
 
   const copyToMailingAddress = (data: AddressFields) => {
-    setDataDuplicate((prevState) => ({
+    setAddressCopied(true);
+    setReportData((prevState) => ({
       ...prevState,
       updatedMailingAddress:
         data || prevState.updatedAddress || prevState.address,
     }));
+    setEditingMailingAddress(true);
   };
 
-  const [peopleDataDuplicate, setPeopleDataDuplicate] =
+  const copyFromMailingAddress = () => {
+    setEditingMailingAddress(false);
+    setLoader(true);
+    setReportData((prevState) => {
+      console.log(prevState.updatedAddress);
+      return {
+        ...prevState,
+        updatedMailingAddress: prevState.updatedAddress || prevState.address,
+      };
+    });
+    setTimeout(() => {
+      setEditingMailingAddress(true);
+      setLoader(false);
+    }, 200);
+  };
+
+  const [peoplereportData, setPeoplereportData] =
     useState<Person[]>(peopleData);
   const [peopleIsEdditing, setPeopleIsEdditing] = React.useState(false);
   const [editingPersonId, setEditingPersonId] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
   const returnPersonHandler = (id: number) => {
-    setPeopleDataDuplicate((prevState) => {
+    setPeoplereportData((prevState) => {
       const data = [...prevState];
       const currentPersonIndex = data.findIndex((person) => person.id === id);
 
@@ -170,7 +193,7 @@ const SubmitReviewStep = ({
     });
   };
   const removePersonHandler = (id: number) => {
-    setPeopleDataDuplicate((prevState) => {
+    setPeoplereportData((prevState) => {
       const data = [...prevState];
       const currentPersonIndex = data.findIndex((person) => person.id === id);
 
@@ -181,7 +204,7 @@ const SubmitReviewStep = ({
     });
   };
   const updateExistedPersonHandler = (person: Person) => {
-    setPeopleDataDuplicate((prevState) => {
+    setPeoplereportData((prevState) => {
       const data = [...prevState];
       const currentItemIndex = prevState.findIndex(
         (item) => item.id === person.id
@@ -201,7 +224,7 @@ const SubmitReviewStep = ({
     });
   };
   const addNewPersonHandler = (person: Person) => {
-    setPeopleDataDuplicate((prevState) => {
+    setPeoplereportData((prevState) => {
       const data = [...prevState];
       const personData = { ...person };
       personData.id = Math.floor(Math.random() * 90000) + 10000;
@@ -219,14 +242,13 @@ const SubmitReviewStep = ({
       return data;
     });
   };
-
-  const [agentDataDuplicate, setAgentDataDuplicate] =
-    React.useState(agentReportData);
+  console.log(reportData.updatedMailingAddress);
+  const [agentreportData, setAgentreportData] = React.useState(agentReportData);
   const [editingAddressAgent, setEditingAddressAgent] = useState(false);
   const [agentEditing, setAgentEditing] = React.useState(false);
 
   const updateAgentAddress = (data: AddressFields) => {
-    setAgentDataDuplicate((prevState) => ({
+    setAgentreportData((prevState) => ({
       ...prevState,
       address: { ...prevState.address, ...data },
     }));
@@ -240,7 +262,7 @@ const SubmitReviewStep = ({
           <div className="flex flex-col gap-y-1 pr-5">
             <dt className="text-sm text-gray-500">Year</dt>
             <dd className="text-sm font-semibold tracking-tight text-gray-800">
-              {dataDuplicate?.year}
+              {reportData?.year}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
@@ -257,13 +279,13 @@ const SubmitReviewStep = ({
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
-              {dataDuplicate.companyName}
+              {reportData.companyName}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Due Date</dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
-              May 1, {+dataDuplicate.year + 1}
+              May 1, {+reportData.year + 1}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
@@ -271,18 +293,18 @@ const SubmitReviewStep = ({
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6 flex items-center justify-start">
               <StateSolidIconHandler
                 simpleIcon={true}
-                selectedState={dataDuplicate.state || 'Florida'}
-                state={dataDuplicate.state || 'Florida'}
+                selectedState={reportData.state || 'Florida'}
+                state={reportData.state || 'Florida'}
               />
-              {dataDuplicate.state}
+              {reportData.state}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">
-              {dockFieldHandler(dataDuplicate.state)}
+              {dockFieldHandler(reportData.state)}
             </dt>
             <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
-              {dataDuplicate.registrationNumber}
+              {reportData.registrationNumber}
             </dd>
           </div>
         </dl>
@@ -299,6 +321,7 @@ const SubmitReviewStep = ({
                 <div className="text-sm text-gray-500 mb-1">Main Address</div>
                 <USAddressForm
                   disabledFlag={false}
+                  copyTitle={'Copy to Mailing Address'}
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedAddress')
                   }
@@ -309,7 +332,7 @@ const SubmitReviewStep = ({
                   value={
                     emptyFlag
                       ? {}
-                      : dataDuplicate.updatedAddress || mockReportData.address
+                      : reportData.updatedAddress || mockReportData.address
                   }
                 />
               </>
@@ -318,18 +341,17 @@ const SubmitReviewStep = ({
                 <div className="text-sm text-gray-500 mb-1">Main Address</div>
                 <div className="flex items-start justify-between">
                   <div>
-                    {dataDuplicate.updatedAddress &&
+                    {reportData.updatedAddress &&
                       RenderAddress(
                         false,
-                        dataDuplicate.updatedAddress as AddressFields
+                        reportData.updatedAddress as AddressFields
                       )}
-                    {dataDuplicate.updatedAddress &&
-                    status === 'In Progress' ? (
+                    {reportData.updatedAddress && status === 'In Progress' ? (
                       <div />
                     ) : (
                       RenderAddress(
-                        !!dataDuplicate.updatedAddress,
-                        dataDuplicate.address
+                        !!reportData.updatedAddress,
+                        reportData.address
                       )
                     )}
                   </div>
@@ -345,9 +367,9 @@ const SubmitReviewStep = ({
                         }}
                         className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                       >
-                        <MdOutlineEditNote className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                       </div>
-                      {dataDuplicate.updatedAddress ? (
+                      {reportData.updatedAddress ? (
                         <div
                           onClick={() => undoAddress('updatedAddress')}
                           className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
@@ -379,6 +401,10 @@ const SubmitReviewStep = ({
                 </div>
                 <USAddressForm
                   disabledFlag={false}
+                  copyTitle={'Copy from Main Address'}
+                  copyClickHandler={
+                    !editingAddress ? () => copyFromMailingAddress() : undefined
+                  }
                   setFromState={(data) =>
                     updateAddressHandler(data, 'updatedMailingAddress')
                   }
@@ -388,8 +414,8 @@ const SubmitReviewStep = ({
                   value={
                     emptyFlag
                       ? {}
-                      : dataDuplicate.updatedMailingAddress ||
-                        dataDuplicate.mailingAddress
+                      : reportData.updatedMailingAddress ||
+                        reportData.mailingAddress
                   }
                 />
               </>
@@ -399,55 +425,69 @@ const SubmitReviewStep = ({
                   Mailing Address
                 </div>
                 <div className="flex items-start justify-between">
-                  <div>
-                    {dataDuplicate.updatedMailingAddress &&
-                      RenderAddress(
-                        false,
-                        dataDuplicate.updatedMailingAddress as AddressFields
-                      )}
-                    {dataDuplicate.updatedAddress &&
-                    status === 'In Progress' ? (
-                      <div />
-                    ) : (
-                      RenderAddress(
-                        !!dataDuplicate.updatedMailingAddress,
-                        dataDuplicate.mailingAddress
-                      )
-                    )}
-                  </div>
-                  {status !== 'In Progress' && (
-                    <div
-                      className={classNames(
-                        'transform transition-all duration-300 ease-out flex items-center justify-end flex-col'
-                      )}
-                    >
-                      <div
-                        onClick={() => {
-                          setEditingMailingAddress(true);
-                        }}
-                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                      >
-                        <MdOutlineEditNote className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                  {loader ? (
+                    <div className="w-[420px] h-[203px] flex items-center justify-center">
+                      <div className="relative">
+                        <div className="w-12 h-12 border-4 border-blue-200 rounded-full animate-spin"></div>
+                        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                       </div>
-                      {dataDuplicate.updatedMailingAddress ? (
+                    </div>
+                  ) : (
+                    <>
+                      <div>
+                        {reportData.updatedMailingAddress &&
+                          RenderAddress(
+                            false,
+                            reportData.updatedMailingAddress as AddressFields
+                          )}
+                        {reportData.updatedAddress &&
+                        status === 'In Progress' ? (
+                          <div />
+                        ) : (
+                          RenderAddress(
+                            !!reportData.updatedMailingAddress,
+                            reportData.mailingAddress
+                          )
+                        )}
+                      </div>
+                      {status !== 'In Progress' && (
                         <div
-                          onClick={() => undoAddress('updatedMailingAddress')}
-                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                          className={classNames(
+                            'transform transition-all duration-300 ease-out flex items-center justify-end flex-col'
+                          )}
                         >
-                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                        </div>
-                      ) : (
-                        <div
-                          onClick={() => {
-                            setEmptyFlag(true);
-                            setEditingMailingAddress(true);
-                          }}
-                          className="mt-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                          <div
+                            onClick={() => {
+                              setEditingMailingAddress(true);
+                            }}
+                            className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                          >
+                            <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                          </div>
+                          {reportData.updatedMailingAddress ? (
+                            <div
+                              onClick={() =>
+                                undoAddress('updatedMailingAddress')
+                              }
+                              className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                            >
+                              <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => {
+                                setEmptyFlag(true);
+                                setEditingMailingAddress(true);
+                              }}
+                              className="mt-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                            >
+                              <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                            </div>
+                          )}
                         </div>
                       )}
-                    </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -462,7 +502,9 @@ const SubmitReviewStep = ({
             {peopleIsEdditing && (
               <div
                 onClick={() => setAddPersonPressed(true)}
-                className="mr-1 min-w-28 text-center rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150 hover:cursor-pointer"
+                className="
+                  mr-1 px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer
+                "
               >
                 Add Person
               </div>
@@ -479,7 +521,9 @@ const SubmitReviewStep = ({
                     setEditingAddress(false);
                   }
                 }}
-                className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+                className="
+                  px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150
+                "
               >
                 {peopleIsEdditing ? 'Complete' : 'Make Changes'}
               </button>
@@ -494,7 +538,7 @@ const SubmitReviewStep = ({
             isCreateProcess={true}
           />
         )}
-        {peopleDataDuplicate.map((person, rowIndex) => (
+        {peoplereportData.map((person, rowIndex) => (
           <>
             {editingPersonId !== person.id ? (
               <div
@@ -654,7 +698,7 @@ const SubmitReviewStep = ({
                 setEditingAddressAgent(false);
               }
             }}
-            className="min-w-28 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+            className="px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150"
           >
             {agentEditing ? 'Complete' : 'Make Changes'}
           </button>
@@ -665,7 +709,7 @@ const SubmitReviewStep = ({
             <div className="pr-1 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Name</div>
               <div className="font-semibold text-gray-800">
-                {agentDataDuplicate.name}
+                {agentreportData.name}
               </div>
             </div>
           </div>
@@ -678,7 +722,7 @@ const SubmitReviewStep = ({
                   setFromState={(data) => updateAgentAddress(data)}
                   heading={''}
                   requiredError={false}
-                  value={agentDataDuplicate.address}
+                  value={agentreportData.address}
                 />
               </div>
             ) : (
@@ -687,41 +731,40 @@ const SubmitReviewStep = ({
                 <div className="flex items-start justify-between">
                   <div>
                     <div>
-                      <span>{agentDataDuplicate.address.address0}, </span>
-                      {agentDataDuplicate.address.address1 && (
-                        <span>{agentDataDuplicate.address.address1}</span>
+                      <span>{agentreportData.address.address0}, </span>
+                      {agentreportData.address.address1 && (
+                        <span>{agentreportData.address.address1}</span>
                       )}
                     </div>
                     <div>
-                      {agentDataDuplicate.address.address2 && (
-                        <span>{agentDataDuplicate.address.address2}</span>
+                      {agentreportData.address.address2 && (
+                        <span>{agentreportData.address.address2}</span>
                       )}
-                      {agentDataDuplicate.address.address3 && (
+                      {agentreportData.address.address3 && (
                         <span>
-                          {agentDataDuplicate.address.address2 ? ',' : ''}{' '}
-                          {agentDataDuplicate.address.address3}
+                          {agentreportData.address.address2 ? ',' : ''}{' '}
+                          {agentreportData.address.address3}
                         </span>
                       )}
                     </div>
                     <div>
-                      <span>{agentDataDuplicate.address.city}, </span>
+                      <span>{agentreportData.address.city}, </span>
                       <span>
                         {USStates.find(
-                          (item) =>
-                            item.title === agentDataDuplicate.address.state
+                          (item) => item.title === agentreportData.address.state
                         )?.value || ''}{' '}
                       </span>
-                      <span>{agentDataDuplicate.address.zip}</span>
-                      {agentDataDuplicate.address?.county && (
+                      <span>{agentreportData.address.zip}</span>
+                      {agentreportData.address?.county && (
                         <span>
-                          , {agentDataDuplicate.address?.county}
+                          , {agentreportData.address?.county}
                           <TooltipWrapper tooltipText="County">
                             <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
                           </TooltipWrapper>
                         </span>
                       )}
                     </div>
-                    <div>{agentDataDuplicate.address.country}</div>
+                    <div>{agentreportData.address.country}</div>
                   </div>
                   <div
                     className={classNames(

@@ -25,6 +25,7 @@ interface IProps {
   isCreateUser?: boolean;
   additionalMandatoryCheck?: boolean;
   setMandatoryError?: () => void;
+  copyTitle?: string;
   copyClickHandler?: (value: AddressFields) => void;
 }
 
@@ -57,6 +58,7 @@ const USAddressForm = ({
   isCreateUser,
   additionalMandatoryCheck,
   setMandatoryError,
+  copyTitle,
   copyClickHandler,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -297,12 +299,20 @@ const USAddressForm = ({
             )}
             {copyClickHandler && (
               <div
-                onClick={() =>
-                  copyClickHandler({ country, ...address, city, zip, state })
-                }
-                className="mt-2 rounded-md bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"
+                onClick={() => {
+                  if (
+                    !(
+                      areFieldsValid(validationData) &&
+                      (!isCreateUser || additionalMandatoryCheck)
+                    )
+                  ) {
+                    return;
+                  }
+                  copyClickHandler({ country, ...address, city, zip, state });
+                }}
+                className="mt-2 rounded-md bg-transparent px-2.5 py-1 text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"
               >
-                Copy to Mailing Address
+                {copyTitle || 'Copy to Mailing Address'}
               </div>
             )}
           </div>
@@ -311,7 +321,7 @@ const USAddressForm = ({
               <button
                 type="button"
                 onClick={cancelAction}
-                className="mr-2 mt-2 ml-auto rounded-md bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150"
+                className="mr-2 mt-2 ml-auto rounded-md bg-transparent px-2.5 py-1 text-sm font-medium text-gray-900 transition-all ease-in-out duration-150"
               >
                 Cancel
               </button>
@@ -321,7 +331,7 @@ const USAddressForm = ({
                 type="button"
                 onClick={saveHandler}
                 className={classNames(
-                  'mt-2 px-2.5 py-1 border rounded-md  text-sm font-semibold text-gray-900 transition-all ease-in-out duration-150',
+                  'mt-2 px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150',
                   !(
                     areFieldsValid(validationData) &&
                     (!isCreateUser || additionalMandatoryCheck)
