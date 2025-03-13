@@ -7,6 +7,7 @@ import { VALIDATORS } from '../../../constants/regexs';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import SectionHeading from './SectionHeading';
 import { AddressFields } from '../../../interfaces/interfaces';
+import { LuEraser } from 'react-icons/lu';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -63,7 +64,7 @@ const USAddressForm = ({
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
-  const [focused, setFocused] = useState(false);
+  const [focusedInput, setFocusedInput] = useState(-1);
 
   const [addressFields, setAddressFields] =
     useState<{ title: string; type: string }[]>(addressFieldsMock);
@@ -101,6 +102,8 @@ const USAddressForm = ({
   const [zip, setZip] = useState(value?.zip || '');
   const [state, setState] = useState(value?.state || '');
 
+  const [focused, setFocused] = useState(false);
+
   const validationData = isCreateUser
     ? { country, address0: address.address0, city }
     : { country, address0: address.address0, city, zip, state };
@@ -127,6 +130,36 @@ const USAddressForm = ({
       setMandatoryError();
     }
   };
+
+  const cleanUpForm = () => {
+    setCity('');
+    setState('');
+    setZip('');
+
+    setAddress({
+      address0: '',
+      address1: '',
+      address2: '',
+      address3: '',
+    });
+
+    setCountry(value?.country);
+  };
+
+  useEffect(() => {
+    setCity(value?.city || '');
+    setState(value?.state || '');
+    setZip(value?.zip || '');
+
+    setAddress({
+      address0: value?.address0 || '',
+      address1: value?.address1 || '',
+      address2: value?.address2 || '',
+      address3: value?.address3 || '',
+    });
+
+    setCountry(value?.country || '');
+  }, [value]);
 
   useEffect(() => {
     if (done) {
@@ -162,7 +195,10 @@ const USAddressForm = ({
   return (
     <>
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />
-      <div className="flex flex-col items-end">
+      <div className="flex flex-col items-end relative group/form">
+        <div onClick={cleanUpForm}>
+          <LuEraser className="h-4.5 w-4.5 absolute -top-5 right-1 opacity-0 group-hover/form:opacity-100 transition-all ease-in-out duration-150 hover:cursor-pointer" />
+        </div>
         <div
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
@@ -194,6 +230,8 @@ const USAddressForm = ({
                       : 'bg-transparent'
                   )}
                   type={field.type}
+                  onFocus={() => setFocusedInput(index)}
+                  onBlur={() => setFocusedInput(-1)}
                   value={address[`address${index}`]}
                   data-1p-ignore={true}
                   disabled={disabledFlag}
@@ -216,7 +254,12 @@ const USAddressForm = ({
                           ]);
                         }
                       }}
-                      className="p-1 rounded-md bg-gray-100 opacity-0 group-hover:opacity-100 transition hover:cursor-pointer"
+                      className={classNames(
+                        moreFieldAllowed(focusedInput)
+                          ? 'opacity-100'
+                          : 'opacity-0 ',
+                        'p-1 rounded-md bg-gray-100 group-hover:opacity-100 transition hover:cursor-pointer'
+                      )}
                     >
                       <PlusIcon className="w-4 h-4 text-gray-700" />
                     </div>
@@ -304,7 +347,8 @@ const USAddressForm = ({
                     !(
                       areFieldsValid(validationData) &&
                       (!isCreateUser || additionalMandatoryCheck)
-                    )
+                    ) &&
+                    copyTitle !== 'Copy from Main Address'
                   ) {
                     return;
                   }
@@ -331,13 +375,13 @@ const USAddressForm = ({
                 type="button"
                 onClick={saveHandler}
                 className={classNames(
-                  'mt-2 px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150',
+                  'mt-2 px-2.5 py-1 border rounded-md  text-sm font-medium transition-all ease-in-out duration-150',
                   !(
                     areFieldsValid(validationData) &&
                     (!isCreateUser || additionalMandatoryCheck)
                   )
-                    ? 'bg-gray-200'
-                    : 'bg-white '
+                    ? 'text-gray-400'
+                    : 'text-gray-900 '
                 )}
               >
                 Save

@@ -30,6 +30,20 @@ const AnnualReportReview = () => {
     }
   }, [currentStep]);
 
+  // Add a useEffect hook to prevent form submission on Enter key
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const submitStepHandler = () => {
     setCurrentStep((prevState) => {
       setVisitedSteps([...visitedSteps, prevState]);

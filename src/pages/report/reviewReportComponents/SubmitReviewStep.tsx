@@ -106,11 +106,9 @@ const SubmitReviewStep = ({
   clickHandlerPeople,
   status,
 }: IProps) => {
-  const [emptyFlag, setEmptyFlag] = React.useState(false);
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
   const [addressCopied, setAddressCopied] = useState(false);
-  const [loader, setLoader] = useState(false);
 
   const undoAddress = (key: string) => {
     setReportData((prevState) => ({ ...prevState, [key]: null }));
@@ -131,8 +129,6 @@ const SubmitReviewStep = ({
     if (key === 'updatedAddress') {
       setEditingAddress(false);
     }
-
-    setEmptyFlag(false);
   };
 
   const updateAddressHandler = (data: AddressFields, key: string) => {
@@ -146,8 +142,6 @@ const SubmitReviewStep = ({
     if (key === 'updatedAddress') {
       setEditingAddress(false);
     }
-
-    setEmptyFlag(false);
   };
 
   const copyToMailingAddress = (data: AddressFields) => {
@@ -161,19 +155,13 @@ const SubmitReviewStep = ({
   };
 
   const copyFromMailingAddress = () => {
-    setEditingMailingAddress(false);
-    setLoader(true);
+    console.log('Copy from Main Address');
     setReportData((prevState) => {
-      console.log(prevState.updatedAddress);
       return {
         ...prevState,
         updatedMailingAddress: prevState.updatedAddress || prevState.address,
       };
     });
-    setTimeout(() => {
-      setEditingMailingAddress(true);
-      setLoader(false);
-    }, 200);
   };
 
   const [peoplereportData, setPeoplereportData] =
@@ -329,66 +317,51 @@ const SubmitReviewStep = ({
                   cancelAction={() => cancelAddress('updatedAddress')}
                   heading={''}
                   requiredError={false}
-                  value={
-                    emptyFlag
-                      ? {}
-                      : reportData.updatedAddress || mockReportData.address
-                  }
+                  value={reportData.updatedAddress || mockReportData.address}
                 />
               </>
             ) : (
               <div className="pr-2 text-gray-700 text-sm">
                 <div className="text-sm text-gray-500 mb-1">Main Address</div>
-                <div className="flex items-start justify-between">
-                  <div>
-                    {reportData.updatedAddress &&
-                      RenderAddress(
+                <div className="flex flex-col items-start justify-between w-full">
+                  <div className="flex items-start justify-between w-full">
+                    <div>
+                      {RenderAddress(
                         false,
-                        reportData.updatedAddress as AddressFields
-                      )}
-                    {reportData.updatedAddress && status === 'In Progress' ? (
-                      <div />
-                    ) : (
-                      RenderAddress(
-                        !!reportData.updatedAddress,
-                        reportData.address
-                      )
-                    )}
-                  </div>
-                  {status !== 'In Progress' && (
-                    <div
-                      className={classNames(
-                        'transform transition-all duration-300 ease-out flex items-center justify-end flex-col'
-                      )}
-                    >
-                      <div
-                        onClick={() => {
-                          setEditingAddress(true);
-                        }}
-                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                      >
-                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                      </div>
-                      {reportData.updatedAddress ? (
-                        <div
-                          onClick={() => undoAddress('updatedAddress')}
-                          className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                        </div>
-                      ) : (
-                        <div
-                          onClick={() => {
-                            setEmptyFlag(true);
-                            setEditingAddress(true);
-                          }}
-                          className="mt-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                        >
-                          <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
-                        </div>
+                        reportData.updatedAddress || reportData.address
                       )}
                     </div>
-                  )}
+                    <div
+                      onClick={() => {
+                        setEditingAddress(true);
+                      }}
+                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    >
+                      <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                    </div>
+                  </div>
+                  <div className="flex items-start justify-between w-full group/updated">
+                    {reportData.updatedAddress && (
+                      <div>
+                        {status === 'In Progress' ? (
+                          <div />
+                        ) : (
+                          RenderAddress(
+                            !!reportData.updatedAddress,
+                            reportData.address
+                          )
+                        )}
+                      </div>
+                    )}
+                    {reportData.updatedAddress && (
+                      <div
+                        onClick={() => undoAddress('updatedAddress')}
+                        className="group group-hover/updated:opacity-100 opacity-0 ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer transition-all duration-150 ease-in-out"
+                      >
+                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -412,10 +385,8 @@ const SubmitReviewStep = ({
                   heading={''}
                   requiredError={false}
                   value={
-                    emptyFlag
-                      ? {}
-                      : reportData.updatedMailingAddress ||
-                        reportData.mailingAddress
+                    reportData.updatedMailingAddress ||
+                    reportData.mailingAddress
                   }
                 />
               </>
@@ -424,71 +395,48 @@ const SubmitReviewStep = ({
                 <div className="text-sm text-gray-500 mb-1">
                   Mailing Address
                 </div>
-                <div className="flex items-start justify-between">
-                  {loader ? (
-                    <div className="w-[420px] h-[203px] flex items-center justify-center">
-                      <div className="relative">
-                        <div className="w-12 h-12 border-4 border-blue-200 rounded-full animate-spin"></div>
-                        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
+                <div className="flex items-start justify-between w-full">
+                  <div className="flex flex-col items-start justify-between w-full">
+                    <div className="flex items-start justify-between w-full">
                       <div>
-                        {reportData.updatedMailingAddress &&
-                          RenderAddress(
-                            false,
-                            reportData.updatedMailingAddress as AddressFields
-                          )}
-                        {reportData.updatedAddress &&
-                        status === 'In Progress' ? (
-                          <div />
-                        ) : (
-                          RenderAddress(
-                            !!reportData.updatedMailingAddress,
+                        {RenderAddress(
+                          false,
+                          reportData.updatedMailingAddress ||
                             reportData.mailingAddress
-                          )
                         )}
                       </div>
-                      {status !== 'In Progress' && (
-                        <div
-                          className={classNames(
-                            'transform transition-all duration-300 ease-out flex items-center justify-end flex-col'
-                          )}
-                        >
-                          <div
-                            onClick={() => {
-                              setEditingMailingAddress(true);
-                            }}
-                            className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                          >
-                            <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                          </div>
-                          {reportData.updatedMailingAddress ? (
-                            <div
-                              onClick={() =>
-                                undoAddress('updatedMailingAddress')
-                              }
-                              className="group ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                            >
-                              <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                            </div>
+                      <div
+                        onClick={() => {
+                          setEditingMailingAddress(true);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    </div>
+                    <div className="flex items-start justify-between w-full group/updated">
+                      {reportData.updatedMailingAddress && (
+                        <div>
+                          {status === 'In Progress' ? (
+                            <div />
                           ) : (
-                            <div
-                              onClick={() => {
-                                setEmptyFlag(true);
-                                setEditingMailingAddress(true);
-                              }}
-                              className="mt-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                            >
-                              <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
-                            </div>
+                            RenderAddress(
+                              !!reportData.updatedMailingAddress,
+                              reportData.mailingAddress
+                            )
                           )}
                         </div>
                       )}
-                    </>
-                  )}
+                      {reportData.updatedMailingAddress && (
+                        <div
+                          onClick={() => undoAddress('updatedMailingAddress')}
+                          className="group group-hover/updated:opacity-100 opacity-0 ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer transition-all duration-150 ease-in-out"
+                        >
+                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
