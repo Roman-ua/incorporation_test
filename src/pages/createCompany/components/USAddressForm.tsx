@@ -201,7 +201,7 @@ const USAddressForm = ({
         {showClear && (
           <div
             onClick={cleanUpForm}
-            className="p-1 absolute -top-6 right-0 opacity-0 group-hover/form:opacity-100 transition-all ease-in-out duration-150 hover:cursor-pointer"
+            className="p-1 absolute -top-6 right-0 opacity-100 transition-all ease-in-out duration-150 hover:cursor-pointer"
           >
             <MdOutlinePlaylistRemove className="h-4.5 w-4.5  text-gray-500 " />
           </div>

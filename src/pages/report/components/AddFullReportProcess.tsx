@@ -8,8 +8,7 @@ import {
 import PageSign from '../../../components/shared/PageSign';
 import { AddressFields, IFiles, Person } from '../../../interfaces/interfaces';
 import AddFullReportSteps from './AddFullReportSteps';
-import StateCards from '../../createCompany/components/StateCards';
-import { states } from '../../elements/components/StateCardsElements';
+
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
 import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
@@ -128,7 +127,6 @@ const AddFullReportProcess = () => {
   const [reportYear, setReportYear] = React.useState<string>('');
   const [companyName, setCompanyName] = React.useState<string>('');
   const [dockNumber, setDockNumber] = React.useState<string>('');
-  const [state, setState] = React.useState('');
 
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
   const [mailingAddress, setMailingAddress] =
@@ -183,8 +181,7 @@ const AddFullReportProcess = () => {
     }
   };
 
-  const firstStepDisabled = () =>
-    !reportYear || !companyName || !dockNumber || !state;
+  const firstStepDisabled = () => !reportYear || !companyName || !dockNumber;
 
   const secondStepDisabled = () =>
     !address.address0 || !mailingAddress.address0;
@@ -197,7 +194,7 @@ const AddFullReportProcess = () => {
     e: React.FormEvent<HTMLFormElement>,
     step: number
   ) => {
-    if (step === 0 && (!reportYear || !companyName || !dockNumber || !state)) {
+    if (step === 0 && (!reportYear || !companyName || !dockNumber)) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
@@ -343,13 +340,6 @@ const AddFullReportProcess = () => {
                       </div>
                     </div>
                   </div>
-                  <StateCards
-                    requiredError={mandatoryErrorStep === 0 && !state}
-                    value={state}
-                    changeEvent={setState}
-                    state={states}
-                    title={''}
-                  />
                 </>
               </>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
@@ -647,12 +637,12 @@ const AddFullReportProcess = () => {
                         State
                       </div>
                       <div className="w-full pr-2 text-gray-700 text-sm">
-                        {state}
+                        {'state'}
                       </div>
                     </div>
                     <div className="w-full flex items-start justify-between pb-2">
                       <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                        {dockFieldHandler(state)}
+                        {dockFieldHandler('state')}
                       </div>
                       <div className="w-full pr-2 text-gray-700 text-sm">
                         {dockNumber}
