@@ -19,6 +19,9 @@ import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropF
 import SectionHeading from '../../company/components/SectionHeading';
 import { USStates } from '../../../constants/form/form';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { IconX } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../constants/navigation/routes';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -125,8 +128,6 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
 const AddFullReportProcess = () => {
   const [mandatoryErrorStep, setMandatoryErrorStep] = useState<number>(-1);
   const [reportYear, setReportYear] = React.useState<string>('');
-  const [companyName, setCompanyName] = React.useState<string>('');
-  const [dockNumber, setDockNumber] = React.useState<string>('');
 
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
   const [mailingAddress, setMailingAddress] =
@@ -142,6 +143,8 @@ const AddFullReportProcess = () => {
   const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
   const [file, setFile] = React.useState<IFiles | null>(null);
   console.log(file, 'file');
+  const navigate = useNavigate();
+
   const {
     inputRef,
     selectedFile,
@@ -150,7 +153,7 @@ const AddFullReportProcess = () => {
     deleteFileHandler,
   } = useFileUpload();
 
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
 
   const setAgentAddressHandler = (key: string, value: string) => {
@@ -165,13 +168,6 @@ const AddFullReportProcess = () => {
     setMailingAddress({ ...mailingAddress, [key]: value });
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (value.length <= 12) {
-      setDockNumber(value);
-    }
-  };
-
   const handleChangeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -180,8 +176,6 @@ const AddFullReportProcess = () => {
       setReportYear(value);
     }
   };
-
-  const firstStepDisabled = () => !reportYear || !companyName || !dockNumber;
 
   const secondStepDisabled = () =>
     !address.address0 || !mailingAddress.address0;
@@ -194,14 +188,15 @@ const AddFullReportProcess = () => {
     e: React.FormEvent<HTMLFormElement>,
     step: number
   ) => {
-    if (step === 0 && (!reportYear || !companyName || !dockNumber)) {
-      e.preventDefault();
-      e.stopPropagation();
-      setMandatoryErrorStep(step);
-      return;
-    }
-
+    console.log(
+      address,
+      mailingAddress,
+      1,
+      !address.address0,
+      !mailingAddress.address0
+    );
     if (step === 1 && (!address.address0 || !mailingAddress.address0)) {
+      console.log(2);
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
@@ -214,7 +209,7 @@ const AddFullReportProcess = () => {
       setMandatoryErrorStep(step);
       return;
     }
-
+    console.log(2.5);
     if (step === 3 && !people.length) {
       e.preventDefault();
       e.stopPropagation();
@@ -222,12 +217,14 @@ const AddFullReportProcess = () => {
       return;
     }
 
-    if ((step === 4 && !stateId) || !file?.file) {
+    if (step === 4 && (!stateId || !file?.file || !reportYear)) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
       return;
     }
+
+    console.log(3);
 
     setCurrentStep((prevState) => {
       if (prevState === 4) return prevState;
@@ -237,17 +234,11 @@ const AddFullReportProcess = () => {
   };
 
   const cancelStepHandler = () => {
-    // setCurrentStep(cu);
-    // if (currentStep === 2) {
-    //   setPeopleDataDuplicate(mockPeople);
-    // }
-    // if (currentStep === 1) {
-    //   setDataDuplicate((prevState) => ({
-    //     ...prevState,
-    //     updatedAddress: null,
-    //     updatedMailingAddress: null,
-    //   }));
-    // }
+    setCurrentStep((prevState) => {
+      if (prevState === 1) return prevState;
+      // setVisitedSteps([...visitedSteps, prevState]);
+      return prevState - 1;
+    });
   };
 
   useEffect(() => {
@@ -263,9 +254,16 @@ const AddFullReportProcess = () => {
         <div className="w-[200px] max-lg:w-fit pr-2" />
         <div className="w-[870px] flex items-center justify-center font-semibold">
           Annual Report for
-          <span className="underline ml-1">{mockData.companyName}</span>
+          <span className="font-bold ml-1"> {mockData.companyName}</span>
         </div>
-        <div className="w-[200px] pr-2" />
+        <div className="w-[200px] pr-2 flex items-end justify-end">
+          <div
+            onClick={() => navigate(ROUTES.COMPANY)}
+            className="p-1 hover:cursor-pointer"
+          >
+            <IconX className="w-4 h-4 text-gray-700" />
+          </div>
+        </div>
       </div>
       <div
         className={classNames(
@@ -281,89 +279,6 @@ const AddFullReportProcess = () => {
           />
         </div>
         <div className="w-[870px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
-          {currentStep === 0 && (
-            <form onSubmit={(e) => submitStepHandler(e, 0)}>
-              <>
-                <div className="mb-5">
-                  <PageSign
-                    titleSize={'text-2xl font-bold text-gray-900'}
-                    title={`Company Information`}
-                    icon={<></>}
-                  />
-                </div>
-                <>
-                  <div className="mb-4 mt-1">
-                    <input
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      className={classNames(
-                        mandatoryErrorStep === 0 && !companyName
-                          ? 'bg-red-50'
-                          : 'bg-white',
-                        'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                      )}
-                      type="text"
-                      placeholder="Company Name"
-                      value={companyName}
-                    />
-                  </div>
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="w-full">
-                      <div className="mb-4">
-                        <input
-                          onChange={handleChangeYear}
-                          className={classNames(
-                            mandatoryErrorStep === 0 && !reportYear
-                              ? 'bg-red-50'
-                              : 'bg-white',
-                            'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                          )}
-                          type="text"
-                          placeholder="Report Year"
-                          value={reportYear}
-                        />
-                      </div>
-                    </div>
-                    <div className="w-full">
-                      <div className="mb-4">
-                        <input
-                          onChange={handleInputChange}
-                          className={classNames(
-                            mandatoryErrorStep === 0 && !dockNumber
-                              ? 'bg-red-50'
-                              : 'bg-white',
-                            'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                          )}
-                          type="text"
-                          placeholder="Document Number"
-                          value={dockNumber}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </>
-              </>
-              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-                <div className="w-[870px] max-xl:w-full flex items-center justify-end">
-                  <button
-                    className={classNames(
-                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
-                      firstStepDisabled()
-                        ? 'bg-gray-500'
-                        : 'bg-mainBlue hover:bg-sideBarBlue'
-                    )}
-                  >
-                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
-                      Save
-                    </span>
-                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
-                  </button>
-                </div>
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-              </div>
-            </form>
-          )}
-
           {currentStep === 1 && (
             <form onSubmit={(e) => submitStepHandler(e, 1)}>
               <div className="mb-5">
@@ -558,7 +473,7 @@ const AddFullReportProcess = () => {
           {currentStep === 4 && (
             <form
               onSubmit={(e) => submitStepHandler(e, 4)}
-              className="w-full relative"
+              className="w-full relative pb-10"
             >
               <div className="mb-5">
                 <PageSign
@@ -567,19 +482,35 @@ const AddFullReportProcess = () => {
                   icon={<></>}
                 />
               </div>
-              <div className="mb-4 mt-1">
-                <input
-                  onChange={(e) => setStateId(e.target.value)}
-                  className={classNames(
-                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0',
-                    mandatoryErrorStep === 4 && !stateId
-                      ? 'bg-red-50'
-                      : 'bg-white'
-                  )}
-                  type="text"
-                  placeholder="State ID"
-                  value={stateId}
-                />
+              <div className="flex items-start justify-between gap-4 mt-1">
+                <div className="w-full">
+                  <input
+                    onChange={(e) => setStateId(e.target.value)}
+                    className={classNames(
+                      'block rounded-md border w-full  border-gray-200 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0',
+                      mandatoryErrorStep === 4 && !stateId
+                        ? 'bg-red-50'
+                        : 'bg-white'
+                    )}
+                    type="text"
+                    placeholder="State ID"
+                    value={stateId}
+                  />
+                </div>
+                <div className="w-full">
+                  <input
+                    onChange={handleChangeYear}
+                    className={classNames(
+                      mandatoryErrorStep === 4 && !reportYear
+                        ? 'bg-red-50'
+                        : 'bg-white',
+                      'block rounded-md border w-full  border-gray-200 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
+                    )}
+                    type="text"
+                    placeholder="Report Year"
+                    value={reportYear}
+                  />
+                </div>
               </div>
               <div className="mb-4">
                 <DatePicker
@@ -629,7 +560,7 @@ const AddFullReportProcess = () => {
                         Company Name
                       </div>
                       <div className="w-full pr-2 text-gray-700 text-sm">
-                        {companyName}
+                        {mockData.companyName}
                       </div>
                     </div>
                     <div className="w-full flex items-start justify-between pb-2">
@@ -637,7 +568,7 @@ const AddFullReportProcess = () => {
                         State
                       </div>
                       <div className="w-full pr-2 text-gray-700 text-sm">
-                        {'state'}
+                        {mockData.state}
                       </div>
                     </div>
                     <div className="w-full flex items-start justify-between pb-2">
@@ -645,7 +576,7 @@ const AddFullReportProcess = () => {
                         {dockFieldHandler('state')}
                       </div>
                       <div className="w-full pr-2 text-gray-700 text-sm">
-                        {dockNumber}
+                        {mockData.registrationNumber}
                       </div>
                     </div>
                   </div>
@@ -661,8 +592,8 @@ const AddFullReportProcess = () => {
               </>
               <>
                 <SectionHeading title={'Address'} textSettings={'text-base'} />
-                <div className="flex items-start justify-start mb-6 max-lg:flex-col gap-28 max-lg:gap-6">
-                  <div>
+                <div className="flex items-start justify-start mb-6 max-lg:flex-col max-lg:gap-6">
+                  <div className="w-2/3">
                     <div className="mb-1 w-full flex items-center justify-between">
                       <span className="text-sm text-gray-500 ">
                         Main Address
@@ -674,7 +605,7 @@ const AddFullReportProcess = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="ml-2">
+                  <div className="w-full">
                     <div className="mb-1 w-full flex items-center justify-between">
                       <span className="text-sm text-gray-500 ">
                         Mailing Address
@@ -693,14 +624,14 @@ const AddFullReportProcess = () => {
                   title="Registered Agent"
                   textSettings={'text-base'}
                 />
-                <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col gap-40 max-lg:gap-6">
-                  <div className="flex items-start justify-between pb-2 max-lg:w-full">
+                <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col max-lg:gap-6">
+                  <div className="w-2/3 flex items-start justify-between pb-2 max-lg:w-full">
                     <div className="pr-1 text-gray-700 text-sm">
                       <div className="text-sm text-gray-500 mb-1">Name</div>
                       <div className="font-semibold">{agentName}</div>
                     </div>
                   </div>
-                  <div className="flex items-start justify-start pb-2 ml-1">
+                  <div className="flex items-start justify-start pb-2 w-full">
                     <div className="w-full pr-2 text-gray-700 text-sm">
                       <div className="text-sm text-gray-500 mb-1">Address</div>
                       {RenderAddress(false, agentAddress)}
