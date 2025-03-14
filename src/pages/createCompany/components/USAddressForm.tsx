@@ -7,7 +7,7 @@ import { VALIDATORS } from '../../../constants/regexs';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import SectionHeading from './SectionHeading';
 import { AddressFields } from '../../../interfaces/interfaces';
-import { LuEraser } from 'react-icons/lu';
+import { MdOutlinePlaylistRemove } from 'react-icons/md';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -28,6 +28,7 @@ interface IProps {
   setMandatoryError?: () => void;
   copyTitle?: string;
   copyClickHandler?: (value: AddressFields) => void;
+  showClear?: boolean;
 }
 
 const addressFieldsMock = [
@@ -61,6 +62,7 @@ const USAddressForm = ({
   setMandatoryError,
   copyTitle,
   copyClickHandler,
+  showClear,
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
@@ -196,9 +198,11 @@ const USAddressForm = ({
     <>
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />
       <div className="flex flex-col items-end relative group/form">
-        <div onClick={cleanUpForm}>
-          <LuEraser className="h-4.5 w-4.5 absolute -top-5 right-1 opacity-0 group-hover/form:opacity-100 transition-all ease-in-out duration-150 hover:cursor-pointer" />
-        </div>
+        {showClear && (
+          <div onClick={cleanUpForm}>
+            <MdOutlinePlaylistRemove className="h-4.5 w-4.5 text-gray-500 absolute -top-5 right-1 opacity-0 group-hover/form:opacity-100 transition-all ease-in-out duration-150 hover:cursor-pointer" />
+          </div>
+        )}
         <div
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}

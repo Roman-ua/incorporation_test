@@ -131,8 +131,31 @@ const SubmitReviewStep = ({
     }
   };
 
-  const updateAddressHandler = (data: AddressFields, key: string) => {
-    setReportData((prevState) => ({ ...prevState, [key]: data }));
+  const updateAddressHandler = (data: AddressFields, key: keyof ReportData) => {
+    setReportData((prevState) => {
+      if (!prevState) return prevState; // Ensure prevState is not null
+
+      const fieldForCompare =
+        key === 'updatedAddress' ? 'address' : 'mailingAddress';
+
+      // Ensure prevState[fieldForCompare] exists and is an Address type
+      const existingAddress = prevState[fieldForCompare as keyof ReportData];
+
+      if (typeof existingAddress !== 'object' || existingAddress === null) {
+        return prevState;
+      }
+
+      // Compare each field safely
+      const isEqual = (Object.keys(data) as Array<keyof AddressFields>).every(
+        (field) => data[field] === (existingAddress as AddressFields)[field]
+      );
+
+      if (isEqual) {
+        return prevState;
+      }
+
+      return { ...prevState, [key]: data };
+    });
 
     if (key === 'updatedMailingAddress') {
       setEditingMailingAddress(false);
@@ -318,6 +341,7 @@ const SubmitReviewStep = ({
                   heading={''}
                   requiredError={false}
                   value={reportData.updatedAddress || mockReportData.address}
+                  showClear={true}
                 />
               </>
             ) : (
@@ -388,6 +412,7 @@ const SubmitReviewStep = ({
                     reportData.updatedMailingAddress ||
                     reportData.mailingAddress
                   }
+                  showClear={true}
                 />
               </>
             ) : (
