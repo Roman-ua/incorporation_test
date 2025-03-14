@@ -199,8 +199,11 @@ const USAddressForm = ({
       <SectionHeading text={heading || ''} status={done} hideStatus={true} />
       <div className="flex flex-col items-end relative group/form">
         {showClear && (
-          <div onClick={cleanUpForm}>
-            <MdOutlinePlaylistRemove className="h-4.5 w-4.5 text-gray-500 absolute -top-5 right-1 opacity-0 group-hover/form:opacity-100 transition-all ease-in-out duration-150 hover:cursor-pointer" />
+          <div
+            onClick={cleanUpForm}
+            className="p-1 absolute -top-6 right-0 opacity-0 group-hover/form:opacity-100 transition-all ease-in-out duration-150 hover:cursor-pointer"
+          >
+            <MdOutlinePlaylistRemove className="h-4.5 w-4.5  text-gray-500 " />
           </div>
         )}
         <div
