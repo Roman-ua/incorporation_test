@@ -23,10 +23,17 @@ module.exports = {
           '80%': { transform: 'scale(0.9) translateZ(5px)' },
           '100%': { transform: 'scale(1) translateZ(0)' },
         },
+        fadeInOut: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '15%': { opacity: '1', transform: 'translateY(0)' },
+          '85%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-10px)' },
+        },
       },
       animation: {
         'check-bounce':
           'check-bounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+        'fade-in-out': 'fadeInOut 2s ease-in-out',
       },
     },
   },

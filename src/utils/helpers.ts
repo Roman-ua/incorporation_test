@@ -1,3 +1,5 @@
+import { AddressFields } from '../interfaces/interfaces';
+
 export const copyToClipboard = (text: string) => {
   if (navigator.clipboard) {
     navigator.clipboard
@@ -18,6 +20,27 @@ export const copyToClipboard = (text: string) => {
       console.error('Failed to copy text: ', err);
     }
     document.body.removeChild(textArea);
+  }
+};
+
+export const copyAddressToClipboard = (address: AddressFields) => {
+  if (!address) return;
+
+  const addressString = Object.values(address)
+    .filter((value) => value !== undefined && value !== null && value !== '')
+    .join(', ');
+
+  if (addressString) {
+    navigator.clipboard
+      .writeText(addressString)
+      .then(() => {
+        console.log('Адрес скопирован:', addressString);
+      })
+      .catch((err) => {
+        console.error('Ошибка при копировании:', err);
+      });
+  } else {
+    console.warn('Адрес пуст, нечего копировать.');
   }
 };
 

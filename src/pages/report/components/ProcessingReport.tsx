@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Globe,
   Building,
@@ -7,20 +7,36 @@ import {
   DollarSign,
   Save,
   FileText,
-  Upload,
   X,
   FileIcon,
+  ExternalLink,
 } from 'lucide-react';
 import PageSign from '../../../components/shared/PageSign';
-import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
-import { ReportData } from '../../../interfaces/interfaces';
-import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
+import {
+  AddressFields,
+  IFiles,
+  ReportData,
+} from '../../../interfaces/interfaces';
 import { mockAgent } from '../../../mock/mockData';
 import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
 import AddReportDocShort from './AddReportDocShort';
+import {
+  copyAddressToClipboard,
+  dockFieldHandler,
+  truncateString,
+} from '../../../utils/helpers';
+import AddressAsTable from '../../../components/shared/AddressRender/AddressAsTable';
+import { MdCheck, MdOutlineCopyAll } from 'react-icons/md';
+import { USStates } from '../../../constants/form/form';
+import TooltipWrapper from '../../../components/shared/TooltipWrapper';
+import { IconInfoCircle } from '@tabler/icons-react';
+import useFileUpload from '../../../utils/hooks/useFileUpload';
+import FileDownloadProgress from '../../createCompany/components/UploadedFile';
+import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
+
 const steps = [
   {
-    title: 'Open Government Website',
+    title: 'Company Details',
     description:
       'Navigate to the official government website for business filings and annual reports.',
     icon: <Globe className="w-6 h-6" />,
@@ -57,13 +73,11 @@ const steps = [
   },
   {
     title: 'Pay Government Fee',
-    description:
-      'Process payment for the filing fee and save the confirmation.',
+    description: 'Pay government fee and upload confirmation document.',
     icon: <DollarSign className="w-6 h-6" />,
     details:
       "Complete the payment process for any required government fees. Use the company's preferred payment method. After payment is processed, upload the payment confirmation receipt for record-keeping purposes.",
-    hasFileUpload: true,
-    fileUploadLabel: 'Upload payment confirmation',
+    hasFileUpload: false,
   },
   {
     title: 'Save Annual Report',
@@ -77,8 +91,7 @@ const steps = [
     description:
       'Generate and send an invoice to the customer for services rendered.',
     icon: <FileText className="w-6 h-6" />,
-    details:
-      'Create an invoice for the customer that includes itemized services (filing preparation, government fees, service fees, etc.). Send the invoice to the customer via their preferred communication method and record the invoice in your accounting system.',
+    details: '',
     hasFileUpload: false,
   },
 ];
@@ -88,11 +101,27 @@ interface IProps {
 }
 
 const ProcessingReport = ({ data }: IProps) => {
+  const [copied, setCopied] = useState<number>(-1);
+
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<{ [key: number]: File[] }>(
     {}
   );
+  const [file, setFile] = useState<IFiles | null>(null);
+  console.log(file, 'file');
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
+
+  const {
+    inputRef,
+    selectedFile,
+    handleFileInput,
+    handleFileDrop,
+    deleteFileHandler,
+  } = useFileUpload();
+
+  useEffect(() => {
+    setFile(selectedFile);
+  }, [selectedFile]);
 
   const markAsCompleted = (index: number) => {
     if (completedSteps.includes(index)) {
@@ -123,14 +152,14 @@ const ProcessingReport = ({ data }: IProps) => {
     }));
   };
 
-  const triggerFileInput = (index: number) => {
-    if (fileInputRefs.current[index]) {
-      fileInputRefs.current[index]?.click();
-    }
-  };
+  const handleCopy = (value: AddressFields, index: number) => {
+    copyAddressToClipboard(value);
+    setCopied(index);
 
-  const inputCommonClasses =
-    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
+    setTimeout(() => {
+      setCopied(-1);
+    }, 1000);
+  };
 
   return (
     <div className="min-h-screen">
@@ -150,18 +179,7 @@ const ProcessingReport = ({ data }: IProps) => {
                 onClick={() => markAsCompleted(index)}
                 className="px-6 py-4 flex items-center cursor-pointer bg-white rounded-md"
               >
-                <Checkbox
-                  wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
-                  iconClass={'h-3 w-3'}
-                  id={`Send invitation`}
-                  title={''}
-                  mandatoryError={false}
-                  underInput={true}
-                  checked={completedSteps.includes(index)}
-                  onChange={() => markAsCompleted(index)}
-                />
-
-                <div className="flex-grow ml-1">
+                <div className="flex-grow">
                   <h3 className="text font-medium text-gray-700">
                     {step.title}
                   </h3>
@@ -177,7 +195,18 @@ const ProcessingReport = ({ data }: IProps) => {
                   )}
                 </div>
 
-                <div className="flex-shrink-0 ml-2 text-gray-400">
+                <div className="flex-shrink-0 ml-2 text-gray-400 flex items-center justify-end">
+                  {step.title === 'Company Details' && (
+                    <a
+                      href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mr-4 flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer hover:text-gray-900"
+                    >
+                      <span className="font-semibold">dos.fl.gov</span>
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
                   <span className="text-gray-700 font-bold">{index + 1}</span>
                 </div>
               </div>
@@ -190,63 +219,172 @@ const ProcessingReport = ({ data }: IProps) => {
                     : 'max-h-0 hidden'
                 }`}
               >
-                <div className="px-6 py-4 bg-gray-50">
+                <div className="px-6 py-4 bg-gray-50 rounded-b-md">
                   <p className="text-sm text-gray-700 mb-4">{step.details}</p>
 
+                  {step.title === 'Company Details' && (
+                    <div className="flex items-start justify-start mb-6 max-lg:flex-col">
+                      <div className="w-full max-lg:mb-3">
+                        <div className="w-full flex items-start justify-between pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                            Year
+                          </div>
+                          <div className="w-full pr-2 text-gray-700 text-sm">
+                            {data.year}
+                          </div>
+                        </div>
+                        <div className="w-full flex items-start justify-between pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                            Company Name
+                          </div>
+                          <div className="w-full pr-2 text-gray-700 text-sm">
+                            {data.companyName}
+                          </div>
+                        </div>
+                        <div className="w-full flex items-start justify-between pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                            State
+                          </div>
+                          <div className="w-full pr-2 text-gray-700 text-sm">
+                            {data.state}
+                          </div>
+                        </div>
+                        <div className="w-full flex items-start justify-between pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                            {dockFieldHandler(data.state)}
+                          </div>
+                          <div className="w-full pr-2 text-gray-700 text-sm">
+                            {data.registrationNumber}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   {step.title === 'Check Company Address' && (
                     <div className="mt-3">
                       <div className="mt-3">
-                        <div className="text-gray-700 text-sm mb-2 font-bold">
-                          Main Address
+                        <div
+                          onClick={() => handleCopy(data.address || {}, 1)}
+                          className="group text-gray-700 text-sm mb-2 font-bold relative flex items-center justify-start gap-1 hover:cursor-pointer"
+                        >
+                          <span>Main Address</span>
+                          {copied === 1 ? (
+                            <span className="absolute left-0 -top-8 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1 animate-fade-in-out">
+                              <MdCheck className="h-3.5 w-3.5" />
+                              Copied!
+                            </span>
+                          ) : (
+                            <MdOutlineCopyAll className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out" />
+                          )}
                         </div>
-                        <SimpleAddressForm
-                          disabledFlag={false}
-                          inputCommonClasses={inputCommonClasses}
-                          requiredError={false}
-                          data={data.address}
-                          countryDisabled={true}
-                          setData={() => {}}
-                        />
+                        <AddressAsTable data={data.address} />
                       </div>
                       <div className="mt-3">
-                        <div className="text-gray-700 text-sm mb-2 font-bold">
-                          Mailing Address
+                        <div
+                          onClick={() =>
+                            handleCopy(data.mailingAddress || {}, 2)
+                          }
+                          className="group text-gray-700 text-sm mb-2 font-bold relative flex items-center justify-start gap-1 hover:cursor-pointer"
+                        >
+                          <span>Mailing Address</span>
+                          {copied === 2 ? (
+                            <span className="absolute left-0 -top-8 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1 animate-fade-in-out">
+                              <MdCheck className="h-3.5 w-3.5" />
+                              Copied!
+                            </span>
+                          ) : (
+                            <MdOutlineCopyAll className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out" />
+                          )}
                         </div>
-                        <SimpleAddressForm
-                          disabledFlag={false}
-                          inputCommonClasses={inputCommonClasses}
-                          requiredError={false}
-                          data={data.mailingAddress}
-                          countryDisabled={true}
-                          setData={() => {}}
-                        />
+                        <AddressAsTable data={data.mailingAddress} />
                       </div>
                     </div>
                   )}
                   {step.title === 'Check Registered Agent' && (
-                    <div className="mt-3">
-                      <div className="text-gray-700 text-sm mb-1 font-bold">
-                        Name
+                    <div className="w-full flex items-start justify-between mt-3 max-lg:flex-col">
+                      <div className="w-2/3 flex items-start justify-between pb-2 max-lg:w-full">
+                        <div className="pr-1 text-gray-700 text-sm">
+                          <div className="text-sm text-gray-500 mb-1">Name</div>
+                          <div className="font-semibold text-gray-800">
+                            {mockAgent.name}
+                          </div>
+                        </div>
                       </div>
-                      <p className="font-bold text-gray-900">
-                        {mockAgent.name}
-                      </p>
-                      <div className="text-gray-700 text-sm mb-2 font-bold mt-3">
-                        Address
+                      <div className="w-full flex items-start justify-end pb-2">
+                        <div className="w-full pr-2 text-gray-800 text-sm">
+                          <div className="text-sm text-gray-500 mb-1">
+                            Address
+                          </div>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div>
+                                <span>{mockAgent.address.address0}, </span>
+                                {mockAgent.address.address1 && (
+                                  <span>{mockAgent.address.address1}</span>
+                                )}
+                              </div>
+                              <div>
+                                {mockAgent.address.address2 && (
+                                  <span>{mockAgent.address.address2}</span>
+                                )}
+                                {mockAgent.address.address3 && (
+                                  <span>
+                                    {mockAgent.address.address2 ? ',' : ''}{' '}
+                                    {mockAgent.address.address3}
+                                  </span>
+                                )}
+                              </div>
+                              <div>
+                                <span>{mockAgent.address.city}, </span>
+                                <span>
+                                  {USStates.find(
+                                    (item) =>
+                                      item.title === mockAgent.address.state
+                                  )?.value || ''}{' '}
+                                </span>
+                                <span>{mockAgent.address.zip}</span>
+                                {mockAgent.address?.county && (
+                                  <span>
+                                    , {mockAgent.address?.county}
+                                    <TooltipWrapper tooltipText="County">
+                                      <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
+                                    </TooltipWrapper>
+                                  </span>
+                                )}
+                              </div>
+                              <div>{mockAgent.address.country}</div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <SimpleAddressForm
-                        disabledFlag={false}
-                        inputCommonClasses={inputCommonClasses}
-                        requiredError={false}
-                        data={mockAgent.address}
-                        countryDisabled={true}
-                        setData={() => {}}
-                      />
                     </div>
                   )}
                   {step.title === 'Check Company Representatives' && (
                     <div className="mt-3">
                       <ProcessingReportPeopleSection disableEdit={false} />
+                    </div>
+                  )}
+                  {step.title === 'Pay Government Fee' && (
+                    <div className="mt-3">
+                      {selectedFile?.name ? (
+                        <div className="w-full">
+                          <FileDownloadProgress
+                            deleteFileHandler={deleteFileHandler}
+                            fileName={truncateString(selectedFile.name, 15)}
+                            fileSize={`${selectedFile?.size} MB`}
+                            fileFormat={selectedFile.format}
+                            duration={3}
+                          />
+                        </div>
+                      ) : (
+                        <DropFileArea
+                          loaderStatus={false}
+                          inputRef={inputRef}
+                          handleFileDrop={handleFileDrop}
+                          handleFileInput={handleFileInput}
+                          mandatoryError={false}
+                        />
+                      )}
                     </div>
                   )}
                   {step.title === 'Save Annual Report' && (
@@ -298,18 +436,6 @@ const ProcessingReport = ({ data }: IProps) => {
                           </div>
                         </div>
                       )}
-
-                      {/* Upload button */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          triggerFileInput(index);
-                        }}
-                        className="inline-flex px-3 py-2 hover:bg-gray-100 rounded-md items-center text-xs font-medium text-blue-500 hover:text-blue-600 transition-all duration-200 ease-in-out"
-                      >
-                        <Upload className="w-3.5 h-3.5 mr-1" />
-                        {step.fileUploadLabel || 'Upload file'}
-                      </button>
                     </div>
                   )}
                 </div>
