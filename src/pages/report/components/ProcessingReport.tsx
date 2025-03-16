@@ -9,7 +9,6 @@ import {
   FileText,
   X,
   FileIcon,
-  ExternalLink,
 } from 'lucide-react';
 import PageSign from '../../../components/shared/PageSign';
 import {
@@ -33,15 +32,15 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
 import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
+import { LuArrowUpRight } from 'react-icons/lu';
+import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 
 const steps = [
   {
     title: 'Company Details',
-    description:
-      'Navigate to the official government website for business filings and annual reports.',
+    description: '',
     icon: <Globe className="w-6 h-6" />,
-    details:
-      "Access the official government portal for business registrations and filings. Make sure you're using the correct URL for the jurisdiction where the company is registered.",
+    details: '',
     hasFileUpload: false,
   },
   {
@@ -179,6 +178,16 @@ const ProcessingReport = ({ data }: IProps) => {
                 onClick={() => markAsCompleted(index)}
                 className="px-6 py-4 flex items-center cursor-pointer bg-white rounded-md"
               >
+                <Checkbox
+                  wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
+                  iconClass={'h-3 w-3'}
+                  id={`Send invitation`}
+                  title={''}
+                  mandatoryError={false}
+                  underInput={true}
+                  checked={completedSteps.includes(index)}
+                  onChange={() => markAsCompleted(index)}
+                />
                 <div className="flex-grow">
                   <h3 className="text font-medium text-gray-700">
                     {step.title}
@@ -201,10 +210,10 @@ const ProcessingReport = ({ data }: IProps) => {
                       href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
                       target="_blank"
                       rel="noreferrer"
-                      className="mr-4 flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer hover:text-gray-900"
+                      className="bg-gray-200/50 hover:bg-gray-200/70 mr-4 py-1 px-2 rounded-md flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer hover:text-gray-900 transition-all ease-in-out duration-150"
                     >
                       <span className="font-semibold">dos.fl.gov</span>
-                      <ExternalLink className="w-4 h-4" />
+                      <LuArrowUpRight className="w-4 h-4 font-semibold" />
                     </a>
                   )}
                   <span className="text-gray-700 font-bold">{index + 1}</span>
@@ -223,37 +232,37 @@ const ProcessingReport = ({ data }: IProps) => {
                   <p className="text-sm text-gray-700 mb-4">{step.details}</p>
 
                   {step.title === 'Company Details' && (
-                    <div className="flex items-start justify-start mb-6 max-lg:flex-col">
-                      <div className="w-full max-lg:mb-3">
-                        <div className="w-full flex items-start justify-between pb-2">
-                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                    <div className="w-full max-w-2xl mb-6">
+                      <div className="grid grid-cols-3 gap-0.5 text-gray-900">
+                        <div className="contents pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-400">
                             Year
                           </div>
-                          <div className="w-full pr-2 text-gray-700 text-sm">
+                          <div className="col-span-2 pr-2 text-gray-700 text-sm">
                             {data.year}
                           </div>
                         </div>
-                        <div className="w-full flex items-start justify-between pb-2">
-                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                        <div className="contents pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-400">
                             Company Name
                           </div>
-                          <div className="w-full pr-2 text-gray-700 text-sm">
+                          <div className="col-span-2 pr-2 text-gray-700 text-sm">
                             {data.companyName}
                           </div>
                         </div>
-                        <div className="w-full flex items-start justify-between pb-2">
-                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                        <div className="contents pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-400">
                             State
                           </div>
-                          <div className="w-full pr-2 text-gray-700 text-sm">
+                          <div className="col-span-2 pr-2 text-gray-700 text-sm">
                             {data.state}
                           </div>
                         </div>
-                        <div className="w-full flex items-start justify-between pb-2">
-                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
+                        <div className="contents pb-2">
+                          <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-400">
                             {dockFieldHandler(data.state)}
                           </div>
-                          <div className="w-full pr-2 text-gray-700 text-sm">
+                          <div className="col-span-2 pr-2 text-gray-700 text-sm">
                             {data.registrationNumber}
                           </div>
                         </div>
