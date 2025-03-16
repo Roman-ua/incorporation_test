@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { classNames, copyToClipboard } from '../../../utils/helpers';
-import { MdOutlineCopyAll, MdCheck } from 'react-icons/md';
+import CopyButton from '../CopyBtn/CopyButton';
 
 interface AddressProps {
   country?: string;
@@ -57,21 +57,20 @@ const AddressAsTable = ({ data }: IProps) => {
     <div className={classNames('w-full max-w-2xl', className || '')}>
       <div className="grid grid-cols-3 gap-0.5 text-gray-900">
         {addressFields.map((field, index) => (
-          <div key={index} className="contents relative">
+          <div key={index} className="contents">
             <div className="py-1 text-sm text-gray-400">{field.label}</div>
             <div
               onClick={() => handleCopy(field.value || '', index)}
               className="group px-1 py-1 text-sm col-span-2 flex items-center justify-start gap-1 hover:cursor-pointer relative"
             >
               <span>{field.value}</span>
-              {copiedIndex === index ? (
-                <span className="absolute left-0 -top-8 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1 animate-fade-in-out">
-                  <MdCheck className="h-3.5 w-3.5" />
-                  Copied!
-                </span>
-              ) : (
-                <MdOutlineCopyAll className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out" />
-              )}
+              <div className="opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out">
+                <CopyButton
+                  wrapperClass="w-3 h-3"
+                  iconClass="w-3 h-3"
+                  copied={copiedIndex === index}
+                />
+              </div>
             </div>
           </div>
         ))}
