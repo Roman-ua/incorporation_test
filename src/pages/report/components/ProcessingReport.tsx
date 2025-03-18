@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Globe,
   Building,
@@ -9,9 +10,10 @@ import {
   FileText,
   X,
   FileIcon,
+  ChevronDown,
 } from 'lucide-react';
 import PageSign from '../../../components/shared/PageSign';
-import {
+import type {
   AddressFields,
   IFiles,
   ReportData,
@@ -22,18 +24,15 @@ import AddReportDocShort from './AddReportDocShort';
 import {
   copyAddressToClipboard,
   dockFieldHandler,
-  truncateString,
 } from '../../../utils/helpers';
 import AddressAsTable from '../../../components/shared/AddressRender/AddressAsTable';
 import { USStates } from '../../../constants/form/form';
 import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 import { IconInfoCircle } from '@tabler/icons-react';
-import useFileUpload from '../../../utils/hooks/useFileUpload';
-import FileDownloadProgress from '../../createCompany/components/UploadedFile';
-import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 import CopyButton from '../../../components/shared/CopyBtn/CopyButton';
+import FeeFile from './FeeFile';
 
 const steps = [
   {
@@ -82,46 +81,103 @@ const steps = [
   },
   {
     title: 'Invoice Customer',
-    description:
-      'Generate and send an invoice to the customer for services rendered.',
+    description: '',
     icon: <FileText className="w-6 h-6" />,
     details: '',
     hasFileUpload: false,
   },
 ];
 
+const today = new Date();
+
+const formattedDate = today.toLocaleDateString('en-US', {
+  month: 'long',
+  day: '2-digit',
+  year: 'numeric',
+});
+
+const freeSteps = [0, 1, 2, 3];
 interface IProps {
   data: ReportData;
+  setLastStepSubmitDisabled: (value: boolean) => void;
 }
 
-const ProcessingReport = ({ data }: IProps) => {
+const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
   const [copied, setCopied] = useState<number>(-1);
-
+  const [expandedSteps, setExpandedSteps] = useState<number[]>([]);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<{ [key: number]: File[] }>(
     {}
   );
-  const [file, setFile] = useState<IFiles | null>(null);
-  console.log(file, 'file');
-  const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
-  const {
-    inputRef,
-    selectedFile,
-    handleFileInput,
-    handleFileDrop,
-    deleteFileHandler,
-  } = useFileUpload();
+  const [feeFile, setFeeFile] = useState<IFiles | null>(null);
+  const [repFile, setRepFile] = useState<IFiles | null>(null);
+
+  const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
+  const [documentNumber, setDocumentNumber] = React.useState<string>('');
+
+  const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
+  const detailsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const detailsHeightRefs = useRef<{ [key: number]: number }>({});
+  console.log(feeFile, 'feeFile');
 
   useEffect(() => {
-    setFile(selectedFile);
-  }, [selectedFile]);
+    console.log(completedSteps, 'completedSteps');
+    if (completedSteps.length > 5) {
+      setLastStepSubmitDisabled(false);
+    } else {
+      setLastStepSubmitDisabled(true);
+    }
+  }, [completedSteps]);
+
+  // Initialize all steps as expanded by default if not completed
+  useEffect(() => {
+    const initialExpanded = steps
+      .map((_, index) => index)
+      .filter((index) => !completedSteps.includes(index));
+    setExpandedSteps(initialExpanded);
+
+    // Calculate and store heights of all detail sections
+    steps.forEach((_, index) => {
+      if (detailsRefs.current[index]) {
+        detailsHeightRefs.current[index] =
+          detailsRefs.current[index]?.scrollHeight || 0;
+      }
+    });
+  }, []);
+
+  // Recalculate heights when window resizes
+  useEffect(() => {
+    const handleResize = () => {
+      steps.forEach((_, index) => {
+        if (detailsRefs.current[index]) {
+          detailsHeightRefs.current[index] =
+            detailsRefs.current[index]?.scrollHeight || 0;
+        }
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const toggleStep = (index: number) => {
+    setExpandedSteps((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
 
   const markAsCompleted = (index: number) => {
     if (completedSteps.includes(index)) {
       setCompletedSteps(completedSteps.filter((step) => step !== index));
+      // Expand the step when uncompleted
+      if (!expandedSteps.includes(index)) {
+        setExpandedSteps([...expandedSteps, index]);
+      }
     } else {
       setCompletedSteps([...completedSteps, index]);
+      // Collapse the step when completed
+      setExpandedSteps(expandedSteps.filter((step) => step !== index));
     }
   };
 
@@ -155,6 +211,61 @@ const ProcessingReport = ({ data }: IProps) => {
     }, 1000);
   };
 
+  const toggleHandler = (index: number) => {
+    toggleStep(index);
+
+    if (freeSteps.includes(index)) {
+      markAsCompleted(index);
+      return;
+    }
+    if (index === 4 && !!feeFile?.file) {
+      markAsCompleted(index);
+      return;
+    }
+    if (index === 5 && !!repFile?.file && !!dateValue && !!documentNumber) {
+      markAsCompleted(index);
+      return;
+    }
+    // markAsCompleted(index);
+  };
+
+  const checkHandler = (index: number, title: string) => {
+    if (freeSteps.includes(index)) {
+      return completedSteps.includes(index);
+    }
+
+    if (title === 'Pay Government Fee') {
+      return completedSteps.includes(index) && !!feeFile?.file;
+    }
+
+    if (title === 'Save Annual Report') {
+      return (
+        completedSteps.includes(index) &&
+        !!repFile?.file &&
+        !!dateValue &&
+        !!documentNumber
+      );
+    }
+
+    return false;
+  };
+
+  const mandatoryCheckHandler = (index: number) => {
+    if (index === 4 && !expandedSteps.includes(index) && !feeFile?.file) {
+      return 'border-red-500';
+    }
+
+    if (
+      index === 5 &&
+      !expandedSteps.includes(index) &&
+      !repFile?.file &&
+      !documentNumber
+    ) {
+      return 'border-red-500';
+    }
+    return '';
+  };
+
   return (
     <div className="min-h-screen">
       <div className="mx-auto pb-12">
@@ -170,19 +281,22 @@ const ProcessingReport = ({ data }: IProps) => {
             <div key={index} className="border border-gray-200 rounded-md">
               {/* Task header */}
               <div
-                onClick={() => markAsCompleted(index)}
+                onClick={() => toggleHandler(index)}
                 className="px-6 py-4 flex items-center cursor-pointer bg-white rounded-md"
               >
-                <Checkbox
-                  wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
-                  iconClass={'h-3 w-3'}
-                  id={`Send invitation`}
-                  title={''}
-                  mandatoryError={false}
-                  underInput={true}
-                  checked={completedSteps.includes(index)}
-                  onChange={() => markAsCompleted(index)}
-                />
+                {step.title !== 'Company Details' && (
+                  <Checkbox
+                    wrapperClass={`h-5 w-5 min-w-5 min-h-5 ${mandatoryCheckHandler(index)}`}
+                    iconClass={'h-3 w-3'}
+                    id={`step-${index}`}
+                    title={''}
+                    mandatoryError={false}
+                    underInput={true}
+                    checked={checkHandler(index, step.title)}
+                    onChange={() => toggleHandler(index)}
+                  />
+                )}
+
                 <div className="flex-grow">
                   <h3 className="text font-medium text-gray-700">
                     {step.title}
@@ -211,19 +325,39 @@ const ProcessingReport = ({ data }: IProps) => {
                       <LuArrowUpRight className="w-4 h-4 font-semibold" />
                     </a>
                   )}
-                  <span className="text-gray-700 font-bold">{index + 1}</span>
+                  <span className="text-gray-700 font-bold mr-2">
+                    {index + 1}
+                  </span>
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform duration-300 ${
+                      expandedSteps.includes(index) ? 'rotate-0' : '-rotate-90'
+                    }`}
+                    onClick={() => toggleHandler(index)}
+                  />
                 </div>
               </div>
 
-              {/* Task details */}
+              {/* Task details with smooth animation */}
               <div
-                className={`transition-all duration-300 ${
-                  !completedSteps.includes(index)
-                    ? 'border-t border-gray-200'
-                    : 'max-h-0 hidden'
-                }`}
+                ref={(el) => (detailsRefs.current[index] = el)}
+                className={`transition-all duration-300 ease-in-out border-t border-gray-200 bg-gray-50 rounded-b-md`}
+                style={{
+                  maxHeight: expandedSteps.includes(index)
+                    ? `${detailsHeightRefs.current[index] || 1000}px`
+                    : '0px',
+                  opacity: expandedSteps.includes(index) ? 1 : 0,
+                  visibility: expandedSteps.includes(index)
+                    ? 'visible'
+                    : 'hidden',
+                  transform: expandedSteps.includes(index)
+                    ? 'translateY(0)'
+                    : 'translateY(-10px)',
+                  pointerEvents: expandedSteps.includes(index)
+                    ? 'auto'
+                    : 'none',
+                }}
               >
-                <div className="px-6 py-4 bg-gray-50 rounded-b-md">
+                <div className="px-6 py-4">
                   <p className="text-sm text-gray-700 mb-4">{step.details}</p>
 
                   {step.title === 'Company Details' && (
@@ -363,35 +497,27 @@ const ProcessingReport = ({ data }: IProps) => {
                   )}
                   {step.title === 'Check Company Representatives' && (
                     <div className="mt-3">
-                      <ProcessingReportPeopleSection disableEdit={false} />
+                      <ProcessingReportPeopleSection
+                        disableEdit={false}
+                        hideControls={true}
+                      />
                     </div>
                   )}
                   {step.title === 'Pay Government Fee' && (
-                    <div className="mt-3">
-                      {selectedFile?.name ? (
-                        <div className="w-full">
-                          <FileDownloadProgress
-                            deleteFileHandler={deleteFileHandler}
-                            fileName={truncateString(selectedFile.name, 15)}
-                            fileSize={`${selectedFile?.size} MB`}
-                            fileFormat={selectedFile.format}
-                            duration={3}
-                          />
-                        </div>
-                      ) : (
-                        <DropFileArea
-                          loaderStatus={false}
-                          inputRef={inputRef}
-                          handleFileDrop={handleFileDrop}
-                          handleFileInput={handleFileInput}
-                          mandatoryError={false}
-                        />
-                      )}
-                    </div>
+                    <FeeFile setFile={setFeeFile} />
                   )}
                   {step.title === 'Save Annual Report' && (
                     <div className="mt-3">
-                      <AddReportDocShort data={data} agentdata={mockAgent} />
+                      <AddReportDocShort
+                        data={data}
+                        dateValue={dateValue}
+                        setDateValue={setDateValue}
+                        agentdata={mockAgent}
+                        hideControls={true}
+                        setDocumentNumber={setDocumentNumber}
+                        documentNumber={documentNumber}
+                        setRepFile={setRepFile}
+                      />
                     </div>
                   )}
                   {/* File upload section */}

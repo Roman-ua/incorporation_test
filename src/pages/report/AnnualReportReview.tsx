@@ -22,6 +22,7 @@ const AnnualReportReview = () => {
   const [currentStep, setCurrentStep] = useState<number>(3);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
   const [editMode, setEditMode] = useState<boolean>(true); // TO DO need to change to false for make steps logic works
+  const [lastStepSubmitDisable, setLastStepSubmitDisabled] = useState(true);
 
   useEffect(() => {
     if (currentStep === 4) {
@@ -159,12 +160,18 @@ const AnnualReportReview = () => {
           )}
           {currentStep === 5 && (
             <div className="w-full relative">
-              <ProcessingReport data={dataDuplicate} />
+              <ProcessingReport
+                data={dataDuplicate}
+                setLastStepSubmitDisabled={setLastStepSubmitDisabled}
+              />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-[200px] pr-2 max-lg:hidden" />
                 <div className="w-[870px] max-xl:w-full flex items-center justify-between">
                   <div />
-                  <ButtonWithArrow title={'Submit'} />
+                  <ButtonWithArrow
+                    title={'Submit'}
+                    disabled={lastStepSubmitDisable}
+                  />
                 </div>
                 <div className="w-[200px] pr-2 max-lg:hidden" />
               </div>

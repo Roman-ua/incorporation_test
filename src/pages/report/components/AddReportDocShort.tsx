@@ -23,6 +23,12 @@ import useFileUpload from '../../../utils/hooks/useFileUpload';
 interface IProps {
   data: ReportData;
   agentdata: Agent;
+  hideControls?: boolean;
+  setDateValue: (value: string) => void;
+  dateValue: string;
+  setDocumentNumber: (value: string) => void;
+  documentNumber: string;
+  setRepFile: (file: IFiles) => void;
 }
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
@@ -71,17 +77,16 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
   );
 };
 
-const today = new Date();
-
-const formattedDate = today.toLocaleDateString('en-US', {
-  month: 'long',
-  day: '2-digit',
-  year: 'numeric',
-});
-
-const AddReportDocShort = ({ data, agentdata }: IProps) => {
-  const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
-  const [documentNumber, setDocumentNumber] = React.useState<string>('');
+const AddReportDocShort = ({
+  data,
+  agentdata,
+  hideControls,
+  setDateValue,
+  dateValue,
+  setDocumentNumber,
+  documentNumber,
+  setRepFile,
+}: IProps) => {
   const [file, setFile] = React.useState<IFiles | null>(null);
   console.log(file, 'file');
 
@@ -101,6 +106,7 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
   } = useFileUpload();
 
   useEffect(() => {
+    setRepFile(selectedFile);
     setFile(selectedFile);
   }, [selectedFile]);
 
@@ -148,8 +154,8 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
           </div>
         </div>
         <SectionHeading title={'Address'} textSettings={'text-base'} />
-        <div className="flex items-start justify-start mb-6 max-lg:flex-col gap-28 max-lg:gap-6">
-          <div>
+        <div className="flex items-start justify-start mb-6 max-lg:flex-col max-lg:gap-6">
+          <div className="w-2/3">
             <div className="mb-1 w-full flex items-center justify-between">
               <span className="text-sm text-gray-500 ">Main Address</span>
             </div>
@@ -159,7 +165,7 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
               </div>
             </div>
           </div>
-          <div className="ml-2">
+          <div className="ml-2 w-full">
             <div className="mb-1 w-full flex items-center justify-between">
               <span className="text-sm text-gray-500 ">Mailing Address</span>
             </div>
@@ -222,7 +228,10 @@ const AddReportDocShort = ({ data, agentdata }: IProps) => {
         </div>
         <SectionHeading title="People" textSettings={'text-base'} />
         <div className="mb-6">
-          <ProcessingReportPeopleSection disableEdit={true} />
+          <ProcessingReportPeopleSection
+            disableEdit={true}
+            hideControls={hideControls}
+          />
         </div>
         <div className="text-sm text-gray-700 mb-3">
           Provide State ID and Annual Report filing date.

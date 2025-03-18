@@ -16,8 +16,14 @@ import { mockPeople } from '../../mock/mockData';
 interface IProps {
   disableEdit: boolean;
   propData?: Person[];
+  hideControls?: boolean;
 }
-const ProcessingReportPeopleSection = ({ disableEdit, propData }: IProps) => {
+
+const ProcessingReportPeopleSection = ({
+  disableEdit,
+  propData,
+  hideControls,
+}: IProps) => {
   const [peopleDataDuplicate, setPeopleDataDuplicate] = useState<Person[]>(
     propData || mockPeople
   );
@@ -30,8 +36,6 @@ const ProcessingReportPeopleSection = ({ disableEdit, propData }: IProps) => {
   }, [propData]);
 
   const removePersonHandler = (id: number) => {
-    // setDirtyFlag(true);
-
     setPeopleDataDuplicate((prevState) => {
       const data = [...prevState];
       const currentPersonIndex = data.findIndex((person) => person.id === id);
@@ -119,7 +123,9 @@ const ProcessingReportPeopleSection = ({ disableEdit, propData }: IProps) => {
                   >
                     {person.title}
                   </span>
-                  <span className="text-gray-400">{person.email}</span>
+                  {!hideControls && (
+                    <span className="text-gray-400">{person.email}</span>
+                  )}
                 </div>
               </div>
 
@@ -215,19 +221,21 @@ const ProcessingReportPeopleSection = ({ disableEdit, propData }: IProps) => {
           />
         );
       })}
-      <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-        <div className="w-1/5 pr-2 max-lg:hidden" />
-        <div className="w-1/2 max-xl:w-full flex items-center justify-between">
-          <button
-            type="button"
-            className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          >
-            Cancel
-          </button>
-          <ButtonWithArrow title={'Save'} />
+      {!hideControls && (
+        <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+          <div className="w-1/5 pr-2 max-lg:hidden" />
+          <div className="w-1/2 max-xl:w-full flex items-center justify-between">
+            <button
+              type="button"
+              className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <ButtonWithArrow title={'Save'} />
+          </div>
+          <div className="w-1/4 pr-2 max-lg:hidden" />
         </div>
-        <div className="w-1/4 pr-2 max-lg:hidden" />
-      </div>
+      )}
     </>
   );
 };
