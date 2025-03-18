@@ -342,6 +342,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                 ref={(el) => (detailsRefs.current[index] = el)}
                 className={`transition-all duration-300 ease-in-out border-t border-gray-200 bg-gray-50 rounded-b-md`}
                 style={{
+                  display: index === 6 ? 'none' : '',
                   maxHeight: expandedSteps.includes(index)
                     ? `${detailsHeightRefs.current[index] || 1000}px`
                     : '0px',
