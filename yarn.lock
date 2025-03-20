@@ -11186,6 +11186,11 @@ typedarray-to-buffer@^3.1.5:
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
+ui-select@^0.19.8:
+  version "0.19.8"
+  resolved "https://registry.npmjs.org/ui-select/-/ui-select-0.19.8.tgz"
+  integrity sha512-NSHm75s46oGph4BWUSQ4mgAGdZs0/YTP5nNo0efuwHBCPtTlye8zLSSxi3P5r1jI/BD9bJ8ODXyYWPoJZTRImQ==
+
 unbox-primitive@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/unbox-primitive/-/unbox-primitive-1.0.2.tgz"

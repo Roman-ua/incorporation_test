@@ -19,9 +19,10 @@ import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropF
 import SectionHeading from '../../company/components/SectionHeading';
 import { USStates } from '../../../constants/form/form';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { IconX } from '@tabler/icons-react';
+
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
+import CustomYearDropdown from '../../../components/shared/YearDropDown';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -168,13 +169,8 @@ const AddFullReportProcess = () => {
     setMailingAddress({ ...mailingAddress, [key]: value });
   };
 
-  const handleChangeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    // Проверяем, что введены только цифры и длина не больше 4
-    if (/^\d{0,4}$/.test(value)) {
-      setReportYear(value);
-    }
+  const handleChangeYear = (year: string) => {
+    setReportYear(year);
   };
 
   const secondStepDisabled = () =>
@@ -253,15 +249,15 @@ const AddFullReportProcess = () => {
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
         <div className="w-[200px] max-lg:w-fit pr-2" />
         <div className="w-[870px] flex items-center justify-center font-semibold">
-          Annual Report for
-          <span className="font-bold ml-1"> {mockData.companyName}</span>
+          Annual Report for {mockData.companyName}
         </div>
         <div className="w-[200px] pr-2 flex items-end justify-end">
           <div
             onClick={() => navigate(ROUTES.COMPANY)}
-            className="p-1 hover:cursor-pointer"
+            className="p-1 hover:cursor-pointer flex items-center justify-end gap-1 text-gray-500 font-semibold hover:text-gray-700 transition-all ease-in-out duration-150"
           >
-            <IconX className="w-4 h-4 text-gray-700" />
+            <span>Exit</span>
+            <ArrowRightIcon className="w-4" />
           </div>
         </div>
       </div>
@@ -498,17 +494,10 @@ const AddFullReportProcess = () => {
                   />
                 </div>
                 <div className="w-full">
-                  <input
-                    onChange={handleChangeYear}
-                    className={classNames(
-                      mandatoryErrorStep === 4 && !reportYear
-                        ? 'bg-red-50'
-                        : 'bg-white',
-                      'block rounded-md border w-full  border-gray-200 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                    )}
-                    type="text"
-                    placeholder="Report Year"
-                    value={reportYear}
+                  <CustomYearDropdown
+                    handleChangeYear={handleChangeYear}
+                    year={reportYear}
+                    mandatoryError={mandatoryErrorStep === 4}
                   />
                 </div>
               </div>
