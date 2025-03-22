@@ -173,57 +173,52 @@ const AddFullReportProcess = () => {
     setReportYear(year);
   };
 
+  const firstStepDisabled = () => !stateId || !file?.file || !reportYear;
   const secondStepDisabled = () =>
     !address.address0 || !mailingAddress.address0;
-
   const thirdStepDisabled = () => !agentName || !agentAddress.address0;
   const fourthStepDisabled = () => !people.length;
-  const fifthStepDisabled = () => !stateId || !file?.file;
 
   const submitStepHandler = (
     e: React.FormEvent<HTMLFormElement>,
     step: number
   ) => {
-    console.log(
-      address,
-      mailingAddress,
-      1,
-      !address.address0,
-      !mailingAddress.address0
-    );
-    if (step === 1 && (!address.address0 || !mailingAddress.address0)) {
-      console.log(2);
+    if (step === 1 && (!stateId || !file?.file || !reportYear)) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMandatoryErrorStep(step);
+      return;
+    }
+    if (step === 2 && (!address.address0 || !mailingAddress.address0)) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
       return;
     }
 
-    if (step === 2 && (!agentAddress.address0 || !agentName)) {
+    if (step === 3 && (!agentAddress.address0 || !agentName)) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
       return;
     }
     console.log(2.5);
-    if (step === 3 && !people.length) {
+    if (step === 4 && !people.length) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
       return;
     }
 
-    if (step === 4 && (!stateId || !file?.file || !reportYear)) {
-      e.preventDefault();
-      e.stopPropagation();
-      setMandatoryErrorStep(step);
-      return;
-    }
-
-    console.log(3);
+    // if (step === 5) {
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    //   setMandatoryErrorStep(step);
+    //   return;
+    // }
 
     setCurrentStep((prevState) => {
-      if (prevState === 4) return prevState;
+      if (prevState === 5) return prevState;
       setVisitedSteps([...visitedSteps, prevState]);
       return prevState + 1;
     });
@@ -232,7 +227,6 @@ const AddFullReportProcess = () => {
   const cancelStepHandler = () => {
     setCurrentStep((prevState) => {
       if (prevState === 1) return prevState;
-      // setVisitedSteps([...visitedSteps, prevState]);
       return prevState - 1;
     });
   };
@@ -277,6 +271,110 @@ const AddFullReportProcess = () => {
         <div className="w-[870px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 1 && (
             <form onSubmit={(e) => submitStepHandler(e, 1)}>
+              <div className="mb-5">
+                <PageSign
+                  titleSize={'text-2xl font-bold text-gray-900'}
+                  title={`Annual Report info`}
+                  icon={<></>}
+                />
+              </div>
+              <div className="flex flex-col items-start justify-start max-lg:flex-col gap-4 max-lg:gap-6">
+                <div className="flex items-start justify-between gap-4 mt-1 w-full">
+                  <div className="w-full">
+                    <div className="text-gray-700 text-sm mb-2 font-bold">
+                      State ID
+                    </div>
+                    <input
+                      onChange={(e) => setStateId(e.target.value)}
+                      className={classNames(
+                        'block rounded-md border w-full  border-gray-200 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0',
+                        mandatoryErrorStep === 1 && !stateId
+                          ? 'bg-red-50'
+                          : 'bg-white'
+                      )}
+                      type="text"
+                      placeholder="State ID"
+                      value={stateId}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <div className="text-gray-700 text-sm mb-2 font-bold">
+                      Year
+                    </div>
+                    <CustomYearDropdown
+                      handleChangeYear={handleChangeYear}
+                      year={reportYear}
+                      mandatoryError={mandatoryErrorStep === 1}
+                    />
+                  </div>
+                </div>
+                <div className="mb-4 w-full">
+                  <div className="text-gray-700 text-sm mb-2 font-bold">
+                    Filling Date
+                  </div>
+                  <DatePicker
+                    mandatoryError={false}
+                    value={dateValue}
+                    setValue={setDateValue}
+                  />
+                </div>
+                <div className="mb-4 w-full">
+                  <div className="text-gray-700 text-sm mb-2 font-bold">
+                    File (attachment)
+                  </div>
+                  {selectedFile?.name ? (
+                    <div className="w-full">
+                      <FileDownloadProgress
+                        deleteFileHandler={deleteFileHandler}
+                        fileName={truncateString(selectedFile.name, 15)}
+                        fileSize={`${selectedFile?.size} MB`}
+                        fileFormat={selectedFile.format}
+                        duration={3}
+                      />
+                    </div>
+                  ) : (
+                    <DropFileArea
+                      loaderStatus={false}
+                      inputRef={inputRef}
+                      handleFileDrop={handleFileDrop}
+                      handleFileInput={handleFileInput}
+                      mandatoryError={mandatoryErrorStep === 1}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cancelStepHandler();
+                    }}
+                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className={classNames(
+                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
+                      firstStepDisabled()
+                        ? 'bg-gray-500'
+                        : 'bg-mainBlue hover:bg-sideBarBlue'
+                    )}
+                  >
+                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
+                      Save
+                    </span>
+                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
+                  </button>
+                </div>
+                <div className="w-[200px] pr-2 max-lg:hidden" />
+              </div>
+            </form>
+          )}
+          {currentStep === 2 && (
+            <form onSubmit={(e) => submitStepHandler(e, 2)}>
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -342,8 +440,8 @@ const AddFullReportProcess = () => {
               </div>
             </form>
           )}
-          {currentStep === 2 && (
-            <form onSubmit={(e) => submitStepHandler(e, 2)}>
+          {currentStep === 3 && (
+            <form onSubmit={(e) => submitStepHandler(e, 3)}>
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -405,8 +503,8 @@ const AddFullReportProcess = () => {
               </div>
             </form>
           )}
-          {currentStep === 3 && (
-            <form onSubmit={(e) => submitStepHandler(e, 3)}>
+          {currentStep === 4 && (
+            <form onSubmit={(e) => submitStepHandler(e, 4)}>
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
@@ -466,68 +564,17 @@ const AddFullReportProcess = () => {
               </div>
             </form>
           )}
-          {currentStep === 4 && (
+          {currentStep === 5 && (
             <form
-              onSubmit={(e) => submitStepHandler(e, 4)}
+              onSubmit={(e) => submitStepHandler(e, 5)}
               className="w-full relative pb-10"
             >
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`Annual Report Details`}
+                  title={`Annual Report Review`}
                   icon={<></>}
                 />
-              </div>
-              <div className="flex items-start justify-between gap-4 mt-1">
-                <div className="w-full">
-                  <input
-                    onChange={(e) => setStateId(e.target.value)}
-                    className={classNames(
-                      'block rounded-md border w-full  border-gray-200 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0',
-                      mandatoryErrorStep === 4 && !stateId
-                        ? 'bg-red-50'
-                        : 'bg-white'
-                    )}
-                    type="text"
-                    placeholder="State ID"
-                    value={stateId}
-                  />
-                </div>
-                <div className="w-full">
-                  <CustomYearDropdown
-                    handleChangeYear={handleChangeYear}
-                    year={reportYear}
-                    mandatoryError={mandatoryErrorStep === 4}
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <DatePicker
-                  mandatoryError={false}
-                  value={dateValue}
-                  setValue={setDateValue}
-                />
-              </div>
-              <div className="mb-4">
-                {selectedFile?.name ? (
-                  <div className="w-full">
-                    <FileDownloadProgress
-                      deleteFileHandler={deleteFileHandler}
-                      fileName={truncateString(selectedFile.name, 15)}
-                      fileSize={`${selectedFile?.size} MB`}
-                      fileFormat={selectedFile.format}
-                      duration={3}
-                    />
-                  </div>
-                ) : (
-                  <DropFileArea
-                    loaderStatus={false}
-                    inputRef={inputRef}
-                    handleFileDrop={handleFileDrop}
-                    handleFileInput={handleFileInput}
-                    mandatoryError={mandatoryErrorStep === 4}
-                  />
-                )}
               </div>
               <>
                 <SectionHeading
@@ -654,9 +701,7 @@ const AddFullReportProcess = () => {
                   <button
                     className={classNames(
                       'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
-                      fifthStepDisabled()
-                        ? 'bg-gray-500'
-                        : 'bg-mainBlue hover:bg-sideBarBlue'
+                      'bg-mainBlue hover:bg-sideBarBlue'
                     )}
                   >
                     <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
