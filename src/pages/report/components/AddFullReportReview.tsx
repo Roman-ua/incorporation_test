@@ -1,0 +1,379 @@
+import React, { useState } from 'react';
+import PageSign from '../../../components/shared/PageSign';
+import SectionHeading from '../../company/components/SectionHeading';
+import { classNames, dockFieldHandler } from '../../../utils/helpers';
+import { USStates } from '../../../constants/form/form';
+import {
+  AddressFields,
+  MockAnnualReportData,
+  Person,
+} from '../../../interfaces/interfaces';
+import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
+import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
+import USAddressForm from '../../createCompany/components/USAddressForm';
+import { BiEditAlt } from 'react-icons/bi';
+import { IconArrowBackUp } from '@tabler/icons-react';
+import { MdOutlineCloudDownload } from 'react-icons/md';
+
+const RenderAddress = (removed: boolean, address: AddressFields) => {
+  return (
+    <>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        <span>{address.address0}, </span>
+        {address.address1 && <span>{address.address1}</span>}
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        {address.address2 && <span>{address.address2}</span>}
+        {address.address3 && (
+          <span>
+            {address.address2 ? ',' : ''} {address.address3}
+          </span>
+        )}
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        <span>{address.city}, </span>
+        <span>
+          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+        </span>
+        <span>{address.zip}</span>
+      </div>
+      <div
+        className={classNames(
+          removed ? 'line-through text-gray-400' : 'text-gray-800'
+        )}
+      >
+        {address.country}
+      </div>
+      <div className="my-4" />
+    </>
+  );
+};
+
+interface IProps {
+  reportYear: string;
+  mockData: MockAnnualReportData;
+  stateId: string;
+  address: AddressFields;
+  updatedAddress: AddressFields | null;
+  mailingAddress: AddressFields;
+  updatedMailingAddress: AddressFields | null;
+  agentName: string;
+  agentAddress: AddressFields;
+  people: Person[];
+  setUpdatedMailingAddress: (data: AddressFields | null) => void;
+  setUpdatedAddress: (data: AddressFields | null) => void;
+}
+
+const AddFullReportReview = ({
+  reportYear,
+  mockData,
+  stateId,
+  address,
+  updatedAddress,
+  setUpdatedAddress,
+  mailingAddress,
+  updatedMailingAddress,
+  setUpdatedMailingAddress,
+  agentName,
+  agentAddress,
+  people,
+}: IProps) => {
+  const [editingAddress, setEditingAddress] = useState(false);
+  const [editingMailingAddress, setEditingMailingAddress] = useState(false);
+  const [addressCopied, setAddressCopied] = useState(false);
+
+  const undoAddress = (key: string) => {
+    if (key === 'updatedAddress') {
+      setUpdatedAddress(null);
+      return;
+    }
+    if (key === 'updatedMailingAddress') {
+      setUpdatedMailingAddress(null);
+      return;
+    }
+  };
+
+  const cancelAddress = (key: string) => {
+    if (key === 'updatedAddress') {
+      const dataForSave =
+        updatedAddress !== null && !addressCopied ? updatedAddress : null;
+      setUpdatedAddress(dataForSave);
+    }
+
+    if (key === 'updatedMailingAddress') {
+      const dataForSave =
+        updatedMailingAddress !== null && !updatedMailingAddress
+          ? updatedMailingAddress
+          : null;
+      setUpdatedMailingAddress(dataForSave);
+    }
+
+    if (key === 'updatedMailingAddress') {
+      setEditingMailingAddress(false);
+      setAddressCopied(false);
+    }
+    if (key === 'updatedAddress') {
+      setEditingAddress(false);
+    }
+  };
+
+  const updateAddressHandler = (data: AddressFields, key: string) => {
+    if (key === 'updatedAddress') {
+      setUpdatedAddress(data);
+
+      setEditingAddress(false);
+    }
+
+    if (key === 'updatedMailingAddress') {
+      setUpdatedMailingAddress(data);
+
+      setEditingMailingAddress(false);
+      setAddressCopied(false);
+    }
+  };
+
+  const copyToMailingAddress = (data: AddressFields) => {
+    setAddressCopied(true);
+    setUpdatedMailingAddress(data || updatedAddress || address);
+
+    setEditingMailingAddress(true);
+  };
+
+  const copyFromMailingAddress = () => {
+    setUpdatedMailingAddress(updatedAddress || address);
+  };
+
+  return (
+    <>
+      <div className="mb-5">
+        <PageSign
+          titleSize={'text-2xl font-bold text-gray-900'}
+          title={`Verify company information on ${reportYear} Annual Report`}
+          icon={<></>}
+        />
+      </div>
+      <div className="w-full flex items-start justify-center max-lg:flex-col">
+        <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll pb-1">
+          <div className="flex flex-col gap-y-1 pr-5">
+            <dt className="text-sm text-gray-500">Year</dt>
+            <dd className="text-sm font-semibold tracking-tight text-gray-800">
+              {reportYear}
+            </dd>
+          </div>
+          <div className="flex flex-col gap-y-1 border-l px-5">
+            <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+              {mockData.companyName}
+            </dd>
+          </div>
+          <div className="flex flex-col gap-y-1 border-l px-5">
+            <dt className="text-nowrap text-sm text-gray-500">Filing Date</dt>
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+              {mockData.filingDate}
+            </dd>
+          </div>
+          <div className="flex flex-col gap-y-1 border-l px-5">
+            <dt className="text-nowrap text-sm text-gray-500">State</dt>
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6 flex items-center justify-start">
+              <StateSolidIconHandler
+                simpleIcon={true}
+                selectedState={mockData.state || 'Florida'}
+                state={mockData.state || 'Florida'}
+              />
+              {mockData.state}
+            </dd>
+          </div>
+
+          <div className="flex flex-col gap-y-1 border-l px-5">
+            <dt className="text-nowrap text-sm text-gray-500">
+              {dockFieldHandler(mockData.state)}
+            </dt>
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+              {mockData.registrationNumber}
+            </dd>
+          </div>
+
+          <div className="flex flex-col gap-y-1 border-l px-5">
+            <dt className="text-nowrap text-sm text-gray-500">State ID</dt>
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+              {stateId}
+            </dd>
+          </div>
+
+          <div className="flex border-l flex-col gap-y-1 ml-auto px-6">
+            <dt className="text-nowrap text-sm text-gray-500">Confirmation</dt>
+            <dd className="w-full pr-2 text-gray-700 group flex items-center justify-start hover:cursor-pointer text-sm hover:text-blue-500 transition-all ease-in-out duration-150">
+              Download
+              <MdOutlineCloudDownload className="w-5 h-5 text-gray-700 ml-2 top-0.5 hover:cursor-pointer group-hover:text-blue-500 transition-all ease-in-out duration-150" />
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div className="mb-12">
+        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+          Address
+        </div>
+        <div className="w-full flex items-start justify-start gap-3 max-lg:flex-col">
+          <div className="w-full">
+            {editingAddress ? (
+              <>
+                <div className="text-sm text-gray-500 mb-1">Main Address</div>
+                <USAddressForm
+                  disabledFlag={false}
+                  copyTitle={'Copy to Mailing Address'}
+                  setFromState={(data) =>
+                    updateAddressHandler(data, 'updatedAddress')
+                  }
+                  copyClickHandler={(data) => copyToMailingAddress(data)}
+                  cancelAction={() => cancelAddress('updatedAddress')}
+                  heading={''}
+                  requiredError={false}
+                  value={updatedAddress || address}
+                  showClear={true}
+                />
+              </>
+            ) : (
+              <div className="pr-2 text-gray-700 text-sm">
+                <div className="text-sm text-gray-500 mb-1">Main Address</div>
+                <div className="flex flex-col items-start justify-between w-full">
+                  <div className="flex items-start justify-between w-full">
+                    <div>{RenderAddress(false, updatedAddress || address)}</div>
+                    <div
+                      onClick={() => {
+                        setEditingAddress(true);
+                      }}
+                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                    >
+                      <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                    </div>
+                  </div>
+                  <div className="flex items-start justify-between w-full group/updated">
+                    {updatedAddress && (
+                      <div>{RenderAddress(!!updatedAddress, address)}</div>
+                    )}
+                    {updatedAddress && (
+                      <div
+                        onClick={() => undoAddress('updatedAddress')}
+                        className="group group-hover/updated:opacity-100 opacity-0 ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer transition-all duration-150 ease-in-out"
+                      >
+                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="w-full">
+            {editingMailingAddress ? (
+              <>
+                <div className="text-sm text-gray-500 mb-1">
+                  Mailing Address
+                </div>
+                <USAddressForm
+                  disabledFlag={false}
+                  copyTitle={'Copy from Main Address'}
+                  copyClickHandler={
+                    !editingAddress ? () => copyFromMailingAddress() : undefined
+                  }
+                  setFromState={(data) =>
+                    updateAddressHandler(data, 'updatedMailingAddress')
+                  }
+                  cancelAction={() => cancelAddress('updatedMailingAddress')}
+                  heading={''}
+                  requiredError={false}
+                  value={updatedMailingAddress || mailingAddress}
+                  showClear={true}
+                />
+              </>
+            ) : (
+              <div className="pr-2 text-gray-700 text-sm">
+                <div className="text-sm text-gray-500 mb-1">
+                  Mailing Address
+                </div>
+                <div className="flex items-start justify-between w-full">
+                  <div className="flex flex-col items-start justify-between w-full">
+                    <div className="flex items-start justify-between w-full">
+                      <div>
+                        {RenderAddress(
+                          false,
+                          updatedMailingAddress || mailingAddress
+                        )}
+                      </div>
+                      <div
+                        onClick={() => {
+                          setEditingMailingAddress(true);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    </div>
+                    <div className="flex items-start justify-between w-full group/updated">
+                      {updatedMailingAddress && (
+                        <div>
+                          {RenderAddress(
+                            !!updatedMailingAddress,
+                            mailingAddress
+                          )}
+                        </div>
+                      )}
+                      {updatedMailingAddress && (
+                        <div
+                          onClick={() => undoAddress('updatedMailingAddress')}
+                          className="group group-hover/updated:opacity-100 opacity-0 ml-auto mt-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer transition-all duration-150 ease-in-out"
+                        >
+                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <>
+        <SectionHeading title="Registered Agent" textSettings={'text-base'} />
+        <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col max-lg:gap-6">
+          <div className="w-2/3 flex items-start justify-between pb-2 max-lg:w-full">
+            <div className="pr-1 text-gray-700 text-sm">
+              <div className="text-sm text-gray-500 mb-1">Name</div>
+              <div className="font-semibold">{agentName}</div>
+            </div>
+          </div>
+          <div className="flex items-start justify-start pb-2 w-full">
+            <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="text-sm text-gray-500 mb-1">Address</div>
+              {RenderAddress(false, agentAddress)}
+            </div>
+          </div>
+        </div>
+      </>
+      <>
+        <SectionHeading title="People" textSettings={'text-base'} />
+        {people.length ? (
+          <ProcessingReportPeopleSection disableEdit={true} propData={people} />
+        ) : (
+          <></>
+        )}
+      </>
+    </>
+  );
+};
+
+export default AddFullReportReview;

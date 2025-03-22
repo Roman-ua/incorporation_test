@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ButtonWithArrow from '../../../components/shared/ButtonWithArrow/ButtonWithArrow';
-import {
-  classNames,
-  dockFieldHandler,
-  truncateString,
-} from '../../../utils/helpers';
+import { classNames, truncateString } from '../../../utils/helpers';
 import PageSign from '../../../components/shared/PageSign';
 import { AddressFields, IFiles, Person } from '../../../interfaces/interfaces';
 import AddFullReportSteps from './AddFullReportSteps';
@@ -16,13 +11,11 @@ import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePic
 import useFileUpload from '../../../utils/hooks/useFileUpload';
 import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
-import SectionHeading from '../../company/components/SectionHeading';
-import { USStates } from '../../../constants/form/form';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
 import CustomYearDropdown from '../../../components/shared/YearDropDown';
+import AddFullReportReview from './AddFullReportReview';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -50,6 +43,7 @@ const mockData = {
     zip: '35203',
     state: 'Alabama',
   },
+  updatedAddress: null,
   mailingAddress: {
     country: 'United States',
     address0: '1234 Elm St',
@@ -60,6 +54,7 @@ const mockData = {
     zip: '35203',
     state: 'Alabama',
   },
+  updatedMailingAddress: null,
   companyName: 'ABC Company Inc',
   registrationNumber: 'L23000056354',
   file: 'rep_2021',
@@ -80,51 +75,6 @@ const defaultUS = {
   zip: '',
   state: '',
 };
-const RenderAddress = (removed: boolean, address: AddressFields) => {
-  return (
-    <>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        <span>{address.address0}, </span>
-        {address.address1 && <span>{address.address1}</span>}
-      </div>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        {address.address2 && <span>{address.address2}</span>}
-        {address.address3 && (
-          <span>
-            {address.address2 ? ',' : ''} {address.address3}
-          </span>
-        )}
-      </div>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        <span>{address.city}, </span>
-        <span>
-          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
-        </span>
-        <span>{address.zip}</span>
-      </div>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        {address.country}
-      </div>
-      <div className="my-4" />
-    </>
-  );
-};
 
 const AddFullReportProcess = () => {
   const [mandatoryErrorStep, setMandatoryErrorStep] = useState<number>(-1);
@@ -133,6 +83,10 @@ const AddFullReportProcess = () => {
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
   const [mailingAddress, setMailingAddress] =
     React.useState<AddressFields>(defaultUS);
+  const [updatedAddress, setUpdatedAddress] =
+    React.useState<AddressFields | null>(null);
+  const [updatedMailingAddress, setUpdatedMailingAddress] =
+    React.useState<AddressFields | null>(null);
 
   const [agentName, setAgentName] = React.useState<string>('');
   const [agentAddress, setAgentAddress] =
@@ -569,123 +523,20 @@ const AddFullReportProcess = () => {
               onSubmit={(e) => submitStepHandler(e, 5)}
               className="w-full relative pb-10"
             >
-              <div className="mb-5">
-                <PageSign
-                  titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`Annual Report Review`}
-                  icon={<></>}
-                />
-              </div>
-              <>
-                <SectionHeading
-                  title={'Company Information'}
-                  textSettings={'text-base'}
-                />
-                <div className="flex items-start justify-start mb-6 max-lg:flex-col">
-                  <div className="w-full max-lg:mb-3">
-                    <div className="w-full flex items-start justify-between pb-2">
-                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                        Year
-                      </div>
-                      <div className="w-full pr-2 text-gray-700 text-sm">
-                        {reportYear}
-                      </div>
-                    </div>
-                    <div className="w-full flex items-start justify-between pb-2">
-                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                        Company Name
-                      </div>
-                      <div className="w-full pr-2 text-gray-700 text-sm">
-                        {mockData.companyName}
-                      </div>
-                    </div>
-                    <div className="w-full flex items-start justify-between pb-2">
-                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                        State
-                      </div>
-                      <div className="w-full pr-2 text-gray-700 text-sm">
-                        {mockData.state}
-                      </div>
-                    </div>
-                    <div className="w-full flex items-start justify-between pb-2">
-                      <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
-                        {dockFieldHandler('state')}
-                      </div>
-                      <div className="w-full pr-2 text-gray-700 text-sm">
-                        {mockData.registrationNumber}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                  <div className="w-[200px] pr-2 max-lg:hidden" />
-                  <div className="w-[870px] max-xl:w-full flex items-center justify-between">
-                    <div />
-                    <ButtonWithArrow title={'Submit'} />
-                  </div>
-                  <div className="w-[200px] pr-2 max-lg:hidden" />
-                </div>
-              </>
-              <>
-                <SectionHeading title={'Address'} textSettings={'text-base'} />
-                <div className="flex items-start justify-start mb-6 max-lg:flex-col max-lg:gap-6">
-                  <div className="w-2/3">
-                    <div className="mb-1 w-full flex items-center justify-between">
-                      <span className="text-sm text-gray-500 ">
-                        Main Address
-                      </span>
-                    </div>
-                    <div className="flex items-start justify-start gap-16">
-                      <div className="w-full">
-                        {RenderAddress(false, address)}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full">
-                    <div className="mb-1 w-full flex items-center justify-between">
-                      <span className="text-sm text-gray-500 ">
-                        Mailing Address
-                      </span>
-                    </div>
-                    <div className="flex items-start justify-start gap-12">
-                      <div className="w-full">
-                        {RenderAddress(false, mailingAddress)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-              <>
-                <SectionHeading
-                  title="Registered Agent"
-                  textSettings={'text-base'}
-                />
-                <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col max-lg:gap-6">
-                  <div className="w-2/3 flex items-start justify-between pb-2 max-lg:w-full">
-                    <div className="pr-1 text-gray-700 text-sm">
-                      <div className="text-sm text-gray-500 mb-1">Name</div>
-                      <div className="font-semibold">{agentName}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start justify-start pb-2 w-full">
-                    <div className="w-full pr-2 text-gray-700 text-sm">
-                      <div className="text-sm text-gray-500 mb-1">Address</div>
-                      {RenderAddress(false, agentAddress)}
-                    </div>
-                  </div>
-                </div>
-              </>
-              <>
-                <SectionHeading title="People" textSettings={'text-base'} />
-                {people.length ? (
-                  <ProcessingReportPeopleSection
-                    disableEdit={true}
-                    propData={people}
-                  />
-                ) : (
-                  <></>
-                )}
-              </>
+              <AddFullReportReview
+                reportYear={reportYear}
+                mockData={mockData}
+                stateId={stateId}
+                address={address}
+                updatedAddress={updatedAddress}
+                setUpdatedAddress={setUpdatedAddress}
+                mailingAddress={mailingAddress}
+                updatedMailingAddress={updatedMailingAddress}
+                setUpdatedMailingAddress={setUpdatedMailingAddress}
+                agentName={agentName}
+                agentAddress={agentAddress}
+                people={people}
+              />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-[200px] pr-2 max-lg:hidden" />
                 <div className="w-[870px] max-xl:w-full flex items-center justify-between">

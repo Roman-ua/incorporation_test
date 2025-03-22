@@ -50,6 +50,29 @@ export interface ReportData {
   signed: string;
 }
 
+export interface MockAnnualReportData {
+  id: number;
+  year: number;
+  status: string;
+  filingDate: string;
+  confirmedBy: string;
+  relatedOrder: string;
+  attachedFiles: boolean;
+  confirmationLinks: string[];
+  address: AddressFields;
+  updatedAddress: AddressFields | null;
+  mailingAddress: AddressFields;
+  updatedMailingAddress: AddressFields | null;
+  companyName: string;
+  registrationNumber: string;
+  file: string;
+  confirmFile: string;
+  stateId: string;
+  state: string;
+  people: Person[];
+  signed: string;
+}
+
 export type AddressFields = {
   type?: string;
   country?: string;
