@@ -45,7 +45,7 @@ export default function CustomYearDropdown({
       <button
         type="button"
         className={classNames(
-          'flex items-center justify-between w-full rounded-md text-left border border-gray-200 p-2 text-md mb-4 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
+          'flex items-center justify-between w-full rounded-md text-left border border-gray-200 p-2 text-md mb-1 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
           mandatoryError && !selectedYear ? 'bg-red-50' : 'bg-white '
         )}
         onClick={() => setIsOpen(!isOpen)}
@@ -65,7 +65,7 @@ export default function CustomYearDropdown({
       {/* Dropdown menu */}
       {isOpen && (
         <div
-          className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto"
+          className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto"
           role="listbox"
         >
           <div className="py-1">

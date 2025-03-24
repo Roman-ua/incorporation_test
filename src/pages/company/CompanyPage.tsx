@@ -18,10 +18,11 @@ import {
   MockData,
   UpdatedCompanyState,
 } from '../../interfaces/interfaces';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
 import { AddPersonModal } from './modals/AddPersonToCompanyModal';
 import AddReportProcess from '../report/components/AddReportProcess';
+import CompanyState from '../../state/atoms/Company';
 // import { format } from 'date-fns';
 
 const statusBadge = (status: string) => {
@@ -74,16 +75,14 @@ function classNames(...classes: (string | boolean)[]) {
 // ];
 
 const CompanyPage = () => {
-  const storageData = localStorage.getItem('finalFormData');
-  const localData = storageData ? JSON.parse(storageData) : undefined;
-
   const setEinState = useSetRecoilState(EinState);
+  const companyData = useRecoilValue(CompanyState);
 
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [addReportModal, setOpenAddReportModal] = useState(false);
-  const [data, setData] = React.useState<MockCompany>(localData);
+  const [data, setData] = React.useState<MockCompany>(companyData);
   const [peopleState, setPeopleState] = React.useState([]);
 
   const navigate = useNavigate();

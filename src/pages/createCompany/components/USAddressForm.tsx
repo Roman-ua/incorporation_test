@@ -302,7 +302,7 @@ const USAddressForm = ({
                 ) as SelectMenuOption
               }
               disableDropDown={disabledFlag}
-              inputExtraStyles={'min-w-[80px] max-w-[80px]'}
+              inputExtraStyles={'min-w-[80px] max-w-[80px] text-base'}
               wrapperExtraStyles={
                 'rounded-none border-t-0 border-l-0 border-r-0'
               }

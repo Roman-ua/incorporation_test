@@ -3,10 +3,6 @@ import { classNames, truncateString } from '../../../utils/helpers';
 import PageSign from '../../../components/shared/PageSign';
 import { AddressFields, IFiles, Person } from '../../../interfaces/interfaces';
 import AddFullReportSteps from './AddFullReportSteps';
-
-import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
-import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
-import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
 import FileDownloadProgress from '../../createCompany/components/UploadedFile';
@@ -80,9 +76,11 @@ const AddFullReportProcess = () => {
   const [mandatoryErrorStep, setMandatoryErrorStep] = useState<number>(-1);
   const [reportYear, setReportYear] = React.useState<string>('');
 
-  const [address, setAddress] = React.useState<AddressFields>(defaultUS);
-  const [mailingAddress, setMailingAddress] =
-    React.useState<AddressFields>(defaultUS);
+  const [address] = React.useState<AddressFields>(mockData.address);
+  const [mailingAddress] = React.useState<AddressFields>(
+    mockData.mailingAddress
+  );
+
   const [updatedAddress, setUpdatedAddress] =
     React.useState<AddressFields | null>(null);
   const [updatedMailingAddress, setUpdatedMailingAddress] =
@@ -111,16 +109,8 @@ const AddFullReportProcess = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
 
-  const setAgentAddressHandler = (key: string, value: string) => {
-    setAgentAddress({ ...agentAddress, [key]: value });
-  };
-
-  const setAddressHandler = (key: string, value: string) => {
-    setAddress({ ...address, [key]: value });
-  };
-
-  const setMAilingAddressHandler = (key: string, value: string) => {
-    setMailingAddress({ ...mailingAddress, [key]: value });
+  const setPeopleHAndler = (person: Person) => {
+    setPeople((prevState) => [...prevState, person]);
   };
 
   const handleChangeYear = (year: string) => {
@@ -128,10 +118,6 @@ const AddFullReportProcess = () => {
   };
 
   const firstStepDisabled = () => !stateId || !file?.file || !reportYear;
-  const secondStepDisabled = () =>
-    !address.address0 || !mailingAddress.address0;
-  const thirdStepDisabled = () => !agentName || !agentAddress.address0;
-  const fourthStepDisabled = () => !people.length;
 
   const submitStepHandler = (
     e: React.FormEvent<HTMLFormElement>,
@@ -143,33 +129,6 @@ const AddFullReportProcess = () => {
       setMandatoryErrorStep(step);
       return;
     }
-    if (step === 2 && (!address.address0 || !mailingAddress.address0)) {
-      e.preventDefault();
-      e.stopPropagation();
-      setMandatoryErrorStep(step);
-      return;
-    }
-
-    if (step === 3 && (!agentAddress.address0 || !agentName)) {
-      e.preventDefault();
-      e.stopPropagation();
-      setMandatoryErrorStep(step);
-      return;
-    }
-    console.log(2.5);
-    if (step === 4 && !people.length) {
-      e.preventDefault();
-      e.stopPropagation();
-      setMandatoryErrorStep(step);
-      return;
-    }
-
-    // if (step === 5) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    //   setMandatoryErrorStep(step);
-    //   return;
-    // }
 
     setCurrentStep((prevState) => {
       if (prevState === 5) return prevState;
@@ -179,18 +138,12 @@ const AddFullReportProcess = () => {
   };
 
   const cancelStepHandler = () => {
-    setCurrentStep((prevState) => {
-      if (prevState === 1) return prevState;
-      return prevState - 1;
-    });
+    navigate(ROUTES.COMPANY);
   };
 
   useEffect(() => {
     setFile(selectedFile);
   }, [selectedFile]);
-
-  const inputCommonClasses =
-    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   return (
     <>
@@ -228,12 +181,32 @@ const AddFullReportProcess = () => {
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`Annual Report info`}
+                  title={`Provide Annual Report details`}
                   icon={<></>}
                 />
               </div>
               <div className="flex flex-col items-start justify-start max-lg:flex-col gap-4 max-lg:gap-6">
                 <div className="flex items-start justify-between gap-4 mt-1 w-full">
+                  <div className="w-full">
+                    <div className="text-gray-700 text-sm mb-2 font-bold">
+                      Year
+                    </div>
+                    <CustomYearDropdown
+                      handleChangeYear={handleChangeYear}
+                      year={reportYear}
+                      mandatoryError={mandatoryErrorStep === 1}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <div className="text-gray-700 text-sm mb-2 font-bold">
+                      Filling Date
+                    </div>
+                    <DatePicker
+                      mandatoryError={false}
+                      value={dateValue}
+                      setValue={setDateValue}
+                    />
+                  </div>
                   <div className="w-full">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
                       State ID
@@ -248,33 +221,15 @@ const AddFullReportProcess = () => {
                       )}
                       type="text"
                       placeholder="State ID"
+                      data-1p-ignore={true}
                       value={stateId}
                     />
                   </div>
-                  <div className="w-full">
-                    <div className="text-gray-700 text-sm mb-2 font-bold">
-                      Year
-                    </div>
-                    <CustomYearDropdown
-                      handleChangeYear={handleChangeYear}
-                      year={reportYear}
-                      mandatoryError={mandatoryErrorStep === 1}
-                    />
-                  </div>
                 </div>
+
                 <div className="mb-4 w-full">
                   <div className="text-gray-700 text-sm mb-2 font-bold">
-                    Filling Date
-                  </div>
-                  <DatePicker
-                    mandatoryError={false}
-                    value={dateValue}
-                    setValue={setDateValue}
-                  />
-                </div>
-                <div className="mb-4 w-full">
-                  <div className="text-gray-700 text-sm mb-2 font-bold">
-                    File (attachment)
+                    Upload file
                   </div>
                   {selectedFile?.name ? (
                     <div className="w-full">
@@ -328,199 +283,8 @@ const AddFullReportProcess = () => {
             </form>
           )}
           {currentStep === 2 && (
-            <form onSubmit={(e) => submitStepHandler(e, 2)}>
-              <div className="mb-5">
-                <PageSign
-                  titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`Address`}
-                  icon={<></>}
-                />
-              </div>
-              <div className="flex items-start justify-start max-lg:flex-col gap-4 max-lg:gap-6">
-                <div className="w-full">
-                  <div className="text-gray-700 text-sm mb-2 font-bold">
-                    Main Address
-                  </div>
-                  <SimpleAddressForm
-                    disabledFlag={false}
-                    inputCommonClasses={inputCommonClasses}
-                    requiredError={mandatoryErrorStep === 1}
-                    data={address}
-                    countryDisabled={true}
-                    setData={setAddressHandler}
-                  />
-                </div>
-                <div className="w-full">
-                  <div className="text-gray-700 text-sm mb-2 font-bold">
-                    Mailing Address
-                  </div>
-                  <SimpleAddressForm
-                    disabledFlag={false}
-                    inputCommonClasses={inputCommonClasses}
-                    requiredError={mandatoryErrorStep === 1}
-                    data={mailingAddress}
-                    countryDisabled={true}
-                    setData={setMAilingAddressHandler}
-                  />
-                </div>
-              </div>
-              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      cancelStepHandler();
-                    }}
-                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className={classNames(
-                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
-                      secondStepDisabled()
-                        ? 'bg-gray-500'
-                        : 'bg-mainBlue hover:bg-sideBarBlue'
-                    )}
-                  >
-                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
-                      Save
-                    </span>
-                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
-                  </button>
-                </div>
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-              </div>
-            </form>
-          )}
-          {currentStep === 3 && (
-            <form onSubmit={(e) => submitStepHandler(e, 3)}>
-              <div className="mb-5">
-                <PageSign
-                  titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`Registered Agent`}
-                  icon={<></>}
-                />
-              </div>
-              <div className="flex items-start justify-between max-lg:flex-col gap-4 max-lg:gap-6">
-                <input
-                  onChange={(e) => setAgentName(e.target.value)}
-                  className={classNames(
-                    mandatoryErrorStep === 2 && !agentName
-                      ? 'bg-red-50'
-                      : 'bg-white',
-                    'w-1/2 block rounded-md border  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
-                  )}
-                  type="text"
-                  placeholder="Agent Name"
-                  value={agentName}
-                />
-                <div className="w-1/2">
-                  <SimpleAddressForm
-                    disabledFlag={false}
-                    inputCommonClasses={inputCommonClasses}
-                    requiredError={mandatoryErrorStep === 2}
-                    data={agentAddress}
-                    countryDisabled={true}
-                    setData={setAgentAddressHandler}
-                  />
-                </div>
-              </div>
-              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      cancelStepHandler();
-                    }}
-                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className={classNames(
-                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
-                      thirdStepDisabled()
-                        ? 'bg-gray-500'
-                        : 'bg-mainBlue hover:bg-sideBarBlue'
-                    )}
-                  >
-                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
-                      Save
-                    </span>
-                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
-                  </button>
-                </div>
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-              </div>
-            </form>
-          )}
-          {currentStep === 4 && (
-            <form onSubmit={(e) => submitStepHandler(e, 4)}>
-              <div className="mb-5">
-                <PageSign
-                  titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`People`}
-                  icon={<></>}
-                />
-              </div>
-              {mandatoryErrorStep === 3 && !people.length && (
-                <div className="text-red-500 font-semibold">
-                  Should be added at least one person
-                </div>
-              )}
-              {people.length ? (
-                <ProcessingReportPeopleSection
-                  disableEdit={true}
-                  propData={people}
-                />
-              ) : (
-                <></>
-              )}
-              <PersonDataHandling
-                hideX={true}
-                person={undefined}
-                closeModalHandler={() => {}}
-                submitProcess={(person) =>
-                  setPeople((prevState) => [...prevState, person])
-                }
-                isCreateProcess={true}
-              />
-              <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      cancelStepHandler();
-                    }}
-                    className="min-w-28 rounded-md mr-2 bg-mainBackground px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className={classNames(
-                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
-                      fourthStepDisabled()
-                        ? 'bg-gray-500'
-                        : 'bg-mainBlue hover:bg-sideBarBlue'
-                    )}
-                  >
-                    <span className="text-sm font-semibold text-white relative w-full text-left transition-colors duration-200 ease-in-out">
-                      Save
-                    </span>
-                    <ArrowRightIcon className="w-5 stroke-white fill-white translate-x-1 group-hover:translate-x-2 transition-all duration-200 ease-in-out" />
-                  </button>
-                </div>
-                <div className="w-[200px] pr-2 max-lg:hidden" />
-              </div>
-            </form>
-          )}
-          {currentStep === 5 && (
             <form
-              onSubmit={(e) => submitStepHandler(e, 5)}
+              onSubmit={(e) => submitStepHandler(e, 2)}
               className="w-full relative pb-10"
             >
               <AddFullReportReview
@@ -534,8 +298,11 @@ const AddFullReportProcess = () => {
                 updatedMailingAddress={updatedMailingAddress}
                 setUpdatedMailingAddress={setUpdatedMailingAddress}
                 agentName={agentName}
+                setAgentName={setAgentName}
                 agentAddress={agentAddress}
+                setAgentAddress={setAgentAddress}
                 people={people}
+                setPeople={setPeopleHAndler}
               />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-[200px] pr-2 max-lg:hidden" />

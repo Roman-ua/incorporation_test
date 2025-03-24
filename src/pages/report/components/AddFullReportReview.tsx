@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageSign from '../../../components/shared/PageSign';
 import SectionHeading from '../../company/components/SectionHeading';
 import { classNames, dockFieldHandler } from '../../../utils/helpers';
@@ -14,6 +14,7 @@ import USAddressForm from '../../createCompany/components/USAddressForm';
 import { BiEditAlt } from 'react-icons/bi';
 import { IconArrowBackUp } from '@tabler/icons-react';
 import { MdOutlineCloudDownload } from 'react-icons/md';
+import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
   return (
@@ -70,8 +71,11 @@ interface IProps {
   mailingAddress: AddressFields;
   updatedMailingAddress: AddressFields | null;
   agentName: string;
+  setAgentName: (value: string) => void;
   agentAddress: AddressFields;
+  setAgentAddress: (data: AddressFields) => void;
   people: Person[];
+  setPeople: (data: Person) => void;
   setUpdatedMailingAddress: (data: AddressFields | null) => void;
   setUpdatedAddress: (data: AddressFields | null) => void;
 }
@@ -87,9 +91,14 @@ const AddFullReportReview = ({
   updatedMailingAddress,
   setUpdatedMailingAddress,
   agentName,
+  setAgentName,
   agentAddress,
+  setAgentAddress,
   people,
+  setPeople,
 }: IProps) => {
+  const [addPerson, setAddPerson] = useState(false);
+  const [editingAgent, setEditingAgent] = useState(false);
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
   const [addressCopied, setAddressCopied] = useState(false);
@@ -144,6 +153,22 @@ const AddFullReportReview = ({
     }
   };
 
+  const updateAgentAddress = (data: AddressFields) => {
+    setAgentAddress(data);
+    setEditingAgent(false);
+  };
+
+  const cancelAgentHandler = () => {
+    if (
+      agentName &&
+      agentAddress.address0 &&
+      agentAddress.zip &&
+      agentAddress.city
+    ) {
+      setEditingAgent(false);
+    }
+  };
+
   const copyToMailingAddress = (data: AddressFields) => {
     setAddressCopied(true);
     setUpdatedMailingAddress(data || updatedAddress || address);
@@ -154,6 +179,12 @@ const AddFullReportReview = ({
   const copyFromMailingAddress = () => {
     setUpdatedMailingAddress(updatedAddress || address);
   };
+
+  useEffect(() => {
+    if (!agentName) {
+      setEditingAgent(true);
+    }
+  }, [agentName]);
 
   return (
     <>
@@ -349,27 +380,100 @@ const AddFullReportReview = ({
 
       <>
         <SectionHeading title="Registered Agent" textSettings={'text-base'} />
-        <div className="w-full flex items-start justify-start mb-6 max-lg:flex-col max-lg:gap-6">
-          <div className="w-2/3 flex items-start justify-between pb-2 max-lg:w-full">
-            <div className="pr-1 text-gray-700 text-sm">
+        <div className="w-full flex items-start justify-start mb-6 gap-4 max-lg:flex-col max-lg:gap-6">
+          <div className="w-1/2 flex items-start justify-between pb-2 max-lg:w-full">
+            <div className="pr-1 text-gray-700 text-sm w-full">
               <div className="text-sm text-gray-500 mb-1">Name</div>
-              <div className="font-semibold">{agentName}</div>
+              {!editingAgent ? (
+                <div className="font-semibold">{agentName}</div>
+              ) : (
+                <input
+                  onChange={(e) => setAgentName(e.target.value)}
+                  className={classNames(
+                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0'
+                  )}
+                  type="text"
+                  placeholder="Name"
+                  data-1p-ignore={true}
+                  value={agentName}
+                />
+              )}
             </div>
           </div>
-          <div className="flex items-start justify-start pb-2 w-full">
+          <div className="flex items-start justify-start pb-2 w-1/2">
             <div className="w-full pr-2 text-gray-700 text-sm">
               <div className="text-sm text-gray-500 mb-1">Address</div>
-              {RenderAddress(false, agentAddress)}
+              {!editingAgent ? (
+                <div className="flex items-start justify-between w-full">
+                  <div>{RenderAddress(false, agentAddress)}</div>
+                  <div
+                    onClick={() => {
+                      setEditingAgent(true);
+                    }}
+                    className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                  >
+                    <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                  </div>
+                </div>
+              ) : (
+                <USAddressForm
+                  disabledFlag={false}
+                  setFromState={(data) => updateAgentAddress(data)}
+                  cancelAction={cancelAgentHandler}
+                  heading={''}
+                  requiredError={false}
+                  value={agentAddress}
+                  showClear={true}
+                />
+              )}
             </div>
           </div>
         </div>
       </>
       <>
-        <SectionHeading title="People" textSettings={'text-base'} />
+        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+          People
+          {!addPerson && (
+            <div
+              onClick={() => setAddPerson(true)}
+              className="
+              mr-1 px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer
+            "
+            >
+              Add Person
+            </div>
+          )}
+        </div>
+        {addPerson && (
+          <PersonDataHandling
+            person={undefined}
+            isCreateProcess={true}
+            hideX={true}
+            closeModalHandler={() => {}}
+            removePersonHandler={() => {}}
+            submitProcess={(data) => {
+              setPeople(data);
+              setAddPerson(false);
+            }}
+          />
+        )}
         {people.length ? (
-          <ProcessingReportPeopleSection disableEdit={true} propData={people} />
+          <ProcessingReportPeopleSection
+            disableEdit={false}
+            propData={people}
+          />
         ) : (
-          <></>
+          <PersonDataHandling
+            person={undefined}
+            isCreateProcess={true}
+            hideX={true}
+            closeModalHandler={() => {}}
+            removePersonHandler={() => {}}
+            submitProcess={(data) => {
+              setPeople(data);
+              setAddPerson(false);
+            }}
+          />
         )}
       </>
     </>
