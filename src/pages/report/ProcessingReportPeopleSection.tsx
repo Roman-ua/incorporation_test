@@ -131,7 +131,7 @@ const ProcessingReportPeopleSection = ({
 
               <div
                 className={classNames(
-                  'whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-2 flex items-center justify-start',
+                  'whitespace-nowrap w-[24%] max-lg:w-[34%] max-sm:w-1/2 px-1 flex items-center justify-start',
                   person.removed
                     ? 'line-through decoration-gray-400 text-gray-400'
                     : ''
