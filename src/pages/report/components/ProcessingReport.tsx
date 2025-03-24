@@ -22,6 +22,7 @@ import { mockAgent } from '../../../mock/mockData';
 import ProcessingReportPeopleSection from '../ProcessingReportPeopleSection';
 import AddReportDocShort from './AddReportDocShort';
 import {
+  classNames,
   copyAddressToClipboard,
   dockFieldHandler,
 } from '../../../utils/helpers';
@@ -280,62 +281,72 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
               {/* Task header */}
               <div
                 onClick={() => toggleHandler(index)}
-                className="px-6 py-4 flex items-center cursor-pointer bg-white rounded-md"
-              >
-                {step.title !== 'Company Details' && (
-                  <Checkbox
-                    wrapperClass={`h-5 w-5 min-w-5 min-h-5 ${mandatoryCheckHandler(index)}`}
-                    iconClass={'h-3 w-3'}
-                    id={`step-${index}`}
-                    title={''}
-                    mandatoryError={false}
-                    underInput={true}
-                    checked={checkHandler(index, step.title)}
-                    onChange={() => toggleHandler(index)}
-                  />
+                className={classNames(
+                  'cursor-pointer bg-white rounded-md',
+                  index === 0 ? 'px-2 py-2.5' : 'px-6 py-4 '
                 )}
-
-                <div className="flex-grow">
-                  <h3 className="text text-gray-700 font-semibold">
-                    {step.title}
-                  </h3>
-                  {step.title === 'Save Annual Report' ? (
-                    <p className="text-sm text-gray-500 mt-0.5">
-                      Download and save {data.year} Annual Report for{' '}
-                      {data.companyName}
-                    </p>
-                  ) : (
-                    <p className="text-sm text-gray-500 mt-0.5">
-                      {step.description}
-                    </p>
+              >
+                <div
+                  className={classNames(
+                    'flex items-center',
+                    index === 0 ? 'border rounded-md px-4 py-1.5' : ''
                   )}
-                </div>
-
-                <div className="flex-shrink-0 ml-2 text-gray-400 flex items-center justify-end">
-                  {step.title === 'Company Details' && (
-                    <a
-                      href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="bg-gray-200/50 hover:bg-gray-200/70 mr-4 py-1 px-2 rounded-md flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer hover:text-gray-900 transition-all ease-in-out duration-150"
-                    >
-                      <span className="font-semibold">dos.fl.gov</span>
-                      <LuArrowUpRight className="w-4 h-4 font-semibold" />
-                    </a>
-                  )}
-                  <span className="text-gray-700 font-bold mr-2">
-                    {index + 1}
-                  </span>
-                  {index !== 6 && (
-                    <ChevronDown
-                      className={`w-5 h-5 transition-transform duration-300 ${
-                        expandedSteps.includes(index)
-                          ? 'rotate-0'
-                          : '-rotate-90'
-                      }`}
-                      onClick={() => toggleHandler(index)}
+                >
+                  {step.title !== 'Company Details' && (
+                    <Checkbox
+                      wrapperClass={`h-5 w-5 min-w-5 min-h-5 ${mandatoryCheckHandler(index)}`}
+                      iconClass={'h-3 w-3'}
+                      id={`step-${index}`}
+                      title={''}
+                      mandatoryError={false}
+                      underInput={true}
+                      checked={checkHandler(index, step.title)}
+                      onChange={() => toggleHandler(index)}
                     />
                   )}
+
+                  <div className="flex-grow">
+                    <h3 className="text text-gray-700 font-semibold">
+                      {step.title}
+                    </h3>
+                    {step.title === 'Save Annual Report' ? (
+                      <p className="text-sm text-gray-500 mt-0.5">
+                        Download and save {data.year} Annual Report for{' '}
+                        {data.companyName}
+                      </p>
+                    ) : (
+                      <p className="text-sm text-gray-500 mt-0.5">
+                        {step.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex-shrink-0 ml-2 text-gray-400 flex items-center justify-end">
+                    {step.title === 'Company Details' && (
+                      <a
+                        href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
+                        target="_blank"
+                        rel="noreferrer"
+                        className=" hover:bg-gray-200/50 mr-4 py-1 px-2 rounded-md flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer transition-all ease-in-out duration-150"
+                      >
+                        <span className="font-semibold">dos.fl.gov</span>
+                        <LuArrowUpRight className="w-4 h-4 font-semibold" />
+                      </a>
+                    )}
+                    <span className="text-gray-700 font-bold mr-2">
+                      {index + 1}
+                    </span>
+                    {index !== 6 && (
+                      <ChevronDown
+                        className={`w-5 h-5 transition-transform duration-300 ${
+                          expandedSteps.includes(index)
+                            ? 'rotate-0'
+                            : '-rotate-90'
+                        }`}
+                        onClick={() => toggleHandler(index)}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
 
