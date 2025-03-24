@@ -96,7 +96,7 @@ const formattedDate = today.toLocaleDateString('en-US', {
   year: 'numeric',
 });
 
-const freeSteps = [0, 1, 2, 3];
+const freeSteps = [0, 1, 2, 3, 6];
 interface IProps {
   data: ReportData;
   setLastStepSubmitDisabled: (value: boolean) => void;
@@ -119,10 +119,8 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
   const detailsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const detailsHeightRefs = useRef<{ [key: number]: number }>({});
-  console.log(feeFile, 'feeFile');
 
   useEffect(() => {
-    console.log(completedSteps, 'completedSteps');
     if (completedSteps.length > 5) {
       setLastStepSubmitDisabled(false);
     } else {
@@ -252,7 +250,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
 
   const mandatoryCheckHandler = (index: number) => {
     if (index === 4 && !expandedSteps.includes(index) && !feeFile?.file) {
-      return 'border-red-500';
+      return 'border-red-500 border-2';
     }
 
     if (
@@ -261,7 +259,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
       !repFile?.file &&
       !documentNumber
     ) {
-      return 'border-red-500';
+      return 'border-red-500 border-2';
     }
     return '';
   };
@@ -298,7 +296,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                 )}
 
                 <div className="flex-grow">
-                  <h3 className="text font-medium text-gray-700">
+                  <h3 className="text text-gray-700 font-semibold">
                     {step.title}
                   </h3>
                   {step.title === 'Save Annual Report' ? (
@@ -328,12 +326,16 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                   <span className="text-gray-700 font-bold mr-2">
                     {index + 1}
                   </span>
-                  <ChevronDown
-                    className={`w-5 h-5 transition-transform duration-300 ${
-                      expandedSteps.includes(index) ? 'rotate-0' : '-rotate-90'
-                    }`}
-                    onClick={() => toggleHandler(index)}
-                  />
+                  {index !== 6 && (
+                    <ChevronDown
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        expandedSteps.includes(index)
+                          ? 'rotate-0'
+                          : '-rotate-90'
+                      }`}
+                      onClick={() => toggleHandler(index)}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -359,10 +361,11 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                 }}
               >
                 <div className="px-6 py-4">
-                  <p className="text-sm text-gray-700 mb-4">{step.details}</p>
-
+                  {step.details && (
+                    <p className="text-sm text-gray-700 mb-3">{step.details}</p>
+                  )}
                   {step.title === 'Company Details' && (
-                    <div className="w-full max-w-2xl mb-6">
+                    <div className="w-full max-w-2xl">
                       <div className="grid grid-cols-3 gap-0.5 text-gray-900">
                         <div className="contents pb-2">
                           <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-400">
@@ -400,8 +403,8 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                     </div>
                   )}
                   {step.title === 'Check Company Address' && (
-                    <div className="mt-3">
-                      <div className="mt-3">
+                    <>
+                      <div>
                         <div
                           onClick={() => handleCopy(data.address || {}, 1)}
                           className="group text-gray-700 text-sm mb-2 font-bold relative flex items-center justify-start gap-1 hover:cursor-pointer"
@@ -435,11 +438,11 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                         </div>
                         <AddressAsTable data={data.mailingAddress} />
                       </div>
-                    </div>
+                    </>
                   )}
                   {step.title === 'Check Registered Agent' && (
-                    <div className="w-full flex items-start justify-between mt-3 max-lg:flex-col">
-                      <div className="w-2/3 flex items-start justify-between pb-2 max-lg:w-full">
+                    <div className="w-full flex items-start justify-between max-lg:flex-col">
+                      <div className="w-2/3 flex items-start justify-between max-lg:w-full">
                         <div className="pr-1 text-gray-700 text-sm">
                           <div className="text-sm text-gray-500 mb-1">Name</div>
                           <div className="font-semibold text-gray-800">
@@ -447,7 +450,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                           </div>
                         </div>
                       </div>
-                      <div className="w-full flex items-start justify-end pb-2">
+                      <div className="w-full flex items-start justify-end">
                         <div className="w-full pr-2 text-gray-800 text-sm">
                           <div className="text-sm text-gray-500 mb-1">
                             Address
@@ -508,18 +511,16 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                     <FeeFile setFile={setFeeFile} />
                   )}
                   {step.title === 'Save Annual Report' && (
-                    <div className="mt-3">
-                      <AddReportDocShort
-                        data={data}
-                        dateValue={dateValue}
-                        setDateValue={setDateValue}
-                        agentdata={mockAgent}
-                        hideControls={true}
-                        setDocumentNumber={setDocumentNumber}
-                        documentNumber={documentNumber}
-                        setRepFile={setRepFile}
-                      />
-                    </div>
+                    <AddReportDocShort
+                      data={data}
+                      dateValue={dateValue}
+                      setDateValue={setDateValue}
+                      agentdata={mockAgent}
+                      hideControls={true}
+                      setDocumentNumber={setDocumentNumber}
+                      documentNumber={documentNumber}
+                      setRepFile={setRepFile}
+                    />
                   )}
                   {/* File upload section */}
                   {step.hasFileUpload && (

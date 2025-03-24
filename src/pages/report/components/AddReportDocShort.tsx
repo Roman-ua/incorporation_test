@@ -123,7 +123,7 @@ const AddReportDocShort = ({
               <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
                 Year
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="ml-2 w-full pr-2 text-gray-700 text-sm">
                 {data.year}
               </div>
             </div>
@@ -131,7 +131,7 @@ const AddReportDocShort = ({
               <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
                 Company Name
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="ml-2 w-full pr-2 text-gray-700 text-sm">
                 {data.companyName}
               </div>
             </div>
@@ -139,7 +139,7 @@ const AddReportDocShort = ({
               <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
                 State
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="ml-2 w-full pr-2 text-gray-700 text-sm">
                 {data.state}
               </div>
             </div>
@@ -147,7 +147,7 @@ const AddReportDocShort = ({
               <div className="w-2/3 text-sm max-xl:w-1/2 pr-2 text-nowrap text-gray-500">
                 {dockFieldHandler(data.state)}
               </div>
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="ml-2 w-full pr-2 text-gray-700 text-sm">
                 {data.registrationNumber}
               </div>
             </div>
@@ -254,7 +254,7 @@ const AddReportDocShort = ({
             setValue={setDateValue}
           />
         </div>
-        <div className="mb-4">
+        <div>
           {selectedFile?.name ? (
             <div className="w-full">
               <FileDownloadProgress
