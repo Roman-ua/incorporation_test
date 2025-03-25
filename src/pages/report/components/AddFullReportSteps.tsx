@@ -10,7 +10,7 @@ const stepsData = [
   },
 
   {
-    name: 'Report Review',
+    name: 'Review',
     status: 'upcoming',
     id: 2,
   },

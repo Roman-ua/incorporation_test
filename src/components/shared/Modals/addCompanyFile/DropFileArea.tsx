@@ -9,6 +9,7 @@ interface IProps {
   inputRef: RefObject<HTMLInputElement>;
   loaderStatus: boolean;
   mandatoryError?: boolean;
+  wrapperStyles?: string;
 }
 
 const FileDropArea = ({
@@ -17,6 +18,7 @@ const FileDropArea = ({
   inputRef,
   loaderStatus,
   mandatoryError,
+  wrapperStyles,
 }: IProps) => {
   const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ const FileDropArea = ({
 
   return (
     <div
-      className={`bg-white rounded-lg`}
+      className={classNames(`bg-white rounded-lg`, wrapperStyles || '')}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -43,7 +45,7 @@ const FileDropArea = ({
       >
         <div
           className={classNames(
-            `flex justify-center rounded-lg border border-dashed border-gray-500/25 px-2 py-2`,
+            `flex justify-center items-center h-full rounded-lg border border-dashed border-gray-500/25 px-2 py-2  hover:border-gray-500/50 transition-all ease-in-out duration-150`,
             mandatoryError ? 'bg-red-50' : ''
           )}
         >

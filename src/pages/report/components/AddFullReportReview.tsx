@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PageSign from '../../../components/shared/PageSign';
-// import SectionHeading from '../../company/components/SectionHeading';
-import { classNames, dockFieldHandler } from '../../../utils/helpers';
+import {
+  classNames,
+  dockFieldHandler,
+  truncateString,
+} from '../../../utils/helpers';
 import { USStates } from '../../../constants/form/form';
 import {
   AddressFields,
+  IFiles,
   MockAnnualReportData,
   Person,
 } from '../../../interfaces/interfaces';
@@ -13,9 +17,11 @@ import StateSolidIconHandler from '../../../components/shared/StateSolidIconHand
 import USAddressForm from '../../createCompany/components/USAddressForm';
 import { BiEditAlt } from 'react-icons/bi';
 import { IconArrowBackUp } from '@tabler/icons-react';
-import { MdOutlineCloudDownload } from 'react-icons/md';
 import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 import { EmptySection } from '../../../components/shared/EmptySection';
+import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
+import FileDownloadProgress from '../../createCompany/components/UploadedFile';
+import useFileUpload from '../../../utils/hooks/useFileUpload';
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
   return (
@@ -79,6 +85,7 @@ interface IProps {
   setPeople: (data: Person) => void;
   setUpdatedMailingAddress: (data: AddressFields | null) => void;
   setUpdatedAddress: (data: AddressFields | null) => void;
+  file: IFiles;
 }
 
 const AddFullReportReview = ({
@@ -97,6 +104,7 @@ const AddFullReportReview = ({
   setAgentAddress,
   people,
   setPeople,
+  file,
 }: IProps) => {
   const [addPerson, setAddPerson] = useState(false);
   const [editingAgent, setEditingAgent] = useState(false);
@@ -105,6 +113,14 @@ const AddFullReportReview = ({
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
   const [addressCopied, setAddressCopied] = useState(false);
+
+  const {
+    inputRef,
+    selectedFile,
+    handleFileInput,
+    handleFileDrop,
+    deleteFileHandler,
+  } = useFileUpload(file);
 
   const undoAddress = (key: string) => {
     if (key === 'updatedAddress') {
@@ -162,14 +178,11 @@ const AddFullReportReview = ({
   };
 
   const cancelAgentHandler = () => {
-    if (
-      agentName &&
-      agentAddress.address0 &&
-      agentAddress.zip &&
-      agentAddress.city
-    ) {
-      setEditingAgent(false);
+    if (!agentName || !agentAddress.address0) {
+      setEmptyAgent(true);
     }
+
+    setEditingAgent(false);
   };
 
   const addAgentHandler = () => {
@@ -213,19 +226,19 @@ const AddFullReportReview = ({
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
               {mockData.companyName}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Filing Date</dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
               {mockData.filingDate}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">State</dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6 flex items-center justify-start">
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative flex items-center justify-start">
               <StateSolidIconHandler
                 simpleIcon={true}
                 selectedState={mockData.state || 'Florida'}
@@ -239,7 +252,7 @@ const AddFullReportReview = ({
             <dt className="text-nowrap text-sm text-gray-500">
               {dockFieldHandler(mockData.state)}
             </dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
               {mockData.registrationNumber}
             </dd>
           </div>
@@ -250,15 +263,34 @@ const AddFullReportReview = ({
               {stateId}
             </dd>
           </div>
-
-          <div className="flex border-l flex-col gap-y-1 ml-auto px-6">
-            <dt className="text-nowrap text-sm text-gray-500">Confirmation</dt>
-            <dd className="w-full pr-2 text-gray-700 group flex items-center justify-start hover:cursor-pointer text-sm hover:text-blue-500 transition-all ease-in-out duration-150">
-              Download
-              <MdOutlineCloudDownload className="w-5 h-5 text-gray-700 ml-2 top-0.5 hover:cursor-pointer group-hover:text-blue-500 transition-all ease-in-out duration-150" />
-            </dd>
-          </div>
         </dl>
+      </div>
+      {/* File */}
+      <div className="mb-12">
+        <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
+          Report File
+        </div>
+        <div className="mb-4 w-full">
+          {selectedFile?.name ? (
+            <div className="w-full">
+              <FileDownloadProgress
+                deleteFileHandler={deleteFileHandler}
+                fileName={truncateString(selectedFile.name, 15)}
+                fileSize={`${selectedFile?.size} MB`}
+                fileFormat={selectedFile.format}
+                duration={0}
+              />
+            </div>
+          ) : (
+            <DropFileArea
+              loaderStatus={false}
+              inputRef={inputRef}
+              handleFileDrop={handleFileDrop}
+              handleFileInput={handleFileInput}
+              mandatoryError={false}
+            />
+          )}
+        </div>
       </div>
       {/* Address */}
       <div className="mb-12">
@@ -413,7 +445,7 @@ const AddFullReportReview = ({
               </div>
             </div>
             <div className="flex items-start justify-start pb-2 w-1/2">
-              <div className="w-full pr-2 text-gray-700 text-sm">
+              <div className="w-full text-gray-700 text-sm">
                 <div className="text-sm text-gray-500 mb-1">Address</div>
                 {!editingAgent ? (
                   <div className="flex items-start justify-between w-full">
@@ -444,7 +476,6 @@ const AddFullReportReview = ({
         ) : (
           <EmptySection
             title="No Registered Agent Found"
-            description="Provide Registered Agent data"
             ctaText="Add Registered Agent"
             onAction={addAgentHandler}
           />
@@ -486,7 +517,6 @@ const AddFullReportReview = ({
           !addPerson && (
             <EmptySection
               title="No People Found"
-              description="Add People to report info"
               ctaText="Add Person"
               onAction={() => setAddPerson(true)}
             />

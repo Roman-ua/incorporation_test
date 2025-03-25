@@ -5,13 +5,13 @@ import { AddressFields, IFiles, Person } from '../../../interfaces/interfaces';
 import AddFullReportSteps from './AddFullReportSteps';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
-import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
 import CustomYearDropdown from '../../../components/shared/YearDropDown';
 import AddFullReportReview from './AddFullReportReview';
+import UploadedReportFile from './UploadedReportFile';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -94,8 +94,14 @@ const AddFullReportProcess = () => {
 
   const [stateId, setStateId] = React.useState<string>('');
   const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
+
   const [file, setFile] = React.useState<IFiles | null>(null);
   console.log(file, 'file');
+
+  const setStateIdHandler = (value: string) => {
+    const sanitizedValue = value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10);
+    setStateId(sanitizedValue);
+  };
   const navigate = useNavigate();
 
   const {
@@ -185,8 +191,8 @@ const AddFullReportProcess = () => {
                   icon={<></>}
                 />
               </div>
-              <div className="flex flex-col items-start justify-start max-lg:flex-col gap-4 max-lg:gap-6">
-                <div className="flex items-start justify-between gap-4 mt-1 w-full">
+              <div className="flex items-start justify-between max-lg:flex-col gap-4 max-lg:gap-6">
+                <div className="flex flex-col items-start justify-start gap-4 w-1/2">
                   <div className="w-full">
                     <div className="text-gray-700 text-sm mb-2 font-bold">
                       Year
@@ -212,7 +218,7 @@ const AddFullReportProcess = () => {
                       State ID
                     </div>
                     <input
-                      onChange={(e) => setStateId(e.target.value)}
+                      onChange={(e) => setStateIdHandler(e.target.value)}
                       className={classNames(
                         'block rounded-md border w-full  border-gray-200 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0',
                         mandatoryErrorStep === 1 && !stateId
@@ -227,18 +233,18 @@ const AddFullReportProcess = () => {
                   </div>
                 </div>
 
-                <div className="mb-4 w-full">
+                <div className="mb-4 w-1/2">
                   <div className="text-gray-700 text-sm mb-2 font-bold">
                     Upload file
                   </div>
                   {selectedFile?.name ? (
                     <div className="w-full">
-                      <FileDownloadProgress
+                      <UploadedReportFile
                         deleteFileHandler={deleteFileHandler}
                         fileName={truncateString(selectedFile.name, 15)}
                         fileSize={`${selectedFile?.size} MB`}
                         fileFormat={selectedFile.format}
-                        duration={3}
+                        wrapperStyles={'h-[225px]'}
                       />
                     </div>
                   ) : (
@@ -248,6 +254,7 @@ const AddFullReportProcess = () => {
                       handleFileDrop={handleFileDrop}
                       handleFileInput={handleFileInput}
                       mandatoryError={mandatoryErrorStep === 1}
+                      wrapperStyles={'h-[225px]'}
                     />
                   )}
                 </div>
@@ -303,6 +310,7 @@ const AddFullReportProcess = () => {
                 setAgentAddress={setAgentAddress}
                 people={people}
                 setPeople={setPeopleHAndler}
+                file={selectedFile}
               />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-[200px] pr-2 max-lg:hidden" />

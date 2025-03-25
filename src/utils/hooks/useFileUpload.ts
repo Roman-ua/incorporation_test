@@ -11,10 +11,11 @@ const defaultFileStructure = {
   format: '',
 };
 
-const useFileUpload = () => {
+const useFileUpload = (file?: IFiles) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] =
-    useState<IFiles>(defaultFileStructure);
+  const [selectedFile, setSelectedFile] = useState<IFiles>(
+    file || defaultFileStructure
+  );
   const [errorState, setErrorState] = useState<string>('');
 
   const cancelState = () => {

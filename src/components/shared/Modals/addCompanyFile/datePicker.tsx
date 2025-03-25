@@ -3,6 +3,7 @@ import { Datepicker } from 'flowbite-react';
 import { format, isValid, parse, startOfToday } from 'date-fns';
 import useOutsideClick from '../../../../utils/hooks/useOutsideClick';
 import { classNames } from '../../../../utils/helpers';
+import { CalendarDays } from 'lucide-react';
 
 const customTheme = {
   root: {
@@ -165,6 +166,12 @@ const DatePicker = ({ value, setValue, mandatoryError }: IProps) => {
 
   return (
     <div className="relative">
+      <CalendarDays
+        className={classNames(
+          'absolute right-2.5 top-[50%] -translate-y-[50%] w-4 h-4',
+          open ? 'text-gray-700' : 'text-gray-400'
+        )}
+      />
       <input
         ref={inputRef}
         className={classNames(

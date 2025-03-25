@@ -12,6 +12,7 @@ interface FileDownloadProgressProps {
   duration: number;
   fileFormat: string;
   deleteFileHandler: () => void;
+  wrapperStyles?: string;
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -24,6 +25,7 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
   duration,
   fileFormat,
   deleteFileHandler,
+  wrapperStyles,
 }) => {
   const [progress, setProgress] = useState(0);
 
@@ -54,7 +56,12 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
   };
 
   return (
-    <div className="flex items-center space-x-4 border py-3 px-4 rounded-lg w-full">
+    <div
+      className={classNames(
+        'flex items-center space-x-4 border py-3 px-4 rounded-lg w-full',
+        wrapperStyles || ''
+      )}
+    >
       <div className="flex-1">
         <div className="flex items-center justify-start gap-2 mb-2">
           {fileIconHandler(fileFormat)}
