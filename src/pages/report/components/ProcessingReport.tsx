@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
-  Globe,
   Building,
   UserCheck,
   Users,
@@ -34,15 +33,16 @@ import { LuArrowUpRight } from 'react-icons/lu';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 import CopyButton from '../../../components/shared/CopyBtn/CopyButton';
 import FeeFile from './FeeFile';
+import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
 
 const steps = [
-  {
-    title: 'Company Details',
-    description: '',
-    icon: <Globe className="w-6 h-6" />,
-    details: '',
-    hasFileUpload: false,
-  },
+  // {
+  //   title: 'Company Details',
+  //   description: '',
+  //   icon: <Globe className="w-6 h-6" />,
+  //   details: '',
+  //   hasFileUpload: false,
+  // },
   {
     title: 'Check Company Address',
     description: '',
@@ -97,7 +97,7 @@ const formattedDate = today.toLocaleDateString('en-US', {
   year: 'numeric',
 });
 
-const freeSteps = [0, 1, 2, 3, 6];
+const freeSteps = [0, 1, 2, 5];
 interface IProps {
   data: ReportData;
   setLastStepSubmitDisabled: (value: boolean) => void;
@@ -122,7 +122,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
   const detailsHeightRefs = useRef<{ [key: number]: number }>({});
 
   useEffect(() => {
-    if (completedSteps.length > 5) {
+    if (completedSteps.length > 4) {
       setLastStepSubmitDisabled(false);
     } else {
       setLastStepSubmitDisabled(true);
@@ -250,12 +250,12 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
   };
 
   const mandatoryCheckHandler = (index: number) => {
-    if (index === 4 && !expandedSteps.includes(index) && !feeFile?.file) {
+    if (index === 3 && !expandedSteps.includes(index) && !feeFile?.file) {
       return 'border-red-500 border-2';
     }
 
     if (
-      index === 5 &&
+      index === 4 &&
       !expandedSteps.includes(index) &&
       !repFile?.file &&
       !documentNumber
@@ -276,6 +276,63 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
           />
         </div>
         <div className="space-y-4 mb-8">
+          <div className="w-full flex items-start justify-center border border-gray-200 rounded-md px-6 py-4 bg-white">
+            <dl className="w-full flex items-start justify-start overflow-x-scroll pb-1">
+              <div className="flex flex-col gap-y-1 pr-5">
+                <dt className="text-sm text-gray-500">Year</dt>
+                <dd className="text-sm font-semibold tracking-tight text-gray-800">
+                  {data.year}
+                </dd>
+              </div>
+              <div className="flex flex-col gap-y-1 border-l px-5">
+                <dt className="text-nowrap text-sm text-gray-500">
+                  Company Name
+                </dt>
+                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                  {data.companyName}
+                </dd>
+              </div>
+              <div className="flex flex-col gap-y-1 border-l px-5">
+                <dt className="text-nowrap text-sm text-gray-500">
+                  Filing Date
+                </dt>
+                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                  {data.filingDate}
+                </dd>
+              </div>
+              <div className="flex flex-col gap-y-1 border-l px-5">
+                <dt className="text-nowrap text-sm text-gray-500">State</dt>
+                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative flex items-center justify-start">
+                  <StateSolidIconHandler
+                    simpleIcon={true}
+                    selectedState={data.state || 'Florida'}
+                    state={data.state || 'Florida'}
+                  />
+                  {data.state}
+                </dd>
+              </div>
+
+              <div className="flex flex-col gap-y-1 border-l px-5">
+                <dt className="text-nowrap text-sm text-gray-500">
+                  {dockFieldHandler(data.state)}
+                </dt>
+                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                  {data.registrationNumber}
+                </dd>
+              </div>
+              <div className="ml-auto">
+                <a
+                  href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
+                  target="_blank"
+                  rel="noreferrer"
+                  className=" hover:bg-gray-200/50 py-1 px-2 rounded-md flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer transition-all ease-in-out duration-150"
+                >
+                  <span className="font-semibold">dos.fl.gov</span>
+                  <LuArrowUpRight className="w-4 h-4 font-semibold" />
+                </a>
+              </div>
+            </dl>
+          </div>
           {steps.map((step, index) => (
             <div key={index} className="border border-gray-200 rounded-md">
               {/* Task header */}
@@ -283,15 +340,10 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                 onClick={() => toggleHandler(index)}
                 className={classNames(
                   'cursor-pointer bg-white rounded-md',
-                  index === 0 ? 'px-2 py-2.5' : 'px-6 py-4 '
+                  'px-6 py-4 '
                 )}
               >
-                <div
-                  className={classNames(
-                    'flex items-center',
-                    index === 0 ? 'border rounded-md px-4 py-1.5' : ''
-                  )}
-                >
+                <div className={classNames('flex items-center')}>
                   {step.title !== 'Company Details' && (
                     <Checkbox
                       wrapperClass={`h-5 w-5 min-w-5 min-h-5 ${mandatoryCheckHandler(index)}`}
@@ -322,21 +374,10 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                   </div>
 
                   <div className="flex-shrink-0 ml-2 text-gray-400 flex items-center justify-end">
-                    {step.title === 'Company Details' && (
-                      <a
-                        href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
-                        target="_blank"
-                        rel="noreferrer"
-                        className=" hover:bg-gray-200/50 mr-4 py-1 px-2 rounded-md flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer transition-all ease-in-out duration-150"
-                      >
-                        <span className="font-semibold">dos.fl.gov</span>
-                        <LuArrowUpRight className="w-4 h-4 font-semibold" />
-                      </a>
-                    )}
                     <span className="text-gray-700 font-bold mr-2">
                       {index + 1}
                     </span>
-                    {index !== 6 && (
+                    {index !== 5 && (
                       <ChevronDown
                         className={`w-5 h-5 transition-transform duration-300 ${
                           expandedSteps.includes(index)
@@ -355,7 +396,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                 ref={(el) => (detailsRefs.current[index] = el)}
                 className={`transition-all duration-300 ease-in-out border-t border-gray-200 bg-gray-50 rounded-b-md`}
                 style={{
-                  display: index === 6 ? 'none' : '',
+                  display: index === 5 ? 'none' : '',
                   maxHeight: expandedSteps.includes(index)
                     ? `${detailsHeightRefs.current[index] || 1000}px`
                     : '0px',
