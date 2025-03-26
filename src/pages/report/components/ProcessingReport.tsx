@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Building,
   UserCheck,
@@ -7,8 +9,6 @@ import {
   DollarSign,
   Save,
   FileText,
-  X,
-  FileIcon,
   ChevronDown,
 } from 'lucide-react';
 import PageSign from '../../../components/shared/PageSign';
@@ -107,19 +107,12 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
   const [copied, setCopied] = useState<number>(-1);
   const [expandedSteps, setExpandedSteps] = useState<number[]>([]);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const [uploadedFiles, setUploadedFiles] = useState<{ [key: number]: File[] }>(
-    {}
-  );
 
   const [feeFile, setFeeFile] = useState<IFiles | null>(null);
   const [repFile, setRepFile] = useState<IFiles | null>(null);
 
   const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
   const [documentNumber, setDocumentNumber] = React.useState<string>('');
-
-  const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
-  const detailsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
-  const detailsHeightRefs = useRef<{ [key: number]: number }>({});
 
   useEffect(() => {
     if (completedSteps.length > 4) {
@@ -135,29 +128,6 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
       .map((_, index) => index)
       .filter((index) => !completedSteps.includes(index));
     setExpandedSteps(initialExpanded);
-
-    // Calculate and store heights of all detail sections
-    steps.forEach((_, index) => {
-      if (detailsRefs.current[index]) {
-        detailsHeightRefs.current[index] =
-          detailsRefs.current[index]?.scrollHeight || 0;
-      }
-    });
-  }, []);
-
-  // Recalculate heights when window resizes
-  useEffect(() => {
-    const handleResize = () => {
-      steps.forEach((_, index) => {
-        if (detailsRefs.current[index]) {
-          detailsHeightRefs.current[index] =
-            detailsRefs.current[index]?.scrollHeight || 0;
-        }
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const toggleStep = (index: number) => {
@@ -180,27 +150,6 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
     }
   };
 
-  const handleFileUpload = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const newFiles = Array.from(files);
-      setUploadedFiles((prev) => ({
-        ...prev,
-        [index]: [...(prev[index] || []), ...newFiles],
-      }));
-    }
-  };
-
-  const removeFile = (stepIndex: number, fileIndex: number) => {
-    setUploadedFiles((prev) => ({
-      ...prev,
-      [stepIndex]: prev[stepIndex].filter((_, idx) => idx !== fileIndex),
-    }));
-  };
-
   const handleCopy = (value: AddressFields, index: number) => {
     copyAddressToClipboard(value);
     setCopied(index);
@@ -217,11 +166,11 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
       markAsCompleted(index);
       return;
     }
-    if (index === 4 && !!feeFile?.file) {
+    if (index === 3 && !!feeFile?.file) {
       markAsCompleted(index);
       return;
     }
-    if (index === 5 && !!repFile?.file && !!dateValue && !!documentNumber) {
+    if (index === 4 && !!repFile?.file && !!dateValue && !!documentNumber) {
       markAsCompleted(index);
       return;
     }
@@ -266,7 +215,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div>
       <div className="mx-auto pb-12">
         <div className="mb-5">
           <PageSign
@@ -312,7 +261,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                 </dd>
               </div>
 
-              <div className="flex flex-col gap-y-1 border-l px-5">
+              <div className="flex flex-col gap-y-1 border-l border-r px-5">
                 <dt className="text-nowrap text-sm text-gray-500">
                   {dockFieldHandler(data.state)}
                 </dt>
@@ -320,7 +269,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                   {data.registrationNumber}
                 </dd>
               </div>
-              <div className="ml-auto">
+              <div className="flex flex-col gap-y-1 px-5">
                 <a
                   href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
                   target="_blank"
@@ -377,7 +326,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                     <span className="text-gray-700 font-bold mr-2">
                       {index + 1}
                     </span>
-                    {index !== 5 && (
+                    {index !== 5 ? (
                       <ChevronDown
                         className={`w-5 h-5 transition-transform duration-300 ${
                           expandedSteps.includes(index)
@@ -386,6 +335,8 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                         }`}
                         onClick={() => toggleHandler(index)}
                       />
+                    ) : (
+                      <div className="w-5 h-5" />
                     )}
                   </div>
                 </div>
@@ -393,24 +344,9 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
 
               {/* Task details with smooth animation */}
               <div
-                ref={(el) => (detailsRefs.current[index] = el)}
-                className={`transition-all duration-300 ease-in-out border-t border-gray-200 bg-gray-50 rounded-b-md`}
-                style={{
-                  display: index === 5 ? 'none' : '',
-                  maxHeight: expandedSteps.includes(index)
-                    ? `${detailsHeightRefs.current[index] || 1000}px`
-                    : '0px',
-                  opacity: expandedSteps.includes(index) ? 1 : 0,
-                  visibility: expandedSteps.includes(index)
-                    ? 'visible'
-                    : 'hidden',
-                  transform: expandedSteps.includes(index)
-                    ? 'translateY(0)'
-                    : 'translateY(-10px)',
-                  pointerEvents: expandedSteps.includes(index)
-                    ? 'auto'
-                    : 'none',
-                }}
+                className={`overflow-hidden transition-all duration-300 ease-in-out border-t border-gray-200 bg-gray-50 rounded-b-md ${
+                  index === 5 ? 'hidden' : ''
+                } ${expandedSteps.includes(index) ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}
               >
                 <div className="px-6 py-4">
                   {step.details && (
@@ -573,52 +509,6 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                       documentNumber={documentNumber}
                       setRepFile={setRepFile}
                     />
-                  )}
-                  {/* File upload section */}
-                  {step.hasFileUpload && (
-                    <div className="mt-3">
-                      <input
-                        type="file"
-                        ref={(el) => (fileInputRefs.current[index] = el)}
-                        onChange={(e) => handleFileUpload(index, e)}
-                        className="hidden"
-                        multiple
-                      />
-
-                      {/* Uploaded files list */}
-                      {uploadedFiles[index]?.length > 0 && (
-                        <div className="mb-3">
-                          <p className="text-xs font-medium text-gray-500 mb-2">
-                            Files:
-                          </p>
-                          <div className="space-y-1">
-                            {uploadedFiles[index].map((file, fileIndex) => (
-                              <div
-                                key={fileIndex}
-                                className="flex items-center py-1 px-2 bg-white rounded border border-gray-200 text-sm"
-                              >
-                                <FileIcon className="w-3.5 h-3.5 text-gray-500 mr-2" />
-                                <span className="text-xs text-gray-700 flex-grow truncate">
-                                  {file.name}
-                                </span>
-                                <span className="text-xs text-gray-500 mx-2">
-                                  {(file.size / 1024).toFixed(0)} KB
-                                </span>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    removeFile(index, fileIndex);
-                                  }}
-                                  className="p-1 text-gray-400 hover:text-gray-700"
-                                >
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
                   )}
                 </div>
               </div>
