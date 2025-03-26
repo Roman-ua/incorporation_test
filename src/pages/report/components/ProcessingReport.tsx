@@ -269,12 +269,15 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                   {data.registrationNumber}
                 </dd>
               </div>
-              <div className="flex flex-col gap-y-1 px-5">
+              <div className="flex flex-col gap-y-1 border-l px-5">
+                <dt className="text-nowrap text-sm text-gray-500">
+                  Government Site
+                </dt>
                 <a
                   href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
                   target="_blank"
                   rel="noreferrer"
-                  className=" hover:bg-gray-200/50 py-1 px-2 rounded-md flex items-center justify-center gap-2 text-gray-700 hover:cursor-pointer transition-all ease-in-out duration-150"
+                  className="rounded-md text-sm flex items-center justify-start gap-1 text-gray-700 hover:cursor-pointer transition-all ease-in-out duration-150"
                 >
                   <span className="font-semibold">dos.fl.gov</span>
                   <LuArrowUpRight className="w-4 h-4 font-semibold" />
