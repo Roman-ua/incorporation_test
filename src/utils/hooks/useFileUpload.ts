@@ -48,7 +48,7 @@ const useFileUpload = (file?: IFiles) => {
     formData.append('file', file as File);
     setSelectedFile({
       id: 1,
-      file: { name: `${fileName}.${fileFormat}`, link: '' },
+      file: file,
       name: `${fileName.replace(/ /g, '_')}`,
       status: '',
       dueDate: dateHandler(),

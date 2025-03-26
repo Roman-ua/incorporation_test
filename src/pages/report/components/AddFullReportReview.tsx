@@ -274,6 +274,7 @@ const AddFullReportReview = ({
           {selectedFile?.name ? (
             <div className="w-full">
               <FileDownloadProgress
+                file={selectedFile.file as File}
                 deleteFileHandler={deleteFileHandler}
                 fileName={truncateString(selectedFile.name, 15)}
                 fileSize={`${selectedFile?.size} MB`}
@@ -489,7 +490,7 @@ const AddFullReportReview = ({
             <div
               onClick={() => setAddPerson(true)}
               className="
-              mr-1 px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer
+             px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer
             "
             >
               Add Person

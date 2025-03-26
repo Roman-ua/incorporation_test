@@ -99,8 +99,12 @@ const AddFullReportProcess = () => {
   console.log(file, 'file');
 
   const setStateIdHandler = (value: string) => {
-    const sanitizedValue = value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10);
-    setStateId(sanitizedValue);
+    const sanitizedValue = value.replace(/[^a-zA-Z0-9]/g, '');
+
+    const numbers = sanitizedValue.replace(/\D/g, '').slice(0, 10); // Только цифры (макс. 10)
+    const letters = sanitizedValue.replace(/\d/g, '').slice(0, 2); // Только буквы (макс. 2)
+
+    setStateId(numbers + letters);
   };
   const navigate = useNavigate();
 
@@ -150,7 +154,7 @@ const AddFullReportProcess = () => {
   useEffect(() => {
     setFile(selectedFile);
   }, [selectedFile]);
-
+  console.log(file, selectedFile, 'tut');
   return (
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
@@ -244,6 +248,7 @@ const AddFullReportProcess = () => {
                         fileName={truncateString(selectedFile.name, 15)}
                         fileSize={`${selectedFile?.size} MB`}
                         fileFormat={selectedFile.format}
+                        file={selectedFile?.file as File}
                         wrapperStyles={'h-[225px]'}
                       />
                     </div>
