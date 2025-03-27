@@ -5,7 +5,6 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import Login from './pages/login/Login';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import Home from './pages/home/Home';
 import { ROUTES } from './constants/navigation/routes';
@@ -26,12 +25,13 @@ import RenderEmails from './pages/emails/Emails';
 import ReportPage from './pages/report/ReportPage';
 import AnnualReportReview from './pages/report/AnnualReportReview';
 import AddFullReportProcess from './pages/report/components/AddFullReportProcess';
+import AuthFlow from './pages/login/Login';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path={ROUTES.LOGIN} element={<Login />} />
+        <Route path={ROUTES.LOGIN} element={<AuthFlow />} />
         <Route path={ROUTES.RECOVERY_PASS} element={<RecoveryPass />} />
         <Route
           path={ROUTES.RECOVERY_PASS_CONFIRM}
