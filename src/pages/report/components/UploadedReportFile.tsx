@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   IconCheck,
   IconFileTypeJpg,
   IconFileTypePdf,
 } from '@tabler/icons-react';
-import PreviewFileModal from '../../../components/shared/PreviewFileModal';
+import { TbTrash } from 'react-icons/tb';
 
 interface FileDownloadProgressProps {
   fileName: string;
@@ -29,9 +29,6 @@ const UploadedReportFile: React.FC<FileDownloadProgressProps> = ({
   deleteFileHandler,
   wrapperStyles,
 }) => {
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
   const fileIconHandler = (type: string) => {
     switch (type.toLowerCase()) {
       case 'pdf':
@@ -48,18 +45,19 @@ const UploadedReportFile: React.FC<FileDownloadProgressProps> = ({
   };
 
   const handleFileClick = () => {
-    setPreviewOpen(true);
+    if (fileUrl) {
+      window.open(fileUrl, '_blank');
+    } else if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      window.open(objectUrl, '_blank');
+    }
   };
-
-  useEffect(() => {
-    setMounted(true);
-  }, [file]);
 
   return (
     <>
       <div
         className={classNames(
-          'bg-white flex items-center space-x-4 border border-dashed border-gray-500/25 py-3 px-4 rounded-lg w-full hover:border-gray-500/50 transition-all ease-in-out duration-150 cursor-pointer',
+          'bg-white flex items-center space-x-4 border border-dashed border-gray-500/25 py-3 px-4 rounded-lg w-full hover:border-gray-500/50 transition-all ease-in-out duration-150 cursor-pointer relative',
           wrapperStyles || ''
         )}
       >
@@ -75,31 +73,16 @@ const UploadedReportFile: React.FC<FileDownloadProgressProps> = ({
               <IconCheck className="w-3.5 h-3.5 text-green-500 ml-2" />
             </div>
 
-            <div
+            <TbTrash
               onClick={(e) => {
-                e.stopPropagation(); // Prevent triggering the parent click
+                e.stopPropagation();
                 deleteFileHandler();
               }}
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-100 hover:text-gray-900 h-9 rounded-md px-3 hover:cursor-pointer"
-            >
-              Remove
-            </div>
+              className="absolute top-3 right-3 w-5 h-5 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 hover:text-red-700"
+            />
           </div>
         </div>
       </div>
-
-      {mounted && (
-        <PreviewFileModal
-          file={file as File}
-          fileUrl={fileUrl as string}
-          fileIcon={fileIconHandler(fileFormat)}
-          fileFormat={fileFormat}
-          fileName={fileName}
-          previewOpen={previewOpen}
-          setPreviewOpen={setPreviewOpen}
-          fileSize={fileSize}
-        />
-      )}
     </>
   );
 };

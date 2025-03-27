@@ -5,7 +5,6 @@ import {
   IconFileTypePdf,
 } from '@tabler/icons-react';
 import { TbTrash } from 'react-icons/tb';
-import PreviewFileModal from '../../../components/shared/PreviewFileModal';
 
 interface FileDownloadProgressProps {
   fileName: string;
@@ -15,6 +14,7 @@ interface FileDownloadProgressProps {
   file?: File;
   deleteFileHandler: () => void;
   wrapperStyles?: string;
+  hideProgressBar?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -29,10 +29,9 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
   file,
   deleteFileHandler,
   wrapperStyles,
+  hideProgressBar,
 }) => {
   const [progress, setProgress] = useState(0);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,12 +60,11 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
   };
 
   const handleFileClick = () => {
-    setPreviewOpen(true);
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      window.open(objectUrl, '_blank');
+    }
   };
-
-  useEffect(() => {
-    setMounted(true);
-  }, [file]);
 
   return (
     <>
@@ -79,7 +77,7 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
         <div className="flex-1 hover:cursor-pointer">
           <div
             onClick={handleFileClick}
-            className="flex items-center justify-start gap-2 mb-2"
+            className="flex items-center justify-start gap-2"
           >
             {fileIconHandler(fileFormat)}
             <div>
@@ -106,33 +104,26 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
               </div>
             </div>
             <TbTrash
-              onClick={deleteFileHandler}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteFileHandler();
+              }}
               className="ml-auto mb-auto w-5 h-5 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 hover:text-red-700"
             />
           </div>
-          <div className="w-full bg-gray-300 rounded-full h-1.5 mt-2">
-            <div
-              className={classNames(
-                'h-1.5 rounded-full transition-all',
-                progress === 100 ? 'bg-green-500' : 'bg-mainBlue'
-              )}
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
+          {!hideProgressBar && (
+            <div className="w-full bg-gray-300 rounded-full h-1.5 mt-2">
+              <div
+                className={classNames(
+                  'h-1.5 rounded-full transition-all',
+                  progress === 100 ? 'bg-green-500' : 'bg-mainBlue'
+                )}
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          )}
         </div>
       </div>
-      {mounted && (
-        <PreviewFileModal
-          file={file as File}
-          fileUrl={''}
-          fileIcon={fileIconHandler(fileFormat)}
-          fileFormat={fileFormat}
-          fileName={fileName}
-          previewOpen={previewOpen}
-          setPreviewOpen={setPreviewOpen}
-          fileSize={fileSize}
-        />
-      )}
     </>
   );
 };

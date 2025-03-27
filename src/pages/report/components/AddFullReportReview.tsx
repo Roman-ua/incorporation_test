@@ -280,6 +280,7 @@ const AddFullReportReview = ({
                 fileSize={`${selectedFile?.size} MB`}
                 fileFormat={selectedFile.format}
                 duration={0}
+                hideProgressBar={true}
               />
             </div>
           ) : (
