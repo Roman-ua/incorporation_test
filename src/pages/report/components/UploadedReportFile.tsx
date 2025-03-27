@@ -89,28 +89,34 @@ const UploadedReportFile: React.FC<FileDownloadProgressProps> = ({
               </div>
             </div>
 
-            <div className="absolute top-3 right-3 flex items-start justify-end gap-2">
-              <HiOutlineExternalLink
+            <div className="absolute top-2 right-2 flex items-start justify-end gap-2">
+              <div
                 onClick={(e) => {
                   e.stopPropagation();
                   handleFileClick();
                 }}
-                className="w-5 h-5 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 hover:text-gray-700"
-              />
-              <MdOutlineCloudDownload
+                className="p-1 rounded-md bg-transparent  hover:bg-gray-100 transition-all ease-in-out duration-150 group/second"
+              >
+                <HiOutlineExternalLink className="w-4 h-4 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 group-hover/second:text-gray-700" />
+              </div>
+              <div
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDownloadFile(e);
                 }}
-                className="w-5 h-5 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 hover:text-blue-700"
-              />
-              <TbTrash
+                className="p-1 rounded-md bg-transparent  hover:bg-gray-100 transition-all ease-in-out duration-150 group/one"
+              >
+                <MdOutlineCloudDownload className="w-4 h-4 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 group-hover/one:text-blue-700" />
+              </div>
+              <div
                 onClick={(e) => {
                   e.stopPropagation();
                   deleteFileHandler();
                 }}
-                className="w-5 h-5 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 hover:text-red-700"
-              />
+                className="p-1 rounded-md bg-transparent  hover:bg-gray-100 transition-all ease-in-out duration-150 group/third"
+              >
+                <TbTrash className="w-4 h-4 text-gray-500 hover:cursor-pointer transition-all ease-in-out duration-150 group-hover/third:text-red-700" />
+              </div>
             </div>
           </div>
         </div>

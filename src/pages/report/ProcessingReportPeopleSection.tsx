@@ -17,12 +17,14 @@ interface IProps {
   disableEdit: boolean;
   propData?: Person[];
   hideControls?: boolean;
+  firstColStyle?: string;
 }
 
 const ProcessingReportPeopleSection = ({
   disableEdit,
   propData,
   hideControls,
+  firstColStyle,
 }: IProps) => {
   const [peopleDataDuplicate, setPeopleDataDuplicate] = useState<Person[]>(
     propData || mockPeople
@@ -88,7 +90,8 @@ const ProcessingReportPeopleSection = ({
             <div className="flex py-3 transition-all ease-in-out duration-150 items-start justify-start">
               <div
                 className={classNames(
-                  'whitespace-nowrap w-[40%] max-sm:w-1/2 pr-2 flex  text-gray-900 justify-start items-start'
+                  firstColStyle || 'w-[40%]',
+                  'whitespace-nowrap max-sm:w-1/2 pr-2 flex  text-gray-900 justify-start items-start'
                 )}
               >
                 <span className="mr-4 min-w-7 min-h-7 text-lg font-bold text-white bg-gray-300 rounded-full flex items-center justify-center">

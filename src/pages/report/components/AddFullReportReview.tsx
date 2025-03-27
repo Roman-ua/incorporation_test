@@ -515,6 +515,7 @@ const AddFullReportReview = ({
           <ProcessingReportPeopleSection
             disableEdit={false}
             propData={people}
+            firstColStyle={'w-[59%]'}
           />
         ) : (
           !addPerson && (
