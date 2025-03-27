@@ -20,8 +20,9 @@ import { IconArrowBackUp } from '@tabler/icons-react';
 import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 import { EmptySection } from '../../../components/shared/EmptySection';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
-import FileDownloadProgress from '../../createCompany/components/UploadedFile';
+
 import useFileUpload from '../../../utils/hooks/useFileUpload';
+import UploadedFileSmall from './UploadedFileSmall';
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
   return (
@@ -273,7 +274,7 @@ const AddFullReportReview = ({
         <div className="mb-4 w-full">
           {selectedFile?.name ? (
             <div className="w-full">
-              <FileDownloadProgress
+              <UploadedFileSmall
                 file={selectedFile.file as File}
                 deleteFileHandler={deleteFileHandler}
                 fileName={truncateString(selectedFile.name, 15)}

@@ -1,65 +1,46 @@
 import React from 'react';
 import { IconFileTypeJpg, IconFileTypePdf } from '@tabler/icons-react';
 import { TbTrash } from 'react-icons/tb';
-import { MdOutlineCloudDownload } from 'react-icons/md';
 import { HiOutlineExternalLink } from 'react-icons/hi';
+import { MdOutlineCloudDownload } from 'react-icons/md';
 
 interface FileDownloadProgressProps {
   fileName: string;
   fileSize: string;
+  duration: number;
   fileFormat: string;
-  file?: File; // Accept actual File object
-  fileUrl?: string; // Optional URL if already available
+  file?: File;
   deleteFileHandler: () => void;
   wrapperStyles?: string;
+  hideProgressBar?: boolean;
+  hideSize?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const UploadedReportFile: React.FC<FileDownloadProgressProps> = ({
+const UploadedFileSmall: React.FC<FileDownloadProgressProps> = ({
   fileName,
   fileFormat,
   file,
-  fileUrl,
   deleteFileHandler,
   wrapperStyles,
 }) => {
   const fileIconHandler = (type: string) => {
-    switch (type.toLowerCase()) {
+    switch (type) {
       case 'pdf':
-        return <IconFileTypePdf className="w-10 h-10 text-gray-500" />;
+        return <IconFileTypePdf className="w-6 h-6 text-gray-500 mr-1.5" />;
       case 'jpg':
-      case 'jpeg':
-      case 'png':
-      case 'gif':
-      case 'webp':
-        return <IconFileTypeJpg className="w-10 h-10 text-gray-500" />;
+        return <IconFileTypeJpg className="w-6 h-6 text-gray-500 mr-1.5" />;
       default:
-        return <IconFileTypeJpg className="w-10 h-10 text-gray-500" />;
-    }
-  };
-
-  const handleFileClick = () => {
-    if (fileUrl) {
-      window.open(fileUrl, '_blank');
-    } else if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      window.open(objectUrl, '_blank');
+        return <IconFileTypeJpg className="w-6 h-6 text-gray-500 mr-1.5" />;
     }
   };
 
   const handleDownloadFile = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Предотвращаем открытие файла в новом окне
-    if (fileUrl) {
-      const link = document.createElement('a');
-      link.href = fileUrl;
-      link.download = fileName; // Указываем имя файла
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else if (file) {
+    e.stopPropagation();
+    if (file) {
       const objectUrl = URL.createObjectURL(file);
       const link = document.createElement('a');
       link.href = objectUrl;
@@ -71,25 +52,33 @@ const UploadedReportFile: React.FC<FileDownloadProgressProps> = ({
     }
   };
 
+  const handleFileClick = () => {
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      window.open(objectUrl, '_blank');
+    }
+  };
+
   return (
     <>
       <div
         className={classNames(
-          'bg-white flex items-center space-x-4 border border-dashed border-gray-500/25 py-3 px-4 rounded-lg w-full hover:border-gray-500/50 transition-all ease-in-out duration-150 cursor-pointer relative',
+          'flex items-center space-x-4 border py-3 px-4 rounded-lg w-full',
           wrapperStyles || ''
         )}
       >
-        <div className="flex-1">
-          <div className="flex flex-col items-center justify-start gap-2 mb-2">
-            {fileIconHandler(fileFormat)}
-
-            <div className="flex items-center justify-start">
-              <div className="text-gray-900 text-base font-semibold leading-none">
+        <div className="flex-1 hover:cursor-pointer">
+          <div
+            onClick={handleFileClick}
+            className="flex items-center justify-between gap-2"
+          >
+            <div className="flex items-center h-full justify-start gap-2">
+              {fileIconHandler(fileFormat)}
+              <div className="text-gray-900 text-sm font-semibold leading-none">
                 {fileName}
               </div>
             </div>
-
-            <div className="absolute top-3 right-3 flex items-start justify-end gap-2">
+            <div className="flex items-start justify-end gap-2">
               <HiOutlineExternalLink
                 onClick={(e) => {
                   e.stopPropagation();
@@ -119,4 +108,4 @@ const UploadedReportFile: React.FC<FileDownloadProgressProps> = ({
   );
 };
 
-export default UploadedReportFile;
+export default UploadedFileSmall;
