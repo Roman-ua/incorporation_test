@@ -261,7 +261,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                 </dd>
               </div>
 
-              <div className="flex flex-col gap-y-1 border-l border-r px-5">
+              <div className="flex flex-col gap-y-1 border-l px-5">
                 <dt className="text-nowrap text-sm text-gray-500">
                   {dockFieldHandler(data.state)}
                 </dt>
@@ -274,13 +274,15 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                   Government Site
                 </dt>
                 <a
-                  href="https://services.sunbiz.org/Filings/AnnualReport/FilingStart"
+                  href="your-link"
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-md text-sm flex items-center justify-start gap-1 text-gray-700 hover:cursor-pointer transition-all ease-in-out duration-150"
+                  className="rounded-md text-sm inline-flex items-center justify-start gap-1 text-gray-800 hover:text-primary group"
                 >
-                  <span className="font-semibold">dos.fl.gov</span>
-                  <LuArrowUpRight className="w-4 h-4 font-semibold" />
+                  <span className="font-semibold transition-all duration-300">
+                    dos.fl.gov
+                  </span>
+                  <LuArrowUpRight className="w-4 h-4 font-semibold transform transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
                 </a>
               </div>
             </dl>
