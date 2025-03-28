@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-
+import logo from '../../images/shared/bluelogo.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { AnimatedUnderlineButton } from '../../components/shared/AnimatedUnderlineBtn';
@@ -83,8 +83,11 @@ const AuthFlow = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 overflow-hidden">
       <div className="w-full max-w-md">
+        <div className="fixed top-5 left-5 w-52">
+          <img src={logo} alt="logo" />
+        </div>
         <AnimatePresence mode="wait">
           {success ? (
             <motion.div
@@ -192,7 +195,7 @@ const AuthFlow = () => {
                       />
                       {error && (
                         <p
-                          className="absolute text-xs text-red-500 -bottom-5"
+                          className="absolute text-sm text-red-700 -bottom-5"
                           id="email-error"
                         >
                           Not a valid email address.
@@ -251,7 +254,7 @@ const AuthFlow = () => {
                       </button>
                       {errorPassword && (
                         <p
-                          className="absolute text-xs text-red-500 -bottom-5"
+                          className="absolute text-sm text-red-700 -bottom-5"
                           id="email-error"
                         >
                           {errorPassword}
