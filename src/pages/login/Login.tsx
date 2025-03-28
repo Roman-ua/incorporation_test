@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { type ChangeEvent, useState } from 'react';
 import logo from '../../images/shared/bluelogo.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
@@ -86,15 +86,12 @@ const AuthFlow = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 overflow-hidden">
       <div className="w-full max-w-md">
         <div className="fixed top-5 left-5 w-52">
-          <img src={logo} alt="logo" />
+          <img src={logo || '/placeholder.svg'} alt="logo" />
         </div>
         <AnimatePresence mode="wait">
           {success ? (
             <motion.div
               key="success"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
               className="flex flex-col items-center justify-center space-y-4 rounded-lg bg-white p-8 shadow-lg"
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
@@ -112,9 +109,6 @@ const AuthFlow = () => {
           ) : (
             <motion.div
               key="form"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
               className="overflow-hidden rounded-lg bg-white shadow-lg"
             >
               <div className="relative">
@@ -164,17 +158,13 @@ const AuthFlow = () => {
                           onChange={handleChangeName}
                           placeholder="Enter your name"
                           required={!isSignIn}
-                          className="h-12 w-full rounded-md border border-gray-300 px-4 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500/50"
+                          className="h-12 w-full rounded-md border border-gray-300 px-4 pr-10 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-transparent"
                         />
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: isSignIn ? 0 : 0.1 }}
-                  >
+                  <motion.div>
                     <div className="relative space-y-2">
                       <label
                         htmlFor="email"
@@ -191,7 +181,7 @@ const AuthFlow = () => {
                         onChange={handleChangeEmail}
                         placeholder="Enter your email"
                         required
-                        className="h-12 w-full rounded-md border border-gray-300 px-4 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500/50"
+                        className="h-12 w-full rounded-md border border-gray-300 px-4 pr-10 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-transparent"
                       />
                       {error && (
                         <p
@@ -204,12 +194,7 @@ const AuthFlow = () => {
                     </div>
                   </motion.div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: isSignIn ? 0.1 : 0.2 }}
-                    className="space-y-2"
-                  >
+                  <motion.div className="space-y-2">
                     <div className="flex items-center justify-between mt-6">
                       <label
                         htmlFor="password"
@@ -236,7 +221,7 @@ const AuthFlow = () => {
                         onChange={handleChangePassword}
                         placeholder="Enter your password"
                         required
-                        className="h-12 w-full rounded-md border border-gray-300 px-4 pr-10 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500/50"
+                        className="h-12 w-full rounded-md border border-gray-300 px-4 pr-10 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-transparent"
                       />
                       <button
                         type="button"
@@ -263,11 +248,7 @@ const AuthFlow = () => {
                     </div>
                   </motion.div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: isSignIn ? 0.2 : 0.3 }}
-                  >
+                  <motion.div>
                     <button
                       type="submit"
                       disabled={isLoading}
