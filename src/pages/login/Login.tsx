@@ -170,7 +170,7 @@ const AuthFlow = () => {
                           required={!isSignIn}
                           className={classNames(
                             nameError
-                              ? 'border-red-400 focus:border-red-500 focus:ring-red-500 focus:outline-red-500'
+                              ? 'border-red-400 border-2 focus:border-red-500 focus:ring-red-500 focus:outline-red-500'
                               : 'border-gray-300 focus:border-gray-500  focus:ring-black focus:outline-black',
                             'h-12 w-full rounded-md border px-4 shadow-sm'
                           )}
@@ -205,7 +205,7 @@ const AuthFlow = () => {
                       required
                       className={classNames(
                         error
-                          ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+                          ? 'border-red-400 border-2 focus:border-red-500 focus:ring-transparent'
                           : 'border-gray-300 focus:border-gray-500  focus:ring-black',
                         'h-12 w-full rounded-md border px-4 shadow-sm'
                       )}
@@ -249,7 +249,7 @@ const AuthFlow = () => {
                         required
                         className={classNames(
                           errorPassword
-                            ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+                            ? 'border-red-400 border-2 focus:border-red-500 focus:ring-transparent'
                             : 'border-gray-300 focus:border-gray-500  focus:ring-black',
                           'h-12 w-full rounded-md border px-4 shadow-sm'
                         )}
