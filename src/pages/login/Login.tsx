@@ -86,8 +86,8 @@ const AuthFlow = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 overflow-hidden">
       <div className="w-full max-w-md">
-        <div className="fixed top-5 left-5 w-52">
-          <img src={logo || '/placeholder.svg'} alt="logo" />
+        <div className="w-full flex items-center justify-center mb-8">
+          <img src={logo || '/placeholder.svg'} alt="logo" className="w-44" />
         </div>
         <AnimatePresence mode="wait">
           {success ? (
@@ -110,7 +110,7 @@ const AuthFlow = () => {
           ) : (
             <motion.div
               key="form"
-              className="overflow-hidden rounded-lg bg-white shadow-lg"
+              className="overflow-hidden rounded-lg bg-white shadow-[0_0_15px_rgba(0,0,0,0.1)]"
             >
               <div className="relative">
                 <div className="absolute left-0 top-0 p-4">
@@ -137,7 +137,7 @@ const AuthFlow = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="p-8 pt-0">
-                <div className="space-y-4">
+                <div className="space-y-8">
                   <AnimatePresence>
                     {!isSignIn && (
                       <motion.div
@@ -192,7 +192,7 @@ const AuthFlow = () => {
                     />
                     {error && (
                       <p
-                        className="absolute text-sm text-red-700 -bottom-5"
+                        className="absolute font-medium text-sm text-red-700 -bottom-6"
                         id="email-error"
                       >
                         Not a valid email address.
@@ -201,7 +201,7 @@ const AuthFlow = () => {
                   </div>
 
                   <motion.div className="space-y-2">
-                    <div className="flex items-center justify-between mt-6">
+                    <div className="flex items-center justify-between">
                       <label
                         htmlFor="password"
                         className="block text-sm font-medium text-gray-700"
@@ -250,7 +250,7 @@ const AuthFlow = () => {
                       </button>
                       {errorPassword && (
                         <p
-                          className="absolute text-sm text-red-700 -bottom-5"
+                          className="absolute font-medium text-sm text-red-700 -bottom-6"
                           id="email-error"
                         >
                           {errorPassword}
@@ -275,7 +275,7 @@ const AuthFlow = () => {
                   </motion.div>
                 </div>
 
-                <div className="mt-6 text-center text-sm">
+                <div className="mt-8 text-center text-sm">
                   <p className="text-gray-500">
                     {isSignIn
                       ? "Don't have an account?"
