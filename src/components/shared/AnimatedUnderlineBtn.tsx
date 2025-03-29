@@ -20,10 +20,10 @@ export function AnimatedUnderlineButton({
       <span className="relative">
         {children}
         {/* Permanent underline that disappears on hover */}
-        <span className="absolute -bottom-[3px] left-0 h-0.5 w-full bg-gray-800 transition-opacity duration-50 group-hover:opacity-0"></span>
+        <span className="absolute -bottom-[3px] left-0 h-0.5 w-full border-t border-gray-900  transition-opacity duration-50 group-hover:opacity-0"></span>
 
         {/* Animated underline that appears from left to right on hover */}
-        <span className="absolute -bottom-[3px] left-0 h-0.5 w-0 bg-gray-800 transition-all duration-500 group-hover:w-full"></span>
+        <span className="absolute -bottom-[3px] left-0 h-0.5 w-0 border-t border-gray-900 transition-all duration-700 group-hover:w-full"></span>
       </span>
     </button>
   );

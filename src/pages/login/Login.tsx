@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { AnimatedUnderlineButton } from '../../components/shared/AnimatedUnderlineBtn';
 import { validateEmail, validatePassword } from '../../utils/validators';
+import { classNames } from '../../utils/helpers';
 
 const AuthFlow = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -158,41 +159,46 @@ const AuthFlow = () => {
                           onChange={handleChangeName}
                           placeholder="Enter your name"
                           required={!isSignIn}
-                          className="h-12 w-full rounded-md border border-gray-300 px-4 pr-10 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-transparent"
+                          className={classNames(
+                            'h-12 w-full rounded-md border px-4 shadow-sm border-gray-300 focus:border-gray-500  focus:ring-black focus:outline-black'
+                          )}
                         />
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  <motion.div>
-                    <div className="relative space-y-2">
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Email
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        onBlur={handleBlurEmail}
-                        value={formData.email}
-                        onChange={handleChangeEmail}
-                        placeholder="Enter your email"
-                        required
-                        className="h-12 w-full rounded-md border border-gray-300 px-4 pr-10 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-transparent"
-                      />
-                      {error && (
-                        <p
-                          className="absolute text-sm text-red-700 -bottom-5"
-                          id="email-error"
-                        >
-                          Not a valid email address.
-                        </p>
+                  <div className="relative space-y-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      onBlur={handleBlurEmail}
+                      value={formData.email}
+                      onChange={handleChangeEmail}
+                      placeholder="Enter your email"
+                      required
+                      className={classNames(
+                        error
+                          ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 focus:border-gray-500  focus:ring-black',
+                        'h-12 w-full rounded-md border px-4 shadow-sm'
                       )}
-                    </div>
-                  </motion.div>
+                    />
+                    {error && (
+                      <p
+                        className="absolute text-sm text-red-700 -bottom-5"
+                        id="email-error"
+                      >
+                        Not a valid email address.
+                      </p>
+                    )}
+                  </div>
 
                   <motion.div className="space-y-2">
                     <div className="flex items-center justify-between mt-6">
@@ -221,7 +227,12 @@ const AuthFlow = () => {
                         onChange={handleChangePassword}
                         placeholder="Enter your password"
                         required
-                        className="h-12 w-full rounded-md border border-gray-300 px-4 pr-10 shadow-sm transition-all duration-200 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-transparent"
+                        className={classNames(
+                          errorPassword
+                            ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+                            : 'border-gray-300 focus:border-gray-500  focus:ring-black',
+                          'h-12 w-full rounded-md border px-4 shadow-sm'
+                        )}
                       />
                       <button
                         type="button"
