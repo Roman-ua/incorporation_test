@@ -95,7 +95,7 @@ const AuthFlow = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 overflow-hidden">
       <div className="w-full max-w-md">
         <div className="w-full flex items-center justify-center mb-8">
-          <img src={logo || '/placeholder.svg'} alt="logo" className="w-44" />
+          <img src={logo || '/placeholder.svg'} alt="logo" className="w-52" />
         </div>
         <AnimatePresence mode="wait">
           {success ? (
