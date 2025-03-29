@@ -12,6 +12,8 @@ const AuthFlow = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [nameError, setNameError] = useState(false);
+
   const [errorPassword, setErrorPassword] = useState<string>('');
 
   const [formData, setFormData] = useState({
@@ -19,6 +21,12 @@ const AuthFlow = () => {
     password: '',
     name: '',
   });
+
+  const handleBlurName = () => {
+    if (!formData.name.length) {
+      setNameError(true);
+    }
+  };
 
   const handleBlurEmail = () => {
     if (validateEmail(formData.email)) {
@@ -56,8 +64,8 @@ const AuthFlow = () => {
     const value = e.target.value;
     setFormData((prevState) => ({ ...prevState, name: value }));
 
-    if (error) {
-      setError('');
+    if (nameError) {
+      setNameError(false);
     }
   };
 
@@ -117,7 +125,7 @@ const AuthFlow = () => {
                   {!isSignIn && (
                     <button
                       onClick={toggleView}
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
                     >
                       <ChevronLeft className="h-4 w-4" />
                       <span className="sr-only">Back</span>
@@ -144,7 +152,7 @@ const AuthFlow = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="space-y-2"
+                        className="space-y-2 relative"
                       >
                         <label
                           htmlFor="name"
@@ -156,13 +164,25 @@ const AuthFlow = () => {
                           id="name"
                           name="name"
                           value={formData.name}
+                          onBlur={handleBlurName}
                           onChange={handleChangeName}
                           placeholder="Enter your name"
                           required={!isSignIn}
                           className={classNames(
-                            'h-12 w-full rounded-md border px-4 shadow-sm border-gray-300 focus:border-gray-500  focus:ring-black focus:outline-black'
+                            nameError
+                              ? 'border-red-400 focus:border-red-500 focus:ring-red-500 focus:outline-red-500'
+                              : 'border-gray-300 focus:border-gray-500  focus:ring-black focus:outline-black',
+                            'h-12 w-full rounded-md border px-4 shadow-sm'
                           )}
                         />
+                        {nameError && (
+                          <p
+                            className="absolute font-medium text-sm text-red-700 -bottom-6"
+                            id="email-error"
+                          >
+                            Name can not be empty
+                          </p>
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>
