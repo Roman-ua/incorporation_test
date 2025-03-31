@@ -5,6 +5,8 @@ import { Check, ChevronLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { AnimatedUnderlineButton } from '../../components/shared/AnimatedUnderlineBtn';
 import { validateEmail, validatePassword } from '../../utils/validators';
 import { classNames } from '../../utils/helpers';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../../constants/navigation/routes';
 
 const AuthFlow = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -236,12 +238,12 @@ const AuthFlow = () => {
                         Password
                       </label>
                       {isSignIn && (
-                        <button
-                          type="button"
+                        <Link
+                          to={ROUTES.RECOVERY_PASS}
                           className="text-xs font-normal text-gray-600 hover:text-gray-800 hover:underline"
                         >
                           Forgot password?
-                        </button>
+                        </Link>
                       )}
                     </div>
                     <div className="relative">
