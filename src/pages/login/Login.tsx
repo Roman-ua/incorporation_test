@@ -69,8 +69,17 @@ const AuthFlow = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const form = e.currentTarget;
+    const isValid = form.checkValidity();
+
+    if (!isValid) {
+      console.log('form is not valid');
+      return;
+    }
+
     setIsLoading(true);
 
     // Simulate API call
@@ -144,7 +153,7 @@ const AuthFlow = () => {
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="p-8 pt-0">
+              <form onSubmit={handleSubmit} className="p-8 pt-0" noValidate>
                 <div className="space-y-8">
                   <AnimatePresence>
                     {!isSignIn && (
@@ -280,7 +289,7 @@ const AuthFlow = () => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className={`mt-8 flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ${
+                      className={`mt-8 flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 hover:bg-gray-700 focus:outline-none ${
                         isLoading ? 'cursor-not-allowed opacity-70' : ''
                       }`}
                     >
@@ -294,14 +303,13 @@ const AuthFlow = () => {
                     <motion.div>
                       <div className="text-xs text-gray-500 text-center">
                         By continuing, you agree to the
-                        <br />
                         <a
                           className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 underline mx-1"
                           rel="noreferrer"
                           href="https://incorporatenow.com/terms"
                           target="_blank"
                         >
-                          Terms & Conditions
+                          Terms
                         </a>
                         and
                         <a
@@ -312,6 +320,7 @@ const AuthFlow = () => {
                         >
                           Privacy Policy
                         </a>
+                        .
                       </div>
                     </motion.div>
                   )}
