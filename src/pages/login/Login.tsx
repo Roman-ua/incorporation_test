@@ -186,7 +186,6 @@ const AuthFlow = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-
                   <div className="relative space-y-2">
                     <label
                       htmlFor="email"
@@ -219,7 +218,6 @@ const AuthFlow = () => {
                       </p>
                     )}
                   </div>
-
                   <motion.div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label
@@ -278,7 +276,6 @@ const AuthFlow = () => {
                       )}
                     </div>
                   </motion.div>
-
                   <motion.div>
                     <button
                       type="submit"
@@ -293,6 +290,31 @@ const AuthFlow = () => {
                       {isSignIn ? 'Sign in' : 'Create account'}
                     </button>
                   </motion.div>
+                  {!isSignIn && (
+                    <motion.div>
+                      <div className="text-xs text-gray-500 text-center">
+                        By continuing, you agree to the
+                        <br />
+                        <a
+                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 underline mx-1"
+                          rel="noreferrer"
+                          href="https://incorporatenow.com/terms"
+                          target="_blank"
+                        >
+                          Terms & Conditions
+                        </a>
+                        and
+                        <a
+                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 underline mx-1"
+                          rel="noreferrer"
+                          href="https://incorporatenow.com/privacy-policy"
+                          target="_blank"
+                        >
+                          Privacy Policy
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
 
                 <div className="mt-8 text-center text-sm">
