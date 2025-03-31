@@ -32,7 +32,7 @@ const AuthFlow = () => {
     if (validateEmail(formData.email)) {
       setError('');
     } else {
-      setError('Email не валиден');
+      setError('Please enter a valid email address.');
     }
   };
 
@@ -223,7 +223,7 @@ const AuthFlow = () => {
                         className="absolute font-medium text-sm text-red-700 -bottom-6"
                         id="email-error"
                       >
-                        Not a valid email address.
+                        {error}
                       </p>
                     )}
                   </div>
