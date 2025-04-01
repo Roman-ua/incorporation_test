@@ -146,7 +146,7 @@ const RecoverPasswordPage = () => {
                       {isLoading ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : null}
-                      Reset Password
+                      Reset password
                     </button>
                   </motion.div>
                   <div className="mt-8 text-center text-sm">
