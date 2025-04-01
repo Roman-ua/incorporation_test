@@ -1,9 +1,9 @@
 export const validatePassword = (password: string): string => {
   if (password.length < 8) {
-    return 'Minimum number of characters 8.';
+    return 'Password must be 8+ characters';
   }
   if (!/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-    return 'Incorrect password.';
+    return 'With letters, numbers, and special character.';
   }
   return '';
 };

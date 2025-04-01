@@ -24,23 +24,9 @@ const AuthFlow = () => {
     name: '',
   });
 
-  const handleBlurName = () => {
-    if (!formData.name.length) {
-      setNameError(true);
-    }
-  };
-
-  const handleBlurEmail = () => {
-    if (validateEmail(formData.email)) {
-      setError('');
-    } else {
-      setError('Please enter a valid email address.');
-    }
-  };
-
   const handleBlurPassword = () => {
     const validationError = validatePassword(formData.password);
-    setErrorPassword(validationError);
+    setErrorPassword(isSignIn ? 'Incorrect password.' : validationError);
   };
 
   const handleChangePassword = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -53,6 +39,13 @@ const AuthFlow = () => {
     }
   };
 
+  const handleBlurEmail = () => {
+    if (validateEmail(formData.email)) {
+      setError('');
+    } else {
+      setError('Please enter a valid email address.');
+    }
+  };
   const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFormData((prevState) => ({ ...prevState, email: value }));
@@ -62,6 +55,11 @@ const AuthFlow = () => {
     }
   };
 
+  const handleBlurName = () => {
+    if (!formData.name.length) {
+      setNameError(true);
+    }
+  };
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFormData((prevState) => ({ ...prevState, name: value }));
@@ -156,7 +154,7 @@ const AuthFlow = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="p-8 pt-0" noValidate>
-                <div className="space-y-8">
+                <div>
                   <AnimatePresence>
                     {!isSignIn && (
                       <motion.div
@@ -191,13 +189,13 @@ const AuthFlow = () => {
                             className="absolute font-medium text-sm text-red-700 -bottom-6"
                             id="email-error"
                           >
-                            Name can not be empty
+                            Please provide your first and last name.
                           </p>
                         )}
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  <div className="relative space-y-2">
+                  <div className="relative space-y-2 mt-8">
                     <label
                       htmlFor="email"
                       className="block text-sm font-medium text-gray-700"
@@ -229,7 +227,7 @@ const AuthFlow = () => {
                       </p>
                     )}
                   </div>
-                  <motion.div className="space-y-2">
+                  <motion.div className="space-y-2 mt-8">
                     <div className="flex items-center justify-between">
                       <label
                         htmlFor="password"
@@ -302,11 +300,11 @@ const AuthFlow = () => {
                     </button>
                   </motion.div>
                   {!isSignIn && (
-                    <motion.div>
+                    <motion.div className="last:mt-4">
                       <div className="text-xs text-gray-500 text-center">
                         By continuing, you agree to the
                         <a
-                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 underline mx-1"
+                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 mx-1"
                           rel="noreferrer"
                           href="https://incorporatenow.com/terms"
                           target="_blank"
@@ -315,7 +313,7 @@ const AuthFlow = () => {
                         </a>
                         and
                         <a
-                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 underline mx-1"
+                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 ml-1"
                           rel="noreferrer"
                           href="https://incorporatenow.com/privacy-policy"
                           target="_blank"
