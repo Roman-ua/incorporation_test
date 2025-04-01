@@ -312,7 +312,7 @@ const AuthFlow = () => {
                       <div className="text-xs text-gray-500 text-center">
                         By continuing, you agree to the
                         <a
-                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 mx-1"
+                          className="font-medium hover:text-gray-600 transition-all ease-in-out duration-150 mx-1"
                           rel="noreferrer"
                           href="https://incorporatenow.com/terms"
                           target="_blank"
@@ -321,7 +321,7 @@ const AuthFlow = () => {
                         </a>
                         and
                         <a
-                          className="text-gray-400 hover:text-gray-600 transition-all ease-in-out duration-150 ml-1"
+                          className="font-medium hover:text-gray-600 transition-all ease-in-out duration-150 ml-1"
                           rel="noreferrer"
                           href="https://incorporatenow.com/privacy-policy"
                           target="_blank"
