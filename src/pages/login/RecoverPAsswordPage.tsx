@@ -45,6 +45,7 @@ const RecoverPasswordPage = () => {
     const isValid = form.checkValidity();
 
     if (!isValid) {
+      setError('Please enter a valid email address.');
       console.log('form is not valid');
       return;
     }
@@ -138,7 +139,7 @@ const RecoverPasswordPage = () => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className={`mt-8 flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 hover:bg-gray-700 focus:outline-none ${
+                      className={`mt-8 flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 focus:outline-none ${
                         isLoading ? 'cursor-not-allowed opacity-70' : ''
                       }`}
                     >

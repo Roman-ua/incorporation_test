@@ -72,6 +72,17 @@ const AuthFlow = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const validationError = validatePassword(formData.password);
+    if (validationError) {
+      setErrorPassword(isSignIn ? 'Incorrect password.' : validationError);
+    }
+    if (!validateEmail(formData.email)) {
+      setError('Please enter a valid email address.');
+    }
+    if (!formData.name.length) {
+      setNameError(true);
+    }
+
     const form = e.currentTarget;
     const isValid = form.checkValidity();
 
@@ -279,15 +290,15 @@ const AuthFlow = () => {
                         </span>
                       </button>
                       {errorPassword && (
-                        <p
+                        <motion.div
                           className={classNames(
                             'absolute font-medium text-sm text-red-700',
                             isSignIn ? '-bottom-6' : '-bottom-11'
                           )}
-                          id="email-error"
+                          id="pass-error"
                         >
                           {errorPassword}
-                        </p>
+                        </motion.div>
                       )}
                     </div>
                   </motion.div>
@@ -296,8 +307,8 @@ const AuthFlow = () => {
                       type="submit"
                       disabled={isLoading}
                       className={classNames(
-                        'flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 hover:bg-black focus:outline-none',
-                        isSignIn ? 'mt-8' : 'mt-14 ',
+                        'flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 focus:outline-none',
+                        !isSignIn && errorPassword ? 'mt-14 ' : 'mt-8',
                         isLoading ? 'cursor-not-allowed opacity-70' : ''
                       )}
                     >
