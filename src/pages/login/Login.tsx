@@ -13,9 +13,9 @@ const AuthFlow = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
   const [error, setError] = useState('');
   const [nameError, setNameError] = useState(false);
-
   const [errorPassword, setErrorPassword] = useState<string>('');
 
   const [formData, setFormData] = useState({
@@ -98,6 +98,9 @@ const AuthFlow = () => {
   const toggleView = () => {
     setIsSignIn(!isSignIn);
     setFormData({ email: '', password: '', name: '' });
+    setError('');
+    setNameError(false);
+    setErrorPassword('');
   };
 
   return (
@@ -277,7 +280,10 @@ const AuthFlow = () => {
                       </button>
                       {errorPassword && (
                         <p
-                          className="absolute font-medium text-sm text-red-700 -bottom-6"
+                          className={classNames(
+                            'absolute font-medium text-sm text-red-700',
+                            isSignIn ? '-bottom-6' : '-bottom-11'
+                          )}
                           id="email-error"
                         >
                           {errorPassword}
@@ -289,9 +295,11 @@ const AuthFlow = () => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className={`mt-8 flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 hover:bg-black focus:outline-none ${
+                      className={classNames(
+                        'flex h-12 w-full items-center justify-center rounded-md bg-gray-900 font-medium text-white shadow-sm transition-all duration-200 hover:bg-black focus:outline-none',
+                        isSignIn ? 'mt-8' : 'mt-14 ',
                         isLoading ? 'cursor-not-allowed opacity-70' : ''
-                      }`}
+                      )}
                     >
                       {isLoading ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
