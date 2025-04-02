@@ -21,11 +21,13 @@ const AddFullReportSteps = ({
   currentStep,
   visitedSteps,
   setCurrentStep,
+  completedSteps,
 }: {
   editMode: boolean;
   currentStep: number;
   visitedSteps: number[];
   setCurrentStep: (value: number) => void;
+  completedSteps: boolean;
 }) => {
   const [steps, setSteps] = useState(stepsData);
 
@@ -81,7 +83,9 @@ const AddFullReportSteps = ({
                   <div
                     className={classNames(
                       'absolute left-2 top-5 h-4 -ml-px mt-0.5 w-0.5 bg-gray-200 max-lg:-right-4 max-lg:top-2 max-lg:left-auto max-lg:h-0.5 max-lg:w-2',
-                      currentStep === 2 ? 'bg-green-400' : 'bg-gray-200'
+                      currentStep === 2 && completedSteps
+                        ? 'bg-green-400'
+                        : 'bg-gray-200'
                     )}
                     aria-hidden="true"
                   />
@@ -91,13 +95,17 @@ const AddFullReportSteps = ({
                     <span
                       className={classNames(
                         'relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-gray-200',
-                        currentStep === 2 ? 'bg-green-400' : 'bg-gray-200'
+                        currentStep === 2 && completedSteps
+                          ? 'bg-green-400'
+                          : 'bg-gray-200'
                       )}
                     >
                       <CheckIcon
                         className={classNames(
                           'h-2.5 w-2.5 font-bold',
-                          currentStep === 2 ? 'text-white' : 'text-gray-700'
+                          currentStep === 2 && completedSteps
+                            ? 'text-white'
+                            : 'text-gray-700'
                         )}
                         aria-hidden="true"
                       />

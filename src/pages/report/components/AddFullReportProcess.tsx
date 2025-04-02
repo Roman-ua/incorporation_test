@@ -73,6 +73,7 @@ const defaultUS = {
 };
 
 const AddFullReportProcess = () => {
+  const [completedSteps, setCompletedSteps] = useState(false);
   const [mandatoryErrorStep, setMandatoryErrorStep] = useState<number>(-1);
   const [reportYear, setReportYear] = React.useState<string>('');
 
@@ -96,7 +97,6 @@ const AddFullReportProcess = () => {
   const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
 
   const [file, setFile] = React.useState<IFiles | null>(null);
-  console.log(file, 'file');
 
   const setStateIdHandler = (value: string) => {
     const sanitizedValue = value.replace(/[^a-zA-Z0-9]/g, '');
@@ -154,7 +154,21 @@ const AddFullReportProcess = () => {
   useEffect(() => {
     setFile(selectedFile);
   }, [selectedFile]);
-  console.log(file, selectedFile, 'tut');
+
+  useEffect(() => {
+    if (
+      address.address0 &&
+      mailingAddress.address0 &&
+      agentName &&
+      people.length &&
+      file?.file
+    ) {
+      setCompletedSteps(true);
+    } else {
+      setCompletedSteps(false);
+    }
+  }, [address, mailingAddress, agentName, people.length, file]);
+
   return (
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
@@ -183,6 +197,7 @@ const AddFullReportProcess = () => {
             currentStep={currentStep}
             visitedSteps={visitedSteps}
             setCurrentStep={setCurrentStep}
+            completedSteps={completedSteps}
           />
         </div>
         <div className="w-[870px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
@@ -330,8 +345,9 @@ const AddFullReportProcess = () => {
                     Cancel
                   </button>
                   <button
+                    disabled={!completedSteps}
                     className={classNames(
-                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out',
+                      'relative inline-flex rounded-md  items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out disabled:bg-gray-500',
                       'bg-mainBlue hover:bg-sideBarBlue'
                     )}
                   >
