@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
-import { truncateString } from '../../../utils/helpers';
 import { IFiles } from '../../../interfaces/interfaces';
 
 interface IProps {
@@ -28,10 +27,11 @@ const FeeFile = ({ setFile }: IProps) => {
         <div className="w-full">
           <FileDownloadProgress
             deleteFileHandler={deleteFileHandler}
-            fileName={truncateString(selectedFile.name, 15)}
+            fileName={selectedFile.name}
             fileSize={`${selectedFile?.size} MB`}
             fileFormat={selectedFile.format}
             duration={3}
+            wrapperStyles={'bg-white'}
           />
         </div>
       ) : (

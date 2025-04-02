@@ -5,11 +5,7 @@ import {
   ReportData,
 } from '../../../interfaces/interfaces';
 import SectionHeading from '../../company/components/SectionHeading';
-import {
-  classNames,
-  dockFieldHandler,
-  truncateString,
-} from '../../../utils/helpers';
+import { classNames, dockFieldHandler } from '../../../utils/helpers';
 import { USStates } from '../../../constants/form/form';
 import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 import { IconInfoCircle } from '@tabler/icons-react';
@@ -259,10 +255,11 @@ const AddReportDocShort = ({
             <div className="w-full">
               <FileDownloadProgress
                 deleteFileHandler={deleteFileHandler}
-                fileName={truncateString(selectedFile.name, 15)}
+                fileName={selectedFile.name}
                 fileSize={`${selectedFile?.size} MB`}
                 fileFormat={selectedFile.format}
                 duration={3}
+                wrapperStyles={'bg-white'}
               />
             </div>
           ) : (
