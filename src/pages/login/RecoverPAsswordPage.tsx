@@ -73,7 +73,7 @@ const RecoverPasswordPage = () => {
           <img src={logo || '/placeholder.svg'} alt="logo" className="w-52" />
         </div>
         <AnimatePresence mode="wait">
-          {success ? (
+          {!success ? (
             <>
               <motion.div
                 key="success"
@@ -82,28 +82,25 @@ const RecoverPasswordPage = () => {
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mb-4">
                   <Check className="h-8 w-8 text-green-600" />
                 </div>
-                <h2 className="text-2xl font-medium text-gray-900 text-center mb-2">
+                <h2 className="text-2xl font-medium text-gray-900 text-center mb-8">
                   We’ve sent you an email with instructions to reset your
                   password.
                 </h2>
-                <p className="text-center text-gray-500 mb-8">
-                  Check your inbox for an email from us.
-                </p>
+
                 <p className="text-xs text-gray-500 text-center">
-                  Still need help?
+                  Still need help? Contact us at
                   <a
                     className="font-medium hover:text-gray-600 transition-all ease-in-out duration-150 ml-1"
                     rel="noreferrer"
-                    href="https://incorporatenow.com/terms"
-                    target="_blank"
+                    href="mailto:support@incorporatenow.com"
                   >
-                    Contact Support
+                    support@incorporatenow.com
                   </a>
                   .
                 </p>
               </motion.div>
               <CountdownTimer
-                text="Redirection to Login page in 10 seconds..."
+                text="Redirecting to Sign in page in 10 seconds..."
                 onComplete={countDownComplete}
               />
             </>
