@@ -7,6 +7,7 @@ import { classNames } from '../../utils/helpers';
 import { AnimatedUnderlineButton } from '../../components/shared/AnimatedUnderlineBtn';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
+import { CountdownTimer } from '../../components/shared/CountDown';
 
 const RecoverPasswordPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -57,12 +58,12 @@ const RecoverPasswordPage = () => {
 
     setIsLoading(false);
     setSuccess(true);
+  };
 
-    // Reset success state after showing success animation
-    setTimeout(() => {
-      setSuccess(false);
-      setFormData({ email: '', password: '', name: '' });
-    }, 2000);
+  const countDownComplete = () => {
+    setFormData({ email: '', password: '', name: '' });
+    setSuccess(false);
+    navigate(ROUTES.LOGIN);
   };
 
   return (
@@ -73,18 +74,39 @@ const RecoverPasswordPage = () => {
         </div>
         <AnimatePresence mode="wait">
           {success ? (
-            <motion.div
-              key="success"
-              className="flex flex-col items-center justify-center space-y-4 rounded-lg bg-white p-8 shadow-lg"
-            >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                <Check className="h-8 w-8 text-green-600" />
-              </div>
-              <h2 className="text-2xl font-medium text-gray-900">Success!</h2>
-              <p className="text-center text-gray-500">
-                Your request successfully sent
-              </p>
-            </motion.div>
+            <>
+              <motion.div
+                key="success"
+                className="flex flex-col items-center justify-center rounded-lg bg-white p-8 shadow-lg"
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mb-4">
+                  <Check className="h-8 w-8 text-green-600" />
+                </div>
+                <h2 className="text-2xl font-medium text-gray-900 text-center mb-2">
+                  We’ve sent you an email with instructions to reset your
+                  password.
+                </h2>
+                <p className="text-center text-gray-500 mb-8">
+                  Check your inbox for an email from us.
+                </p>
+                <p className="text-xs text-gray-500 text-center">
+                  Still need help?
+                  <a
+                    className="font-medium hover:text-gray-600 transition-all ease-in-out duration-150 ml-1"
+                    rel="noreferrer"
+                    href="https://incorporatenow.com/terms"
+                    target="_blank"
+                  >
+                    Contact Support
+                  </a>
+                  .
+                </p>
+              </motion.div>
+              <CountdownTimer
+                text="Redirection to Login page in 10 seconds..."
+                onComplete={countDownComplete}
+              />
+            </>
           ) : (
             <motion.div
               key="form"
