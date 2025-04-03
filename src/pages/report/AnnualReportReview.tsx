@@ -97,6 +97,7 @@ const AnnualReportReview = () => {
                 />
               </div>
               <SubmitReviewStep
+                confirmStep={false}
                 clickHandlerPeople={() => {
                   setEditMode(true);
                   setCurrentStep(2);
@@ -148,6 +149,7 @@ const AnnualReportReview = () => {
                 <div className="absolute -bottom-10 -right-5 -left-5 -top-5 border border-gray-200 rounded-md z-40 bg-transparrent" />
                 <div className="relative z-50">
                   <SubmitReviewStep
+                    confirmStep={true}
                     setReportData={setDataDuplicate}
                     reportData={dataDuplicate}
                     status={'In Progress'}

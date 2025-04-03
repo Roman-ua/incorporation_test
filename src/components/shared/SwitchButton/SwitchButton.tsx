@@ -6,6 +6,7 @@ interface SwitchButtonProps {
   selected: 1 | 2;
   onSelect: (option: 1 | 2) => void;
   className?: string;
+  disabled?: boolean;
 }
 
 const SwitchButton: React.FC<SwitchButtonProps> = ({
@@ -14,12 +15,14 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
   selected,
   onSelect,
   className = '',
+  disabled,
 }) => {
   return (
     <div
       className={`inline-grid grid-cols-2 rounded-lg bg-gray-100 p-0.5 ${className}`}
     >
       <button
+        disabled={disabled}
         onClick={(e) => {
           e.preventDefault();
           onSelect(1);
@@ -33,6 +36,7 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({
         {option1}
       </button>
       <button
+        disabled={disabled}
         onClick={(e) => {
           e.preventDefault();
           onSelect(2);

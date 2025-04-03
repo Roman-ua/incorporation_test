@@ -15,6 +15,7 @@ interface IProps {
   data: AddressFields;
   countryDisabled: boolean;
   setData: (key: string, value: string) => void;
+  stateDisabled?: boolean;
 }
 
 const addressFieldsMock = [
@@ -27,6 +28,7 @@ const SimpleAddressForm = ({
   inputCommonClasses,
   requiredError,
   countryDisabled,
+  stateDisabled,
   data,
   setData,
 }: IProps) => {
@@ -147,9 +149,9 @@ const SimpleAddressForm = ({
               (option) => option.title === data?.state
             ) as SelectMenuOption
           }
-          disableDropDown={disabledFlag}
+          disableDropDown={disabledFlag || stateDisabled}
           inputExtraStyles={`${requiredError && !data.state ? 'bg-red-50' : 'bg-white'} min-w-[110px] max-w-[110px]`}
-          wrapperExtraStyles={'rounded-none border-t-0 border-l-0 border-r-0'}
+          wrapperExtraStyles={`rounded-none border-t-0 border-l-0 border-r-0 ${stateDisabled ? 'opacity-60' : ''}`}
         />
         <input
           className={classNames(

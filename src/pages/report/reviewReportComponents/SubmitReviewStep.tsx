@@ -12,7 +12,6 @@ import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 import {
   IconArrowBackUp,
   IconInfoCircle,
-  IconSettings,
   IconTrashX,
 } from '@tabler/icons-react';
 import { FaSignature } from 'react-icons/fa6';
@@ -20,6 +19,7 @@ import USAddressForm from '../../createCompany/components/USAddressForm';
 import { mockReportData } from '../../../mock/mockData';
 import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 import { BiEditAlt } from 'react-icons/bi';
+import RegAgentDataHandling from '../components/RegisteredAgentHandling';
 
 interface IProps {
   reportData: ReportData;
@@ -29,6 +29,7 @@ interface IProps {
   clickHandlerPeople?: () => void;
   clickHandlerAddress?: () => void;
   status: string;
+  confirmStep: boolean;
 }
 
 const statusBadge = (status: string) => {
@@ -105,6 +106,7 @@ const SubmitReviewStep = ({
   peopleData,
   clickHandlerPeople,
   status,
+  confirmStep,
 }: IProps) => {
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
@@ -253,16 +255,17 @@ const SubmitReviewStep = ({
       return data;
     });
   };
-  console.log(reportData.updatedMailingAddress);
+
   const [agentreportData, setAgentreportData] = React.useState(agentReportData);
   const [editingAddressAgent, setEditingAddressAgent] = useState(false);
-  const [agentEditing, setAgentEditing] = React.useState(false);
 
-  const updateAgentAddress = (data: AddressFields) => {
+  const submitRegAgentData = (address: AddressFields, name: string) => {
     setAgentreportData((prevState) => ({
       ...prevState,
-      address: { ...prevState.address, ...data },
+      name: name,
+      address: { ...prevState.address, ...address },
     }));
+
     setEditingAddressAgent(false);
   };
 
@@ -355,14 +358,16 @@ const SubmitReviewStep = ({
                         reportData.updatedAddress || reportData.address
                       )}
                     </div>
-                    <div
-                      onClick={() => {
-                        setEditingAddress(true);
-                      }}
-                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                    >
-                      <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                    </div>
+                    {!confirmStep && (
+                      <div
+                        onClick={() => {
+                          setEditingAddress(true);
+                        }}
+                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-start justify-between w-full group/updated">
                     {reportData.updatedAddress && (
@@ -430,14 +435,16 @@ const SubmitReviewStep = ({
                             reportData.mailingAddress
                         )}
                       </div>
-                      <div
-                        onClick={() => {
-                          setEditingMailingAddress(true);
-                        }}
-                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                      >
-                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                      </div>
+                      {!confirmStep && (
+                        <div
+                          onClick={() => {
+                            setEditingMailingAddress(true);
+                          }}
+                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
                     </div>
                     <div className="flex items-start justify-between w-full group/updated">
                       {reportData.updatedMailingAddress && (
@@ -619,7 +626,7 @@ const SubmitReviewStep = ({
                         }}
                         className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                       >
-                        <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
                       </div>
                       <div
                         onClick={() => {
@@ -661,105 +668,90 @@ const SubmitReviewStep = ({
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           Registered Agent
-          <button
-            type="button"
-            onClick={() => {
-              if (!agentEditing) {
-                setAgentEditing(true);
-              } else {
-                setAgentEditing(false);
-                setEditingAddressAgent(false);
-              }
-            }}
-            className="px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150"
-          >
-            {agentEditing ? 'Complete' : 'Make Changes'}
-          </button>
         </div>
 
         <div className="w-full flex items-start justify-between mb-12 max-lg:flex-col">
-          <div className="w-full flex items-start justify-between pb-2 max-lg:w-full">
-            <div className="pr-1 text-gray-700 text-sm">
-              <div className="text-sm text-gray-500 mb-1">Name</div>
-              <div className="font-semibold text-gray-800">
-                {agentreportData.name}
-              </div>
-            </div>
-          </div>
-          <div className="w-full flex items-start justify-end pb-2">
-            {editingAddressAgent ? (
-              <div className="border border-gray-200 rounded-md p-2 bg-white relative">
-                {/*<XBtn clickHandler={() => setEditingAddressType(-1)} />*/}
-                <USAddressForm
-                  disabledFlag={false}
-                  setFromState={(data) => updateAgentAddress(data)}
-                  heading={''}
-                  requiredError={false}
-                  value={agentreportData.address}
-                />
-              </div>
-            ) : (
-              <div className="w-full pr-2 text-gray-800 text-sm">
-                <div className="text-sm text-gray-500 mb-1">Address</div>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div>
-                      <span>{agentreportData.address.address0}, </span>
-                      {agentreportData.address.address1 && (
-                        <span>{agentreportData.address.address1}</span>
-                      )}
-                    </div>
-                    <div>
-                      {agentreportData.address.address2 && (
-                        <span>{agentreportData.address.address2}</span>
-                      )}
-                      {agentreportData.address.address3 && (
-                        <span>
-                          {agentreportData.address.address2 ? ',' : ''}{' '}
-                          {agentreportData.address.address3}
-                        </span>
-                      )}
-                    </div>
-                    <div>
-                      <span>{agentreportData.address.city}, </span>
-                      <span>
-                        {USStates.find(
-                          (item) => item.title === agentreportData.address.state
-                        )?.value || ''}{' '}
-                      </span>
-                      <span>{agentreportData.address.zip}</span>
-                      {agentreportData.address?.county && (
-                        <span>
-                          , {agentreportData.address?.county}
-                          <TooltipWrapper tooltipText="County">
-                            <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
-                          </TooltipWrapper>
-                        </span>
-                      )}
-                    </div>
-                    <div>{agentreportData.address.country}</div>
-                  </div>
-                  <div
-                    className={classNames(
-                      ' transform transition-all duration-300 ease-out',
-                      agentEditing
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-4 pointer-events-none'
-                    )}
-                  >
-                    <div
-                      onClick={() => {
-                        setEditingAddressAgent(true);
-                      }}
-                      className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                    >
-                      <IconSettings className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
-                    </div>
+          {editingAddressAgent ? (
+            <RegAgentDataHandling
+              agentName={agentreportData.name}
+              agentAddress={agentreportData.address}
+              closeModalHandler={() => setEditingAddressAgent(false)}
+              submitProcess={submitRegAgentData}
+              hideX={false}
+            />
+          ) : (
+            <>
+              <div className="w-full flex items-start justify-between pb-2 max-lg:w-full">
+                <div className="pr-1 text-gray-700 text-sm">
+                  <div className="text-sm text-gray-500 mb-1">Name</div>
+                  <div className="font-semibold text-gray-800">
+                    {agentreportData.name}
                   </div>
                 </div>
               </div>
-            )}
-          </div>
+              <div className="w-full flex items-start justify-end pb-2">
+                <div className="w-full pr-2 text-gray-800 text-sm">
+                  <div className="text-sm text-gray-500 mb-1">Address</div>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div>
+                        <span>{agentreportData.address.address0}, </span>
+                        {agentreportData.address.address1 && (
+                          <span>{agentreportData.address.address1}</span>
+                        )}
+                      </div>
+                      <div>
+                        {agentreportData.address.address2 && (
+                          <span>{agentreportData.address.address2}</span>
+                        )}
+                        {agentreportData.address.address3 && (
+                          <span>
+                            {agentreportData.address.address2 ? ',' : ''}{' '}
+                            {agentreportData.address.address3}
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        <span>{agentreportData.address.city}, </span>
+                        <span>
+                          {USStates.find(
+                            (item) =>
+                              item.title === agentreportData.address.state
+                          )?.value || ''}{' '}
+                        </span>
+                        <span>{agentreportData.address.zip}</span>
+                        {agentreportData.address?.county && (
+                          <span>
+                            , {agentreportData.address?.county}
+                            <TooltipWrapper tooltipText="County">
+                              <IconInfoCircle className="w-3.5 h-3.5 relative -right-1 top-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-500" />
+                            </TooltipWrapper>
+                          </span>
+                        )}
+                      </div>
+                      <div>{agentreportData.address.country}</div>
+                    </div>
+                    {!confirmStep && (
+                      <div
+                        className={classNames(
+                          'transform transition-all duration-300 ease-out opacity-100 translate-y-0'
+                        )}
+                      >
+                        <div
+                          onClick={() => {
+                            setEditingAddressAgent(true);
+                          }}
+                          className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
