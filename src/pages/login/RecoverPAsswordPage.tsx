@@ -73,7 +73,7 @@ const RecoverPasswordPage = () => {
           <img src={logo || '/placeholder.svg'} alt="logo" className="w-52" />
         </div>
         <AnimatePresence mode="wait">
-          {!success ? (
+          {success ? (
             <>
               <motion.div
                 key="success"
