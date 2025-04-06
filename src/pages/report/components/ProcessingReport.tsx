@@ -159,10 +159,10 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
     }, 1000);
   };
 
-  const toggleHandler = (index: number) => {
+  const toggleHandler = (index: number, isCeckbox?: boolean) => {
     toggleStep(index);
 
-    if (freeSteps.includes(index)) {
+    if (freeSteps.includes(index) && isCeckbox) {
       markAsCompleted(index);
       return;
     }
@@ -307,7 +307,7 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                       mandatoryError={false}
                       underInput={true}
                       checked={checkHandler(index, step.title)}
-                      onChange={() => toggleHandler(index)}
+                      onChange={() => toggleHandler(index, true)}
                     />
                   )}
 
