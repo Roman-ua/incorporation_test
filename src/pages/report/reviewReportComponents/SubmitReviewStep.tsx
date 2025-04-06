@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AddressFields,
   Agent,
@@ -20,6 +20,7 @@ import { mockReportData } from '../../../mock/mockData';
 import PersonDataHandling from '../../../components/shared/PersonData/PersonDataHandling';
 import { BiEditAlt } from 'react-icons/bi';
 import RegAgentDataHandling from '../components/RegisteredAgentHandling';
+import { TbUserPlus } from 'react-icons/tb';
 
 interface IProps {
   reportData: ReportData;
@@ -104,7 +105,6 @@ const SubmitReviewStep = ({
   setReportData,
   agentReportData,
   peopleData,
-  clickHandlerPeople,
   status,
   confirmStep,
 }: IProps) => {
@@ -191,7 +191,7 @@ const SubmitReviewStep = ({
 
   const [peoplereportData, setPeoplereportData] =
     useState<Person[]>(peopleData);
-  const [peopleIsEdditing, setPeopleIsEdditing] = React.useState(false);
+  const [allPeopleRemoved, setAllPeopleRemoved] = React.useState(false);
   const [editingPersonId, setEditingPersonId] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
   const returnPersonHandler = (id: number) => {
@@ -255,6 +255,20 @@ const SubmitReviewStep = ({
       return data;
     });
   };
+
+  useEffect(() => {
+    const allRemoved = peoplereportData.every(
+      (person) => person.removed === true
+    );
+
+    if (allRemoved) {
+      console.log('✅ Все пользователи удалены');
+      // Вызови свою функцию здесь
+      setAllPeopleRemoved(true);
+    } else {
+      setAllPeopleRemoved(false);
+    }
+  }, [peoplereportData]);
 
   const [agentreportData, setAgentreportData] = React.useState(agentReportData);
   const [editingAddressAgent, setEditingAddressAgent] = useState(false);
@@ -479,38 +493,15 @@ const SubmitReviewStep = ({
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           People
           <div className="flex items-center justify-end ml-auto">
-            {peopleIsEdditing && (
-              <div
-                onClick={() => setAddPersonPressed(true)}
-                className="
-                  mr-1 px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer
-                "
-              >
-                Add Person
-              </div>
-            )}
-            {clickHandlerPeople && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (!peopleIsEdditing) {
-                    setPeopleIsEdditing(true);
-                  } else {
-                    setPeopleIsEdditing(false);
-                    setEditingMailingAddress(false);
-                    setEditingAddress(false);
-                  }
-                }}
-                className="
-                  px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150
-                "
-              >
-                {peopleIsEdditing ? 'Complete' : 'Make Changes'}
-              </button>
-            )}
+            <div
+              onClick={() => setAddPersonPressed(true)}
+              className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+            >
+              <TbUserPlus className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+            </div>
           </div>
         </div>
-        {addPersonPressed && (
+        {(addPersonPressed || allPeopleRemoved) && (
           <PersonDataHandling
             person={undefined}
             closeModalHandler={() => setAddPersonPressed(false)}
@@ -611,10 +602,7 @@ const SubmitReviewStep = ({
                 </div>
                 <div
                   className={classNames(
-                    ' transform transition-all duration-300 ease-out',
-                    peopleIsEdditing
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 translate-y-4 pointer-events-none'
+                    'transform transition-all duration-300 ease-out opacity-100 translate-y-0'
                   )}
                 >
                   {!person.removed ? (
@@ -624,17 +612,17 @@ const SubmitReviewStep = ({
                           setAddPersonPressed(false);
                           setEditingPersonId(person.id);
                         }}
-                        className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        className="group/edit h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                       >
-                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                        <BiEditAlt className="w-4 h-4 text-gray-500 group-hover/edit:text-gray-900 transition-all easy-in-out duration-150" />
                       </div>
                       <div
                         onClick={() => {
                           removePersonHandler(person.id);
                         }}
-                        className="ml-1 group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        className="ml-1 group/remove h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
                       >
-                        <IconTrashX className="w-4 h-4 text-red-500 group-hover:text-red-700 transition-all easy-in-out duration-150" />
+                        <IconTrashX className="w-4 h-4 text-red-500 group-hover/remove:text-red-700 transition-all easy-in-out duration-150" />
                       </div>
                     </div>
                   ) : (
