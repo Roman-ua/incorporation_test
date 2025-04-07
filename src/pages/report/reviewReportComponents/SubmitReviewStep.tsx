@@ -194,6 +194,21 @@ const SubmitReviewStep = ({
   const [allPeopleRemoved, setAllPeopleRemoved] = React.useState(false);
   const [editingPersonId, setEditingPersonId] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
+
+  const returnEdditedPersonHandler = (id: number) => {
+    setPeoplereportData((prevState) => {
+      const data = [...prevState];
+      const sourcePerson = peopleData.find((person) => person.id === id);
+
+      const currentPersonIndex = data.findIndex((person) => person.id === id);
+
+      if (currentPersonIndex !== -1 && sourcePerson) {
+        data[currentPersonIndex] = sourcePerson;
+      }
+      return data;
+    });
+  };
+
   const returnPersonHandler = (id: number) => {
     setPeoplereportData((prevState) => {
       const data = [...prevState];
@@ -210,6 +225,11 @@ const SubmitReviewStep = ({
       const data = [...prevState];
       const currentPersonIndex = data.findIndex((person) => person.id === id);
 
+      if (data[currentPersonIndex].signer && data[currentPersonIndex + 1]) {
+        data[currentPersonIndex].signer = false;
+        data[currentPersonIndex + 1].signer = true;
+      }
+
       if (currentPersonIndex !== -1) {
         data[currentPersonIndex].removed = true;
       }
@@ -225,6 +245,7 @@ const SubmitReviewStep = ({
 
       if (person.signer) {
         const prevSignerIndex = data.findIndex((item) => item.signer);
+
         if (prevSignerIndex !== -1) {
           data[prevSignerIndex].signer = false;
         }
@@ -232,6 +253,7 @@ const SubmitReviewStep = ({
 
       if (currentItemIndex !== -1) {
         data[currentItemIndex] = person;
+        data[currentItemIndex].edited = true;
       }
       return data;
     });
@@ -262,8 +284,6 @@ const SubmitReviewStep = ({
     );
 
     if (allRemoved) {
-      console.log('✅ Все пользователи удалены');
-      // Вызови свою функцию здесь
       setAllPeopleRemoved(true);
     } else {
       setAllPeopleRemoved(false);
@@ -571,33 +591,7 @@ const SubmitReviewStep = ({
                       person.removed ? 'text-gray-400' : 'text-gray-800'
                     )}
                   >
-                    <div>
-                      <span>{person.address.address0}, </span>
-                      {person.address.address1 && (
-                        <span>{person.address.address1}</span>
-                      )}
-                    </div>
-                    <div>
-                      {person.address.address2 && (
-                        <span>{person.address.address2}</span>
-                      )}
-                      {person.address.address3 && (
-                        <span>
-                          {person.address.address2 ? ',' : ''}{' '}
-                          {person.address.address3}
-                        </span>
-                      )}
-                    </div>
-                    <div>
-                      <span>{person.address.city}, </span>
-                      <span>
-                        {USStates.find(
-                          (item) => item.title === person.address.state
-                        )?.value || ''}{' '}
-                      </span>
-                      <span>{person.address.zip}</span>
-                    </div>
-                    <div>{person.address.country}</div>
+                    {RenderAddress(person?.removed || false, person.address)}
                   </div>
                 </div>
                 <div
@@ -616,23 +610,37 @@ const SubmitReviewStep = ({
                       >
                         <BiEditAlt className="w-4 h-4 text-gray-500 group-hover/edit:text-gray-900 transition-all easy-in-out duration-150" />
                       </div>
-                      <div
-                        onClick={() => {
-                          removePersonHandler(person.id);
-                        }}
-                        className="ml-1 group/remove h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                      >
-                        <IconTrashX className="w-4 h-4 text-red-500 group-hover/remove:text-red-700 transition-all easy-in-out duration-150" />
-                      </div>
+                      {!person.edited ? (
+                        <div
+                          onClick={() => {
+                            removePersonHandler(person.id);
+                          }}
+                          className="ml-1 group/remove h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconTrashX className="w-4 h-4 text-red-500 group-hover/remove:text-red-700 transition-all easy-in-out duration-150" />
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => {
+                            returnEdditedPersonHandler(person.id);
+                          }}
+                          className="group/backup ml-1 h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                        >
+                          <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover/backup:text-gray-900 transition-all easy-in-out duration-150" />
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <div
-                      onClick={() => {
-                        returnPersonHandler(person.id);
-                      }}
-                      className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-                    >
-                      <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                    <div className="pl-2 flex items-center justify-end ml-auto">
+                      <div className="w-8 h-4 p-2" />
+                      <div
+                        onClick={() => {
+                          returnPersonHandler(person.id);
+                        }}
+                        className="group ml-auto h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+                      >
+                        <IconArrowBackUp className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -644,7 +652,10 @@ const SubmitReviewStep = ({
                 closeModalHandler={() => {
                   setEditingPersonId(-1);
                 }}
-                removePersonHandler={removePersonHandler}
+                removePersonHandler={() => {
+                  removePersonHandler(person.id);
+                  setEditingPersonId(-1);
+                }}
                 submitProcess={updateExistedPersonHandler}
                 isCreateProcess={false}
               />

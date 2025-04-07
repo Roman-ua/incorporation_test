@@ -149,7 +149,9 @@ const PersonDataHandling = ({
     setLocalData((prevState) => {
       const data = { ...prevState };
 
-      data.id = Math.floor(Math.random() * 100) + 1;
+      if (isCreateProcess) {
+        data.id = Math.floor(Math.random() * 100) + 1;
+      }
       data.address = updatedAddress;
 
       submitProcess(data);

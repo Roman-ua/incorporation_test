@@ -18,6 +18,7 @@ export interface Person {
   signer: boolean;
   added?: boolean;
   removed?: boolean;
+  edited?: boolean;
   new?: boolean;
   address: Address;
 }
