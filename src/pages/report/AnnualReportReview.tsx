@@ -11,6 +11,9 @@ import PageSign from '../../components/shared/PageSign';
 import { Person, ReportData } from '../../interfaces/interfaces';
 import ConfettiAp from '../../components/shared/Confetti';
 import ProcessingReport from './components/ProcessingReport';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../constants/navigation/routes';
+import { ArrowRightIcon } from 'lucide-react';
 
 const AnnualReportReview = () => {
   const [dataDuplicate, setDataDuplicate] =
@@ -23,6 +26,8 @@ const AnnualReportReview = () => {
   const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
   const [editMode, setEditMode] = useState<boolean>(true); // TO DO need to change to false for make steps logic works
   const [lastStepSubmitDisable, setLastStepSubmitDisabled] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentStep === 4) {
@@ -70,7 +75,17 @@ const AnnualReportReview = () => {
         <div className="w-[870px] flex items-center justify-center font-semibold">
           {`${dataDuplicate.year} Annual Report Filing for ${dataDuplicate.companyName}`}
         </div>
-        <div className="w-[200px] pr-2" />
+        <div className="w-[200px] pr-2">
+          {currentStep === 4 && (
+            <div
+              onClick={() => navigate(`${ROUTES.REPORT}/1`)}
+              className="hover:cursor-pointer flex items-center justify-end gap-1 text-gray-500 font-semibold hover:text-gray-700 transition-all ease-in-out duration-150"
+            >
+              <span>Exit</span>
+              <ArrowRightIcon className="w-4" />
+            </div>
+          )}
+        </div>
       </div>
       {confetti && <ConfettiAp />}
       <div
@@ -156,6 +171,17 @@ const AnnualReportReview = () => {
                     agentReportData={agentDataDuplicate}
                     peopleData={peopleDataDuplicate}
                   />
+                  <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
+                    <div className="w-[200px] pr-2 max-lg:hidden" />
+                    <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                      <div />
+                      <ButtonWithArrow
+                        clickHandler={() => navigate(`${ROUTES.REPORT}/1`)}
+                        title={'Done'}
+                      />
+                    </div>
+                    <div className="w-[200px] pr-2 max-lg:hidden" />
+                  </div>
                 </div>
               </div>
             </div>

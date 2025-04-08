@@ -5,11 +5,13 @@ import { classNames } from '../../../utils/helpers';
 interface IProps {
   title: string;
   disabled?: boolean;
+  clickHandler?: () => void;
 }
-const ButtonWithArrow = ({ title, disabled }: IProps) => {
+const ButtonWithArrow = ({ title, disabled, clickHandler }: IProps) => {
   return (
     <button
       disabled={disabled}
+      onClick={clickHandler}
       className={classNames(
         'relative inline-flex rounded-md bg-mainBlue items-center justify-start py-2.5 pl-4 pr-5 overflow-hidden font-semibold transition-all duration-150 ease-in-out hover:bg-sideBarBlue disabled:bg-gray-500',
         !disabled && 'group'

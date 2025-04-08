@@ -5,7 +5,7 @@ import { Check, ChevronLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { AnimatedUnderlineButton } from '../../components/shared/AnimatedUnderlineBtn';
 import { validateEmail, validatePassword } from '../../utils/validators';
 import { classNames } from '../../utils/helpers';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 
 const AuthFlow = () => {
@@ -23,6 +23,8 @@ const AuthFlow = () => {
     password: '',
     name: '',
   });
+
+  const navigate = useNavigate();
 
   const handleBlurPassword = () => {
     const validationError = validatePassword(formData.password);
@@ -101,6 +103,7 @@ const AuthFlow = () => {
 
     // Reset success state after showing success animation
     setTimeout(() => {
+      navigate(ROUTES.HOME);
       setSuccess(false);
       setFormData({ email: '', password: '', name: '' });
     }, 2000);
