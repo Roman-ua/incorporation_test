@@ -61,17 +61,38 @@ const defaultOther = {
 };
 
 const notMandatoryFields = ['address1', 'address2', 'address3'];
+const notMandatoryFieldsUS = [
+  'address1',
+  'address2',
+  'address3',
+  'state',
+  'zip',
+];
 
-const areFieldsValid = (fields: {
+interface IValidator {
   [key: string]: string | number | undefined;
-}): boolean => {
-  return Object.entries(fields).every(([key, value]) => {
-    if (notMandatoryFields.includes(key)) return true;
+}
 
-    if (key === 'zip') {
-      return !!value && typeof value === 'string' && value.length >= 5;
+const areFieldsValid = (fields: IValidator, isUS: boolean): boolean => {
+  return Object.entries(fields).every(([key, value]) => {
+    const notMandatoryFieldsBasedOption = isUS
+      ? notMandatoryFieldsUS
+      : notMandatoryFields;
+
+    if (notMandatoryFieldsBasedOption.includes(key)) return true;
+
+    if (isUS) {
+      if (key === 'zip') {
+        return !!value && typeof value === 'string' && value.length >= 5;
+      }
+      return !!value;
+    } else {
+      // For non-US addresses, only validate address0, city, and country
+      if (key === 'address0' || key === 'city' || key === 'country') {
+        return !!value;
+      }
+      return true; // Other fields are not mandatory
     }
-    return !!value;
   });
 };
 
@@ -281,7 +302,7 @@ const PersonDataHandling = ({
         <div
           onClick={() => {
             console.log(address, 'address');
-            if (areFieldsValid(address)) {
+            if (areFieldsValid(address, selected === 1)) {
               updatePersonAddressHandler(address);
             } else {
               setMandatoryError(true);
@@ -289,7 +310,7 @@ const PersonDataHandling = ({
           }}
           className={classNames(
             'block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
-            areFieldsValid(address)
+            areFieldsValid(address, selected === 1)
               ? 'bg-mainBlue hover:bg-sideBarBlue '
               : 'bg-gray-500'
           )}

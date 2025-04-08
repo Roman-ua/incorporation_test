@@ -128,8 +128,7 @@ const SimpleAddressFormNotUS = ({
         <input
           className={classNames(
             inputCommonClasses,
-            'border-r-0 border-t-0 border-l-0 border-r-gray-200 w-[30%]',
-            requiredError && !data?.city ? 'bg-red-50' : 'bg-transparent'
+            'border-r-0 border-t-0 border-l-0 border-r-gray-200 w-[30%]'
           )}
           type="text"
           value={data?.state}
@@ -164,7 +163,7 @@ const SimpleAddressFormNotUS = ({
           ) as SelectMenuOption
         }
         disableDropDown={false}
-        inputExtraStyles={`w-full `}
+        inputExtraStyles={`w-full ${requiredError && !data.country ? 'bg-red-50' : 'bg-white'} rounded-b-md`}
         wrapperExtraStyles={`rounded-b-0 border-0`}
       />
     </div>

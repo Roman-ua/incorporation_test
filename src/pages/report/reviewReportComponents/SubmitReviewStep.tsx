@@ -512,14 +512,16 @@ const SubmitReviewStep = ({
       <div className="mb-12">
         <div className="w-full border-b text-base font-semibold text-gray-700 pb-1 mb-3 flex items-center justify-between">
           People
-          <div className="flex items-center justify-end ml-auto">
-            <div
-              onClick={() => setAddPersonPressed(true)}
-              className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
-            >
-              <TbUserPlus className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+          {!confirmStep && (
+            <div className="flex items-center justify-end ml-auto">
+              <div
+                onClick={() => setAddPersonPressed(true)}
+                className="group h-fit flex items-center justify-between top-6 right-7 p-1.5 border rounded-md hover:cursor-pointer"
+              >
+                <TbUserPlus className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-all easy-in-out duration-150" />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {(addPersonPressed || allPeopleRemoved) && (
           <PersonDataHandling
@@ -596,7 +598,8 @@ const SubmitReviewStep = ({
                 </div>
                 <div
                   className={classNames(
-                    'transform transition-all duration-300 ease-out opacity-100 translate-y-0'
+                    'transform transition-all duration-300 ease-out translate-y-0',
+                    confirmStep ? 'opacity-0' : 'opacity-100'
                   )}
                 >
                   {!person.removed ? (
