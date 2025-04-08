@@ -146,7 +146,7 @@ const AnnualReportReview = () => {
                 </div>
               </div>
               <div className="relative mt-10 max-sm:hidden px-6">
-                <div className="absolute -bottom-10 -right-5 -left-5 -top-5 border border-gray-200 rounded-md z-40 bg-transparrent" />
+                <div className="absolute -bottom-10 -right-2 -left-2 -top-5 border border-gray-200 rounded-md z-40 bg-transparrent" />
                 <div className="relative z-50">
                   <SubmitReviewStep
                     confirmStep={true}
