@@ -17,6 +17,7 @@ export interface CountrySelectorProps {
   inputExtraStyles?: string;
   wrapperExtraStyles?: string;
   disableDropDown?: boolean;
+  isCountry?: boolean;
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -35,6 +36,7 @@ export default function CountrySelector({
   inputExtraStyles,
   wrapperExtraStyles,
   disableDropDown = false,
+  isCountry = false,
 }: CountrySelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -70,7 +72,7 @@ export default function CountrySelector({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (open && !disableDropDown) {
+      if (open && !disableDropDown && !isCountry) {
         if (event.key === 'Backspace') {
           setQuery((prevQuery) => prevQuery.slice(0, -1));
         } else if (/^[a-zA-Z]$/.test(event.key)) {
@@ -83,14 +85,14 @@ export default function CountrySelector({
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, disableDropDown]);
+  }, [open, disableDropDown, isCountry]);
 
   useEffect(() => {
     if (!open) {
       setQuery('');
     }
   }, [open]);
-
+  console.log(list, 'list');
   return (
     <div ref={ref} className={inputExtraStyles}>
       <div className="relative">
@@ -152,22 +154,50 @@ export default function CountrySelector({
               aria-labelledby="listbox-label"
               aria-activedescendant="listbox-option-3"
             >
+              <div className="p-2">
+                {isCountry && (
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Search..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="w-full border border-gray-200 rounded-md p-1.5 mb-2 text-sm focus:outline-none focus:ring-0 focus:border-gray-200"
+                  />
+                )}
+              </div>
               <div
                 className={
                   'max-h-64 scrollbar scrollbar-track-gray-100 scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-600 scrollbar-thumb-rounded scrollbar-thin overflow-y-scroll'
                 }
               >
-                {list.filter((country) =>
-                  country.value.toLowerCase().startsWith(query.toLowerCase())
-                ).length === 0 ? (
-                  <li className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9"></li>
+                {list.filter((country) => {
+                  if (isCountry) {
+                    return country.title
+                      .toLowerCase()
+                      .includes(query.toLowerCase());
+                  } else {
+                    return country.value
+                      .toLowerCase()
+                      .includes(query.toLowerCase());
+                  }
+                }).length === 0 ? (
+                  <li className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9">
+                    No results found
+                  </li>
                 ) : (
                   list
-                    .filter((country) =>
-                      country.value
-                        .toLowerCase()
-                        .startsWith(query.toLowerCase())
-                    )
+                    .filter((country) => {
+                      if (isCountry) {
+                        return country.title
+                          .toLowerCase()
+                          .includes(query.toLowerCase());
+                      } else {
+                        return country.value
+                          .toLowerCase()
+                          .includes(query.toLowerCase());
+                      }
+                    })
                     .map((value, index) => {
                       return (
                         <li

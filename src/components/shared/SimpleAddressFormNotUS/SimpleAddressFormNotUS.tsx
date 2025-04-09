@@ -154,6 +154,7 @@ const SimpleAddressFormNotUS = ({
         id={'countries'}
         open={isOpen}
         list={COUNTRIES}
+        isCountry={true}
         withIcon={true}
         onToggle={() => openCountryHandler(!isOpen)}
         onChange={(val) => setData('country', val)}
