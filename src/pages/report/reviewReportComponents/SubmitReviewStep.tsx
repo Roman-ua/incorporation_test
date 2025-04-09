@@ -352,7 +352,12 @@ const SubmitReviewStep = ({
               {reportData.state}
             </dd>
           </div>
-          <div className="flex flex-col gap-y-1 border-l px-5">
+          <div
+            className={classNames(
+              confirmStep ? 'pl-5' : 'px-5',
+              'flex flex-col gap-y-1 border-l '
+            )}
+          >
             <dt className="text-nowrap text-sm text-gray-500">
               {dockFieldHandler(reportData.state)}
             </dt>
