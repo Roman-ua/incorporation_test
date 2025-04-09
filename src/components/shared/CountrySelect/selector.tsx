@@ -92,7 +92,7 @@ export default function CountrySelector({
       setQuery('');
     }
   }, [open]);
-  console.log(list, 'list');
+
   return (
     <div ref={ref} className={inputExtraStyles}>
       <div className="relative">
