@@ -306,7 +306,12 @@ const SubmitReviewStep = ({
   return (
     <>
       <div className="w-full flex items-start justify-center max-lg:flex-col">
-        <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll pb-1">
+        <dl
+          className={classNames(
+            confirmStep ? 'justify-between' : 'justify-start',
+            'w-full mt-4 mb-12 flex items-start  overflow-x-scroll pb-1'
+          )}
+        >
           <div className="flex flex-col gap-y-1 pr-5">
             <dt className="text-sm text-gray-500">Year</dt>
             <dd className="text-sm font-semibold tracking-tight text-gray-800">
@@ -351,7 +356,12 @@ const SubmitReviewStep = ({
             <dt className="text-nowrap text-sm text-gray-500">
               {dockFieldHandler(reportData.state)}
             </dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+            <dd
+              className={classNames(
+                confirmStep ? 'pr-0' : 'pr-6',
+                'text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative '
+              )}
+            >
               {reportData.registrationNumber}
             </dd>
           </div>
