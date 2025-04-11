@@ -18,11 +18,12 @@ import {
   MockData,
   UpdatedCompanyState,
 } from '../../interfaces/interfaces';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
 import { AddPersonModal } from './modals/AddPersonToCompanyModal';
 import AddReportProcess from '../report/components/AddReportProcess';
 import CompanyState from '../../state/atoms/Company';
+import PeopleState from '../../state/atoms/People';
 // import { format } from 'date-fns';
 
 const statusBadge = (status: string) => {
@@ -44,46 +45,16 @@ function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-// const people = [
-//   {
-//     id: '1',
-//     picture: '',
-//     fullName: 'Lindsay Walton',
-//     titles: ['Accountant'],
-//     email: 'lindsay.walton@example.com',
-//     role: 'Member',
-//     status: 'Active',
-//     type: 'US',
-//     sendInvitation: true,
-//     dateAdded: format(new Date(), 'yyyy-MM-dd'),
-//     address: {},
-//   },
-//   {
-//     id: '2',
-//     picture: '',
-//     fullName: 'Clark Kent',
-//     titles: ['Manager', 'Director', 'Secretary', 'CTO'],
-//     email: 'clark.kent@example.com',
-//     role: 'Owner',
-//     type: 'Other',
-//     status: 'Inactive',
-//     sendInvitation: true,
-//     dateAdded: format(new Date(), 'yyyy-MM-dd'),
-//     address: {},
-//   },
-//   // More people...
-// ];
-
 const CompanyPage = () => {
   const setEinState = useSetRecoilState(EinState);
   const companyData = useRecoilValue(CompanyState);
+  const [peopleState, setPeopleState] = useRecoilState(PeopleState);
 
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [addReportModal, setOpenAddReportModal] = useState(false);
   const [data, setData] = React.useState<MockCompany>(companyData);
-  const [peopleState, setPeopleState] = React.useState([]);
 
   const navigate = useNavigate();
 
@@ -120,10 +91,9 @@ const CompanyPage = () => {
         companyType={data.companyType}
         isOpen={openAddPersonModal}
         onClose={() => setOpenAddPersonModal(false)}
-        onAdd={(
-          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          person //@ts-expect-error
-        ) => setPeopleState((prevState) => [...prevState, person])}
+        onAdd={(person) =>
+          setPeopleState((prevState) => [...prevState, person])
+        }
       />
       <AddReportProcess
         saveHandler={() => {}}

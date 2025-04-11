@@ -26,6 +26,7 @@ import AnnualReportReview from './pages/report/AnnualReportReview';
 import AddFullReportProcess from './pages/report/components/AddFullReportProcess';
 import AuthFlow from './pages/login/Login';
 import RecoverPasswordPage from './pages/login/RecoverPAsswordPage';
+import PersonPageDetails from './pages/person/PersonPageDetails';
 
 function App() {
   return (
@@ -60,6 +61,10 @@ function App() {
             <Route path={ROUTES.COMPANY} element={<CompanyPage />} />
             <Route path={ROUTES.ACCOUNT} element={<Account />} />
             <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
+            <Route
+              path={`${ROUTES.PERSON}/:id`}
+              element={<PersonPageDetails />}
+            />
             <Route path={ROUTES.EIN} element={<Ein />} />
           </Route>
         </Route>

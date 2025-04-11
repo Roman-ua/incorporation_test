@@ -17,4 +17,5 @@ export const ROUTES = {
   REPORT: '/report',
   ANN_REPORT_REVIEW: '/report_review',
   ANN_REPORT_ADD: '/annual_report',
+  PERSON: '/person',
 };

@@ -3,6 +3,8 @@ import React from 'react';
 import { classNames } from '../../../utils/helpers';
 import { Person } from '../modals/AddPersonToCompanyModal';
 import { USStates } from '../../../constants/form/form';
+import { ROUTES } from '../../../constants/navigation/routes';
+import { useNavigate } from 'react-router-dom';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -25,6 +27,8 @@ interface IProps {
 }
 
 const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <SectionHeading
@@ -37,8 +41,9 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
         <div>
           {peopleState.map((person, rowIndex) => (
             <div
+              onClick={() => navigate(`${ROUTES.PERSON}/${person.id}`)}
               key={rowIndex}
-              className={`flex pt-4 group transition-all ease-in-out duration-150 items-start justify-start`}
+              className={`flex pt-4 group transition-all ease-in-out duration-150 items-start justify-start hover:cursor-pointer`}
             >
               <div
                 className={classNames(
