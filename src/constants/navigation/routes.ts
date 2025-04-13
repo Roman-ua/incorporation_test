@@ -18,4 +18,5 @@ export const ROUTES = {
   ANN_REPORT_REVIEW: '/report_review',
   ANN_REPORT_ADD: '/annual_report',
   PERSON: '/person',
+  PEOPLE: '/people',
 };

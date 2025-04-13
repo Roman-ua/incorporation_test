@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
-import { TbMail, TbPuzzle, TbReportAnalytics } from 'react-icons/tb';
+import { TbMail, TbPuzzle, TbReportAnalytics, TbUser } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
 import { BiBuildings, BiReceipt } from 'react-icons/bi';
+import { IoPeopleOutline } from 'react-icons/io5';
 
 const navigation = [
   { name: 'Home', href: '/home', icon: BiBuildings, current: true },
@@ -18,6 +19,7 @@ const navigation = [
   { name: 'Services', href: '/services', icon: LuConciergeBell, current: true },
   { name: 'Orders', href: '/orders', icon: LuClipboardList, current: true },
   { name: 'Invoices', href: '/invoices', icon: BiReceipt, current: true },
+  { name: 'People', href: '/people', icon: IoPeopleOutline, current: true },
 ];
 const teams = [
   {
@@ -50,7 +52,7 @@ const teams = [
     href: '/person/1',
     initial: 'P',
     current: false,
-    icon: TbReportAnalytics,
+    icon: TbUser,
   },
 ];
 
