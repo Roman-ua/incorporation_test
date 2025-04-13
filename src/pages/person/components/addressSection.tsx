@@ -65,7 +65,7 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
 
 export function AddressSection({ address }: AddressSectionProps) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 mb-12">
       <SectionHeading title="Main Address" />
       <div>{RenderAddress(false, address)}</div>
     </div>

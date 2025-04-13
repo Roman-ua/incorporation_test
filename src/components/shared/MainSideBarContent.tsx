@@ -21,7 +21,7 @@ const navigation = [
 ];
 const teams = [
   {
-    id: 1,
+    id: 11,
     name: 'Elements',
     href: '/elements',
     initial: 'C',
@@ -29,7 +29,7 @@ const teams = [
     icon: TbPuzzle,
   },
   {
-    id: 1,
+    id: 12,
     name: 'Emails',
     href: '/emails',
     initial: 'C',
@@ -37,10 +37,18 @@ const teams = [
     icon: LuFileStack,
   },
   {
-    id: 1,
+    id: 13,
     name: 'Annual Report Confirmation',
     href: '/report_review',
     initial: 'А',
+    current: false,
+    icon: TbReportAnalytics,
+  },
+  {
+    id: 14,
+    name: 'Person Details',
+    href: '/person/1',
+    initial: 'P',
     current: false,
     icon: TbReportAnalytics,
   },

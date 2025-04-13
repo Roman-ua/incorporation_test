@@ -59,7 +59,7 @@ export function PersonProfile() {
   };
 
   return (
-    <div className="space-y-12">
+    <div>
       <ProfileHeader
         id={personData.id}
         name={personData.name}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { classNames } from '../../../utils/helpers';
+import { MdOutlineCopyAll } from 'react-icons/md';
 
 interface ProfileHeaderProps {
   id: string;
@@ -34,26 +35,30 @@ export function ProfileHeader({
   onAddEmail,
 }: ProfileHeaderProps) {
   return (
-    <div className="flex flex-col md:flex-row items-start gap-8 p-4 bg-gray-50 rounded-md">
-      {picture ? (
-        <img
-          src={picture || '/placeholder.svg'}
-          alt={name}
-          className="object-cover"
-        />
-      ) : (
-        <div className="relative h-20 w-20 rounded-full overflow-hidden shadow-sm bg-gray-300 flex items-center justify-center text-white text-5xl font-bold">
-          {name[0]}
+    <>
+      <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
+        <div className="text-2xl text-gray-700 flex items-center gap-x-2">
+          {picture ? (
+            <img
+              src={picture || '/placeholder.svg'}
+              alt={name}
+              className="object-cover"
+            />
+          ) : (
+            <div className="relative h-6 w-6 rounded-full overflow-hidden shadow-sm bg-gray-300 flex items-center justify-center text-white text-xl font-bold">
+              {name[0]}
+            </div>
+          )}
+          <span className="text-xl font-bold text-gray-900">{name}</span>
         </div>
-      )}
-
-      <div className="flex-1 space-y-3">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-          <h1 className="text-2xl font-medium tracking-tight">{name}</h1>
-          <div className="text-sm font-medium text-slate-500">ID: {id}</div>
-        </div>
-
-        <div className="flex items-center gap-2">
+        <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
+          p_{id}
+          <MdOutlineCopyAll className="text-base ml-2" />
+        </span>
+      </div>
+      <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
+        <div className="flex flex-col gap-y-1 pr-6">
+          <dt className="text-sm text-gray-500">Status</dt>
           <span
             className={classNames(
               'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
@@ -63,24 +68,30 @@ export function ProfileHeader({
             {status}
           </span>
         </div>
-
-        <div className="pt-2">
-          {email ? (
-            <p className="text-sm text-slate-700">
-              <span className="font-medium">Email:</span> {email}
-            </p>
-          ) : (
-            <div className="w-full flex justify-end">
-              <button
-                onClick={onAddEmail}
-                className="text-sm px-3 py-1 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
-              >
-                Add Email
-              </button>
-            </div>
-          )}
+        <div className="flex flex-col gap-y-1 border-l px-6">
+          <dt className="text-nowrap text-sm text-gray-500">Email</dt>
+          <dd>
+            {email ? (
+              <p className="font-semibold text-gray-900">{email}</p>
+            ) : (
+              <div className="w-full flex justify-end">
+                <button
+                  onClick={onAddEmail}
+                  className="text-gray-900 rounded transition-colors font-semibold"
+                >
+                  Add Email
+                </button>
+              </div>
+            )}
+          </dd>
         </div>
-      </div>
-    </div>
+        <div className="flex flex-col gap-y-1 border-l px-6">
+          <dt className="text-nowrap text-sm text-gray-500">Phone Number</dt>
+          <dd className="text-base font-semibold tracking-tight text-gray-900 relative group pr-6 hover:cursor-pointer">
+            +1 234 567 890
+          </dd>
+        </div>
+      </dl>
+    </>
   );
 }
