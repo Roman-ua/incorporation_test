@@ -1,6 +1,6 @@
 import React from 'react';
 import SectionHeading from '../../company/components/SectionHeading';
-import { classNames } from '../../../utils/helpers';
+
 import { USStates } from '../../../constants/form/form';
 import { AddressFields } from '../../../interfaces/interfaces';
 
@@ -17,57 +17,41 @@ interface AddressSectionProps {
   };
 }
 
-const RenderAddress = (removed: boolean, address: AddressFields) => {
+const RenderAddress = (address: AddressFields) => {
   return (
-    <>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        <span>{address.address0}, </span>
-        {address.address1 && <span>{address.address1}</span>}
-      </div>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        {address.address2 && <span>{address.address2}</span>}
-        {address.address3 && (
+    <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
+      <>
+        <div className="text-sm text-gray-500 mb-1">Main</div>
+        <div>
+          <span>{address.address0}, </span>
+          {address.address1 && <span>{address.address1}</span>}
+        </div>
+        <div>
+          {address.address2 && <span>{address.address2}</span>}
+          {address.address3 && (
+            <span>
+              {address.address2 ? ',' : ''} {address.address3}
+            </span>
+          )}
+        </div>
+        <div>
+          <span>{address.city}, </span>
           <span>
-            {address.address2 ? ',' : ''} {address.address3}
+            {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
           </span>
-        )}
-      </div>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        <span>{address.city}, </span>
-        <span>
-          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
-        </span>
-        <span>{address.zip}</span>
-      </div>
-      <div
-        className={classNames(
-          removed ? 'line-through text-gray-400' : 'text-gray-800'
-        )}
-      >
-        {address.country}
-      </div>
-      <div className="my-4" />
-    </>
+          <span>{address.zip}</span>
+        </div>
+        <div>{address.country}</div>
+      </>
+    </div>
   );
 };
 
 export function AddressSection({ address }: AddressSectionProps) {
   return (
     <div className="space-y-3 mb-12">
-      <SectionHeading title="Main Address" />
-      <div>{RenderAddress(false, address)}</div>
+      <SectionHeading title="Address" />
+      <div>{RenderAddress(address)}</div>
     </div>
   );
 }

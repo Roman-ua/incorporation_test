@@ -3,8 +3,8 @@ import { PersonProfile } from './components/personProfile';
 
 export default function PersonPageDetails() {
   return (
-    <main className="container mx-auto py-12 px-4 max-w-5xl">
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
       <PersonProfile />
-    </main>
+    </div>
   );
 }

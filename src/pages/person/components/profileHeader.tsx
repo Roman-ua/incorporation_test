@@ -72,12 +72,14 @@ export function ProfileHeader({
           <dt className="text-nowrap text-sm text-gray-500">Email</dt>
           <dd>
             {email ? (
-              <p className="font-semibold text-gray-900">{email}</p>
+              <p className="text-base font-semibold tracking-tight text-gray-700">
+                {email}
+              </p>
             ) : (
               <div className="w-full flex justify-end">
                 <button
                   onClick={onAddEmail}
-                  className="text-gray-900 rounded transition-colors font-semibold"
+                  className="text-gray-700 rounded transition-colors text-base hover:text-mainBlue"
                 >
                   Add Email
                 </button>
@@ -87,7 +89,7 @@ export function ProfileHeader({
         </div>
         <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">Phone Number</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-900 relative group pr-6 hover:cursor-pointer">
+          <dd className="text-base font-semibold tracking-tight text-gray-700">
             +1 234 567 890
           </dd>
         </div>

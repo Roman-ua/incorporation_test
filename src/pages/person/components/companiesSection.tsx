@@ -4,6 +4,7 @@ import { classNames } from '../../../utils/helpers';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
 import SectionHeading from '../../company/components/SectionHeading';
+import { LuArrowUpRight } from 'react-icons/lu';
 interface Company {
   id: number;
   name: string;
@@ -35,45 +36,44 @@ export function CompaniesSection({ companies }: CompaniesSectionProps) {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div className="flex flex-row items-center justify-between">
-        <SectionHeading title="Company List" removeMargin={true} />
-      </div>
-      <div className="w-full overflow-auto text-sm">
-        <table className="w-full divide-y divide-gray-300">
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {companies.map((company) => {
-              return (
-                <tr
-                  key={company.id}
-                  onClick={() => navigate(`${ROUTES.COMPANY}`)}
-                  className="hover:bg-gray-100 transition-all duration-150 ease-in-out hover:cursor-pointer group"
+    <>
+      <SectionHeading title="Company List" removeMargin={true} />
+      <div className="w-full overflow-hidden mb-12">
+        <div>
+          {companies.map((company, rowIndex) => (
+            <div
+              onClick={() => navigate(`${ROUTES.COMPANY}`)}
+              key={rowIndex}
+              className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
+            >
+              <div className="w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
+                {company.name}
+              </div>
+              <div className="w-[24%] px-2 flex items-center justify-start">
+                <span
+                  className={classNames(
+                    'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+                    statusBadge(company.status)
+                  )}
                 >
-                  <td className="whitespace-nowrap py-4 pl-3 pr-3 text-sm font-semibold text-gray-700">
-                    {company.name}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <span
-                      className={classNames(
-                        'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
-                        statusBadge(company.status)
-                      )}
-                    >
-                      {company.status}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-                    {company.registrationState}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-                    {company.titles.join(', ')}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  {company.status}
+                </span>
+              </div>
+              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
+                {company.registrationState}
+              </div>
+              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
+                {company.titles.join(', ')}
+              </div>
+              <div className="pl-2 flex items-center justify-end ml-auto">
+                <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
+                  <LuArrowUpRight className="h-4 w-4" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
