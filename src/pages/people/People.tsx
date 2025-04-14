@@ -124,7 +124,7 @@ function People() {
                       )}
                       {person.name}
                     </div>
-                    <div className="w-[25%] px-3 text-sm text-gray-700">
+                    <div className="w-[25%] px-1.5 text-sm text-gray-700">
                       {person.email}
                     </div>
                     <div className="w-[50%] px-3 text-sm text-gray-500 text-right">
