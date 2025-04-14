@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
-import { TbMail, TbPuzzle, TbReportAnalytics, TbUser } from 'react-icons/tb';
+import { TbMail, TbPuzzle, TbReportAnalytics } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
 import { BiBuildings, BiReceipt } from 'react-icons/bi';
