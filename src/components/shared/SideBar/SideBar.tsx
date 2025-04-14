@@ -84,19 +84,18 @@ function SideBar({ children }: { children: React.ReactNode }) {
           </Dialog>
         </Transition>
 
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-60 lg:flex-col">
+        <div className="hidden lg:fixed lg:inset-y-0 lg:z-10 lg:flex lg:w-60 lg:flex-col">
           <div className="flex grow flex-col gap-y-8 overflow-y-auto border-r border-gray-200 bg-white px-8">
             <div className="flex shrink-0 items-center mt-8">
               <img className="h-7 w-auto" src={logo} alt="Your Company" />
             </div>
-            {/*<CompanyDropDown />*/}
             <nav className="flex flex-1 flex-col">
               <MainSideBarContent pathname={pathname} />
             </nav>
           </div>
         </div>
 
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-8 lg:hidden">
+        <div className="sticky top-0 z-30 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-8 lg:hidden">
           <button
             type="button"
             className="-m-2.5 p-2.5 text-gray-700 lg:hidden"

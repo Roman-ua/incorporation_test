@@ -80,13 +80,15 @@ const CompanyPage = () => {
 
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
-      <AddEinModal
-        isOnlyNumber={true}
-        setOpen={setOpen}
-        open={open}
-        companyName={data.companyName || ''}
-        saveHandler={saveHandler}
-      />
+      {open && (
+        <AddEinModal
+          isOpen={open}
+          isOnlyNumber={true}
+          setOpen={setOpen}
+          companyName={data.companyName || ''}
+          saveHandler={saveHandler}
+        />
+      )}
       <AddPersonModal
         companyType={data.companyType}
         isOpen={openAddPersonModal}

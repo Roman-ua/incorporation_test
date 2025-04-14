@@ -76,7 +76,7 @@ export function PersonProfile() {
       {isEmailModalOpen && (
         <EmailModal
           open={isEmailModalOpen}
-          setOpen={() => setIsEmailModalOpen(false)}
+          setClose={() => setIsEmailModalOpen(false)}
           onSubmit={handleAddEmail}
         />
       )}

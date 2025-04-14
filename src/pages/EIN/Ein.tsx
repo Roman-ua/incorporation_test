@@ -72,16 +72,18 @@ const Ein = () => {
 
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
-      <AddEinModal
-        isOnlyNumber={false}
-        setOpen={setOpen}
-        open={open}
-        saveHandler={saveHandler}
-        ein={data?.taxId}
-        docType={data?.documentType}
-        lastVerifDate={data?.lastVerifDate}
-        companyName={data?.companyName || ''}
-      />
+      {open && (
+        <AddEinModal
+          isOpen={open}
+          isOnlyNumber={false}
+          setOpen={setOpen}
+          saveHandler={saveHandler}
+          ein={data?.taxId}
+          docType={data?.documentType}
+          lastVerifDate={data?.lastVerifDate}
+          companyName={data?.companyName || ''}
+        />
+      )}
       <DeleteEinFileModal
         open={openDeleteConfirmation}
         setOpen={setOpenDeleteConfirmation}
