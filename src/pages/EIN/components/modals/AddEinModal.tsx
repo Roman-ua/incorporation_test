@@ -163,9 +163,12 @@ const AddEinModal = ({
               disabled={!isNumberOnly && !!einNumber}
               onChange={(e) => handleInputChange(e)}
               className={classNames(
-                'w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400',
-                mandatoryError && !einNumber && 'bg-red-50'
+                'w-full px-3 py-2 border  rounded-md focus:outline-none focus:ring-1',
+                mandatoryError && !einNumber
+                  ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                  : 'border-slate-200 focus:ring-slate-400 focus:border-slate-400'
               )}
+              data-1p-ignore={true}
               type="text"
               placeholder="EIN number"
               value={einNumber}

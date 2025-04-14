@@ -24,7 +24,6 @@ import { AddPersonModal } from './modals/AddPersonToCompanyModal';
 import AddReportProcess from '../report/components/AddReportProcess';
 import CompanyState from '../../state/atoms/Company';
 import PeopleState from '../../state/atoms/People';
-// import { format } from 'date-fns';
 
 const statusBadge = (status: string) => {
   switch (status) {

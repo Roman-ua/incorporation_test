@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import XBtn from '../../../components/shared/buttons/XBtn';
+import { classNames } from '../../../utils/helpers';
+import { validateEmail } from '../../../utils/validators';
 
 interface EmailModalProps {
   setClose: () => void;
@@ -12,13 +14,17 @@ interface EmailModalProps {
 export function EmailModal({ setClose, open, onSubmit }: EmailModalProps) {
   const [email, setEmail] = useState('');
   const [sendInvitation, setSendInvitation] = useState(false);
+  const [mandatoryError, setMandatoryError] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
+    if (validateEmail(email)) {
+      setMandatoryError(false);
       onSubmit(email.trim(), sendInvitation);
       setEmail('');
       setSendInvitation(false);
+    } else {
+      setMandatoryError(true);
     }
   };
 
@@ -44,7 +50,7 @@ export function EmailModal({ setClose, open, onSubmit }: EmailModalProps) {
 
   return (
     <ModalWrapperLayout closeModal={setClose} isOpen={open}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="p-6">
           <div className="mb-6">
             <h2 className="text-xl font-medium tracking-tight">
@@ -69,8 +75,13 @@ export function EmailModal({ setClose, open, onSubmit }: EmailModalProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="person@example.com"
-              required
-              className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400"
+              data-1p-ignore={true}
+              className={classNames(
+                'w-full px-3 py-2 border  rounded-md focus:outline-none focus:ring-1 ',
+                mandatoryError && !validateEmail(email)
+                  ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                  : 'border-slate-200 focus:ring-slate-400 focus:border-slate-400'
+              )}
             />
 
             <div className="flex items-center space-x-2 mt-3">
@@ -98,7 +109,12 @@ export function EmailModal({ setClose, open, onSubmit }: EmailModalProps) {
           </button>
           <button
             type="submit"
-            className="bg-mainBlue hover:bg-sideBarBlue ml-2 block rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out"
+            className={classNames(
+              'ml-2 block rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out',
+              validateEmail(email)
+                ? 'bg-mainBlue hover:bg-sideBarBlue'
+                : 'bg-gray-500'
+            )}
           >
             Save
           </button>
