@@ -46,14 +46,6 @@ const teams = [
     current: false,
     icon: TbReportAnalytics,
   },
-  {
-    id: 14,
-    name: 'Person Details',
-    href: '/person/1',
-    initial: 'P',
-    current: false,
-    icon: TbUser,
-  },
 ];
 
 function classNames(...classes: (string | boolean)[]) {
