@@ -4,6 +4,7 @@ import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLa
 import XBtn from '../../../components/shared/buttons/XBtn';
 import { classNames } from '../../../utils/helpers';
 import { validateEmail } from '../../../utils/validators';
+import { inputError, inputSimpleFocus } from '../../../constants/form/form';
 
 interface EmailModalProps {
   setClose: () => void;
@@ -76,11 +77,17 @@ export function EmailModal({ setClose, open, onSubmit }: EmailModalProps) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="person@example.com"
               data-1p-ignore={true}
+              // className={classNames(
+              //   'w-full px-3 py-2 border rounded-md focus:outline-none',
+              //   mandatoryError && !validateEmail(email)
+              //     ? 'border-red-400 border-2 focus:border-red-500 focus:ring-transparent'
+              //     : 'border-gray-300 focus:border-gray-500  focus:ring-black'
+              // )}
               className={classNames(
-                'w-full px-3 py-2 border  rounded-md focus:outline-none focus:ring-1 ',
+                'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
                 mandatoryError && !validateEmail(email)
-                  ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
-                  : 'border-slate-200 focus:ring-slate-400 focus:border-slate-400'
+                  ? inputError
+                  : inputSimpleFocus
               )}
             />
 

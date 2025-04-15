@@ -12,6 +12,8 @@ import SimpleAddressForm from '../../../../components/shared/SimpleAddressForm/S
 import { truncateString } from '../../../../utils/helpers';
 import XBtn from '../../../../components/shared/buttons/XBtn';
 import ModalWrapperLayout from '../../../../components/shared/Modals/ModalWrapperLayout';
+import { inputError } from '../../../../constants/form/form';
+import { inputSimpleFocus } from '../../../../constants/form/form';
 
 interface IProps {
   isOpen: boolean;
@@ -163,10 +165,8 @@ const AddEinModal = ({
               disabled={!isNumberOnly && !!einNumber}
               onChange={(e) => handleInputChange(e)}
               className={classNames(
-                'w-full px-3 py-2 border  rounded-md focus:outline-none focus:ring-1',
-                mandatoryError && !einNumber
-                  ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
-                  : 'border-slate-200 focus:ring-slate-400 focus:border-slate-400'
+                'w-full px-3 py-2 border rounded-md focus:outline-none',
+                mandatoryError && !einNumber ? inputError : inputSimpleFocus
               )}
               data-1p-ignore={true}
               type="text"

@@ -71,3 +71,11 @@ export const fileLabels = [
   { title: 'CP577', value: 'CP577' },
   { title: 'CP577E', value: 'CP577E' },
 ];
+
+export const inputError =
+  'ring-2 ring-red-400 focus:ring-red-500 focus:ring-2 focus:border-transparent border-transparent';
+
+export const inputSimpleFocus =
+  'focus:ring-2 focus:ring-black focus:border-transparent';
+export const inputStyle =
+  'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0';
