@@ -10,11 +10,16 @@ import SimpleAddressForm from '../../../../components/shared/SimpleAddressForm/S
 import SimpleAddressFormNotUS from '../../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import SwitchButton from '../../../../components/shared/SwitchButton/SwitchButton';
 import { Checkbox } from '../../../../components/shared/Checkboxes/CheckBoxSq';
-import { USStates } from '../../../../constants/form/form';
+import {
+  inputError,
+  inputSimpleFocus,
+  USStates,
+} from '../../../../constants/form/form';
 import USAddressForm from '../../../createCompany/components/USAddressForm';
 import { BiEditAlt } from 'react-icons/bi';
 import { useRecoilState } from 'recoil';
 import PeopleState from '../../../../state/atoms/People';
+import { validateEmail } from '../../../../utils/validators';
 
 const defaultUS = {
   country: 'United States',
@@ -116,7 +121,8 @@ const AddPersonProcess = () => {
     }
   };
 
-  const firstStepDisabled = () => !firstName || !lastName || !email;
+  const firstStepDisabled = () =>
+    !firstName || !lastName || !validateEmail(email) || !address.address0;
 
   const formTypeHandler = (value: 1 | 2) => {
     if (value === 1) {
@@ -131,7 +137,10 @@ const AddPersonProcess = () => {
     e: React.FormEvent<HTMLFormElement>,
     step: number
   ) => {
-    if (step === 1 && (!firstName || !lastName || !email)) {
+    if (
+      step === 1 &&
+      (!firstName || !lastName || !validateEmail(email) || !address.address0)
+    ) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
@@ -230,7 +239,12 @@ const AddPersonProcess = () => {
                       placeholder="First Name"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
-                      className="block rounded-md border w-full  border-gray-200 p-2 text-md mb-1 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0"
+                      className={classNames(
+                        'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
+                        mandatoryErrorStep === currentStep && !firstName
+                          ? inputError
+                          : inputSimpleFocus
+                      )}
                     />
                   </div>
                   <div className="w-full">
@@ -242,7 +256,12 @@ const AddPersonProcess = () => {
                       placeholder="Last Name"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      className="block rounded-md border w-full  border-gray-200 p-2 text-md mb-1 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0"
+                      className={classNames(
+                        'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
+                        mandatoryErrorStep === currentStep && !lastName
+                          ? inputError
+                          : inputSimpleFocus
+                      )}
                     />
                   </div>
                   <div className="w-full">
@@ -254,7 +273,13 @@ const AddPersonProcess = () => {
                       placeholder="Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="block rounded-md border w-full  border-gray-200 p-2 text-md mb-1 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:opacity-0"
+                      className={classNames(
+                        'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
+                        mandatoryErrorStep === currentStep &&
+                          !validateEmail(email)
+                          ? inputError
+                          : inputSimpleFocus
+                      )}
                     />
                     <Checkbox
                       mandatoryError={false}

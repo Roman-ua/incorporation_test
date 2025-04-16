@@ -77,12 +77,6 @@ export function EmailModal({ setClose, open, onSubmit }: EmailModalProps) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="person@example.com"
               data-1p-ignore={true}
-              // className={classNames(
-              //   'w-full px-3 py-2 border rounded-md focus:outline-none',
-              //   mandatoryError && !validateEmail(email)
-              //     ? 'border-red-400 border-2 focus:border-red-500 focus:ring-transparent'
-              //     : 'border-gray-300 focus:border-gray-500  focus:ring-black'
-              // )}
               className={classNames(
                 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
                 mandatoryError && !validateEmail(email)

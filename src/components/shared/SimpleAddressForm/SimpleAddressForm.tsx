@@ -1,6 +1,10 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import CountrySelector from '../CountrySelect/selector';
-import { USStates } from '../../../constants/form/form';
+import {
+  // inputError,
+  // inputSimpleFocus,
+  USStates,
+} from '../../../constants/form/form';
 import { SelectMenuOption } from '../CountrySelect/types';
 import { COUNTRIES } from '../CountrySelect/countries';
 import React, { useState } from 'react';
@@ -75,7 +79,7 @@ const SimpleAddressForm = ({
       className={classNames(
         'rounded-md border w-full',
         'transition-all duration-150 ease-in-out',
-        focused ? 'border border-mainBlue shadow-[0_0_0_1px_#0277ff]' : '',
+        focused ? 'border border-black shadow-[0_0_0_1px_#000]' : '',
         !focused ? 'bg-inputBackground' : 'bg-white'
       )}
     >
@@ -96,6 +100,12 @@ const SimpleAddressForm = ({
                   ? 'bg-red-50'
                   : 'bg-transparent'
               )}
+              // className={classNames(
+              //   'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
+              //   requiredError && index === 0 && !data[addressKey]
+              //     ? inputError
+              //     : inputSimpleFocus
+              // )}
               type={field.type}
               value={data[addressKey]}
               data-1p-ignore={true}
