@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Check } from 'lucide-react';
 import ReactCrop, { type Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { classNames } from '../../../utils/helpers';
@@ -256,7 +255,6 @@ export default function PersonAvatar() {
                 className="flex items-center justify-center rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                 onClick={handleCropComplete}
               >
-                <Check className="h-4 w-4 mr-2" />
                 Save
               </div>
             </div>
