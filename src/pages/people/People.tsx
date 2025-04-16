@@ -5,59 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import SearchHeading from './components/SearchHeader';
 import { classNames } from '../../utils/helpers';
 import SectionHeading from '../home/components/SectionHeading';
-import AddPersonModal from './components/AddPersonModal';
-import { Person } from '../../interfaces/interfaces';
-
-const mockUsers = [
-  {
-    id: 1,
-    name: 'Alice Johnson',
-    title: 'Product Manager',
-    email: 'alice.johnson@example.com',
-    signer: true,
-    status: 'Active',
-    picture: '',
-    address: {
-      country: 'United States',
-      address0: '123 Main St',
-      city: 'Anytown',
-      state: 'CA',
-      zip: '12345',
-    },
-  },
-  {
-    id: 2,
-    name: 'Bob Smith',
-    title: 'Lead Developer',
-    email: 'bob.smith@example.com',
-    picture: '',
-    signer: false,
-    status: 'Dissolved',
-    address: {
-      country: 'United States',
-      address0: '123 Main St',
-      city: 'Anytown',
-      state: 'CA',
-      zip: '12345',
-    },
-  },
-  {
-    id: 3,
-    name: 'Clara Davis',
-    title: 'UX Designer',
-    email: 'clara.davis@example.com',
-    picture: '',
-    signer: true,
-    status: 'Inactive',
-    address: {
-      country: 'United States',
-      address0: '123 Main St',
-      city: 'Anytown',
-      state: 'CA',
-      zip: '12345',
-    },
-  },
-];
+import { useRecoilValue } from 'recoil';
+import PeopleState from '../../state/atoms/People';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -77,8 +26,7 @@ const statusBadge = (status: string) => {
 function People() {
   const navigate = useNavigate();
 
-  const [peopleData, setPeopleData] = React.useState<Person[]>(mockUsers);
-  const [openModal, setOpenModal] = React.useState(false);
+  const peopleData = useRecoilValue(PeopleState);
 
   const handleButtonClick = (id: number) => {
     navigate(`${ROUTES.PERSON}/${id}`);
@@ -86,7 +34,7 @@ function People() {
 
   return (
     <div className="relative pl-10 pr-10 py-8 max-sm:pl-4 max-sm:pr-4 container max-w-7xl mx-auto">
-      <SearchHeading setOpenModal={setOpenModal} />
+      <SearchHeading setOpenModal={() => navigate(ROUTES.ADD_PERSON)} />
       <>
         <SectionHeading title="People" />
         <div className="w-full overflow-auto text-sm">
@@ -107,22 +55,22 @@ function People() {
                 return (
                   <div
                     key={person.id}
-                    onClick={() => handleButtonClick(person.id)}
+                    onClick={() => handleButtonClick(+person.id)}
                     className="flex py-4 hover:bg-gray-100 transition-all duration-150 ease-in-out hover:cursor-pointer group"
                   >
                     <div className="w-[25%] pl-3 pr-3 text-sm font-semibold text-gray-700 flex items-center gap-2">
                       {person.picture ? (
                         <img
                           src={person.picture}
-                          alt={person.name}
+                          alt={person.fullName}
                           className="w-6 h-6 rounded-full"
                         />
                       ) : (
                         <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
-                          {person.name.charAt(0)}
+                          {person.fullName.charAt(0)}
                         </div>
                       )}
-                      {person.name}
+                      {person.fullName}
                     </div>
                     <div className="w-[25%] px-1.5 text-sm text-gray-700">
                       {person.email}
@@ -144,12 +92,6 @@ function People() {
           </div>
         </div>
       </>
-      <AddPersonModal
-        open={openModal}
-        setOpen={() => setOpenModal(!openModal)}
-        closeModalHandler={() => setOpenModal(false)}
-        submitProcess={(data) => setPeopleData([...peopleData, data])}
-      />
     </div>
   );
 }

@@ -28,6 +28,7 @@ import AuthFlow from './pages/login/Login';
 import RecoverPasswordPage from './pages/login/RecoverPAsswordPage';
 import PersonPageDetails from './pages/person/PersonPageDetails';
 import People from './pages/people/People';
+import AddPersonProcess from './pages/person/processes/addPersonProcess/AddPersonProcess';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           path={ROUTES.ANN_REPORT_ADD}
           element={<AddFullReportProcess />}
         />
+        <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
         <Route element={<ProtectedRoute />}>
           <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
           <Route element={<ProtectedRoutes />}>
