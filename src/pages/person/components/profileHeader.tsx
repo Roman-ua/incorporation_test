@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { classNames } from '../../../utils/helpers';
 import { MdOutlineCopyAll } from 'react-icons/md';
 import PersonAvatar from './personAvatar';
@@ -34,10 +34,21 @@ export function ProfileHeader({
   email,
   onAddEmail,
 }: ProfileHeaderProps) {
+  const [image, setImage] = useState<string | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  const triggerFileUpload = () => {
+    avatarInputRef.current?.click();
+  };
+
   return (
     <div className="flex items-start flex-col justify-start gap-x-4 mb-12 ">
-      <PersonAvatar />
-      <div className="w-full mt-2">
+      <PersonAvatar
+        fileInputRef={avatarInputRef}
+        image={image}
+        setImage={setImage}
+      />
+      <div className="w-full mt-6">
         <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
           <div className="text-2xl text-gray-700 flex items-center gap-x-2">
             <span className="text-xl font-bold text-gray-900">{name}</span>
@@ -82,6 +93,18 @@ export function ProfileHeader({
             <dt className="text-nowrap text-sm text-gray-500">Phone Number</dt>
             <dd className="text-base font-semibold tracking-tight text-gray-700">
               +1 234 567 890
+            </dd>
+          </div>
+          <div className="flex flex-col gap-y-1 ml-auto">
+            <dd className="text-base font-semibold tracking-tight text-gray-700">
+              {!image && (
+                <button
+                  onClick={triggerFileUpload}
+                  className="text-gray-700 bg-gray-100 rounded-md px-3 py-2 transition-colors text-base hover:text-black"
+                >
+                  Upload Picture
+                </button>
+              )}
             </dd>
           </div>
         </dl>
