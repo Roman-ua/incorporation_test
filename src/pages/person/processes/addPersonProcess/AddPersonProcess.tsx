@@ -9,7 +9,7 @@ import { ROUTES } from '../../../../constants/navigation/routes';
 import SimpleAddressForm from '../../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import SimpleAddressFormNotUS from '../../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import SwitchButton from '../../../../components/shared/SwitchButton/SwitchButton';
-import { Checkbox } from '../../../../components/shared/Checkboxes/CheckBoxSq';
+
 import {
   inputError,
   inputSimpleFocus,
@@ -94,7 +94,6 @@ const AddPersonProcess = () => {
   const [mandatoryErrorStep, setMandatoryErrorStep] = useState<number>(-1);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
-  const [checkedUnder, setCheckedUnder] = useState<boolean>(false);
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -104,7 +103,7 @@ const AddPersonProcess = () => {
   const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
+  // const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
 
   const addressHandler = (key: string, value: string) => {
     setAddress((prevState) => ({
@@ -145,22 +144,14 @@ const AddPersonProcess = () => {
       e.stopPropagation();
       setMandatoryErrorStep(step);
       return;
-    }
-
-    setCurrentStep((prevState) => {
-      if (prevState === 5) return prevState;
-      setVisitedSteps([...visitedSteps, prevState]);
-      return prevState + 1;
-    });
-
-    if (step === 2) {
+    } else {
       setPeopleData([
         ...peopleData,
         {
           id: `${peopleData.length + 1}`,
           fullName: `${firstName} ${lastName}`,
           email,
-          sendInvitation: checkedUnder,
+          sendInvitation: false,
           titles: [],
           dateAdded: new Date().toISOString(),
           status: 'Active',
@@ -171,6 +162,31 @@ const AddPersonProcess = () => {
 
       navigate(ROUTES.PEOPLE);
     }
+
+    // setCurrentStep((prevState) => {
+    //   if (prevState === 5) return prevState;
+    //   setVisitedSteps([...visitedSteps, prevState]);
+    //   return prevState + 1;
+    // });
+
+    // if (step === 2) {
+    //   setPeopleData([
+    //     ...peopleData,
+    //     {
+    //       id: `${peopleData.length + 1}`,
+    //       fullName: `${firstName} ${lastName}`,
+    //       email,
+    //       sendInvitation: false,
+    //       titles: [],
+    //       dateAdded: new Date().toISOString(),
+    //       status: 'Active',
+    //       address: address,
+    //       picture: '',
+    //     },
+    //   ]);
+
+    //   navigate(ROUTES.PEOPLE);
+    // }
   };
 
   const cancelStepHandler = () => {
@@ -213,7 +229,7 @@ const AddPersonProcess = () => {
           <AddFullReportSteps
             editMode={true}
             currentStep={currentStep}
-            visitedSteps={visitedSteps}
+            visitedSteps={[]}
             setCurrentStep={setCurrentStep}
             completedSteps={completedSteps}
           />
@@ -224,13 +240,13 @@ const AddPersonProcess = () => {
               <div className="mb-5">
                 <PageSign
                   titleSize={'text-2xl font-bold text-gray-900'}
-                  title={`Provide Person details`}
+                  title={`New person details`}
                   icon={<></>}
                 />
               </div>
-              <div className="flex items-start justify-between max-lg:flex-col gap-4 max-lg:gap-6">
-                <div className="flex flex-col items-start justify-start gap-4 w-1/2">
-                  <div className="w-full">
+              <div className="flex items-start flex-col gap-6 max-lg:gap-6">
+                <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                  <div className="w-1/2 max-md:w-full">
                     <div className="text-gray-900 text-sm mb-2 font-bold">
                       First Name
                     </div>
@@ -247,7 +263,7 @@ const AddPersonProcess = () => {
                       )}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-1/2 max-md:w-full">
                     <div className="text-gray-900 text-sm mb-2 font-bold">
                       Last Name
                     </div>
@@ -264,6 +280,8 @@ const AddPersonProcess = () => {
                       )}
                     />
                   </div>
+                </div>
+                <div className="flex items-start justify-start gap-6 w-full flex-col ">
                   <div className="w-full">
                     <div className="text-gray-900 text-sm mb-2 font-bold">
                       Email
@@ -281,46 +299,36 @@ const AddPersonProcess = () => {
                           : inputSimpleFocus
                       )}
                     />
-                    <Checkbox
-                      mandatoryError={false}
-                      wrapperClass={'h-5 w-5 min-w-5 min-h-5'}
-                      iconClass={'h-3 w-3'}
-                      id={`Send invitation`}
-                      title={'Send invitation'}
-                      underInput={true}
-                      checked={checkedUnder}
-                      onChange={(value) => setCheckedUnder(value)}
-                    />
                   </div>
-                </div>
-                <div className="w-1/2">
-                  <div className="mb-2 flex items-end justify-between">
-                    <span className="font-bold text-sm">Address</span>
-                    <SwitchButton
-                      option1="US Address"
-                      option2="Other"
-                      selected={selected}
-                      onSelect={formTypeHandler}
-                    />
+                  <div className="w-full">
+                    <div className="mb-2 flex items-end justify-between">
+                      <span className="font-bold text-sm">Address</span>
+                      <SwitchButton
+                        option1="US Address"
+                        option2="Other"
+                        selected={selected}
+                        onSelect={formTypeHandler}
+                      />
+                    </div>
+                    {selected === 1 ? (
+                      <SimpleAddressForm
+                        disabledFlag={false}
+                        inputCommonClasses={inputCommonClasses}
+                        requiredError={mandatoryErrorStep === currentStep}
+                        countryDisabled={true}
+                        data={address}
+                        setData={addressHandler}
+                      />
+                    ) : (
+                      <SimpleAddressFormNotUS
+                        disabledFlag={false}
+                        inputCommonClasses={inputCommonClasses}
+                        requiredError={mandatoryErrorStep === currentStep}
+                        data={address}
+                        setData={addressHandler}
+                      />
+                    )}
                   </div>
-                  {selected === 1 ? (
-                    <SimpleAddressForm
-                      disabledFlag={false}
-                      inputCommonClasses={inputCommonClasses}
-                      requiredError={mandatoryErrorStep === currentStep}
-                      countryDisabled={true}
-                      data={address}
-                      setData={addressHandler}
-                    />
-                  ) : (
-                    <SimpleAddressFormNotUS
-                      disabledFlag={false}
-                      inputCommonClasses={inputCommonClasses}
-                      requiredError={mandatoryErrorStep === currentStep}
-                      data={address}
-                      setData={addressHandler}
-                    />
-                  )}
                 </div>
               </div>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">

@@ -9,11 +9,11 @@ const stepsData = [
     id: 1,
   },
 
-  {
-    name: 'Review',
-    status: 'upcoming',
-    id: 2,
-  },
+  // {
+  //   name: 'Review',
+  //   status: 'upcoming',
+  //   id: 2,
+  // },
 ];
 
 const AddPersonSteps = ({
