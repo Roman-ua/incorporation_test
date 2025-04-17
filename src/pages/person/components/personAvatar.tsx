@@ -222,7 +222,7 @@ export default function PersonAvatar() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div
             ref={modalRef}
-            className="bg-white rounded-md p-4 max-w-3xl max-h-[90vh] flex flex-col relative"
+            className="bg-white rounded-md p-4 max-w-sm max-h-[90vh] flex flex-col relative"
           >
             <div className="flex justify-between items-center mb-12">
               <XBtn clickHandler={() => setIsModalOpen(false)} />

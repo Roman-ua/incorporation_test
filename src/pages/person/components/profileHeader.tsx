@@ -35,9 +35,9 @@ export function ProfileHeader({
   onAddEmail,
 }: ProfileHeaderProps) {
   return (
-    <div className="flex items-center justify-start gap-x-4 mb-12 ">
+    <div className="flex items-start flex-col justify-start gap-x-4 mb-12 ">
       <PersonAvatar />
-      <div className="w-full">
+      <div className="w-full mt-2">
         <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
           <div className="text-2xl text-gray-700 flex items-center gap-x-2">
             <span className="text-xl font-bold text-gray-900">{name}</span>
