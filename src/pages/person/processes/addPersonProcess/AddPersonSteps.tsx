@@ -55,6 +55,7 @@ const AddPersonSteps = ({
     stepHandler(visitedSteps);
   }, [currentStep]);
 
+  return <div></div>;
   return (
     <nav aria-label="Progress" className="max-lg:overflow-scroll">
       <ol

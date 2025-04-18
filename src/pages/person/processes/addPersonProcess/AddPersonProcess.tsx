@@ -234,7 +234,7 @@ const AddPersonProcess = () => {
             completedSteps={completedSteps}
           />
         </div>
-        <div className="w-[870px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
+        <div className="w-[670px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 1 && (
             <form onSubmit={(e) => submitStepHandler(e, 1)}>
               <div className="mb-5">
@@ -255,6 +255,7 @@ const AddPersonProcess = () => {
                       placeholder="First Name"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
+                      data-1p-ignore={true}
                       className={classNames(
                         'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
                         mandatoryErrorStep === currentStep && !firstName
@@ -272,6 +273,7 @@ const AddPersonProcess = () => {
                       placeholder="Last Name"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
+                      data-1p-ignore={true}
                       className={classNames(
                         'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
                         mandatoryErrorStep === currentStep && !lastName
@@ -291,6 +293,7 @@ const AddPersonProcess = () => {
                       placeholder="Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      data-1p-ignore={true}
                       className={classNames(
                         'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
                         mandatoryErrorStep === currentStep &&
