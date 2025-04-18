@@ -5,7 +5,34 @@ import { CompaniesSection } from './companiesSection';
 import { EmailModal } from './emailModal';
 
 // Sample data - in a real app this would come from an API
-const personData = {
+interface Company {
+  id: number;
+  name: string;
+  status: string;
+  registrationState: string;
+  titles: string[];
+}
+
+interface Address {
+  country: string;
+  address0: string;
+  address1: string;
+  city: string;
+  state: string;
+  zip: string;
+}
+
+export interface PersonData {
+  id: string;
+  name: string;
+  status: string;
+  email: string;
+  picture: string;
+  address: Address;
+  companies: Company[];
+}
+
+const personData: PersonData = {
   id: 'P-12345',
   name: 'John Doe',
   status: 'Active',
@@ -46,10 +73,14 @@ const personData = {
 
 export function PersonProfile() {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
-  const [personEmail, setPersonEmail] = useState(personData.email);
+  const [personDataForUpdate, setPersonDataForUpdate] =
+    useState<PersonData>(personData);
 
   const handleAddEmail = (email: string, sendInvitation: boolean) => {
-    setPersonEmail(email);
+    setPersonDataForUpdate((prev) => ({
+      ...prev,
+      email: email,
+    }));
     setIsEmailModalOpen(false);
 
     if (sendInvitation) {
@@ -57,14 +88,18 @@ export function PersonProfile() {
       console.log(`Invitation sent to ${email}`);
     }
   };
+  const addPictureHandler = (image: string) => {
+    setPersonDataForUpdate((prevState: PersonData) => ({
+      ...prevState,
+      picture: image,
+    }));
+  };
 
   return (
     <div>
       <ProfileHeader
-        id={personData.id}
-        name={personData.name}
-        status={personData.status}
-        email={personEmail}
+        personDataForUpdate={personDataForUpdate}
+        addPictureHandler={addPictureHandler}
         picture={personData.picture}
         onAddEmail={() => setIsEmailModalOpen(true)}
       />

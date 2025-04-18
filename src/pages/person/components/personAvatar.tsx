@@ -14,18 +14,25 @@ interface PersonAvatarProps {
   fileInputRef: React.RefObject<HTMLInputElement>;
   image: string | null;
   setImage: (image: string | null) => void;
+  croppedImage: string | null;
+  setCroppedImage: (image: string | null) => void;
+  addPictureHandler: (data: string) => void;
+  prevImage: string | null;
 }
 
 export default function PersonAvatar({
   fileInputRef,
   image,
   setImage,
+  croppedImage,
+  setCroppedImage,
+  addPictureHandler,
+  prevImage,
 }: PersonAvatarProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [crop, setCrop] = useState<Crop>();
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
   const imageRef = useRef<HTMLImageElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -37,7 +44,12 @@ export default function PersonAvatar({
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
+        console.log(croppedImage, image, 'clicked outside');
         setIsModalOpen(false);
+        if (prevImage) {
+          setCroppedImage(prevImage);
+        }
+        setImage(null);
       }
     }
     if (isModalOpen) document.addEventListener('mousedown', handleClickOutside);
@@ -124,6 +136,7 @@ export default function PersonAvatar({
 
       const base64Image = canvas.toDataURL('image/jpeg');
       setCroppedImage(base64Image);
+      addPictureHandler(base64Image);
       setIsModalOpen(false);
       setImage(null);
     }
@@ -148,6 +161,14 @@ export default function PersonAvatar({
       }
       fileInputRef.current.click();
     }
+  };
+
+  const cancelModalHandler = () => {
+    setIsModalOpen(false);
+    if (prevImage) {
+      setCroppedImage(prevImage);
+    }
+    setImage(null);
   };
 
   return (
@@ -240,7 +261,7 @@ export default function PersonAvatar({
             <div className="flex justify-end gap-2 mt-4">
               <button
                 className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                onClick={() => setIsModalOpen(false)}
+                onClick={cancelModalHandler}
               >
                 Cancel
               </button>

@@ -2,14 +2,13 @@ import React, { useRef, useState } from 'react';
 import { classNames } from '../../../utils/helpers';
 import { MdOutlineCopyAll } from 'react-icons/md';
 import PersonAvatar from './personAvatar';
+import { PersonData } from './personProfile';
 
 interface ProfileHeaderProps {
-  id: string;
-  name: string;
-  status: string;
-  email: string;
   picture: string;
   onAddEmail: () => void;
+  personDataForUpdate: PersonData;
+  addPictureHandler: (data: string) => void;
 }
 
 const statusBadge = (status: string) => {
@@ -28,13 +27,15 @@ const statusBadge = (status: string) => {
 };
 
 export function ProfileHeader({
-  id,
-  name,
-  status,
-  email,
   onAddEmail,
+  personDataForUpdate,
+  addPictureHandler,
 }: ProfileHeaderProps) {
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(
+    personDataForUpdate.picture
+  );
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
+
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const triggerFileUpload = () => {
@@ -47,14 +48,20 @@ export function ProfileHeader({
         fileInputRef={avatarInputRef}
         image={image}
         setImage={setImage}
+        croppedImage={croppedImage}
+        setCroppedImage={setCroppedImage}
+        addPictureHandler={addPictureHandler}
+        prevImage={personDataForUpdate.picture}
       />
       <div className="w-full mt-6">
         <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
           <div className="text-2xl text-gray-700 flex items-center gap-x-2">
-            <span className="text-xl font-bold text-gray-900">{name}</span>
+            <span className="text-xl font-bold text-gray-900">
+              {personDataForUpdate.name}
+            </span>
           </div>
           <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-            p_{id}
+            p_{personDataForUpdate.id}
             <MdOutlineCopyAll className="text-base ml-2" />
           </span>
         </div>
@@ -64,18 +71,18 @@ export function ProfileHeader({
             <span
               className={classNames(
                 'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                statusBadge(status)
+                statusBadge(personDataForUpdate.status)
               )}
             >
-              {status}
+              {personDataForUpdate.status}
             </span>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-6">
             <dt className="text-nowrap text-sm text-gray-500">Email</dt>
             <dd>
-              {email ? (
+              {personDataForUpdate.email ? (
                 <p className="text-base font-semibold tracking-tight text-gray-700">
-                  {email}
+                  {personDataForUpdate.email}
                 </p>
               ) : (
                 <div className="w-full flex justify-end">
@@ -97,10 +104,10 @@ export function ProfileHeader({
           </div>
           <div className="flex flex-col gap-y-1 ml-auto">
             <dd className="text-base font-semibold tracking-tight text-gray-700">
-              {!image && (
+              {!croppedImage && (
                 <button
                   onClick={triggerFileUpload}
-                  className="text-gray-700 bg-gray-100 rounded-md px-3 py-2 transition-colors text-base hover:text-black"
+                  className="rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
                 >
                   Upload Picture
                 </button>
