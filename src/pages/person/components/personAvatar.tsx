@@ -155,11 +155,17 @@ export default function PersonAvatar({
   // Trigger file input click programmatically
   const triggerFileInput = () => {
     if (fileInputRef.current) {
-      // Reset the file input value to ensure onChange fires even if selecting the same file
-      if (fileInputRef.current.value) {
-        fileInputRef.current.value = '';
+      if (croppedImage) {
+        setImage(croppedImage);
+        setIsModalOpen(true);
+        return;
       }
-      fileInputRef.current.click();
+
+      // если нет картинки — просто открываем выбор файла
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+        fileInputRef.current.click();
+      }
     }
   };
 
@@ -258,20 +264,57 @@ export default function PersonAvatar({
                 />
               </ReactCrop>
             </div>
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                onClick={cancelModalHandler}
-              >
-                Cancel
-              </button>
-              <button
-                className="block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
-                onClick={handleCropComplete}
-              >
-                Save
-              </button>
-            </div>
+            {!croppedImage ? (
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                  onClick={cancelModalHandler}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="block rounded-md bg-mainBlue px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                  onClick={handleCropComplete}
+                >
+                  Save
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-between items-center gap-2 mt-4">
+                <button
+                  className="block px-3 py-2 text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                  onClick={cancelModalHandler}
+                >
+                  Cancel
+                </button>
+
+                <div className="flex gap-4">
+                  <button
+                    className=" block rounded-md bg-red-50 border-red-50 px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:bg-red-100 hover:border-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                    onClick={() => {
+                      setCroppedImage(null);
+                      setImage(null);
+                      setIsModalOpen(false);
+                    }}
+                  >
+                    Delete
+                  </button>
+
+                  <button
+                    className="rounded-md bg-mainBlue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 hover:cursor-pointer"
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      if (fileInputRef.current) {
+                        fileInputRef.current.value = '';
+                        fileInputRef.current.click();
+                      }
+                    }}
+                  >
+                    Change
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

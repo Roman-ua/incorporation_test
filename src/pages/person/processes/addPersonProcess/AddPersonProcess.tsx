@@ -207,7 +207,7 @@ const AddPersonProcess = () => {
     <>
       <div className="bg-mainBackground relative w-full border-b py-4 px-6 flex items-center justify-between max-lg:px-4 max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:right-0 max-lg:z-10 max-lg:justify-start">
         <div className="w-[200px] max-lg:w-fit pr-2" />
-        <div className="w-[870px] flex items-center justify-center font-semibold">
+        <div className="w-[600px] flex items-center justify-center font-semibold">
           Add New Person
         </div>
         <div className="w-[200px] pr-2 flex items-end justify-end">
@@ -234,7 +234,7 @@ const AddPersonProcess = () => {
             completedSteps={completedSteps}
           />
         </div>
-        <div className="w-[670px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
+        <div className="w-[600px] max-xl:w-full max-lg:px-20 max-lg:mt-6 max-sm:px-0 pb-20">
           {currentStep === 1 && (
             <form onSubmit={(e) => submitStepHandler(e, 1)}>
               <div className="mb-5">
@@ -336,7 +336,7 @@ const AddPersonProcess = () => {
               </div>
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-20 max-sm:px-6">
                 <div className="w-[200px] pr-2 max-lg:hidden" />
-                <div className="w-[870px] max-xl:w-full flex items-center justify-between">
+                <div className="w-[600px] max-xl:w-full flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => {
