@@ -121,7 +121,7 @@ const AddPersonProcess = () => {
   };
 
   const firstStepDisabled = () =>
-    !firstName || !lastName || !validateEmail(email) || !address.address0;
+    !firstName || !lastName || !validateEmail(email);
 
   const formTypeHandler = (value: 1 | 2) => {
     if (value === 1) {
@@ -136,10 +136,7 @@ const AddPersonProcess = () => {
     e: React.FormEvent<HTMLFormElement>,
     step: number
   ) => {
-    if (
-      step === 1 &&
-      (!firstName || !lastName || !validateEmail(email) || !address.address0)
-    ) {
+    if (step === 1 && (!firstName || !lastName || !validateEmail(email))) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
