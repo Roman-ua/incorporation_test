@@ -164,7 +164,7 @@ export default function PersonAvatar({
   };
 
   return (
-    <div>
+    <div style={{ WebkitUserSelect: 'none', userSelect: 'none' }}>
       <div
         className={classNames(
           'relative aspect-square w-[98px] h-[98px] border-2 border-dashed rounded-md flex flex-col items-center justify-center transition-colors hover:cursor-pointer',
@@ -208,6 +208,7 @@ export default function PersonAvatar({
         {image && !croppedImage && (
           <div className="relative w-full h-full">
             <img
+              draggable={false}
               src={image || '/placeholder.svg'}
               alt="Upload preview"
               className="w-full h-full object-cover rounded-md"
@@ -218,6 +219,11 @@ export default function PersonAvatar({
         {croppedImage && (
           <div className="relative w-full h-full">
             <img
+              draggable={false}
+              style={{
+                WebkitUserSelect: 'none',
+                userSelect: 'none',
+              }}
               src={croppedImage || '/placeholder.svg'}
               alt="Cropped preview"
               className="w-full h-full object-cover rounded-md"
@@ -231,6 +237,10 @@ export default function PersonAvatar({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div
             ref={modalRef}
+            style={{
+              WebkitUserSelect: 'none',
+              userSelect: 'none',
+            }}
             className="bg-white rounded-md p-4 max-w-sm max-h-[90vh] flex flex-col relative"
           >
             <XBtn clickHandler={() => setIsModalOpen(false)} />
@@ -246,6 +256,11 @@ export default function PersonAvatar({
                   src={image || ''}
                   onLoad={handleImageLoad}
                   className="max-w-full max-h-[60vh] object-contain mx-auto"
+                  draggable={false}
+                  style={{
+                    WebkitUserSelect: 'none',
+                    userSelect: 'none',
+                  }}
                   alt="crop source"
                 />
               </ReactCrop>
