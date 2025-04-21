@@ -37,25 +37,6 @@ export default function PersonAvatar({
   const imageRef = useRef<HTMLImageElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Close modal when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        console.log(croppedImage, image, 'clicked outside');
-        setIsModalOpen(false);
-        if (prevImage) {
-          setCroppedImage(prevImage);
-        }
-        setImage(null);
-      }
-    }
-    if (isModalOpen) document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isModalOpen]);
-
   // Prevent scrolling when modal is open
   useEffect(() => {
     document.body.style.overflow = isModalOpen ? 'hidden' : 'auto';
@@ -93,7 +74,9 @@ export default function PersonAvatar({
     // Allow only specific image formats: JPEG, PNG, GIF, and WebP
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
-      return alert(`Invalid file type: ${file.type}\nPlease select a valid image file (JPEG, PNG, GIF, or WebP)`);
+      return alert(
+        `Invalid file type: ${file.type}\nPlease select a valid image file (JPEG, PNG, GIF, or WebP)`
+      );
     }
 
     const reader = new FileReader();
