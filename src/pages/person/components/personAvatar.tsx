@@ -90,8 +90,11 @@ export default function PersonAvatar({
   };
 
   const handleFile = (file: File) => {
-    if (!file.type.match('image.*'))
-      return alert('Please select an image file');
+    // Allow only specific image formats: JPEG, PNG, GIF, and WebP
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return alert(`Invalid file type: ${file.type}\nPlease select a valid image file (JPEG, PNG, GIF, or WebP)`);
+    }
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -199,7 +202,7 @@ export default function PersonAvatar({
           type="file"
           className="hidden" // Hide the input but keep it accessible
           onChange={handleFileChange}
-          accept="image/*"
+          accept="image/jpeg,image/png,image/gif,image/webp"
         />
 
         {/* Upload interface - shown when no image or on hover over existing image */}

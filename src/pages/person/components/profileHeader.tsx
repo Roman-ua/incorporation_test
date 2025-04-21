@@ -103,7 +103,7 @@ export function ProfileHeader({
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 ml-auto">
-            <dd className="text-base font-semibold tracking-tight text-gray-700">
+            <dd className="text-base font-semibold tracking-tight text-gray-700 overflow-visible">
               {!croppedImage && (
                 <button
                   onClick={triggerFileUpload}
