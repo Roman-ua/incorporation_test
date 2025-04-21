@@ -314,7 +314,7 @@ const AddPersonProcess = () => {
                       <SimpleAddressForm
                         disabledFlag={false}
                         inputCommonClasses={inputCommonClasses}
-                        requiredError={mandatoryErrorStep === currentStep}
+                        requiredError={false}
                         countryDisabled={true}
                         data={address}
                         setData={addressHandler}
@@ -323,7 +323,7 @@ const AddPersonProcess = () => {
                       <SimpleAddressFormNotUS
                         disabledFlag={false}
                         inputCommonClasses={inputCommonClasses}
-                        requiredError={mandatoryErrorStep === currentStep}
+                        requiredError={false}
                         data={address}
                         setData={addressHandler}
                       />
