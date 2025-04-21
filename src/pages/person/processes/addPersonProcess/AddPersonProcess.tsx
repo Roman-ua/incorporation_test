@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { classNames } from '../../../../utils/helpers';
 import PageSign from '../../../../components/shared/PageSign';
 import { AddressFields } from '../../../../interfaces/interfaces';
@@ -20,6 +20,7 @@ import { BiEditAlt } from 'react-icons/bi';
 import { useRecoilState } from 'recoil';
 import PeopleState from '../../../../state/atoms/People';
 import { validateEmail } from '../../../../utils/validators';
+import PersonAvatar from '../../components/personAvatar';
 
 const defaultUS = {
   country: 'United States',
@@ -99,7 +100,16 @@ const AddPersonProcess = () => {
   const [email, setEmail] = useState<string>('');
   const [editingAddress, setEditingAddress] = useState<boolean>(false);
   const [peopleData, setPeopleData] = useRecoilState(PeopleState);
+  const [image, setImage] = useState<string | null>(null);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  const triggerFileUpload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    avatarInputRef.current?.click();
+  };
   const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -153,7 +163,7 @@ const AddPersonProcess = () => {
           dateAdded: new Date().toISOString(),
           status: 'Active',
           address: address,
-          picture: '',
+          picture: croppedImage || '',
         },
       ]);
 
@@ -242,6 +252,25 @@ const AddPersonProcess = () => {
                 />
               </div>
               <div className="flex items-start flex-col gap-6 max-lg:gap-6">
+                <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
+                  {!croppedImage && !image && (
+                    <button
+                      onClick={triggerFileUpload}
+                      className="rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+                    >
+                      Upload Picture
+                    </button>
+                  )}
+                  <PersonAvatar
+                    fileInputRef={avatarInputRef}
+                    image={image}
+                    setImage={setImage}
+                    croppedImage={croppedImage}
+                    setCroppedImage={setCroppedImage}
+                    addPictureHandler={() => undefined}
+                    prevImage={''}
+                  />
+                </div>
                 <div className="flex items-center justify-between gap-4 w-full max-md:flex-col">
                   <div className="w-1/2 max-md:w-full">
                     <div className="text-gray-900 text-sm mb-2 font-bold">
