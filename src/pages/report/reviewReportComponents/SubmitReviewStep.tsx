@@ -26,6 +26,7 @@ interface IProps {
   reportData: ReportData;
   agentReportData: Agent;
   peopleData: Person[];
+  setPeopleData: (data: (prevState: Person[]) => Person[]) => void;
   setReportData: React.Dispatch<React.SetStateAction<ReportData>>;
   clickHandlerPeople?: () => void;
   clickHandlerAddress?: () => void;
@@ -105,6 +106,7 @@ const SubmitReviewStep = ({
   setReportData,
   agentReportData,
   peopleData,
+  setPeopleData,
   status,
   confirmStep,
 }: IProps) => {
@@ -189,14 +191,14 @@ const SubmitReviewStep = ({
     });
   };
 
-  const [peoplereportData, setPeoplereportData] =
-    useState<Person[]>(peopleData);
+  // const [peopleData, setPeopleData] =
+  //   useState<Person[]>(peopleData);
   const [allPeopleRemoved, setAllPeopleRemoved] = React.useState(false);
   const [editingPersonId, setEditingPersonId] = useState(-1);
   const [addPersonPressed, setAddPersonPressed] = React.useState(false);
 
   const returnEdditedPersonHandler = (id: number) => {
-    setPeoplereportData((prevState) => {
+    setPeopleData((prevState: Person[]) => {
       const data = [...prevState];
       const sourcePerson = peopleData.find((person) => person.id === id);
 
@@ -210,7 +212,7 @@ const SubmitReviewStep = ({
   };
 
   const returnPersonHandler = (id: number) => {
-    setPeoplereportData((prevState) => {
+    setPeopleData((prevState) => {
       const data = [...prevState];
       const currentPersonIndex = data.findIndex((person) => person.id === id);
 
@@ -221,7 +223,7 @@ const SubmitReviewStep = ({
     });
   };
   const removePersonHandler = (id: number) => {
-    setPeoplereportData((prevState) => {
+    setPeopleData((prevState) => {
       const data = [...prevState];
       const currentPersonIndex = data.findIndex((person) => person.id === id);
 
@@ -237,7 +239,7 @@ const SubmitReviewStep = ({
     });
   };
   const updateExistedPersonHandler = (person: Person) => {
-    setPeoplereportData((prevState) => {
+    setPeopleData((prevState) => {
       const data = [...prevState];
       const currentItemIndex = prevState.findIndex(
         (item) => item.id === person.id
@@ -259,7 +261,7 @@ const SubmitReviewStep = ({
     });
   };
   const addNewPersonHandler = (person: Person) => {
-    setPeoplereportData((prevState) => {
+    setPeopleData((prevState) => {
       const data = [...prevState];
       const personData = { ...person };
       personData.id = Math.floor(Math.random() * 90000) + 10000;
@@ -279,16 +281,14 @@ const SubmitReviewStep = ({
   };
 
   useEffect(() => {
-    const allRemoved = peoplereportData.every(
-      (person) => person.removed === true
-    );
+    const allRemoved = peopleData.every((person) => person.removed === true);
 
     if (allRemoved) {
       setAllPeopleRemoved(true);
     } else {
       setAllPeopleRemoved(false);
     }
-  }, [peoplereportData]);
+  }, [peopleData]);
 
   const [agentreportData, setAgentreportData] = React.useState(agentReportData);
   const [editingAddressAgent, setEditingAddressAgent] = useState(false);
@@ -546,7 +546,7 @@ const SubmitReviewStep = ({
             isCreateProcess={true}
           />
         )}
-        {peoplereportData.map((person, rowIndex) => (
+        {peopleData.map((person, rowIndex) => (
           <>
             {editingPersonId !== person.id ? (
               <div

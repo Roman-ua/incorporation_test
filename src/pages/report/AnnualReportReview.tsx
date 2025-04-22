@@ -18,7 +18,8 @@ import { ArrowRightIcon } from 'lucide-react';
 const AnnualReportReview = () => {
   const [dataDuplicate, setDataDuplicate] =
     useState<ReportData>(mockReportData);
-  const [peopleDataDuplicate] = useState<Person[]>(mockPeople);
+  const [peopleDataDuplicate, setPeopleDataDuplicate] =
+    useState<Person[]>(mockPeople);
   const [agentDataDuplicate] = useState(mockAgent);
   const [confetti, setConfetti] = React.useState(false);
 
@@ -126,6 +127,7 @@ const AnnualReportReview = () => {
                 setReportData={setDataDuplicate}
                 agentReportData={agentDataDuplicate}
                 peopleData={peopleDataDuplicate}
+                setPeopleData={setPeopleDataDuplicate}
               />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                 <div className="w-[200px] pr-2 max-lg:hidden" />
@@ -170,6 +172,7 @@ const AnnualReportReview = () => {
                     status={'In Progress'}
                     agentReportData={agentDataDuplicate}
                     peopleData={peopleDataDuplicate}
+                    setPeopleData={setPeopleDataDuplicate}
                   />
                   <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">
                     <div className="w-[200px] pr-2 max-lg:hidden" />
@@ -190,6 +193,7 @@ const AnnualReportReview = () => {
             <div className="w-full relative">
               <ProcessingReport
                 data={dataDuplicate}
+                peopleData={peopleDataDuplicate}
                 setLastStepSubmitDisabled={setLastStepSubmitDisabled}
               />
               <div className="bg-mainBackground py-3 px-6 fixed left-0 bottom-0 border-t w-full max-lg:left-0 flex items-start justify-between max-lg:px-36 max-sm:px-6">

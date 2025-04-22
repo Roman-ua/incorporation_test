@@ -18,6 +18,7 @@ interface IProps {
   propData?: Person[];
   hideControls?: boolean;
   firstColStyle?: string;
+  hideRemovedPerson?: boolean;
 }
 
 const ProcessingReportPeopleSection = ({
@@ -25,10 +26,12 @@ const ProcessingReportPeopleSection = ({
   propData,
   hideControls,
   firstColStyle,
+  hideRemovedPerson,
 }: IProps) => {
   const [peopleDataDuplicate, setPeopleDataDuplicate] = useState<Person[]>(
     propData || mockPeople
   );
+  console.log(peopleDataDuplicate, 'peopleDataDuplicate');
   const [editingPersonId, setEditingPersonId] = useState(-1);
 
   useEffect(() => {
@@ -85,6 +88,7 @@ const ProcessingReportPeopleSection = ({
   return (
     <>
       {peopleDataDuplicate.map((person, rowIndex) => {
+        if (hideRemovedPerson && person.removed) return <></>;
         return editingPersonId !== person.id ? (
           <div key={rowIndex}>
             <div className="flex py-3 transition-all ease-in-out duration-150 items-start justify-start">

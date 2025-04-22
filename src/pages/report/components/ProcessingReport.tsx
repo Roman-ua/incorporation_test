@@ -15,6 +15,7 @@ import PageSign from '../../../components/shared/PageSign';
 import type {
   AddressFields,
   IFiles,
+  Person,
   ReportData,
 } from '../../../interfaces/interfaces';
 import { mockAgent } from '../../../mock/mockData';
@@ -100,10 +101,15 @@ const formattedDate = today.toLocaleDateString('en-US', {
 const freeSteps = [0, 1, 2, 5];
 interface IProps {
   data: ReportData;
+  peopleData: Person[];
   setLastStepSubmitDisabled: (value: boolean) => void;
 }
 
-const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
+const ProcessingReport = ({
+  data,
+  peopleData,
+  setLastStepSubmitDisabled,
+}: IProps) => {
   const [copied, setCopied] = useState<number>(-1);
   const [expandedSteps, setExpandedSteps] = useState<number[]>([]);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -497,6 +503,8 @@ const ProcessingReport = ({ data, setLastStepSubmitDisabled }: IProps) => {
                       <ProcessingReportPeopleSection
                         disableEdit={false}
                         hideControls={true}
+                        hideRemovedPerson={true}
+                        propData={peopleData}
                       />
                     </div>
                   )}
