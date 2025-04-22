@@ -8,7 +8,7 @@ import ReactCrop, {
 } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { classNames } from '../../../utils/helpers';
-import XBtn from '../../../components/shared/buttons/XBtn';
+import { IconX } from '@tabler/icons-react';
 
 interface PersonAvatarProps {
   fileInputRef: React.RefObject<HTMLInputElement>;
@@ -241,9 +241,16 @@ export default function PersonAvatar({
               WebkitUserSelect: 'none',
               userSelect: 'none',
             }}
-            className="bg-white rounded-md p-4 max-w-sm max-h-[90vh] flex flex-col relative"
+            className="bg-white rounded-md px-4 pb-4 pt-2 max-w-sm max-h-[90vh] min-w-[350px] flex flex-col items-center relative"
           >
-            <XBtn clickHandler={() => setIsModalOpen(false)} />
+            <div className="flex items-center justify-end w-full mb-2">
+              <div
+                onClick={() => setIsModalOpen(false)}
+                className="flex items-center justify-center p-1.5 hover:cursor-pointer hover:bg-gray-100 transition-all ease-in-out duration-150 rounded-md"
+              >
+                <IconX className="w-4 h-4 text-gray-700" />
+              </div>
+            </div>
             <div className="flex-1 overflow-auto">
               <ReactCrop
                 crop={crop}
@@ -266,7 +273,7 @@ export default function PersonAvatar({
               </ReactCrop>
             </div>
             {!croppedImage ? (
-              <div className="flex justify-end gap-2 mt-4">
+              <div className="flex justify-end gap-2 mt-4 w-full">
                 <button
                   className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   onClick={cancelModalHandler}
@@ -281,7 +288,7 @@ export default function PersonAvatar({
                 </button>
               </div>
             ) : (
-              <div className="flex justify-between items-center gap-2 mt-4">
+              <div className="flex justify-between items-center gap-2 mt-4 w-full">
                 <button
                   className="block px-3 py-2 text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   onClick={cancelModalHandler}
