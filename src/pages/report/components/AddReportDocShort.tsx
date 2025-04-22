@@ -25,6 +25,7 @@ interface IProps {
   setDocumentNumber: (value: string) => void;
   documentNumber: string;
   setRepFile: (file: IFiles) => void;
+  hideRemovedPeople?: boolean;
 }
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
@@ -82,6 +83,7 @@ const AddReportDocShort = ({
   setDocumentNumber,
   documentNumber,
   setRepFile,
+  hideRemovedPeople,
 }: IProps) => {
   const [file, setFile] = React.useState<IFiles | null>(null);
   console.log(file, 'file');
@@ -226,6 +228,7 @@ const AddReportDocShort = ({
         <div className="mb-6">
           <ProcessingReportPeopleSection
             disableEdit={true}
+            hideRemovedPerson={hideRemovedPeople}
             hideControls={hideControls}
           />
         </div>

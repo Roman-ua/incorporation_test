@@ -521,6 +521,7 @@ const ProcessingReport = ({
                       setDocumentNumber={setDocumentNumber}
                       documentNumber={documentNumber}
                       setRepFile={setRepFile}
+                      hideRemovedPeople={true}
                     />
                   )}
                 </div>
