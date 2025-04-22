@@ -241,9 +241,9 @@ export default function PersonAvatar({
               WebkitUserSelect: 'none',
               userSelect: 'none',
             }}
-            className="bg-white rounded-md px-4 pb-4 pt-2 max-w-sm max-h-[90vh] min-w-[350px] flex flex-col items-center relative"
+            className="bg-white rounded-md pt-2 max-w-sm max-h-[90vh] min-w-[350px] flex flex-col items-center relative"
           >
-            <div className="flex items-center justify-end w-full mb-2">
+            <div className="flex items-center justify-end w-full mb-2 px-4">
               <div
                 onClick={() => setIsModalOpen(false)}
                 className="flex items-center justify-center p-1.5 hover:cursor-pointer hover:bg-gray-100 transition-all ease-in-out duration-150 rounded-md"
@@ -251,7 +251,7 @@ export default function PersonAvatar({
                 <IconX className="w-4 h-4 text-gray-700" />
               </div>
             </div>
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto px-4">
               <ReactCrop
                 crop={crop}
                 onChange={(c) => setCrop(c)}
@@ -273,7 +273,7 @@ export default function PersonAvatar({
               </ReactCrop>
             </div>
             {!croppedImage ? (
-              <div className="flex justify-end gap-2 mt-4 w-full">
+              <div className="flex justify-end gap-2 mt-4 w-full bg-gray-100 py-3 px-5 rounded-b-lg">
                 <button
                   className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   onClick={cancelModalHandler}
@@ -288,7 +288,7 @@ export default function PersonAvatar({
                 </button>
               </div>
             ) : (
-              <div className="flex justify-between items-center gap-2 mt-4 w-full">
+              <div className="flex justify-between items-center gap-2 mt-4 w-full bg-gray-100 py-3 px-5 rounded-b-lg">
                 <button
                   className="block px-3 py-2 text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                   onClick={cancelModalHandler}
