@@ -298,7 +298,7 @@ export default function PersonAvatar({
 
                 <div className="flex gap-4">
                   <button
-                    className=" block rounded-md bg-red-50 border-red-50 px-3 py-2 border text-center text-sm font-semibold shadow-sm text-gray-900 hover:bg-red-100 hover:border-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
+                    className="block rounded-md px-3 py-2 text-center text-sm font-semibold text-red-700 hover:text-red-800  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
                     onClick={() => {
                       setCroppedImage(null);
                       setImage(null);
