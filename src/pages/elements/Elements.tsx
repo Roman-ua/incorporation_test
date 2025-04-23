@@ -12,11 +12,13 @@ import Buttons from './components/Buttons';
 import LayoutElements from './components/LayoutElements';
 import SwitchElements from './components/SwitchElements';
 import CheckBoxElem from './components/CheckBoxElem';
+import NotificationsElements from './components/NotificationsElements';
 
 const Elements = () => {
   return (
     <div className="p-10">
       <SectionStatus />
+      <NotificationsElements />
       <CustomCheckBox />
       <CheckBoxElem />
       <SwitchElements />
