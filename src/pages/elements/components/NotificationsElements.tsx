@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SectionHeading from '../../createCompany/components/SectionHeading';
 import { toast } from 'sonner';
-import { Alert } from '../../../components/shared/Alert/Alert';
+import { Banner } from '../../../components/shared/Baner/Baner';
 
 const NotificationsElements = () => {
   const [showWarning, setShowWarning] = useState(false);
@@ -19,7 +19,7 @@ const NotificationsElements = () => {
         </div>
 
         {showWarning && (
-          <Alert
+          <Banner
             type="warning"
             title="Warning"
             message="This is an warning message that requires manual dismissal"
@@ -28,7 +28,7 @@ const NotificationsElements = () => {
         )}
 
         {showError && (
-          <Alert
+          <Banner
             type="error"
             title="Error"
             message="This is an error message that requires manual dismissal"

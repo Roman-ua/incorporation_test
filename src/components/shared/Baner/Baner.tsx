@@ -5,25 +5,23 @@ import { IconX } from '@tabler/icons-react';
 import { IoWarning } from 'react-icons/io5';
 import { IoMdInformationCircle } from 'react-icons/io';
 
-type AlertType = 'warning' | 'error';
+type BanerType = 'warning' | 'error';
 
-interface AlertProps {
-  type?: AlertType;
+interface BannerProps {
+  type?: BanerType;
   title: string;
   message: string;
   visible?: boolean;
   onClose?: () => void;
-  // duration?: number; // Auto-dismiss duration in ms (0 means no auto-dismiss)
 }
 
-export function Alert({
+export function Banner({
   type = 'warning',
   title,
   message,
   visible = true,
   onClose,
-  // duration = 0,
-}: AlertProps) {
+}: BannerProps) {
   const [isVisible, setIsVisible] = useState(visible);
 
   useEffect(() => {
@@ -45,7 +43,6 @@ export function Alert({
     onClose?.();
   };
 
-  // Animation variants with emphasized opacity
   const containerVariants = {
     hidden: {
       opacity: 0,
