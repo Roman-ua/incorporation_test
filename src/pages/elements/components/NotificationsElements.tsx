@@ -21,6 +21,7 @@ const NotificationsElements = () => {
         {showWarning && (
           <Alert
             type="warning"
+            title="Warning"
             message="This is an warning message that requires manual dismissal"
             onClose={() => setShowWarning(false)}
           />
@@ -29,6 +30,7 @@ const NotificationsElements = () => {
         {showError && (
           <Alert
             type="error"
+            title="Error"
             message="This is an error message that requires manual dismissal"
             onClose={() => setShowError(false)}
           />

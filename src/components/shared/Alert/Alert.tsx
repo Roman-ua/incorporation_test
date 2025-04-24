@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { classNames } from '../../../utils/helpers';
 import { IconX } from '@tabler/icons-react';
+import { IoWarning } from 'react-icons/io5';
+import { IoMdInformationCircle } from 'react-icons/io';
 
 type AlertType = 'warning' | 'error';
 
 interface AlertProps {
   type?: AlertType;
+  title: string;
   message: string;
   visible?: boolean;
   onClose?: () => void;
@@ -16,6 +18,7 @@ interface AlertProps {
 
 export function Alert({
   type = 'warning',
+  title,
   message,
   visible = true,
   onClose,
@@ -123,14 +126,17 @@ export function Alert({
         >
           <motion.div
             variants={contentVariants}
-            className="flex items-start gap-3"
+            className="flex items-start gap-2"
           >
             {type === 'warning' ? (
-              <AlertTriangle className="h-5 w-5 text-amber-600" />
+              <IoWarning className="h-5 w-5 text-amber-600" />
             ) : (
-              <AlertCircle className="h-5 w-5 text-red-600" />
+              <IoMdInformationCircle className="h-5 w-5 text-red-600" />
             )}
-            <p className="text-sm font-medium">{message}</p>
+            <div>
+              <p className="text-sm font-bold text-gray-900 mb-2">{title}</p>
+              <p className="text-sm font-medium text-gray-700">{message}</p>
+            </div>
           </motion.div>
           <motion.button
             variants={contentVariants}
