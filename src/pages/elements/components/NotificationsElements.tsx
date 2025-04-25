@@ -3,10 +3,13 @@ import SectionHeading from '../../createCompany/components/SectionHeading';
 import { toast } from 'sonner';
 import { Banner } from '../../../components/shared/Baner/Baner';
 import { AnimatePresence } from 'framer-motion';
+import { useRecoilState } from 'recoil';
+import ThemeState from '../../../state/atoms/Theme';
 
 const NotificationsElements = () => {
   const [showWarning, setShowWarning] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [theme, setTheme] = useRecoilState(ThemeState);
 
   return (
     <main className="flex flex-col items-start justify-start mb-20">
@@ -51,15 +54,11 @@ const NotificationsElements = () => {
             onClick={() => {
               toast.info('Simple event has been created', {
                 description: 'Sunday, December 03, 2023 at 9:00 AM',
-                // action: {
-                //   label: 'X',
-                //   onClick: () => console.log('Undo'),
-                // },
               });
             }}
             className="border hover:cursor-pointer rounded-md h-20 flex flex-col items-center justify-center"
           >
-            <span className="font-medium">Simple</span>
+            <span className="font-medium">Info</span>
             <span className="text-xs text-gray-500">
               White background, black text
             </span>
@@ -89,10 +88,6 @@ const NotificationsElements = () => {
             onClick={() => {
               toast.success('Success event has been created', {
                 description: 'Sunday, December 03, 2023 at 9:00 AM',
-                // action: {
-                //   label: '',
-                //   onClick: () => console.log('Undo'),
-                // },
               });
             }}
             className="border hover:cursor-pointer rounded-md h-20 flex flex-col items-center justify-center bg-green-600 text-white border-green-700 hover:bg-green-700"
@@ -101,6 +96,39 @@ const NotificationsElements = () => {
             <span className="text-xs text-white/90">
               Green background, white text
             </span>
+          </div>
+
+          <div
+            onClick={() => {
+              toast('White mode event has been created', {
+                description: 'Sunday, December 03, 2023 at 9:00 AM',
+              });
+            }}
+            className="border hover:cursor-pointer rounded-md h-20 flex flex-col items-center justify-center"
+          >
+            <span className="font-medium">Simple option</span>
+            <span className="text-xs text-gray/90">
+              White background, black text
+            </span>
+          </div>
+          <div
+            className="border hover:cursor-pointer rounded-md h-20 flex flex-col items-center justify-center"
+            onClick={() =>
+              setTheme(
+                theme.theme === 'light' ? { theme: 'dark' } : { theme: 'light' }
+              )
+            }
+          >
+            <div>
+              current theme:{' '}
+              <span className="font-semibold">{theme.theme}</span>
+            </div>
+            <div className="text-xs text-gray/90">
+              Click here to change theme
+            </div>
+            <div className="text-xs text-gray/90">
+              After changing theme check toasts
+            </div>
           </div>
         </div>
         <p className="text-sm text-gray-600">

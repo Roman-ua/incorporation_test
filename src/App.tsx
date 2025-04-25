@@ -29,55 +29,65 @@ import RecoverPasswordPage from './pages/login/RecoverPAsswordPage';
 import PersonPageDetails from './pages/person/PersonPageDetails';
 import People from './pages/people/People';
 import AddPersonProcess from './pages/person/processes/addPersonProcess/AddPersonProcess';
+import { Toaster } from 'sonner';
+import { useRecoilValue } from 'recoil';
+import ThemeState from './state/atoms/Theme';
 
 function App() {
+  const theme = useRecoilValue(ThemeState);
   return (
-    <Router>
-      <Routes>
-        <Route path={ROUTES.RECOVERY_PASS} element={<RecoverPasswordPage />} />
-        <Route path={ROUTES.LOGIN} element={<AuthFlow />} />
+    <>
+      <Toaster richColors theme={theme.theme} />
+      <Router>
+        <Routes>
+          <Route
+            path={ROUTES.RECOVERY_PASS}
+            element={<RecoverPasswordPage />}
+          />
+          <Route path={ROUTES.LOGIN} element={<AuthFlow />} />
 
-        <Route
-          path={ROUTES.RECOVERY_PASS_CONFIRM}
-          element={<RecoveryPassConfirm />}
-        />
-        <Route
-          path={ROUTES.ANN_REPORT_REVIEW}
-          element={<AnnualReportReview />}
-        />
-        <Route
-          path={ROUTES.ANN_REPORT_ADD}
-          element={<AddFullReportProcess />}
-        />
-        <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/elements" element={<Elements />} />
-            <Route path="/emails" element={<RenderEmails />} />
-            <Route path={ROUTES.HOME} element={<Home />} />
-            <Route path={ROUTES.MAIL} element={<Mail />} />
-            <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
-            <Route path={ROUTES.SERVICES} element={<Services />} />
-            <Route path={ROUTES.ORDERS} element={<Orders />} />
-            <Route path={ROUTES.INVOICES} element={<Invoices />} />
-            <Route path={ROUTES.COMPANY} element={<CompanyPage />} />
-            <Route path={ROUTES.ACCOUNT} element={<Account />} />
-            <Route path={ROUTES.PEOPLE} element={<People />} />
-            <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
-            <Route
-              path={`${ROUTES.PERSON}/:id`}
-              element={<PersonPageDetails />}
-            />
-            <Route path={ROUTES.EIN} element={<Ein />} />
+          <Route
+            path={ROUTES.RECOVERY_PASS_CONFIRM}
+            element={<RecoveryPassConfirm />}
+          />
+          <Route
+            path={ROUTES.ANN_REPORT_REVIEW}
+            element={<AnnualReportReview />}
+          />
+          <Route
+            path={ROUTES.ANN_REPORT_ADD}
+            element={<AddFullReportProcess />}
+          />
+          <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/elements" element={<Elements />} />
+              <Route path="/emails" element={<RenderEmails />} />
+              <Route path={ROUTES.HOME} element={<Home />} />
+              <Route path={ROUTES.MAIL} element={<Mail />} />
+              <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
+              <Route path={ROUTES.SERVICES} element={<Services />} />
+              <Route path={ROUTES.ORDERS} element={<Orders />} />
+              <Route path={ROUTES.INVOICES} element={<Invoices />} />
+              <Route path={ROUTES.COMPANY} element={<CompanyPage />} />
+              <Route path={ROUTES.ACCOUNT} element={<Account />} />
+              <Route path={ROUTES.PEOPLE} element={<People />} />
+              <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
+              <Route
+                path={`${ROUTES.PERSON}/:id`}
+                element={<PersonPageDetails />}
+              />
+              <Route path={ROUTES.EIN} element={<Ein />} />
+            </Route>
           </Route>
-        </Route>
-        <Route
-          path={ROUTES.REDIRECT}
-          element={<Navigate to={ROUTES.LOGIN} />}
-        />
-      </Routes>
-    </Router>
+          <Route
+            path={ROUTES.REDIRECT}
+            element={<Navigate to={ROUTES.LOGIN} />}
+          />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
