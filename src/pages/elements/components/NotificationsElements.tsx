@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SectionHeading from '../../createCompany/components/SectionHeading';
 import { toast } from 'sonner';
 import { Banner } from '../../../components/shared/Baner/Baner';
+import { AnimatePresence } from 'framer-motion';
 
 const NotificationsElements = () => {
   const [showWarning, setShowWarning] = useState(false);
@@ -18,23 +19,32 @@ const NotificationsElements = () => {
           />
         </div>
 
-        {showWarning && (
-          <Banner
-            type="warning"
-            title="Warning"
-            message="This is an warning message that requires manual dismissal"
-            onClose={() => setShowWarning(false)}
-          />
-        )}
+        <AnimatePresence initial={false}>
+          {showWarning && (
+            <Banner
+              key="warning"
+              type="warning"
+              title="Warning"
+              message="This is an warning message that requires manual dismissal"
+              actionClickHandler={() => undefined}
+              onClose={() => setShowWarning(false)}
+              actionTitle={'Warning Action'}
+            />
+          )}
+        </AnimatePresence>
 
-        {showError && (
-          <Banner
-            type="error"
-            title="Error"
-            message="This is an error message that requires manual dismissal"
-            onClose={() => setShowError(false)}
-          />
-        )}
+        <AnimatePresence initial={false}>
+          {showError && (
+            <Banner
+              type="error"
+              title="Error"
+              message="This is an error message that requires manual dismissal"
+              actionClickHandler={() => undefined}
+              onClose={() => setShowError(false)}
+              actionTitle={'Error Action'}
+            />
+          )}
+        </AnimatePresence>
 
         <div className="grid grid-cols-2 gap-4">
           <div
