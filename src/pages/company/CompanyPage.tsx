@@ -24,6 +24,8 @@ import { AddPersonModal } from './modals/AddPersonToCompanyModal';
 import AddReportProcess from '../report/components/AddReportProcess';
 import CompanyState from '../../state/atoms/Company';
 import PeopleState from '../../state/atoms/People';
+import InvoicesList from './components/Invoices';
+import LinkToXeroModal from './components/LinkToXeroModal';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -51,6 +53,7 @@ const CompanyPage = () => {
 
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
+  const [openLinkToXero, setOpenLinkToXero] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [addReportModal, setOpenAddReportModal] = useState(false);
   const [data, setData] = React.useState<MockCompany>(companyData);
@@ -86,6 +89,13 @@ const CompanyPage = () => {
           setOpen={setOpen}
           companyName={data.companyName || ''}
           saveHandler={saveHandler}
+        />
+      )}
+      {openLinkToXero && (
+        <LinkToXeroModal
+          isOpen={openLinkToXero}
+          setOpen={setOpenLinkToXero}
+          saveHandler={() => setOpenLinkToXero(false)}
         />
       )}
       <AddPersonModal
@@ -303,6 +313,10 @@ const CompanyPage = () => {
           addReportModal={() => navigate(ROUTES.ANN_REPORT_ADD)}
         />
       )}
+      <InvoicesList
+        linkToHandler={() => setOpenLinkToXero(true)}
+        refreshHandler={() => undefined}
+      />
     </div>
   ) : (
     <></>
