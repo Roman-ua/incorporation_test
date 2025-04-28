@@ -1,58 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 import { TbMail, TbPuzzle, TbReportAnalytics } from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
 import { BiBuildings, BiReceipt } from 'react-icons/bi';
 import { IoPeopleOutline } from 'react-icons/io5';
-
-const navigation = [
-  { name: 'Home', href: '/home', icon: BiBuildings, current: true },
-  { name: 'Mail', href: '/mail', icon: TbMail, current: true },
-  {
-    name: 'Documents',
-    href: '/documents',
-    icon: HiOutlineDocumentText,
-    current: true,
-  },
-  { name: 'Services', href: '/services', icon: LuConciergeBell, current: true },
-  { name: 'Orders', href: '/orders', icon: LuClipboardList, current: true },
-  { name: 'Invoices', href: '/invoices', icon: BiReceipt, current: true },
-  { name: 'People', href: '/people', icon: IoPeopleOutline, current: true },
-];
-const teams = [
-  {
-    id: 11,
-    name: 'Elements',
-    href: '/elements',
-    initial: 'C',
-    current: false,
-    icon: TbPuzzle,
-  },
-  {
-    id: 12,
-    name: 'Emails',
-    href: '/emails',
-    initial: 'C',
-    current: false,
-    icon: LuFileStack,
-  },
-  {
-    id: 13,
-    name: 'Annual Report Confirmation',
-    href: '/report_review',
-    initial: 'А',
-    current: false,
-    icon: TbReportAnalytics,
-  },
-];
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+const navigation = [
+  { name: 'Home', href: ROUTES.HOME, icon: BiBuildings },
+  { name: 'Mail', href: ROUTES.MAIL, icon: TbMail },
+  { name: 'Documents', href: ROUTES.DOCUMENTS, icon: HiOutlineDocumentText },
+  { name: 'Services', href: ROUTES.SERVICES, icon: LuConciergeBell },
+  { name: 'Orders', href: ROUTES.ORDERS, icon: LuClipboardList },
+  { name: 'Invoices', href: ROUTES.INVOICES, icon: BiReceipt },
+  { name: 'People', href: ROUTES.PEOPLE, icon: IoPeopleOutline },
+];
+
+const teams = [
+  { id: 11, name: 'Elements', href: ROUTES.ELEMENTS, icon: TbPuzzle },
+  { id: 12, name: 'Emails', href: ROUTES.EMAILS, icon: LuFileStack },
+  {
+    id: 13,
+    name: 'Annual Report Confirmation',
+    href: ROUTES.REPORT_REVIEW,
+    icon: TbReportAnalytics,
+  },
+];
+
 const MainSideBarContent = ({ pathname }: { pathname: string }) => {
+  const [elementsOpen, setElementsOpen] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <ul role="list" className="flex flex-1 flex-col gap-y-7">
       <li>
@@ -81,33 +65,111 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
           ))}
         </ul>
       </li>
+
       <li>
         <div className="text-sm text-gray-500 mt-7">Internal</div>
         <ul role="list" className="-mx-2 mt-2 space-y-1">
-          {teams.map((team) => (
-            <li key={team.name}>
-              <Link
-                to={team.href}
-                className={classNames(
-                  'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
-                  team.href === pathname && 'text-sideBarBlue font-semibold'
-                )}
-              >
-                <team.icon
-                  className={classNames(
-                    team.href === pathname
-                      ? 'text-sideBarBlue'
-                      : 'text-gray-700',
-                    'h-5 w-5 shrink-0 transition-all'
+          {teams.map((team) => {
+            if (team.name === 'Elements') {
+              const isActive = pathname.startsWith(team.href);
+              return (
+                <li key={team.name}>
+                  <button
+                    onClick={() => navigate(ROUTES.ELEMENTS)}
+                    className={classNames(
+                      'tracking-normal text-gray-700 group flex w-full items-center justify-between gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                      isActive && 'text-sideBarBlue font-semibold'
+                    )}
+                  >
+                    <span className="flex items-center gap-x-2">
+                      <team.icon
+                        className={classNames(
+                          isActive ? 'text-sideBarBlue' : 'text-gray-700',
+                          'h-5 w-5 shrink-0 transition-all'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {team.name}
+                    </span>
+                    <ChevronDownIcon
+                      onClick={() => setElementsOpen(!elementsOpen)}
+                      className={classNames(
+                        'h-4 w-4 transform transition-transform duration-200',
+                        elementsOpen && 'rotate-180'
+                      )}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  {elementsOpen && (
+                    <ul className="mt-1 space-y-1 pl-8">
+                      <li>
+                        <Link
+                          to={ROUTES.ELEMENTS_BUTTONS}
+                          className={classNames(
+                            'block px-2 py-1 text-sm rounded-md hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                            pathname === ROUTES.ELEMENTS_BUTTONS &&
+                              'text-sideBarBlue font-semibold'
+                          )}
+                        >
+                          Buttons
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to={ROUTES.ELEMENTS_NOTIONS}
+                          className={classNames(
+                            'block px-2 py-1 text-sm rounded-md hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                            pathname === ROUTES.ELEMENTS_NOTIONS &&
+                              'text-sideBarBlue font-semibold'
+                          )}
+                        >
+                          Notions
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to={ROUTES.ELEMENTS_ADDRESS}
+                          className={classNames(
+                            'block px-2 py-1 text-sm rounded-md hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                            pathname === ROUTES.ELEMENTS_ADDRESS &&
+                              'text-sideBarBlue font-semibold'
+                          )}
+                        >
+                          Address
+                        </Link>
+                      </li>
+                    </ul>
                   )}
-                  aria-hidden="true"
-                />
-                <span className="truncate">{team.name}</span>
-              </Link>
-            </li>
-          ))}
+                </li>
+              );
+            }
+
+            // Обычные элементы
+            const isActive = pathname === team.href;
+            return (
+              <li key={team.name}>
+                <Link
+                  to={team.href}
+                  className={classNames(
+                    'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                    isActive && 'text-sideBarBlue font-semibold'
+                  )}
+                >
+                  <team.icon
+                    className={classNames(
+                      isActive ? 'text-sideBarBlue' : 'text-gray-700',
+                      'h-5 w-5 shrink-0 transition-all'
+                    )}
+                    aria-hidden="true"
+                  />
+                  <span className="truncate">{team.name}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </li>
+
       <li className="-mx-6 mt-auto max-lg:hidden">
         <Link
           to={ROUTES.ACCOUNT}

@@ -32,6 +32,9 @@ import AddPersonProcess from './pages/person/processes/addPersonProcess/AddPerso
 import { Toaster } from 'sonner';
 import { useRecoilValue } from 'recoil';
 import ThemeState from './state/atoms/Theme';
+import ElementsButtons from './pages/elements/nested/ElementsButtons';
+import ElementsNotions from './pages/elements/nested/ElementsNotions';
+import ElementsAddress from './pages/elements/nested/ElementsAddress';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -62,8 +65,20 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
             <Route element={<ProtectedRoutes />}>
-              <Route path="/elements" element={<Elements />} />
-              <Route path="/emails" element={<RenderEmails />} />
+              <Route path={ROUTES.ELEMENTS} element={<Elements />} />
+              <Route
+                path={ROUTES.ELEMENTS_BUTTONS}
+                element={<ElementsButtons />}
+              />
+              <Route
+                path={ROUTES.ELEMENTS_NOTIONS}
+                element={<ElementsNotions />}
+              />
+              <Route
+                path={ROUTES.ELEMENTS_ADDRESS}
+                element={<ElementsAddress />}
+              />
+              <Route path={ROUTES.EMAILS} element={<RenderEmails />} />
               <Route path={ROUTES.HOME} element={<Home />} />
               <Route path={ROUTES.MAIL} element={<Mail />} />
               <Route path={ROUTES.DOCUMENTS} element={<Documents />} />

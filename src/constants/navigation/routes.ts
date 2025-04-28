@@ -20,4 +20,10 @@ export const ROUTES = {
   ADD_PERSON: '/create_person',
   PERSON: '/person',
   PEOPLE: '/people',
+  ELEMENTS: '/elements',
+  ELEMENTS_BUTTONS: '/elements/buttons',
+  ELEMENTS_NOTIONS: '/elements/notions',
+  ELEMENTS_ADDRESS: '/elements/address',
+  EMAILS: '/emails',
+  REPORT_REVIEW: '/report_review',
 };
