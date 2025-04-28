@@ -1,64 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionHeading from './SectionHeading';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { classNames } from '../../../utils/helpers';
-import { IconFileTypePdf } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { EmptySection } from '../../../components/shared/EmptySection';
+import { IInvoices } from '../../../state/atoms/Invoices';
 
-interface IInvoice {
-  id: number;
-  year: number;
-  status: string;
-  filingDate: string;
-  relatedOrder: string;
-  attachedFiles: boolean;
-}
-const mock: IInvoice[] | [] = [
-  // {
-  //   id: 1,
-  //   year: 2021,
-  //   status: 'Filed',
-  //   filingDate: 'February 12, 2021',
-  //   relatedOrder: 'ord_12312',
-  //   attachedFiles: true,
-  // },
-  // {
-  //   id: 2,
-  //   year: 2020,
-  //   status: 'Need to File',
-  //   filingDate: '-',
-  //   relatedOrder: 'ord_12344',
-  //   attachedFiles: false,
-  // },
-  // {
-  //   id: 3,
-  //   year: 2019,
-  //   status: 'Declined',
-  //   filingDate: 'February 12, 2019',
-  //   relatedOrder: '-',
-  //   attachedFiles: true,
-  // },
-  // {
-  //   id: 4,
-  //   year: 2018,
-  //   status: 'Pending Confirmation',
-  //   filingDate: 'February 12, 2018',
-  //   relatedOrder: 'ord_12343',
-  //   attachedFiles: false,
-  // },
-];
 const statusBadge = (status: string) => {
   switch (status) {
-    case 'Filed':
+    case 'Paid':
       return 'bg-green-50 text-green-700 ring-green-600/20';
-    case 'Need to File':
+    case 'Not Paid':
       return 'bg-red-50 text-red-700 ring-red-600/20';
-    case 'Declined':
-      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
-    case 'Pending Confirmation':
-      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
     default:
       return 'bg-gray-50 text-gray-700 ring-gray-600/20';
   }
@@ -67,44 +21,76 @@ const statusBadge = (status: string) => {
 interface IProps {
   linkToHandler: () => void;
   refreshHandler: () => void;
+  data: IInvoices[];
 }
 
-const InvoicesList = ({ linkToHandler, refreshHandler }: IProps) => {
+const InvoicesList = ({ linkToHandler, refreshHandler, data }: IProps) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Handle refresh with loading state
+  const handleRefresh = () => {
+    setIsLoading(true);
+
+    // Call the original refresh handler
+    refreshHandler();
+
+    // Set a timeout to hide the loading state after 3 seconds
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  };
 
   return (
     <>
       <SectionHeading
         title="Invoices"
-        removeMargin={!!mock.length}
-        clickHandler={mock.length ? refreshHandler : linkToHandler}
-        btnTitle={mock.length ? 'Refresh' : 'Link to Xero'}
+        removeMargin={!!data.length}
+        clickHandler={data.length ? handleRefresh : linkToHandler}
+        btnTitle={data.length ? 'Refresh' : 'Link to Xero'}
       />
-      <div className="w-full overflow-hidden mb-12">
-        {mock.length === 0 ? (
+      <div
+        className={`w-full overflow-hidden mb-12 relative transition-all duration-300 ${
+          isLoading
+            ? 'ring-1 ring-gray-500/70 shadow-[0_0_0_4px_rgba(79,70,229,0.3)] animate-pulse rounded-md'
+            : ''
+        }`}
+      >
+        {/* Semi-transparent overlay during loading */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/50 pointer-events-none z-10">
+            <div className="absolute top-2 right-2 flex items-center space-x-2 bg-white/90 px-3 py-1.5 rounded-full shadow-sm">
+              <div className="h-3 w-3 rounded-full bg-gray-700 animate-pulse"></div>
+              <span className="text-xs font-medium text-gray-700">
+                Refreshing...
+              </span>
+            </div>
+          </div>
+        )}
+
+        {data.length === 0 ? (
           <EmptySection
             title="No Linked Invoices Found"
             ctaText="Link to Xero"
             onAction={linkToHandler}
           />
         ) : (
-          <div>
-            {mock?.map((report, rowIndex) => (
+          <div
+            className={`transition-opacity duration-300 ${isLoading ? 'opacity-70' : 'opacity-100'}`}
+          >
+            {data?.map((report, rowIndex) => (
               <div
                 onClick={() => navigate(`${ROUTES.REPORT}/${report.id}`)}
                 key={rowIndex}
                 className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
               >
                 <div className="w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
-                  {report.year}
-                  {report?.attachedFiles && (
-                    <IconFileTypePdf className="w-3 h-3 text-gray-500 ml-2" />
-                  )}
+                  ID: {report.id}
                 </div>
                 <div className="w-[24%] px-2 flex items-center justify-start">
                   <span
                     className={classNames(
-                      'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+                      'w-fit inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
                       statusBadge(report?.status)
                     )}
                   >
@@ -112,10 +98,10 @@ const InvoicesList = ({ linkToHandler, refreshHandler }: IProps) => {
                   </span>
                 </div>
                 <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
-                  {report.filingDate}
+                  {report.amount}
                 </div>
                 <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
-                  {report.relatedOrder}
+                  {report.relatedTo}
                 </div>
                 <div className="pl-2 flex items-center justify-end ml-auto">
                   <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">

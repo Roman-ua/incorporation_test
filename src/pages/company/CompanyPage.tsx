@@ -26,6 +26,7 @@ import CompanyState from '../../state/atoms/Company';
 import PeopleState from '../../state/atoms/People';
 import InvoicesList from './components/Invoices';
 import LinkToXeroModal from './components/LinkToXeroModal';
+import InvoicesState from '../../state/atoms/Invoices';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -50,6 +51,7 @@ const CompanyPage = () => {
   const setEinState = useSetRecoilState(EinState);
   const companyData = useRecoilValue(CompanyState);
   const [peopleState, setPeopleState] = useRecoilState(PeopleState);
+  const [invoicesList, setInvoicesList] = useRecoilState(InvoicesState);
 
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
@@ -95,7 +97,18 @@ const CompanyPage = () => {
         <LinkToXeroModal
           isOpen={openLinkToXero}
           setOpen={setOpenLinkToXero}
-          saveHandler={() => setOpenLinkToXero(false)}
+          saveHandler={() => {
+            setOpenLinkToXero(false);
+            setInvoicesList((prevState) => [
+              ...prevState,
+              {
+                id: `${Math.floor(Math.random() * 10) + 1}`,
+                status: 'Not Paid',
+                amount: '100$',
+                relatedTo: 'inv_12343',
+              },
+            ]);
+          }}
         />
       )}
       <AddPersonModal
@@ -314,6 +327,7 @@ const CompanyPage = () => {
         />
       )}
       <InvoicesList
+        data={invoicesList}
         linkToHandler={() => setOpenLinkToXero(true)}
         refreshHandler={() => undefined}
       />
