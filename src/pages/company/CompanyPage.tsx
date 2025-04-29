@@ -102,9 +102,10 @@ const CompanyPage = () => {
             setInvoicesList((prevState) => [
               ...prevState,
               {
-                id: `${Math.floor(Math.random() * 10) + 1}`,
+                id: `inv_12345`,
                 status: 'Not Paid',
-                amount: '100$',
+                amount: '$100',
+                date: new Date().toISOString(),
                 relatedTo: 'inv_12343',
               },
             ]);

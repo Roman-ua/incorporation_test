@@ -4,6 +4,7 @@ export interface IInvoices {
   id: string;
   amount: string;
   relatedTo: string;
+  date: string;
   status: string;
 }
 

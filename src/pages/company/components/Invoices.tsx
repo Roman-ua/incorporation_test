@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { EmptySection } from '../../../components/shared/EmptySection';
 import { IInvoices } from '../../../state/atoms/Invoices';
+import { format, parseISO } from 'date-fns';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -85,9 +86,18 @@ const InvoicesList = ({ linkToHandler, refreshHandler, data }: IProps) => {
                 className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
               >
                 <div className="w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
-                  ID: {report.id}
+                  {report.id}
                 </div>
-                <div className="w-[24%] px-2 flex items-center justify-start">
+                <div className="w-[20%] px-2 flex items-center justify-start text-gray-900">
+                  {report.amount}
+                </div>
+                <div className="w-[20%] px-2 flex items-center justify-start text-gray-900">
+                  {format(parseISO(report.date), 'MMMM d, yyyy')}
+                </div>
+                <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
+                  {report.relatedTo}
+                </div>
+                <div className="w-[17%] px-2 flex items-center justify-start justify-end">
                   <span
                     className={classNames(
                       'w-fit inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
@@ -97,12 +107,7 @@ const InvoicesList = ({ linkToHandler, refreshHandler, data }: IProps) => {
                     {report?.status}
                   </span>
                 </div>
-                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
-                  {report.amount}
-                </div>
-                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
-                  {report.relatedTo}
-                </div>
+
                 <div className="pl-2 flex items-center justify-end ml-auto">
                   <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
                     <LuArrowUpRight className="h-4 w-4" />
