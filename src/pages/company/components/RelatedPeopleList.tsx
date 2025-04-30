@@ -101,7 +101,7 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
                   </div>
                 )}
               </div>
-              <div className="pl-2 flex items-center justify-end ml-auto">
+              <div className="w-[18%] px-2 flex items-center justify-end text-gray-900">
                 <span
                   className={classNames(
                     'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
@@ -111,6 +111,7 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
                   {person?.status}
                 </span>
               </div>
+              <div className="pl-2 flex items-center justify-end ml-auto" />
             </div>
           ))}
         </div>
