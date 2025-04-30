@@ -100,7 +100,7 @@ const InvoicesList = ({ linkToHandler, refreshHandler, data }: IProps) => {
                     {report?.status}
                   </span>
                 </div>
-                <div className="w-[24%] flex items-center justify-start text-gray-900">
+                <div className="w-[24%] px-1 flex items-center justify-start text-gray-900">
                   {format(parseISO(report.date), 'MMMM d, yyyy')}
                 </div>
                 <div className="w-[10%] px-2 flex items-center justify-center text-gray-900">

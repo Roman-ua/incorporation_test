@@ -94,7 +94,7 @@ const AnnualReportsListFL = ({ addReportModal }: IProps) => {
                   {report?.status}
                 </span>
               </div>
-              <div className="w-[24%] flex items-center justify-start text-gray-900">
+              <div className="w-[24%] px-1 flex items-center justify-start text-gray-900">
                 {report.filingDate}
               </div>
               <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
