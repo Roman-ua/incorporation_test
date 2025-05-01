@@ -24,6 +24,7 @@ export const ROUTES = {
   ELEMENTS_BUTTONS: '/elements/buttons',
   ELEMENTS_NOTIONS: '/elements/notions',
   ELEMENTS_ADDRESS: '/elements/address',
+  ELEMENTS_ICONS: '/elements/icons',
   EMAILS: '/emails',
   REPORT_REVIEW: '/report_review',
 };

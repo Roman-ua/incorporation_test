@@ -6,7 +6,7 @@ export interface ITheme {
 }
 
 const ThemeState = atom<ITheme>({
-  key: 'EinState',
+  key: 'ThemeState',
   default: {
     theme: 'light',
   },

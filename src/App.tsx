@@ -44,12 +44,16 @@ function App() {
 
     if (!token) {
       console.log('tut');
-      fetch('https://api.incorporatenow.com/api/user/auth0/authorize/').then(
-        (res) => {
-          const data = res.json();
-          console.log(data);
-        }
-      );
+      try {
+        // fetch('https://api.incorporatenow.com/api/user/auth0/authorize/').then(
+        //   (res) => {
+        //     const data = res.json();
+        //     console.log(data);
+        //   }
+        // );
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, []);
 
