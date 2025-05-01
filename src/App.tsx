@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -38,6 +38,21 @@ import ElementsAddress from './pages/elements/nested/ElementsAddress';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      console.log('tut');
+      fetch('https://api.incorporatenow.com/api/user/auth0/authorize/').then(
+        (res) => {
+          const data = res.json();
+          console.log(data);
+        }
+      );
+    }
+  }, []);
+
   return (
     <>
       <Toaster richColors theme={theme.theme} />
