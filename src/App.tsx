@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import Home from './pages/home/Home';
 import { ROUTES } from './constants/navigation/routes';
@@ -24,7 +19,6 @@ import RenderEmails from './pages/emails/Emails';
 import ReportPage from './pages/report/ReportPage';
 import AnnualReportReview from './pages/report/AnnualReportReview';
 import AddFullReportProcess from './pages/report/components/AddFullReportProcess';
-import AuthFlow from './pages/login/Login';
 import RecoverPasswordPage from './pages/login/RecoverPAsswordPage';
 import PersonPageDetails from './pages/person/PersonPageDetails';
 import People from './pages/people/People';
