@@ -81,7 +81,7 @@ function App() {
             path={ROUTES.RECOVERY_PASS}
             element={<RecoverPasswordPage />}
           />
-          <Route path={ROUTES.LOGIN} element={<AuthFlow />} />
+          {/*<Route path={ROUTES.LOGIN} element={<AuthFlow />} />*/}
 
           <Route
             path={ROUTES.RECOVERY_PASS_CONFIRM}
@@ -130,10 +130,10 @@ function App() {
               <Route path={ROUTES.EIN} element={<Ein />} />
             </Route>
           </Route>
-          <Route
-            path={ROUTES.REDIRECT}
-            element={<Navigate to={ROUTES.LOGIN} />}
-          />
+          {/*<Route*/}
+          {/*  path={ROUTES.REDIRECT}*/}
+          {/*  element={<Navigate to={ROUTES.LOGIN} />}*/}
+          {/*/>*/}
         </Routes>
       </Router>
     </>
