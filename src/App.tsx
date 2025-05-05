@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import Home from './pages/home/Home';
 import { ROUTES } from './constants/navigation/routes';
@@ -124,10 +129,10 @@ function App() {
               <Route path={ROUTES.EIN} element={<Ein />} />
             </Route>
           </Route>
-          {/*<Route*/}
-          {/*  path={ROUTES.REDIRECT}*/}
-          {/*  element={<Navigate to={ROUTES.LOGIN} />}*/}
-          {/*/>*/}
+          <Route
+            path={ROUTES.REDIRECT}
+            element={<Navigate to={ROUTES.HOME} />}
+          />
         </Routes>
       </Router>
     </>
