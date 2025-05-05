@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PageLoader from './PageLoader';
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
       (async () => {
         try {
           const response = await fetch(
-            'https://api.incorporatenow.com/api/user/auth0/exchange-token/',
+            `${process.env.REACT_APP_MAIN_URL}/user/auth0/exchange-token/`,
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -44,14 +45,14 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
           console.error('Authentication error:', error);
           // On failure, redirect back to the Auth0 authorization URL to try again
           window.location.replace(
-            'https://api.incorporatenow.com/api/user/auth0/authorize/'
+            `${process.env.REACT_APP_MAIN_URL}/user/auth0/authorize/`
           );
         }
       })();
     } else if (!storedToken) {
       // No token in storage and none in URL: user is not logged in, redirect to Auth0 login
       window.location.replace(
-        'https://api.incorporatenow.com/api/user/auth0/authorize/'
+        `${process.env.REACT_APP_MAIN_URL}/user/auth0/authorize/`
       );
     } else {
       // Token exists in localStorage and no token param in URL, user is considered authenticated
@@ -61,7 +62,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
   if (authChecking) {
     // Render a loading indicator while the authentication status is being confirmed
-    return <div>Loading...</div>; // Replace with an actual loader/spinner if available
+    return <PageLoader />; // Replace with an actual loader/spinner if available
   }
 
   // If authChecking is false, the user is authenticated; render the protected content

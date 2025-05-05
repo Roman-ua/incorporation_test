@@ -80,8 +80,6 @@ function App() {
             path={ROUTES.RECOVERY_PASS}
             element={<RecoverPasswordPage />}
           />
-          {/*<Route path={ROUTES.LOGIN} element={<AuthFlow />} />*/}
-
           <Route
             path={ROUTES.RECOVERY_PASS_CONFIRM}
             element={<RecoveryPassConfirm />}
