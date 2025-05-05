@@ -31,8 +31,8 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
           }
           const data = await response.json();
           // Store the obtained access and refresh tokens in localStorage
-          localStorage.setItem('accessToken', data.accessToken);
-          localStorage.setItem('refreshToken', data.refreshToken);
+          localStorage.setItem('accessToken', data.access_token);
+          localStorage.setItem('refreshToken', data.refresh_token);
           // Clean up the URL (remove the token query param) after successful exchange
           window.history.replaceState(
             {},
