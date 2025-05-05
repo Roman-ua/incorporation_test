@@ -4,11 +4,9 @@ import SideBar from './SideBar/SideBar';
 
 const ProtectedRoutes = () => {
   return (
-    <div>
-      <SideBar>
-        <Outlet />
-      </SideBar>
-    </div>
+    <SideBar>
+      <Outlet />
+    </SideBar>
   );
 };
 

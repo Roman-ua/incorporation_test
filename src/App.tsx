@@ -41,10 +41,25 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
+    fetch('https://api.incorporatenow.com/api/user/auth0/exchange-token/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token:
+          '9PYVQkrmutQ03gAM_ROvX9ficXV_Xp3NcXgDRgrlh5w1o14YUL0gXYrZbbBN2qMPYYGEOVcEIcORztZM3mmU-A',
+      }),
+    }).then((res) => {
+      const data = res.json();
+      console.log(data);
+    });
     if (!token) {
-      console.log('tut');
       try {
+        // window.location.replace(
+        //   'https://api.incorporatenow.com/api/user/auth0/authorize/'
+        // );
         // fetch('https://api.incorporatenow.com/api/user/auth0/authorize/').then(
         //   (res) => {
         //     const data = res.json();
