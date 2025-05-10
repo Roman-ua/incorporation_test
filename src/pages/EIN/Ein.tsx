@@ -162,7 +162,7 @@ const Ein = () => {
         <div className="flex flex-col gap-y-1 border-l pl-5 pr-3">
           <dt className="text-sm text-gray-500">Company</dt>
           <span
-            onClick={() => navigate(ROUTES.COMPANY)}
+            onClick={() => navigate(`${ROUTES.COMPANY}/123`)}
             className="text-nowrap flex items-center text-base font-semibold tracking-tight text-gray-700 group hover:cursor-pointer"
           >
             {data?.companyName}

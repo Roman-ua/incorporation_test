@@ -17,6 +17,13 @@ const htmlFiles = [
   //   vars: true,
   // },
   {
+    link: 'verif_email_link.html',
+    title: '📧 Verif Email',
+    sectionId: 4,
+    subj: 'Verify your email address',
+    vars: false,
+  },
+  {
     link: 'recover_pass_incorp.html',
     title: '📧 Password Reset',
     sectionId: 4,

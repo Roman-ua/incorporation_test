@@ -42,7 +42,7 @@ export function CompaniesSection({ companies }: CompaniesSectionProps) {
         <div>
           {companies.map((company, rowIndex) => (
             <div
-              onClick={() => navigate(`${ROUTES.COMPANY}`)}
+              onClick={() => navigate(`${ROUTES.COMPANY}/${company.id}`)}
               key={rowIndex}
               className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
             >

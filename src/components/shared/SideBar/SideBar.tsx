@@ -1,4 +1,5 @@
 import React from 'react';
+import Breadcrumbs from '../BradCrumbs/BradCrumbs';
 import ChooseWorkspace from './blocks/ChooseWorkspace';
 import NawLinks from './blocks/NawLinks';
 import UserProfile from './blocks/UserProfile';
@@ -13,6 +14,9 @@ function SideBar({ children }: { children: React.ReactNode }) {
           <UserProfile />
         </div>
         <main className="lg:pl-60">
+          <div className="border-b border-gray-200 bg-white">
+            <Breadcrumbs />
+          </div>
           <div>{children}</div>
         </main>
       </div>

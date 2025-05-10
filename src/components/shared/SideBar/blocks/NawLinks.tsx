@@ -4,15 +4,25 @@ import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { classNames } from '../../../../utils/helpers';
 import { ROUTES } from '../../../../constants/navigation/routes';
-import { BiBuildings, BiReceipt } from 'react-icons/bi';
-import { TbMail, TbPuzzle, TbReportAnalytics } from 'react-icons/tb';
+import { BiReceipt } from 'react-icons/bi';
+import {
+  TbMail,
+  TbPuzzle,
+  TbReportAnalytics,
+  TbLayoutDashboard,
+} from 'react-icons/tb';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
 import { IoPeopleOutline } from 'react-icons/io5';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const navigationItems = [
-  { id: 'Home', label: 'Home', href: ROUTES.HOME, icon: BiBuildings },
+  {
+    id: 'Dashboard',
+    label: 'Dashboard',
+    href: ROUTES.HOME,
+    icon: TbLayoutDashboard,
+  },
   { id: 'Mail', label: 'Mail', href: ROUTES.MAIL, icon: TbMail },
   {
     id: 'Documents',
@@ -51,18 +61,21 @@ const internalItems = [
     id: 'Emails',
     label: 'Emails',
     icon: LuFileStack,
+    href: ROUTES.EMAILS,
     children: [],
   },
   {
     id: 'Report Confirmation',
     label: 'Annual Report Confirmation',
     icon: TbReportAnalytics,
+    href: ROUTES.REPORT_REVIEW,
     children: [],
   },
 ];
 // Internal items with nested structure
 const NawLinks = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const [activeItem, setActiveItem] = React.useState('home');
   const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
@@ -78,12 +91,9 @@ const NawLinks = () => {
   const isExpanded = (id: string) => expandedItems.includes(id);
 
   return (
-    <div className="flex-1 overflow-auto py-4">
+    <div className="flex-1 overflow-auto py-4 bg-zinc-50">
       {/* Navigation Section */}
       <div className="px-2 mb-6">
-        <h3 className="px-2 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
-          Navigation
-        </h3>
         <nav className="space-y-1">
           {navigationItems.map((item) => {
             const Icon = item.icon;
@@ -123,7 +133,13 @@ const NawLinks = () => {
             return (
               <div key={item.id} className="space-y-1">
                 <button
-                  onClick={() => toggleExpand(item.id)}
+                  onClick={() => {
+                    if (!item.children.length && item?.href) {
+                      navigate(item.href);
+                    } else {
+                      toggleExpand(item.id);
+                    }
+                  }}
                   className={classNames(
                     'text-gray-900 flex w-full items-center justify-start gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-8 text-sm',
                     activeItem === item.id

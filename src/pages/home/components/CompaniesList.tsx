@@ -135,7 +135,7 @@ const CompaniesList = () => {
               return (
                 <tr
                   key={company.id}
-                  onClick={() => navigate(`${ROUTES.COMPANY}`)}
+                  onClick={() => navigate(`${ROUTES.COMPANY}/${company.id}`)}
                   className="hover:bg-gray-100 transition-all duration-150 ease-in-out hover:cursor-pointer group"
                 >
                   <td className="whitespace-nowrap py-4 pl-3 pr-3 text-sm font-semibold text-gray-700">

@@ -148,7 +148,7 @@ const AddFullReportProcess = () => {
   };
 
   const cancelStepHandler = () => {
-    navigate(ROUTES.COMPANY);
+    navigate(`${ROUTES.COMPANY}/1233`);
   };
 
   useEffect(() => {
@@ -178,7 +178,7 @@ const AddFullReportProcess = () => {
         </div>
         <div className="w-[200px] pr-2 flex items-end justify-end">
           <div
-            onClick={() => navigate(ROUTES.COMPANY)}
+            onClick={() => navigate(`${ROUTES.COMPANY}/1213`)}
             className="p-1 hover:cursor-pointer flex items-center justify-end gap-1 text-gray-500 font-semibold hover:text-gray-700 transition-all ease-in-out duration-150"
           >
             <span>Exit</span>

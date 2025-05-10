@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        geist: ['Geist', 'ui-sans-serif', 'system-ui'],
+      },
       colors: {
         inputBackground: '#ffffff',
         mainBackground: '#fcfcfc',
@@ -79,11 +82,6 @@ module.exports = {
           600: '#16a34a',
         },
       },
-      // borderRadius: {
-      //   lg: 'var(--radius)',
-      //   md: 'calc(var(--radius) - 2px)',
-      //   sm: 'calc(var(--radius) - 4px)',
-      // },
       keyframes: {
         'check-bounce': {
           '0%': { transform: 'scale(0) translateZ(0)' },
