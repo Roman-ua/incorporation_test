@@ -1,44 +1,25 @@
-import React, { useEffect } from 'react';
-import { Check, ChevronsUpDown, GalleryVerticalEnd } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../../../images/round_logo.png';
 import { classNames } from '../../../../utils/helpers';
-
-const workspaces = [
-  {
-    id: '1',
-    title: 'Incorporate Now',
-    description: 'Main company',
-    logoUrl: '/placeholder.svg?height=40&width=40',
-    icon: GalleryVerticalEnd,
-  },
-  {
-    id: '2',
-    title: 'Marketing Team',
-    description: 'Campaign planning',
-    logoUrl: '',
-    icon: GalleryVerticalEnd,
-  },
-  {
-    id: '3',
-    title: 'Design Studio',
-    description: 'Creative projects',
-    logoUrl: '',
-    icon: GalleryVerticalEnd,
-  },
-  {
-    id: '4',
-    title: 'Engineering',
-    description: 'Development',
-    logoUrl: '',
-    icon: GalleryVerticalEnd,
-  },
-];
+import { Link } from 'react-router-dom';
+import { LuArrowUpRight } from 'react-icons/lu';
+import { ROUTES } from '../../../../constants/navigation/routes';
+import { useRecoilState } from 'recoil';
+import WorkspacesState, {
+  IWorkspace,
+} from '../../../../state/atoms/Workspaces';
+import { Preloader } from '../../../../pages/workspaces/components/Preloader';
 
 const ChooseWorkspace = () => {
-  const [selectedWorkspace, setSelectedWorkspace] = React.useState(
-    workspaces[0]
+  const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedWorkspace, setSelectedWorkspace] = useState<IWorkspace | null>(
+    null
   );
+
   const [isOpen, setIsOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
@@ -59,8 +40,39 @@ const ChooseWorkspace = () => {
     };
   }, []);
 
+  const selectWorkspaceHandler = (workspace: IWorkspace) => {
+    setSelectedWorkspace(workspace);
+    setIsLoading(true);
+  };
+
+  const handleLoadingComplete = () => {
+    if (selectedWorkspace) {
+      setWorkspacesState((prev) => ({
+        ...prev,
+        current: selectedWorkspace,
+      }));
+    }
+    setIsLoading(false);
+  };
+
   return (
     <div className="p-2 bg-zinc-50">
+      <Preloader
+        isLoading={isLoading}
+        onLoadingComplete={handleLoadingComplete}
+        text={
+          selectedWorkspace
+            ? `Loading ${selectedWorkspace.title}`
+            : 'Loading workspace'
+        }
+        logo={
+          selectedWorkspace && (
+            <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
+              {selectedWorkspace.title[0]}
+            </div>
+          )
+        }
+      />
       <div className="relative w-full" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -69,16 +81,18 @@ const ChooseWorkspace = () => {
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">
             <img
               src={logo}
-              alt={`${selectedWorkspace.title} logo`}
+              alt={`${workspacesState?.current?.title} logo`}
               width={32}
               height={32}
               className="w-full h-full object-cover"
             />
           </div>
           <div className={`flex flex-col gap-0.5 leading-none text-left`}>
-            <span className="font-semibold">{selectedWorkspace.title}</span>
+            <span className="font-semibold">
+              {workspacesState?.current?.title}
+            </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              {selectedWorkspace.description}
+              {workspacesState?.current?.description}
             </span>
           </div>
           <ChevronsUpDown className={`ml-auto w-5 h-5 text-gray-500`} />
@@ -91,20 +105,21 @@ const ChooseWorkspace = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute p-1.5 left-56 top-0 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
+              className="absolute left-56 top-0 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
             >
-              <div className="px-2 py-1.5 font-semibold text-xs text-gray-500">
+              <div className="px-2.5 pt-2 font-semibold text-xs text-gray-500">
                 Workspaces
               </div>
-              <div className="py-1">
-                {workspaces.map((workspace) => {
+              <div className="p-1.5">
+                {workspacesState.list.map((workspace) => {
                   const Icon = workspace.icon;
-                  const isActive = selectedWorkspace.id === workspace.id;
+                  const isActive =
+                    workspacesState?.current?.id === workspace.id;
                   return (
                     <button
                       key={workspace.id}
                       onClick={() => {
-                        setSelectedWorkspace(workspace);
+                        selectWorkspaceHandler(workspace);
                         setIsOpen(false);
                       }}
                       className={classNames(
@@ -126,12 +141,28 @@ const ChooseWorkspace = () => {
                         )}
                       </div>
                       <span className="text-sm">{workspace.title}</span>
-                      {selectedWorkspace.id === workspace.id && (
+                      {workspacesState?.current?.id === workspace.id && (
                         <Check className="ml-auto h-4 w-4 text-black" />
                       )}
                     </button>
                   );
                 })}
+              </div>
+              <div className="p-1.5 border-t border-gray-100">
+                <Link
+                  to={ROUTES.WORKSPACES}
+                  onClick={() => {
+                    setIsOpen(false);
+                  }}
+                  className={classNames(
+                    'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'
+                  )}
+                >
+                  <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md overflow-hidden border border-gray-100 dark:bg-gray-700">
+                    <LuArrowUpRight className="h-4 w-4" />
+                  </div>
+                  <span className="text-sm">All Workspaces</span>
+                </Link>
               </div>
             </motion.div>
           )}

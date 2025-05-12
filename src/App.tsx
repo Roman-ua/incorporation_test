@@ -34,6 +34,7 @@ import ThemeState from './state/atoms/Theme';
 import ElementsButtons from './pages/elements/nested/ElementsButtons';
 import ElementsNotions from './pages/elements/nested/ElementsNotions';
 import ElementsAddress from './pages/elements/nested/ElementsAddress';
+import WorkspacesPage from './pages/workspaces/WorkspacesPage';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -125,6 +126,7 @@ function App() {
                 element={<PersonPageDetails />}
               />
               <Route path={ROUTES.EIN} element={<Ein />} />
+              <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
             </Route>
           </Route>
           <Route

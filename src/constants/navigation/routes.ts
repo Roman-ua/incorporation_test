@@ -27,4 +27,5 @@ export const ROUTES = {
   ELEMENTS_ICONS: '/elements/icons',
   EMAILS: '/emails',
   REPORT_REVIEW: '/report_review',
+  WORKSPACES: '/workspaces',
 };
