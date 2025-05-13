@@ -1,39 +1,43 @@
-import { atom } from 'recoil';
-import { GalleryVerticalEnd } from 'lucide-react';
 import React from 'react';
+import { TbBuilding } from 'react-icons/tb';
+import { atom } from 'recoil';
+import logoone from '../../images/mocklogos/AlphaWave.jpg';
+import logosecond from '../../images/mocklogos/Calescence.jpg';
+import logothree from '../../images/mocklogos/Clandestine.jpg';
+import logo from '../../images/round_logo.png';
 
 const workspaces = [
   {
     id: '1',
-    title: 'Incorporate Now',
+    title: 'Incorporate Now Inc.',
     description: 'Main company',
-    logoUrl: '/placeholder.svg?height=40&width=40',
+    logoUrl: logo,
     balance: '$100,000',
-    icon: GalleryVerticalEnd,
+    icon: TbBuilding,
   },
   {
     id: '2',
     title: 'Marketing Team',
     description: 'Campaign planning',
-    logoUrl: '',
+    logoUrl: logosecond,
     balance: '$10,000',
-    icon: GalleryVerticalEnd,
+    icon: TbBuilding,
   },
   {
     id: '3',
     title: 'Design Studio',
     description: 'Creative projects',
-    logoUrl: '',
+    logoUrl: logothree,
     balance: '$0',
-    icon: GalleryVerticalEnd,
+    icon: TbBuilding,
   },
   {
     id: '4',
     title: 'Engineering',
     description: 'Development',
-    logoUrl: '',
+    logoUrl: logoone,
     balance: '$1,10',
-    icon: GalleryVerticalEnd,
+    icon: TbBuilding,
   },
 ];
 export interface IWorkspace {
@@ -55,11 +59,11 @@ const WorkspacesState = atom<IWorkspaces>({
   default: {
     current: {
       id: '1',
-      title: 'Incorporate Now',
+      title: 'Incorporate Now Inc.',
       description: 'Main company',
       balance: '$100,000',
-      logoUrl: '/placeholder.svg?height=40&width=40',
-      icon: GalleryVerticalEnd,
+      logoUrl: logo,
+      icon: TbBuilding,
     },
     list: workspaces,
   },

@@ -1,8 +1,10 @@
-import React from 'react';
-import { ChevronsUpDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import React from 'react';
+
+import { CircleUser, LogOut } from 'lucide-react';
+import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { classNames } from '../../../../utils/helpers';
-import { TbLogout, TbUser } from 'react-icons/tb';
 
 const userProfile = {
   name: 'Alex Johnson',
@@ -33,11 +35,14 @@ const UserProfile = () => {
   }, []);
 
   return (
-    <div className="p-2 bg-zinc-50">
+    <div className="p-4 bg-zinc-50">
       <div className="relative w-full" ref={userDropdownRef}>
         <button
           onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-          className="w-full flex items-center gap-2 p-2 hover:bg-gray-100/80 rounded-md transition-colors"
+          className={classNames(
+            'w-full flex items-center gap-2 p-2 hover:bg-gray-100/80 rounded-md transition-colors',
+            isUserMenuOpen && 'bg-gray-100/80'
+          )}
         >
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
             <span className="text-xl font-bold">{userProfile.name[0]}</span>
@@ -48,7 +53,7 @@ const UserProfile = () => {
               {userProfile.email}
             </span>
           </div>
-          <ChevronsUpDown className="ml-auto h-5 w-5 text-gray-500" />
+          <BiDotsVerticalRounded className="ml-auto h-5 w-4" />
         </button>
 
         <AnimatePresence>
@@ -58,7 +63,7 @@ const UserProfile = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2 }}
-              className="absolute left-56 bottom-0 w-[240px] z-50 mb-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
+              className="absolute left-[228px] bottom-0 w-[240px] z-50 mb-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
             >
               <div
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -85,8 +90,8 @@ const UserProfile = () => {
                     'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'
                   )}
                 >
-                  <TbUser className="h-4 w-4" />
-                  <span>Account Settings</span>
+                  <CircleUser className="h-4 w-4" />
+                  <span>Account</span>
                 </a>
               </div>
               <div className="p-1 border-t border-gray-100">
@@ -99,8 +104,8 @@ const UserProfile = () => {
                     'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'
                   )}
                 >
-                  <TbLogout className="h-4 w-4" />
-                  <span>Logout</span>
+                  <LogOut className="h-4 w-4" />
+                  <span>Log out</span>
                 </button>
               </div>
             </motion.div>

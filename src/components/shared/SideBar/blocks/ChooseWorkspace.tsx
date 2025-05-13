@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../../../images/round_logo.png';
-import { classNames } from '../../../../utils/helpers';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
-import { ROUTES } from '../../../../constants/navigation/routes';
+import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { ROUTES } from '../../../../constants/navigation/routes';
+import { Preloader } from '../../../../pages/workspaces/components/Preloader';
 import WorkspacesState, {
   IWorkspace,
 } from '../../../../state/atoms/Workspaces';
-import { Preloader } from '../../../../pages/workspaces/components/Preloader';
+import { classNames } from '../../../../utils/helpers';
 
 const ChooseWorkspace = () => {
   const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
@@ -56,7 +55,7 @@ const ChooseWorkspace = () => {
   };
 
   return (
-    <div className="p-2 bg-zinc-50">
+    <div className="p-4 bg-zinc-50">
       <Preloader
         isLoading={isLoading}
         onLoadingComplete={handleLoadingComplete}
@@ -76,19 +75,22 @@ const ChooseWorkspace = () => {
       <div className="relative w-full" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center gap-2 p-2 rounded-md transition-colors hover:bg-gray-100/80"
+          className={classNames(
+            'w-full flex items-center gap-2 p-2 rounded-md transition-colors hover:bg-gray-100/80',
+            isOpen && 'bg-gray-100/80'
+          )}
         >
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">
             <img
-              src={logo}
+              src={workspacesState?.current?.logoUrl}
               alt={`${workspacesState?.current?.title} logo`}
               width={32}
               height={32}
               className="w-full h-full object-cover"
             />
           </div>
-          <div className={`flex flex-col gap-0.5 leading-none text-left`}>
-            <span className="font-semibold">
+          <div className="flex flex-col gap-0.5 leading-none text-left min-w-0">
+            <span className="font-semibold truncate">
               {workspacesState?.current?.title}
             </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -105,10 +107,10 @@ const ChooseWorkspace = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute left-56 top-0 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
+              className="absolute left-[228px] top-0 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
             >
               <div className="px-2.5 pt-2 font-semibold text-xs text-gray-500">
-                Workspaces
+                Companies
               </div>
               <div className="p-1.5">
                 {workspacesState.list.map((workspace) => {
@@ -132,7 +134,7 @@ const ChooseWorkspace = () => {
                           <Icon className={`h-4 w-4 text-gray-900`} />
                         ) : (
                           <img
-                            src={logo}
+                            src={workspace.logoUrl}
                             alt={`${workspace.title} logo`}
                             width={22}
                             height={22}
@@ -161,7 +163,7 @@ const ChooseWorkspace = () => {
                   <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md overflow-hidden border border-gray-100 dark:bg-gray-700">
                     <LuArrowUpRight className="h-4 w-4" />
                   </div>
-                  <span className="text-sm">All Workspaces</span>
+                  <span className="text-sm">All</span>
                 </Link>
               </div>
             </motion.div>

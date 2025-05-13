@@ -1,51 +1,58 @@
 import React from 'react';
 
-import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { classNames } from '../../../../utils/helpers';
-import { ROUTES } from '../../../../constants/navigation/routes';
-import { BiReceipt } from 'react-icons/bi';
 import {
-  TbMail,
-  TbPuzzle,
-  TbReportAnalytics,
-  TbLayoutDashboard,
-} from 'react-icons/tb';
-import { HiOutlineDocumentText } from 'react-icons/hi';
-import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
-import { IoPeopleOutline } from 'react-icons/io5';
+  ChevronRight,
+  ConciergeBell,
+  FileMinus,
+  Files,
+  FileText,
+  LayoutDashboard,
+  ListOrdered,
+  Mails,
+  Puzzle,
+  Users,
+} from 'lucide-react';
+import { LuFileStack } from 'react-icons/lu';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../../constants/navigation/routes';
+import { classNames } from '../../../../utils/helpers';
 
 const navigationItems = [
   {
     id: 'Dashboard',
     label: 'Dashboard',
     href: ROUTES.HOME,
-    icon: TbLayoutDashboard,
+    icon: LayoutDashboard,
   },
-  { id: 'Mail', label: 'Mail', href: ROUTES.MAIL, icon: TbMail },
+  { id: 'Mail', label: 'Mail', href: ROUTES.MAIL, icon: Mails },
   {
     id: 'Documents',
     label: 'Documents',
     href: ROUTES.DOCUMENTS,
-    icon: HiOutlineDocumentText,
+    icon: Files,
   },
   {
     id: 'Services',
     label: 'Services',
     href: ROUTES.SERVICES,
-    icon: LuConciergeBell,
+    icon: ConciergeBell,
   },
-  { id: 'Orders', label: 'Orders', href: ROUTES.ORDERS, icon: LuClipboardList },
-  { id: 'Invoices', label: 'Invoices', href: ROUTES.INVOICES, icon: BiReceipt },
-  { id: 'People', label: 'People', href: ROUTES.PEOPLE, icon: IoPeopleOutline },
+  { id: 'Orders', label: 'Orders', href: ROUTES.ORDERS, icon: ListOrdered },
+  {
+    id: 'Invoices',
+    label: 'Invoices',
+    href: ROUTES.INVOICES,
+    icon: FileMinus,
+  },
+  { id: 'People', label: 'People', href: ROUTES.PEOPLE, icon: Users },
 ];
 
 const internalItems = [
   {
     id: 'Elements',
     label: 'Elements',
-    icon: TbPuzzle,
+    icon: Puzzle,
     children: [
       { id: 'buttons', label: 'Buttons', href: ROUTES.ELEMENTS_BUTTONS },
       {
@@ -67,7 +74,7 @@ const internalItems = [
   {
     id: 'Report Confirmation',
     label: 'Annual Report Confirmation',
-    icon: TbReportAnalytics,
+    icon: FileText,
     href: ROUTES.REPORT_REVIEW,
     children: [],
   },
@@ -91,9 +98,9 @@ const NawLinks = () => {
   const isExpanded = (id: string) => expandedItems.includes(id);
 
   return (
-    <div className="flex-1 overflow-auto py-4 bg-zinc-50">
+    <div className="flex-1 overflow-auto bg-zinc-50">
       {/* Navigation Section */}
-      <div className="px-2 mb-6">
+      <div className="px-4 mb-6">
         <nav className="space-y-1">
           {navigationItems.map((item) => {
             const Icon = item.icon;
@@ -120,8 +127,8 @@ const NawLinks = () => {
       </div>
 
       {/* Internal Section */}
-      <div className="px-2">
-        <h3 className="px-2 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+      <div className="px-4">
+        <h3 className="px-2 text-xs font-medium text-gray-400 tracking-wider mb-2">
           Internal
         </h3>
         <nav className="space-y-1">
@@ -149,7 +156,7 @@ const NawLinks = () => {
                 >
                   <div className="flex items-center gap-2 transition-[width,height,padding] [&>svg]:size-4 [&>svg]:shrink-0 h-8 text-sm">
                     <Icon className={`h-5 w-5 text-gray-900`} />
-                    {item.label}
+                    <span>{item.label}</span>
                   </div>
                   {hasChildren && (
                     <ChevronRight
@@ -185,7 +192,7 @@ const NawLinks = () => {
                               )}
                             >
                               <div className="absolute inset-y-0 -left-4 w-0.5 -top-1 -bottom-1 border-l border-gray-200" />
-                              {child.label}
+                              <span>{child.label}</span>
                             </Link>
                           ))}
                         </div>
