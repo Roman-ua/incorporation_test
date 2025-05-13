@@ -38,14 +38,15 @@ const UserProfile = () => {
   return (
     <>
       <div className="px-4 bg-zinc-50">
-        <div
+        <a
+          href="mailto:support@incorporatenow.com"
           className={classNames(
             'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80 hover:cursor-pointer'
           )}
         >
           <TbHelp className="h-4 w-4" />
           <span>Get Help</span>
-        </div>
+        </a>
       </div>
       <div className="p-4 bg-zinc-50">
         <div className="relative w-full" ref={userDropdownRef}>
