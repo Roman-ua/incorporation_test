@@ -60,7 +60,7 @@ const Breadcrumbs: React.FC = () => {
   if (breadcrumbs.length <= 1) return null;
 
   return (
-    <nav aria-label="Breadcrumbs" className="p-2">
+    <nav aria-label="Breadcrumbs" className="py-2 px-4">
       <ol className="flex flex-wrap items-center gap-1.5 text-sm">
         {breadcrumbs.map((breadcrumb, index) => (
           <li key={breadcrumb.href} className="flex items-center">

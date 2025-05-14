@@ -94,7 +94,13 @@ const ChooseWorkspace = () => {
               {workspacesState?.current?.title}
             </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              {workspacesState?.current?.description}
+              {workspacesState?.current?.shortType}{' '}
+              {workspacesState?.current?.shortType === 'Corporation'
+                ? '- Florida'
+                : ''}
+              {workspacesState?.current?.shortType === 'LLC'
+                ? '- Delaware'
+                : ''}
             </span>
           </div>
           <ChevronsUpDown className={`ml-auto w-5 h-5 text-gray-500`} />

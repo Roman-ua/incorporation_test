@@ -241,7 +241,7 @@ const CompanyPage = () => {
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {
               companyTypes.find((item) => item.fullName === data?.companyType)
-                ?.shortName
+                ?.fullName
             }
           </dd>
         </div>

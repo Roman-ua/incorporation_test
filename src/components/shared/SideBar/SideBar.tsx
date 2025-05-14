@@ -14,7 +14,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
           <UserProfile />
         </div>
         <main className="lg:pl-64">
-          <div className="border-b border-gray-200 bg-white">
+          <div className="bg-white h-16 flex items-center justify-start">
             <Breadcrumbs />
           </div>
           <div>{children}</div>

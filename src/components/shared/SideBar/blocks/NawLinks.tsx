@@ -79,6 +79,8 @@ const internalItems = [
     children: [],
   },
 ];
+
+const hideInternal = true;
 // Internal items with nested structure
 const NawLinks = () => {
   const { pathname } = useLocation();
@@ -125,86 +127,87 @@ const NawLinks = () => {
           })}
         </nav>
       </div>
-
       {/* Internal Section */}
-      <div className="px-4">
-        <h3 className="px-2 text-xs font-medium text-gray-400 tracking-wider mb-2">
-          Internal
-        </h3>
-        <nav className="space-y-1">
-          {internalItems.map((item) => {
-            const Icon = item.icon;
-            const hasChildren = item.children && item.children.length > 0;
-            const expanded = isExpanded(item.id);
+      {!hideInternal && (
+        <div className="px-4">
+          <h3 className="px-2 text-xs font-medium text-gray-400 tracking-wider mb-2">
+            Internal
+          </h3>
+          <nav className="space-y-1">
+            {internalItems.map((item) => {
+              const Icon = item.icon;
+              const hasChildren = item.children && item.children.length > 0;
+              const expanded = isExpanded(item.id);
 
-            return (
-              <div key={item.id} className="space-y-1">
-                <button
-                  onClick={() => {
-                    if (!item.children.length && item?.href) {
-                      navigate(item.href);
-                    } else {
-                      toggleExpand(item.id);
-                    }
-                  }}
-                  className={classNames(
-                    'text-gray-900 flex w-full items-center justify-start gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-8 text-sm',
-                    activeItem === item.id
-                      ? 'bg-gray-100'
-                      : 'hover:bg-gray-100/80'
-                  )}
-                >
-                  <div className="flex items-center gap-2 transition-[width,height,padding] [&>svg]:size-4 [&>svg]:shrink-0 h-8 text-sm">
-                    <Icon className={`h-5 w-5 text-gray-900`} />
-                    <span>{item.label}</span>
-                  </div>
-                  {hasChildren && (
-                    <ChevronRight
-                      className={`h-4 w-4 ml-auto text-gray-400 transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}
-                    />
-                  )}
-                </button>
-
-                {/* Nested Items */}
-                {hasChildren && (
-                  <AnimatePresence initial={false}>
-                    {expanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pl-8 space-y-1">
-                          {item.children.map((child) => (
-                            <Link
-                              key={`${item.id}-${child.id}`}
-                              to={child.href}
-                              onClick={() => {
-                                setActiveItem(`${item.id}-${child.id}`);
-                              }}
-                              className={classNames(
-                                'relative text-gray-900 flex items-center p-2 text-left h-8 text-sm rounded-md',
-                                pathname === child.href
-                                  ? 'bg-gray-100'
-                                  : 'hover:bg-gray-100/80'
-                              )}
-                            >
-                              <div className="absolute inset-y-0 -left-4 w-0.5 -top-1 -bottom-1 border-l border-gray-200" />
-                              <span>{child.label}</span>
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
+              return (
+                <div key={item.id} className="space-y-1">
+                  <button
+                    onClick={() => {
+                      if (!item.children.length && item?.href) {
+                        navigate(item.href);
+                      } else {
+                        toggleExpand(item.id);
+                      }
+                    }}
+                    className={classNames(
+                      'text-gray-900 flex w-full items-center justify-start gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-8 text-sm',
+                      activeItem === item.id
+                        ? 'bg-gray-100'
+                        : 'hover:bg-gray-100/80'
                     )}
-                  </AnimatePresence>
-                )}
-              </div>
-            );
-          })}
-        </nav>
-      </div>
+                  >
+                    <div className="flex items-center gap-2 transition-[width,height,padding] [&>svg]:size-4 [&>svg]:shrink-0 h-8 text-sm">
+                      <Icon className={`h-5 w-5 text-gray-900`} />
+                      <span>{item.label}</span>
+                    </div>
+                    {hasChildren && (
+                      <ChevronRight
+                        className={`h-4 w-4 ml-auto text-gray-400 transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}
+                      />
+                    )}
+                  </button>
+
+                  {/* Nested Items */}
+                  {hasChildren && (
+                    <AnimatePresence initial={false}>
+                      {expanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pl-8 space-y-1">
+                            {item.children.map((child) => (
+                              <Link
+                                key={`${item.id}-${child.id}`}
+                                to={child.href}
+                                onClick={() => {
+                                  setActiveItem(`${item.id}-${child.id}`);
+                                }}
+                                className={classNames(
+                                  'relative text-gray-900 flex items-center p-2 text-left h-8 text-sm rounded-md',
+                                  pathname === child.href
+                                    ? 'bg-gray-100'
+                                    : 'hover:bg-gray-100/80'
+                                )}
+                              >
+                                <div className="absolute inset-y-0 -left-4 w-0.5 -top-1 -bottom-1 border-l border-gray-200" />
+                                <span>{child.label}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+        </div>
+      )}
     </div>
   );
 };
