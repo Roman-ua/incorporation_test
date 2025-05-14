@@ -33,7 +33,7 @@ function People() {
   };
 
   return (
-    <div className="relative pl-10 pr-10 py-8 max-sm:pl-4 max-sm:pr-4 container max-w-7xl mx-auto">
+    <div className="relative pl-10 pr-10 py-4 max-sm:pl-4 max-sm:pr-4 container max-w-7xl mx-auto">
       <SearchHeading setOpenModal={() => navigate(ROUTES.ADD_PERSON)} />
       <>
         <SectionHeading title="People" />

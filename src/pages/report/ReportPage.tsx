@@ -1,8 +1,7 @@
-import PageSign from '../../components/shared/PageSign';
 import { MdOutlineCloudDownload, MdOutlineCopyAll } from 'react-icons/md';
 import { classNames } from '../../utils/helpers';
 import React from 'react';
-import { HiOutlineDocumentReport } from 'react-icons/hi';
+
 import RelatedOrders from './components/RelatedOrders';
 import PeopleList from './components/PeopleList';
 import Details from './components/Details';
@@ -67,13 +66,7 @@ const statusBadge = (status: string) => {
 
 const ReportPage = () => {
   return (
-    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
-      <PageSign
-        title={'REPORT'}
-        icon={
-          <HiOutlineDocumentReport className="w-3 h-3 text-gray-400 mr-1" />
-        }
-      />
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4">
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">Annual Report</span>
         <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">

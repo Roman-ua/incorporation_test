@@ -28,7 +28,7 @@ const AccountInfo = () => {
   // };
 
   return (
-    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24">
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4">
       <UserGeneralInfo />
 
       {/*<div className="flex items-center justify-start mb-8">*/}

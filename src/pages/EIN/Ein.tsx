@@ -3,8 +3,7 @@ import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
 import SectionHeading from '../company/components/SectionHeading';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
-import PageSign from '../../components/shared/PageSign';
-import { FaHashtag } from 'react-icons/fa';
+
 import { IoMdCheckmark } from 'react-icons/io';
 import { copyToClipboard } from '../../utils/helpers';
 import AddEinModal from './components/modals/AddEinModal';
@@ -71,7 +70,7 @@ const Ein = () => {
   };
 
   return data ? (
-    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">
       {open && (
         <AddEinModal
           isOpen={open}
@@ -103,10 +102,7 @@ const Ein = () => {
         setOpen={setOpenUpdateEinStatus}
         submitHandler={setData}
       />
-      <PageSign
-        title={'EIN (TAX ID)'}
-        icon={<FaHashtag className="w-3 h-3 text-gray-400 mr-1" />}
-      />
+
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span
           onClick={(event) => {

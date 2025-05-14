@@ -8,8 +8,7 @@ import { copyToClipboard } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 import { IoMdCheckmark } from 'react-icons/io';
-import PageSign from '../../components/shared/PageSign';
-import { HiOutlineOfficeBuilding } from 'react-icons/hi';
+
 import AnnualReportsListFL from './components/AnnualReportsListFL';
 import RelatedPeopleList from './components/RelatedPeopleList';
 import AddEinModal from '../EIN/components/modals/AddEinModal';
@@ -83,7 +82,7 @@ const CompanyPage = () => {
   };
 
   return data ? (
-    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-24 text-sm">
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">
       {open && (
         <AddEinModal
           isOpen={open}
@@ -125,12 +124,7 @@ const CompanyPage = () => {
         setOpen={setOpenAddReportModal}
         open={addReportModal}
       />
-      <PageSign
-        title={'COMPANY'}
-        icon={
-          <HiOutlineOfficeBuilding className="w-3 h-3 text-gray-400 mr-1" />
-        }
-      />
+
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">
           {data.companyName}
