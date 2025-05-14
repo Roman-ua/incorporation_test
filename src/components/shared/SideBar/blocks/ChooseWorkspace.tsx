@@ -90,7 +90,7 @@ const ChooseWorkspace = () => {
             />
           </div>
           <div className="flex flex-col gap-0.5 leading-none text-left min-w-0">
-            <span className="font-semibold truncate">
+            <span className="text-sm font-semibold truncate">
               {workspacesState?.current?.title}
             </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -113,7 +113,7 @@ const ChooseWorkspace = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute left-[228px] top-0 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
+              className="absolute left-[228px] -top-1 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
             >
               <div className="px-2.5 pt-2 font-semibold text-xs text-gray-500">
                 Companies
@@ -169,7 +169,7 @@ const ChooseWorkspace = () => {
                   <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md overflow-hidden border border-gray-100 dark:bg-gray-700">
                     <LuArrowUpRight className="h-4 w-4" />
                   </div>
-                  <span className="text-sm">All</span>
+                  <span className="text-sm">All Companies</span>
                 </Link>
               </div>
             </motion.div>

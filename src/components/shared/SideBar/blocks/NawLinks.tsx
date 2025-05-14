@@ -3,16 +3,16 @@ import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChevronRight,
+  ClipboardList,
   ConciergeBell,
-  FileMinus,
-  Files,
   FileText,
   LayoutDashboard,
-  ListOrdered,
-  Mails,
+  Mail,
   Puzzle,
   Users,
 } from 'lucide-react';
+import { IconFileInvoice } from '@tabler/icons-react';
+
 import { LuFileStack } from 'react-icons/lu';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../../constants/navigation/routes';
@@ -25,12 +25,12 @@ const navigationItems = [
     href: ROUTES.HOME,
     icon: LayoutDashboard,
   },
-  { id: 'Mail', label: 'Mail', href: ROUTES.MAIL, icon: Mails },
+  { id: 'Mail', label: 'Mail', href: ROUTES.MAIL, icon: Mail },
   {
     id: 'Documents',
     label: 'Documents',
     href: ROUTES.DOCUMENTS,
-    icon: Files,
+    icon: FileText,
   },
   {
     id: 'Services',
@@ -38,12 +38,17 @@ const navigationItems = [
     href: ROUTES.SERVICES,
     icon: ConciergeBell,
   },
-  { id: 'Orders', label: 'Orders', href: ROUTES.ORDERS, icon: ListOrdered },
+  {
+    id: 'Orders',
+    label: 'Orders',
+    href: ROUTES.ORDERS,
+    icon: ClipboardList,
+  },
   {
     id: 'Invoices',
     label: 'Invoices',
     href: ROUTES.INVOICES,
-    icon: FileMinus,
+    icon: IconFileInvoice,
   },
   { id: 'People', label: 'People', href: ROUTES.PEOPLE, icon: Users },
 ];
@@ -102,7 +107,7 @@ const NawLinks = () => {
   return (
     <div className="flex-1 overflow-auto bg-zinc-50">
       {/* Navigation Section */}
-      <div className="px-4 mb-6">
+      <div className="px-4 mb-6 py-4">
         <nav className="space-y-1">
           {navigationItems.map((item) => {
             const Icon = item.icon;
