@@ -1,11 +1,15 @@
 import React from 'react';
-import { CompaniesSection } from './components/WorkspacesList';
+import { WorkspacesList } from './components/WorkspacesList';
+import WorkspacesListHeader from './components/WorkspacesListHeader';
 
 const WorkspacesPage = () => {
   return (
-    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">
-      <CompaniesSection />
-    </div>
+    <>
+      <WorkspacesListHeader />
+      <div className="container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-8 text-sm">
+        <WorkspacesList />
+      </div>
+    </>
   );
 };
 

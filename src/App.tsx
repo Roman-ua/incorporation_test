@@ -96,6 +96,8 @@ function App() {
           <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
           <Route element={<ProtectedRoute />}>
             <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
+            <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
+
             <Route element={<ProtectedRoutes />}>
               <Route path={ROUTES.ELEMENTS} element={<Elements />} />
               <Route
@@ -126,7 +128,6 @@ function App() {
                 element={<PersonPageDetails />}
               />
               <Route path={ROUTES.EIN} element={<Ein />} />
-              <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
             </Route>
           </Route>
           <Route

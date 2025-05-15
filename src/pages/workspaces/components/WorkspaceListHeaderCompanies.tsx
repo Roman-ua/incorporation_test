@@ -1,18 +1,17 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, LayoutGrid } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { ROUTES } from '../../../../constants/navigation/routes';
-import { Preloader } from '../../../../pages/workspaces/components/Preloader';
-import WorkspacesState, {
-  IWorkspace,
-} from '../../../../state/atoms/Workspaces';
-import { classNames } from '../../../../utils/helpers';
+import { ROUTES } from '../../../constants/navigation/routes';
+import { Preloader } from '../../../pages/workspaces/components/Preloader';
+import WorkspacesState, { IWorkspace } from '../../../state/atoms/Workspaces';
+import { classNames } from '../../../utils/helpers';
 
-const ChooseWorkspace = () => {
+const WorkspacesListHeaderCompanies = () => {
   const navigate = useNavigate();
+
   const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,10 +56,8 @@ const ChooseWorkspace = () => {
     navigate(`${ROUTES.COMPANY}/${selectedWorkspace?.id}`);
   };
 
-  const SelecteIcon = workspacesState?.current?.icon;
-
   return (
-    <div className="p-4 bg-zinc-50">
+    <div className="p-1">
       <Preloader
         isLoading={isLoading}
         onLoadingComplete={handleLoadingComplete}
@@ -86,32 +83,13 @@ const ChooseWorkspace = () => {
           )}
         >
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">
-            {workspacesState?.current?.logoUrl ? (
-              <img
-                src={workspacesState?.current?.logoUrl}
-                alt={`${workspacesState?.current?.title} logo`}
-                width={32}
-                height={32}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
-                <SelecteIcon />
-              </div>
-            )}
+            <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+              <LayoutGrid className="w-4 h-4" />
+            </div>
           </div>
           <div className="flex flex-col gap-0.5 leading-none text-left min-w-0">
             <span className="text-sm font-semibold truncate">
-              {workspacesState?.current?.title}
-            </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              {workspacesState?.current?.shortType}{' '}
-              {workspacesState?.current?.shortType === 'Corporation'
-                ? '- Florida'
-                : ''}
-              {workspacesState?.current?.shortType === 'LLC'
-                ? '- Delaware'
-                : ''}
+              All Companies
             </span>
           </div>
           <ChevronsUpDown className={`ml-auto w-4 h-4`} />
@@ -126,7 +104,7 @@ const ChooseWorkspace = () => {
               transition={{ duration: 0.2 }}
               onMouseEnter={() => setIsHoveredDropdown(true)}
               onMouseLeave={() => setIsHoveredDropdown(false)}
-              className="absolute left-[228px] -top-1 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
+              className="absolute left-0 top-12 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
             >
               <div className="px-2.5 pt-2 font-semibold text-xs text-gray-500">
                 Companies
@@ -194,4 +172,4 @@ const ChooseWorkspace = () => {
   );
 };
 
-export default ChooseWorkspace;
+export default WorkspacesListHeaderCompanies;
