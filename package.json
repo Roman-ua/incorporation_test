@@ -8,6 +8,7 @@
     "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-dialog": "^1.1.11",
     "@radix-ui/react-slot": "^1.2.0",
+    "@tabler/icons-preact": "^3.31.0",
     "@tabler/icons-react": "^3.22.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

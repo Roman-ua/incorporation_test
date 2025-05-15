@@ -18,6 +18,7 @@ const ChooseWorkspace = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState<IWorkspace | null>(
     null
   );
+  const [isHoveredDropdown, setIsHoveredDropdown] = useState(false); // ← новое
 
   const [isOpen, setIsOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -54,6 +55,8 @@ const ChooseWorkspace = () => {
     setIsLoading(false);
   };
 
+  const SelecteIcon = workspacesState?.current?.icon;
+
   return (
     <div className="p-4 bg-zinc-50">
       <Preloader
@@ -81,13 +84,19 @@ const ChooseWorkspace = () => {
           )}
         >
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">
-            <img
-              src={workspacesState?.current?.logoUrl}
-              alt={`${workspacesState?.current?.title} logo`}
-              width={32}
-              height={32}
-              className="w-full h-full object-cover"
-            />
+            {workspacesState?.current?.logoUrl ? (
+              <img
+                src={workspacesState?.current?.logoUrl}
+                alt={`${workspacesState?.current?.title} logo`}
+                width={32}
+                height={32}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+                <SelecteIcon />
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-0.5 leading-none text-left min-w-0">
             <span className="text-sm font-semibold truncate">
@@ -103,7 +112,7 @@ const ChooseWorkspace = () => {
                 : ''}
             </span>
           </div>
-          <ChevronsUpDown className={`ml-auto w-5 h-5 text-gray-500`} />
+          <ChevronsUpDown className={`ml-auto w-4 h-4`} />
         </button>
 
         <AnimatePresence>
@@ -113,6 +122,8 @@ const ChooseWorkspace = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
+              onMouseEnter={() => setIsHoveredDropdown(true)}
+              onMouseLeave={() => setIsHoveredDropdown(false)}
               className="absolute left-[228px] -top-1 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
             >
               <div className="px-2.5 pt-2 font-semibold text-xs text-gray-500">
@@ -122,6 +133,7 @@ const ChooseWorkspace = () => {
                 {workspacesState.list.map((workspace) => {
                   const Icon = workspace.icon;
                   const isActive =
+                    !isHoveredDropdown &&
                     workspacesState?.current?.id === workspace.id;
                   return (
                     <button

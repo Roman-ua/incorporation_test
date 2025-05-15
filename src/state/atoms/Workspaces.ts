@@ -3,19 +3,19 @@ import { TbBuilding } from 'react-icons/tb';
 import { atom } from 'recoil';
 import logoone from '../../images/mocklogos/AlphaWave.jpg';
 import logosecond from '../../images/mocklogos/Calescence.jpg';
-import logothree from '../../images/mocklogos/Clandestine.jpg';
-import logo from '../../images/round_logo.png';
+import logo from '../../images/icon_square.png';
+import { IconBuildings } from '@tabler/icons-react';
 
 const workspaces = [
   {
     id: '1',
-    title: 'Incorporate Now Inc.',
+    title: 'Incorporate Now Inc',
     description: 'Main company',
     companyType: 'Corporation',
     shortType: 'Corporation',
     logoUrl: logo,
     balance: '$100,000',
-    icon: TbBuilding,
+    icon: IconBuildings,
   },
   {
     id: '2',
@@ -25,7 +25,7 @@ const workspaces = [
     shortType: 'LLC',
     logoUrl: logosecond,
     balance: '$10,000',
-    icon: TbBuilding,
+    icon: IconBuildings,
   },
   {
     id: '3',
@@ -33,9 +33,9 @@ const workspaces = [
     description: 'Creative projects',
     companyType: 'Non-profit',
     shortType: 'Non-profit',
-    logoUrl: logothree,
+    logoUrl: '',
     balance: '$0',
-    icon: TbBuilding,
+    icon: IconBuildings,
   },
   {
     id: '4',
@@ -45,7 +45,7 @@ const workspaces = [
     shortType: 'Non-profit',
     logoUrl: logoone,
     balance: '$1,10',
-    icon: TbBuilding,
+    icon: IconBuildings,
   },
 ];
 export interface IWorkspace {
@@ -69,7 +69,7 @@ const WorkspacesState = atom<IWorkspaces>({
   default: {
     current: {
       id: '1',
-      title: 'Incorporate Now Inc.',
+      title: 'Incorporate Now Inc',
       description: 'Main company',
       companyType: 'Corporation',
       shortType: 'Corporation',

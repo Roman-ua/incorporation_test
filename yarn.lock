@@ -2465,6 +2465,13 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tabler/icons-preact@^3.31.0":
+  version "3.31.0"
+  resolved "https://registry.npmjs.org/@tabler/icons-preact/-/icons-preact-3.31.0.tgz"
+  integrity sha512-jmyhi52BgyWPD0ObVLLG9f5wnafOrw8i0zEaTOWJ1z6h1orvadr1lS534WYbxJ6gA3VOIUUYkeCfoiIv6MCSwg==
+  dependencies:
+    "@tabler/icons" "3.31.0"
+
 "@tabler/icons-react@^3.22.0":
   version "3.22.0"
   resolved "https://registry.npmjs.org/@tabler/icons-react/-/icons-react-3.22.0.tgz"
@@ -2476,6 +2483,11 @@
   version "3.22.0"
   resolved "https://registry.npmjs.org/@tabler/icons/-/icons-3.22.0.tgz"
   integrity sha512-IfgGzhFph5OBr2wTieWL/hyAs0FThnq9O155a6kfGYxqx7h5LQw91wnRswhEaGhXCcfmR7ZVDUr9H+x4b9Pb8g==
+
+"@tabler/icons@3.31.0":
+  version "3.31.0"
+  resolved "https://registry.npmjs.org/@tabler/icons/-/icons-3.31.0.tgz"
+  integrity sha512-dblAdeKY3+GA1U+Q9eziZ0ooVlZMHsE8dqP0RkwvRtEsAULoKOYaCUOcJ4oW1DjWegdxk++UAt2SlQVnmeHv+g==
 
 "@tanstack/react-virtual@3.0.0-beta.60":
   version "3.0.0-beta.60"
@@ -9420,6 +9432,11 @@ postcss@^7.0.35:
   dependencies:
     picocolors "^0.2.1"
     source-map "^0.6.1"
+
+preact@^10.5.13:
+  version "10.26.6"
+  resolved "https://registry.npmjs.org/preact/-/preact-10.26.6.tgz"
+  integrity sha512-5SRRBinwpwkaD+OqlBDeITlRgvd8I8QlxHJw9AxSdMNV6O+LodN9nUyYGpSF7sadHjs6RzeFShMexC6DbtWr9g==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
