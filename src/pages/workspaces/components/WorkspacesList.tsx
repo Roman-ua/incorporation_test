@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import WorkspacesState, { IWorkspace } from '../../../state/atoms/Workspaces';
-import { TbHandClick } from 'react-icons/tb';
+
 import { Preloader } from './Preloader';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
 
 export function WorkspacesList() {
   const navigate = useNavigate();
@@ -67,32 +68,47 @@ export function WorkspacesList() {
             </div>
             <div className="pl-2 flex items-center justify-end ml-auto"></div>
           </div>
-          {workspacesState.list.map((workspace, rowIndex) => (
-            <div
-              onClick={() => selectWorkspaceHandler(workspace)}
-              key={rowIndex}
-              className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
-            >
-              <div className="w-[25%] pr-2 flex items-center justify-start font-bold text-gray-900">
-                <div className="w-10 h-10 mr-2 flex items-center justify-center rounded-md border border-gray-100 bg-zinc-50">
-                  {workspace.title[0]}
-                </div>
-                <span>{workspace.title}</span>
-              </div>
+          {workspacesState.list.map((workspace, rowIndex) => {
+            const Icon = workspace.icon;
 
-              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
-                {workspace.balance}
-              </div>
-              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
-                {workspace.description}
-              </div>
-              <div className="pl-2 flex items-center justify-end ml-auto">
-                <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
-                  <TbHandClick className="h-4 w-4" />
+            return (
+              <div
+                onClick={() => selectWorkspaceHandler(workspace)}
+                key={rowIndex}
+                className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
+              >
+                <div className="w-[25%] pr-2 flex items-center justify-start font-bold text-gray-900">
+                  {workspace.logoUrl ? (
+                    <img
+                      src={workspace?.logoUrl}
+                      alt={`${workspace?.title} logo`}
+                      className="mr-2 w-10 h-10 object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="mr-2 flex-shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+                      <Icon />
+                    </div>
+                  )}
+                  {/* <div className="w-10 h-10 mr-2 flex items-center justify-center rounded-md border border-gray-100 bg-zinc-50">
+                    {workspace.title[0]}
+                  </div> */}
+                  <span>{workspace.title}</span>
+                </div>
+
+                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
+                  {workspace.balance}
+                </div>
+                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
+                  {workspace.description}
+                </div>
+                <div className="pl-2 flex items-center justify-end ml-auto">
+                  <div className="flex items-center justify-center gap-1 py-1 px-1.5 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
+                    Open <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </>
