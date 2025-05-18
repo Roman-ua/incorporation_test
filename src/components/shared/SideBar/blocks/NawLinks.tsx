@@ -107,7 +107,7 @@ const NawLinks = () => {
   return (
     <div className="flex-1 overflow-auto bg-zinc-50">
       {/* Navigation Section */}
-      <div className="px-4 mb-6 py-4">
+      <div className="px-2 mb-6 py-4">
         <nav className="space-y-1">
           {navigationItems.map((item) => {
             const Icon = item.icon;
@@ -121,7 +121,7 @@ const NawLinks = () => {
                   setActiveItem(item.id);
                 }}
                 className={classNames(
-                  'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-8 text-sm',
+                  'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm',
                   isActive ? 'bg-gray-100' : 'hover:bg-gray-100/80'
                 )}
               >

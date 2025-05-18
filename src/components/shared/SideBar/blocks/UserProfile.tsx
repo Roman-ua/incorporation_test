@@ -37,7 +37,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="px-4 bg-zinc-50">
+      <div className="px-2 bg-zinc-50">
         <a
           href="mailto:support@incorporatenow.com"
           className={classNames(

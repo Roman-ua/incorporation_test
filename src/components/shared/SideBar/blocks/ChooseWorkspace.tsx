@@ -8,12 +8,14 @@ import { ROUTES } from '../../../../constants/navigation/routes';
 import { Preloader } from '../../../../pages/workspaces/components/Preloader';
 import WorkspacesState, {
   IWorkspace,
+  IWorkspaces,
 } from '../../../../state/atoms/Workspaces';
 import { classNames } from '../../../../utils/helpers';
 
 const ChooseWorkspace = () => {
   const navigate = useNavigate();
-  const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
+  const [workspacesState, setWorkspacesState] =
+    useRecoilState<IWorkspaces>(WorkspacesState);
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWorkspace, setSelectedWorkspace] = useState<IWorkspace | null>(
@@ -60,7 +62,7 @@ const ChooseWorkspace = () => {
   const SelecteIcon = workspacesState?.current?.icon;
 
   return (
-    <div className="p-4 bg-zinc-50">
+    <div className="p-2 bg-zinc-50">
       <Preloader
         isLoading={isLoading}
         onLoadingComplete={handleLoadingComplete}
@@ -70,10 +72,16 @@ const ChooseWorkspace = () => {
             : 'Loading workspace'
         }
         logo={
-          selectedWorkspace && (
+          !selectedWorkspace?.logoUrl ? (
             <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
-              {selectedWorkspace.title[0]}
+              {selectedWorkspace?.title[0]}
             </div>
+          ) : (
+            <img
+              src={selectedWorkspace?.logoUrl}
+              alt={`${selectedWorkspace?.title} logo`}
+              className="w-16 h-16 object-cover rounded-xl"
+            />
           )
         }
       />
