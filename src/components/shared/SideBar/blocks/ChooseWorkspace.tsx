@@ -72,17 +72,24 @@ const ChooseWorkspace = () => {
             : 'Loading workspace'
         }
         logo={
-          !selectedWorkspace?.logoUrl ? (
-            <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
-              {selectedWorkspace?.title[0]}
-            </div>
-          ) : (
-            <img
-              src={selectedWorkspace?.logoUrl}
-              alt={`${selectedWorkspace?.title} logo`}
-              className="w-16 h-16 object-cover rounded-xl"
-            />
-          )
+          // !selectedWorkspace?.logoUrl ? (
+          //   <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
+          //     {selectedWorkspace?.title[0]}
+          //   </div>
+          // ) : (
+          //   <img
+          //     src={selectedWorkspace?.logoUrl}
+          //     alt={`${selectedWorkspace?.title} logo`}
+          //     className="w-16 h-16 object-cover rounded-xl"
+          //   />
+          // )
+          <img
+            src={
+              selectedWorkspace?.logoUrl || selectedWorkspace?.placeholderLogo
+            }
+            alt={`${selectedWorkspace?.title} logo`}
+            className="w-16 h-16 object-cover rounded-xl"
+          />
         }
       />
       <div className="relative w-full" ref={dropdownRef}>
@@ -134,7 +141,7 @@ const ChooseWorkspace = () => {
               transition={{ duration: 0.2 }}
               onMouseEnter={() => setIsHoveredDropdown(true)}
               onMouseLeave={() => setIsHoveredDropdown(false)}
-              className="absolute left-[228px] -top-1 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
+              className="absolute left-[244px] -top-1 w-[240px] z-40 mt-1 rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md"
             >
               <div className="px-2.5 pt-2 font-semibold text-xs text-gray-500">
                 Companies

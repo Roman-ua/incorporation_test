@@ -60,17 +60,24 @@ export function WorkspacesList() {
             : 'Loading workspace'
         }
         logo={
-          !selectedWorkspace?.logoUrl ? (
-            <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
-              {selectedWorkspace?.title[0]}
-            </div>
-          ) : (
-            <img
-              src={selectedWorkspace?.logoUrl}
-              alt={`${selectedWorkspace?.title} logo`}
-              className="w-16 h-16 object-cover rounded-xl"
-            />
-          )
+          // !selectedWorkspace?.logoUrl ? (
+          //   <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
+          //     {selectedWorkspace?.title[0]}
+          //   </div>
+          // ) : (
+          //   <img
+          //     src={selectedWorkspace?.logoUrl}
+          //     alt={`${selectedWorkspace?.title} logo`}
+          //     className="w-16 h-16 object-cover rounded-xl"
+          //   />
+          // )
+          <img
+            src={
+              selectedWorkspace?.logoUrl || selectedWorkspace?.placeholderLogo
+            }
+            alt={`${selectedWorkspace?.title} logo`}
+            className="w-16 h-16 object-cover rounded-xl"
+          />
         }
       />
 

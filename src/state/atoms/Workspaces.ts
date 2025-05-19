@@ -8,6 +8,7 @@ import { IconBuildings } from '@tabler/icons-react';
 const workspaces = [
   {
     logoUrl: logo,
+    placeholderLogo: logo,
     balance: '$100,000',
     icon: IconBuildings,
     title: 'Incorporate Now Inc',
@@ -23,6 +24,7 @@ const workspaces = [
   },
   {
     logoUrl: '',
+    placeholderLogo: logo,
     balance: '$10,000',
     icon: IconBuildings,
     title: 'ACME Services Inc',
@@ -38,6 +40,7 @@ const workspaces = [
   },
   {
     logoUrl: '',
+    placeholderLogo: logo,
     balance: '$1,10',
     icon: IconBuildings,
     title: 'New Lake LLC',
@@ -53,6 +56,7 @@ const workspaces = [
   },
   {
     logoUrl: '',
+    placeholderLogo: logo,
     balance: '$0',
     icon: IconBuildings,
     title: 'Compliance Mitigation Inc',
@@ -68,6 +72,7 @@ const workspaces = [
   },
   {
     logoUrl: '',
+    placeholderLogo: logo,
     balance: '$1,10',
     icon: IconBuildings,
     title: 'Apple Inc',
@@ -90,6 +95,7 @@ export interface IWorkspace {
   companyType: string;
   shortType: string;
   logoUrl: string;
+  placeholderLogo: string;
   balance: string;
   icon: React.FC;
 }
@@ -110,6 +116,7 @@ const WorkspacesState = atom<IWorkspaces>({
       shortType: 'Corporation',
       balance: '$100,000',
       logoUrl: logo,
+      placeholderLogo: logo,
       icon: TbBuilding,
     },
     list: workspaces,
