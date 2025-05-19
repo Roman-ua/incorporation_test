@@ -57,7 +57,7 @@ const workspaces = [
     icon: IconBuildings,
     title: 'Compliance Mitigation Inc',
     description: 'Creative projects',
-    registeredIn: 'State of Florida',
+    registeredIn: 'Florida',
     companyName: '3 My Company',
     companyType: 'Limited Liability Company',
     shortType: 'LLC',

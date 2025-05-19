@@ -9,7 +9,7 @@ const WorkspacesListHeaderCompanies = () => {
       <div className="relative w-full">
         <button
           className={classNames(
-            'w-full flex items-center gap-2 p-2 rounded-md transition-colors'
+            'w-full flex items-center gap-2 p-2 rounded-md transition-colors hover:cursor-default'
           )}
         >
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">

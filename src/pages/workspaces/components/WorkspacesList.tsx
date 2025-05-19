@@ -7,6 +7,7 @@ import { ROUTES } from '../../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { classNames } from '../../../utils/helpers';
+import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -78,17 +79,17 @@ export function WorkspacesList() {
           <div
             className={`flex py-1 group text-xs transition-all ease-in-out duration-150 border-b border-gray-100`}
           >
-            <div className="w-[25%] pr-2 flex items-center justify-start text-gray-600">
+            <div className="w-[27%] pr-2 flex items-center justify-start font-semibold text-xs text-gray-500">
               <span>Company Name</span>
             </div>
 
-            <div className="w-[25%] px-2 flex items-center justify-start text-gray-600">
+            <div className="w-[25%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
               Type
             </div>
-            <div className="w-[15%] px-2 flex items-center justify-start text-gray-600">
+            <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
               State
             </div>
-            <div className="w-[15%] px-2 flex items-center justify-start text-gray-600 justify-end">
+            <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500 justify-end">
               Status
             </div>
             <div className="pl-2 flex items-center justify-end ml-auto"></div>
@@ -102,21 +103,18 @@ export function WorkspacesList() {
                 key={rowIndex}
                 className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
               >
-                <div className="w-[25%] pr-2 flex items-center justify-start font-bold text-gray-900">
+                <div className="w-[27%] pr-2 flex items-center justify-start font-bold text-gray-900">
                   {workspace.logoUrl ? (
                     <img
                       src={workspace?.logoUrl}
                       alt={`${workspace?.title} logo`}
-                      className="mr-2 w-10 h-10 object-cover rounded-lg"
+                      className="mr-2 w-8 h-8 object-cover rounded-lg"
                     />
                   ) : (
-                    <div className="mr-2 flex-shrink-0 w-10 h-10 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+                    <div className="mr-2 flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
                       <Icon />
                     </div>
                   )}
-                  {/* <div className="w-10 h-10 mr-2 flex items-center justify-center rounded-md border border-gray-100 bg-zinc-50">
-                    {workspace.title[0]}
-                  </div> */}
                   <span>{workspace.title}</span>
                 </div>
 
@@ -124,6 +122,11 @@ export function WorkspacesList() {
                   {workspace.companyType}
                 </div>
                 <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
+                  <StateSolidIconHandler
+                    simpleIcon={true}
+                    selectedState={workspace.registeredIn || 'Florida'}
+                    state={workspace.registeredIn || 'Florida'}
+                  />
                   {workspace.registeredIn}
                 </div>
                 <div className="w-[15%] px-2 flex items-center justify-start text-gray-900 justify-end">
