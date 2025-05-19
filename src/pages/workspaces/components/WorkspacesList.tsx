@@ -6,6 +6,22 @@ import { Preloader } from './Preloader';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
+import { classNames } from '../../../utils/helpers';
+
+const statusBadge = (status: string) => {
+  switch (status) {
+    case 'Active':
+      return 'bg-green-50 text-green-700 ring-green-600/20';
+    case 'Inactive':
+      return 'bg-red-50 text-red-700 ring-red-600/20';
+    case 'Dissolved':
+      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
+    case 'Withdrawn':
+      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
+    default:
+      return 'bg-red-50 text-red-700 ring-red-600/20';
+  }
+};
 
 export function WorkspacesList() {
   const navigate = useNavigate();
@@ -43,28 +59,37 @@ export function WorkspacesList() {
             : 'Loading workspace'
         }
         logo={
-          selectedWorkspace && (
+          !selectedWorkspace?.logoUrl ? (
             <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
-              {selectedWorkspace.title[0]}
+              {selectedWorkspace?.title[0]}
             </div>
+          ) : (
+            <img
+              src={selectedWorkspace?.logoUrl}
+              alt={`${selectedWorkspace?.title} logo`}
+              className="w-16 h-16 object-cover rounded-xl"
+            />
           )
         }
       />
 
-      <div className="w-full overflow-hidden mb-12">
+      <div className="w-full overflow-hidden mb-12 container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-16 text-sm">
         <div>
           <div
             className={`flex py-1 group text-xs transition-all ease-in-out duration-150 border-b border-gray-100`}
           >
             <div className="w-[25%] pr-2 flex items-center justify-start text-gray-600">
-              <span>Companies</span>
+              <span>Company Name</span>
             </div>
 
-            <div className="w-[24%] px-2 flex items-center justify-start text-gray-600">
-              Balance
+            <div className="w-[25%] px-2 flex items-center justify-start text-gray-600">
+              Type
             </div>
-            <div className="w-[24%] px-2 flex items-center justify-start text-gray-600 justify-end">
-              Details
+            <div className="w-[15%] px-2 flex items-center justify-start text-gray-600">
+              State
+            </div>
+            <div className="w-[15%] px-2 flex items-center justify-start text-gray-600 justify-end">
+              Status
             </div>
             <div className="pl-2 flex items-center justify-end ml-auto"></div>
           </div>
@@ -95,14 +120,24 @@ export function WorkspacesList() {
                   <span>{workspace.title}</span>
                 </div>
 
-                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
-                  {workspace.balance}
+                <div className="w-[25%] px-2 flex items-center justify-start text-gray-900">
+                  {workspace.companyType}
                 </div>
-                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
-                  {workspace.description}
+                <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
+                  {workspace.registeredIn}
+                </div>
+                <div className="w-[15%] px-2 flex items-center justify-start text-gray-900 justify-end">
+                  <span
+                    className={classNames(
+                      'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+                      statusBadge(workspace?.status)
+                    )}
+                  >
+                    {workspace?.status}
+                  </span>
                 </div>
                 <div className="pl-2 flex items-center justify-end ml-auto">
-                  <div className="flex items-center justify-center gap-1 py-1 px-1.5 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
+                  <div className="flex items-center gap-1 mr-1 px-2.5 py-1 border rounded-md  text-sm text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer">
                     Open <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
                   </div>
                 </div>

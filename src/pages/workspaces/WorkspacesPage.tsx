@@ -5,8 +5,10 @@ import WorkspacesListHeader from './components/WorkspacesListHeader';
 const WorkspacesPage = () => {
   return (
     <>
-      <WorkspacesListHeader />
-      <div className="container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-8 text-sm">
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-10 lg:flex lg:w-56 lg:flex-col">
+        <WorkspacesListHeader />
+      </div>
+      <div className="lg:pl-56">
         <WorkspacesList />
       </div>
     </>
