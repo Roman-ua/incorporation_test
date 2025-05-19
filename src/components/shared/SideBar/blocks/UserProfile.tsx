@@ -48,7 +48,7 @@ const UserProfile = () => {
           <span>Get Help</span>
         </a>
       </div>
-      <div className="p-4 bg-zinc-50">
+      <div className="p-2 bg-zinc-50">
         <div className="relative w-full" ref={userDropdownRef}>
           <button
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}

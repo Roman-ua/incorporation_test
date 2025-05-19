@@ -1,8 +1,7 @@
 import React from 'react';
 import { TbBuilding } from 'react-icons/tb';
 import { atom } from 'recoil';
-import logoone from '../../images/mocklogos/AlphaWave.jpg';
-import logosecond from '../../images/mocklogos/Calescence.jpg';
+
 import logo from '../../images/icon_square.png';
 import { IconBuildings } from '@tabler/icons-react';
 
@@ -23,10 +22,10 @@ const workspaces = [
     id: '1',
   },
   {
-    logoUrl: logosecond,
+    logoUrl: '',
     balance: '$10,000',
     icon: IconBuildings,
-    title: 'Marketing Team',
+    title: 'ACME Services Inc',
     description: 'Campaign planning',
     registeredIn: 'Delaware',
     companyName: '2 My Company',
@@ -38,15 +37,15 @@ const workspaces = [
     id: '2',
   },
   {
-    logoUrl: logoone,
+    logoUrl: '',
     balance: '$1,10',
     icon: IconBuildings,
-    title: 'Devs',
+    title: 'New Lake LLC',
     description: 'Development',
     registeredIn: 'Texas',
     companyName: '5 My Company',
-    companyType: 'Non-profit',
-    shortType: 'Non-profit',
+    companyType: 'Limited Liability Company',
+    shortType: 'LLC',
     registrationDate: 'September 10, 2024',
     registrationNumber: '123-433R',
     status: 'Active',
@@ -56,7 +55,7 @@ const workspaces = [
     logoUrl: '',
     balance: '$0',
     icon: IconBuildings,
-    title: 'Design Studio',
+    title: 'Compliance Mitigation Inc',
     description: 'Creative projects',
     registeredIn: 'State of Florida',
     companyName: '3 My Company',
@@ -68,10 +67,10 @@ const workspaces = [
     id: '3',
   },
   {
-    logoUrl: logoone,
+    logoUrl: '',
     balance: '$1,10',
     icon: IconBuildings,
-    title: 'Engineering',
+    title: 'Apple Inc',
     description: 'Development',
     registeredIn: 'Florida',
     companyName: '4 My Company',
