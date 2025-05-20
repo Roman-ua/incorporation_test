@@ -1,5 +1,4 @@
 import React from 'react';
-import { TbBuilding } from 'react-icons/tb';
 import { atom } from 'recoil';
 
 import logo from '../../images/icon_square.png';
@@ -101,25 +100,15 @@ export interface IWorkspace {
 }
 
 export interface IWorkspaces {
-  current: IWorkspace;
-  list: typeof workspaces;
+  current: IWorkspace | null;
+  list: typeof workspaces | [];
 }
 
 const WorkspacesState = atom<IWorkspaces>({
   key: 'WorkspacesState',
   default: {
-    current: {
-      id: '1',
-      title: 'Incorporate Now Inc',
-      description: 'Main company',
-      companyType: 'Corporation',
-      shortType: 'Corporation',
-      balance: '$100,000',
-      logoUrl: logo,
-      placeholderLogo: logo,
-      icon: TbBuilding,
-    },
-    list: workspaces,
+    current: null,
+    list: [],
   },
 });
 

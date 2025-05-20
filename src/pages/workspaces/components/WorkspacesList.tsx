@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { classNames } from '../../../utils/helpers';
 import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
+import { EmptySection } from '../../../components/shared/EmptySection';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -80,82 +81,92 @@ export function WorkspacesList() {
           />
         }
       />
+      {workspacesState.list.length ? (
+        <div className="w-full overflow-hidden mb-12 container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-16 text-sm">
+          <div>
+            <div
+              className={`flex py-1 group text-xs transition-all ease-in-out duration-150 border-b border-gray-100`}
+            >
+              <div className="w-[27%] pr-2 flex items-center justify-start font-semibold text-xs text-gray-500">
+                <span>Company Name</span>
+              </div>
 
-      <div className="w-full overflow-hidden mb-12 container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-16 text-sm">
-        <div>
-          <div
-            className={`flex py-1 group text-xs transition-all ease-in-out duration-150 border-b border-gray-100`}
-          >
-            <div className="w-[27%] pr-2 flex items-center justify-start font-semibold text-xs text-gray-500">
-              <span>Company Name</span>
+              <div className="w-[25%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
+                Type
+              </div>
+              <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
+                State
+              </div>
+              <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500 justify-end">
+                Status
+              </div>
+              <div className="pl-2 flex items-center justify-end ml-auto"></div>
             </div>
+            {workspacesState.list.map((workspace, rowIndex) => {
+              const Icon = workspace.icon;
 
-            <div className="w-[25%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
-              Type
-            </div>
-            <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
-              State
-            </div>
-            <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500 justify-end">
-              Status
-            </div>
-            <div className="pl-2 flex items-center justify-end ml-auto"></div>
-          </div>
-          {workspacesState.list.map((workspace, rowIndex) => {
-            const Icon = workspace.icon;
-
-            return (
-              <div
-                onClick={() => selectWorkspaceHandler(workspace)}
-                key={rowIndex}
-                className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
-              >
-                <div className="w-[27%] pr-2 flex items-center justify-start font-bold text-gray-900">
-                  {workspace.logoUrl ? (
-                    <img
-                      src={workspace?.logoUrl}
-                      alt={`${workspace?.title} logo`}
-                      className="mr-2 w-8 h-8 object-cover rounded-lg"
-                    />
-                  ) : (
-                    <div className="mr-2 flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
-                      <Icon />
-                    </div>
-                  )}
-                  <span>{workspace.title}</span>
-                </div>
-
-                <div className="w-[25%] px-2 flex items-center justify-start text-gray-900">
-                  {workspace.companyType}
-                </div>
-                <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
-                  <StateSolidIconHandler
-                    simpleIcon={true}
-                    selectedState={workspace.registeredIn || 'Florida'}
-                    state={workspace.registeredIn || 'Florida'}
-                  />
-                  {workspace.registeredIn}
-                </div>
-                <div className="w-[15%] px-2 flex items-center justify-start text-gray-900 justify-end">
-                  <span
-                    className={classNames(
-                      'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                      statusBadge(workspace?.status)
+              return (
+                <div
+                  onClick={() => selectWorkspaceHandler(workspace)}
+                  key={rowIndex}
+                  className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
+                >
+                  <div className="w-[27%] pr-2 flex items-center justify-start font-bold text-gray-900">
+                    {workspace.logoUrl ? (
+                      <img
+                        src={workspace?.logoUrl}
+                        alt={`${workspace?.title} logo`}
+                        className="mr-2 w-8 h-8 object-cover rounded-lg"
+                      />
+                    ) : (
+                      <div className="mr-2 flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+                        <Icon />
+                      </div>
                     )}
-                  >
-                    {workspace?.status}
-                  </span>
-                </div>
-                <div className="pl-2 flex items-center justify-end ml-auto">
-                  <div className="flex items-center gap-1 mr-1 px-2.5 py-1 border rounded-md  text-sm text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer">
-                    Open <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
+                    <span>{workspace.title}</span>
+                  </div>
+
+                  <div className="w-[25%] px-2 flex items-center justify-start text-gray-900">
+                    {workspace.companyType}
+                  </div>
+                  <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
+                    <StateSolidIconHandler
+                      simpleIcon={true}
+                      selectedState={workspace.registeredIn || 'Florida'}
+                      state={workspace.registeredIn || 'Florida'}
+                    />
+                    {workspace.registeredIn}
+                  </div>
+                  <div className="w-[15%] px-2 flex items-center justify-start text-gray-900 justify-end">
+                    <span
+                      className={classNames(
+                        'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+                        statusBadge(workspace?.status)
+                      )}
+                    >
+                      {workspace?.status}
+                    </span>
+                  </div>
+                  <div className="pl-2 flex items-center justify-end ml-auto">
+                    <div className="flex items-center gap-1 mr-1 px-2.5 py-1 border rounded-md  text-sm text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer">
+                      Open{' '}
+                      <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-full overflow-hidden mb-12 container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-16 text-sm">
+          <EmptySection
+            title="You don't have related company yet"
+            ctaText="Create Company"
+            onAction={() => {}}
+          />
+        </div>
+      )}
     </>
   );
 }

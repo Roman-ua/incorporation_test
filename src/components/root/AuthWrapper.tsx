@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PageLoader from './PageLoader';
+import UseUserData from '../../utils/hooks/UserData/UseUserData';
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -7,6 +8,16 @@ interface AuthWrapperProps {
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [authChecking, setAuthChecking] = useState(true);
+
+  const { getUserData } = UseUserData();
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    if (!authChecking && token) {
+      getUserData();
+    }
+  }, [authChecking]);
 
   useEffect(() => {
     // Check if the URL has a 'token' query parameter (provided after Auth0 login redirect)

@@ -6,16 +6,15 @@ import { CircleUser, LogOut } from 'lucide-react';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { TbHelp } from 'react-icons/tb';
 import { classNames } from '../../../utils/helpers';
-
-const userProfile = {
-  name: 'Alex Johnson',
-  title: 'Senior Developer',
-  email: 'alex@gmail.com',
-  avatarUrl: '/placeholder.svg?height=40&width=40&text=AJ',
-};
+import { useRecoilValue } from 'recoil';
+import UserProfileState from '../../../state/atoms/UserProfile';
+import UseUserData from '../../../utils/hooks/UserData/UseUserData';
 
 const WorkspaceListUserButton = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
+  const userData = useRecoilValue(UserProfileState);
+  const { logout } = UseUserData();
+
   const userDropdownRef = React.useRef<HTMLDivElement>(null);
 
   // Close dropdowns when clicking outside
@@ -53,20 +52,25 @@ const WorkspaceListUserButton = () => {
           <button
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
             className={classNames(
-              'w-full flex items-center gap-2 p-2 hover:bg-gray-100/80 rounded-md transition-colors',
+              'w-full max-w-[168px] flex items-center gap-2 p-2 hover:bg-gray-100/80 rounded-md transition-colors',
               isUserMenuOpen && 'bg-gray-100/80'
             )}
           >
             <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <span className="text-xl font-bold">{userProfile.name[0]}</span>
-            </div>
-            <div className={`flex flex-col leading-none text-left`}>
-              <span className="font-semibold text-sm">{userProfile.name}</span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                {userProfile.email}
+              <span className="text-xl font-bold">
+                {userData.data?.full_name?.[0] || 'U'}
               </span>
             </div>
-            <BiDotsVerticalRounded className="ml-auto h-5 w-4" />
+            <div className="flex flex-col leading-none text-left w-[158px] min-w-0">
+              <span className="font-semibold text-sm truncate">
+                {userData.data?.full_name || 'User User'}
+              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                {userData.data?.email}
+              </span>
+            </div>
+
+            <BiDotsVerticalRounded className="ml-auto h-5 w-6" />
           </button>
 
           <AnimatePresence>
@@ -84,15 +88,15 @@ const WorkspaceListUserButton = () => {
                 >
                   <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                     <span className="text-xl font-bold">
-                      {userProfile.name[0]}
+                      {userData.data?.full_name?.[0] || 'U'}
                     </span>
                   </div>
                   <div className={`flex flex-col leading-none text-left`}>
                     <span className="font-semibold text-sm">
-                      {userProfile.name}
+                      {userData.data?.full_name || 'User User'}
                     </span>
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {userProfile.email}
+                      {userData.data?.email}
                     </span>
                   </div>
                 </div>
@@ -110,7 +114,7 @@ const WorkspaceListUserButton = () => {
                 <div className="p-1 border-t border-gray-100">
                   <button
                     onClick={() => {
-                      // Handle logout logic here
+                      logout();
                       setIsUserMenuOpen(false);
                     }}
                     className={classNames(

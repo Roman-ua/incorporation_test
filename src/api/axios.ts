@@ -1,24 +1,40 @@
-import axios from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
-const axiosInstance = axios.create({
+interface RefreshTokenResponse {
+  access_token: string;
+  refresh_token: string;
+}
+
+const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_MAIN_URL,
 });
 
+// Request interceptor
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers['Authorization'] = 'Bearer ' + token;
+    if (token && config.headers) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error)
 );
 
+// Response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  (response: AxiosResponse): AxiosResponse => response,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (error: AxiosError): Promise<any> => {
+    const originalRequest = error.config as AxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
@@ -46,15 +62,18 @@ axiosInstance.interceptors.response.use(
         );
 
         if (response.ok) {
-          const data = await response.json();
+          const data: RefreshTokenResponse = await response.json();
+
           localStorage.setItem('accessToken', data.access_token);
           localStorage.setItem('refreshToken', data.refresh_token);
 
           axiosInstance.defaults.headers.common['Authorization'] =
-            'Bearer ' + data.access_token;
+            `Bearer ${data.access_token}`;
 
-          originalRequest.headers['Authorization'] =
-            'Bearer ' + data.access_token;
+          if (originalRequest.headers) {
+            originalRequest.headers['Authorization'] =
+              `Bearer ${data.access_token}`;
+          }
 
           return axiosInstance(originalRequest);
         } else {

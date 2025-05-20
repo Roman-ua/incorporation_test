@@ -14,7 +14,7 @@ const menuItems = [
 ];
 const WorkspacesListHeader = () => {
   return (
-    <div className="h-screen flex items-start justify-start flex-col">
+    <div className="h-screen max-w-[168px] flex items-start justify-start flex-col">
       <WorkspacesListHeaderCompanies />
       <div className="p-2 flex items-start flex-col justify-start text-sm ">
         <div className="text-xs text-gray-600 p-2">
