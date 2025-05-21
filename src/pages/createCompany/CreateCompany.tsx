@@ -113,7 +113,7 @@ const defaultStepTwoValues: StepTwoData = {
 
 const defaultStepThreeValues: StepThreeData = {
   address: {
-    country: '',
+    country: 'United States',
     address0: '',
     city: '',
     zip: '',

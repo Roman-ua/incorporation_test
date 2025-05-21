@@ -163,7 +163,7 @@ export function WorkspacesList() {
           <EmptySection
             title="You don't have related company yet"
             ctaText="Create Company"
-            onAction={() => {}}
+            onAction={() => navigate(ROUTES.CREATE_COMPANY)}
           />
         </div>
       )}
