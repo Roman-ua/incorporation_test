@@ -12,7 +12,7 @@ const UseUserData = () => {
   };
 
   const logout = async () => {
-    await axiosInstance.get<IUser>('/user/auth0/logout/');
+    window.location.replace(`${process.env.REACT_APP_MAIN_URL}/user/auth0/logout/`);
   };
   return { getUserData, logout };
 };
