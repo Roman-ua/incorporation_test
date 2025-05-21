@@ -6,7 +6,6 @@ import {
   Navigate,
 } from 'react-router-dom';
 import ProtectedRoute from './components/shared/ProtectedRoute';
-import Home from './pages/home/Home';
 import { ROUTES } from './constants/navigation/routes';
 import ProtectedRoutes from './components/shared/ProtectedRoutes';
 import RecoveryPassConfirm from './pages/recovery/RecoveryPassConfirm';
@@ -113,13 +112,12 @@ function App() {
                 element={<ElementsAddress />}
               />
               <Route path={ROUTES.EMAILS} element={<RenderEmails />} />
-              <Route path={ROUTES.HOME} element={<Home />} />
               <Route path={ROUTES.MAIL} element={<Mail />} />
               <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
               <Route path={ROUTES.SERVICES} element={<Services />} />
               <Route path={ROUTES.ORDERS} element={<Orders />} />
               <Route path={ROUTES.INVOICES} element={<Invoices />} />
-              <Route path={`${ROUTES.COMPANY}/:id`} element={<CompanyPage />} />
+              <Route path={`${ROUTES.HOME}`} element={<CompanyPage />} />
               <Route path={ROUTES.ACCOUNT} element={<Account />} />
               <Route path={ROUTES.PEOPLE} element={<People />} />
               <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
