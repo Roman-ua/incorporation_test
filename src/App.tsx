@@ -39,6 +39,10 @@ function App() {
   const theme = useRecoilValue(ThemeState);
 
   useEffect(() => {
+    localStorage.removeItem('finalFormData');
+    localStorage.removeItem('multistep-form-data');
+    localStorage.removeItem('confetti_success');
+
     const token = localStorage.getItem('token');
     fetch('https://api.incorporatenow.com/api/user/auth0/exchange-token/', {
       method: 'POST',

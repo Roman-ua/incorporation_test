@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionHeading from './components/SectionHeading';
 import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
@@ -80,6 +80,12 @@ const CompanyPage = () => {
       taxId: updatedState.taxId || '',
     }));
   };
+
+  useEffect(() => {
+    if (!companyData.companyName) {
+      navigate(ROUTES.WORKSPACES);
+    }
+  }, [companyData]);
 
   return data ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">

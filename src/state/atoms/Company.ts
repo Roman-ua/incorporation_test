@@ -1,6 +1,25 @@
 import { atom } from 'recoil';
 import { Address } from '../../interfaces/interfaces';
 
+const defaultCompanyItem = {
+  registeredIn: '',
+  companyName: '',
+  companyType: '',
+  registrationDate: '',
+  registrationNumber: '',
+  status: '',
+  taxId: '',
+  address: {
+    country: '',
+    address0: '',
+    address1: '',
+    address2: '',
+    address3: '',
+    city: '',
+    zip: '',
+    state: '',
+  },
+};
 export interface ICompanyData {
   registeredIn: string;
   companyName: string;
@@ -14,25 +33,7 @@ export interface ICompanyData {
 
 const CompanyState = atom<ICompanyData>({
   key: 'CompanyState',
-  default: {
-    registeredIn: 'State of Florida',
-    companyName: 'my company',
-    companyType: 'Corporation',
-    registrationDate: 'January 15, 2025',
-    registrationNumber: '12312rt',
-    status: 'Active',
-    taxId: '',
-    address: {
-      country: 'United States',
-      address0: 'street one',
-      address1: 'aprts',
-      address2: '',
-      address3: '',
-      city: 'bocka',
-      zip: '12312-3123',
-      state: 'Alabama',
-    },
-  },
+  default: defaultCompanyItem,
 });
 
 export default CompanyState;
