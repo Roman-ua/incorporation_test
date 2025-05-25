@@ -62,10 +62,10 @@ const AddEinModal = ({
   const [dateValue, setDateValue] = React.useState<string>(lastVerifDate || '');
   const [address, setAddress] = React.useState<AddressFields>({
     country: 'United States',
-    address0: '',
-    address1: '',
-    address2: '',
-    address3: '',
+    line1: '',
+    line2: '',
+    line3: '',
+    line4: '',
     city: '',
     zip: '',
     state: '',

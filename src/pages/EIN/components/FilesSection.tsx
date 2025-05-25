@@ -75,18 +75,18 @@ const EinFilesSection = ({
               </span>
             </div>
             <div className="w-[60%] px-2 text-gray-900 flex items-center justify-start">
-              {address && address.address0 && (
+              {address && address.line1 && (
                 <div>
-                  <span>{address.address0}, </span>
-                  {address.address1 && <span>{address.address1}, </span>}
-                  {address.address2 && <span>{address.address2}</span>}
-                  {address.address3 && (
+                  <span>{address.line1}, </span>
+                  {address.line2 && <span>{address.line2}, </span>}
+                  {address.line3 && <span>{address.line3}</span>}
+                  {address.line4 && (
                     <span>
-                      {address.address2 ? ',' : ''} {address.address3}
+                      {address.line3 ? ',' : ''} {address.line4}
                     </span>
                   )}
                   <span>
-                    {address.address3 ? ', ' : ''}
+                    {address.line4 ? ', ' : ''}
                     {address.city},{' '}
                   </span>
                   <span>

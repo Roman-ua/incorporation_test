@@ -1,5 +1,6 @@
 import { AddressFields } from '../interfaces/interfaces';
 import { clsx, type ClassValue } from 'clsx';
+import { format, parseISO } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -71,4 +72,9 @@ export function truncateString(text: string, maxLength: number) {
     return text.slice(0, maxLength) + '...';
   }
   return text;
+}
+
+export function formatDateToLongForm(dateString: string): string {
+  const parsedDate = parseISO(dateString);
+  return format(parsedDate, 'MMMM dd, yyyy');
 }

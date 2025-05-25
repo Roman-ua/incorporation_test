@@ -39,6 +39,7 @@ const ConfirmPage = ({
     1: stepTwoData,
     2: stepThreeData,
   };
+  console.log(fieldsData, 'fieldsData');
   return (
     <div>
       <div className="px-4 sm:px-0">
@@ -56,8 +57,8 @@ const ConfirmPage = ({
             // @ts-expect-error
             const fieldValue = fieldsData[field.step][field.key];
             const stateHandler =
-              field.key === 'address' ? fieldValue.address0 : fieldValue;
-            if (field.key === 'status') return;
+              field.key === 'address' ? fieldValue.line1 : fieldValue;
+            if (field.key === 'status_name') return;
 
             return (
               <div
@@ -73,19 +74,18 @@ const ConfirmPage = ({
                       {field.key === 'address' && stateHandler && (
                         <>
                           <div>
-                            <span>{fieldValue.address0}, </span>
-                            {fieldValue.address1 && (
-                              <span>{fieldValue.address1}</span>
+                            <span>{fieldValue.line1}, </span>
+                            {fieldValue.line2 && (
+                              <span>{fieldValue.line2}</span>
                             )}
                           </div>
                           <div>
-                            {fieldValue.address2 && (
-                              <span>{fieldValue.address2}</span>
+                            {fieldValue.line3 && (
+                              <span>{fieldValue.line3}</span>
                             )}
-                            {fieldValue.address3 && (
+                            {fieldValue.line4 && (
                               <span>
-                                {fieldValue.address2 ? ',' : ''}{' '}
-                                {fieldValue.address3}
+                                {fieldValue.line3 ? ',' : ''} {fieldValue.line4}
                               </span>
                             )}
                           </div>
@@ -102,14 +102,14 @@ const ConfirmPage = ({
                         </>
                       )}
                       {field.key !== 'address' && fieldValue}
-                      {index === 0 && stepTwoData?.status && (
+                      {index === 0 && stepTwoData?.status_name && (
                         <span
                           className={classNames(
                             'ml-6 w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                            statusBadge(stepTwoData?.status)
+                            statusBadge(stepTwoData?.status_name)
                           )}
                         >
-                          {stepTwoData?.status}
+                          {stepTwoData?.status_name}
                         </span>
                       )}
                     </span>

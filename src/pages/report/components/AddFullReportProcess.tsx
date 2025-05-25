@@ -157,8 +157,8 @@ const AddFullReportProcess = () => {
 
   useEffect(() => {
     if (
-      address.address0 &&
-      mailingAddress.address0 &&
+      address.line1 &&
+      mailingAddress.line1 &&
       agentName &&
       people.length &&
       file?.file

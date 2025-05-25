@@ -7,11 +7,12 @@ import { useRecoilState } from 'recoil';
 import { ROUTES } from '../../../../constants/navigation/routes';
 import { Preloader } from '../../../../pages/workspaces/components/Preloader';
 import WorkspacesState, {
-  IWorkspace,
   IWorkspaces,
 } from '../../../../state/atoms/Workspaces';
 import { classNames } from '../../../../utils/helpers';
 import logo from '../../../../images/icon_square.png';
+import { IconBuildings } from '@tabler/icons-react';
+import { ICompanyData } from '../../../../state/types/company';
 
 const ChooseWorkspace = () => {
   const navigate = useNavigate();
@@ -19,9 +20,8 @@ const ChooseWorkspace = () => {
     useRecoilState<IWorkspaces>(WorkspacesState);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedWorkspace, setSelectedWorkspace] = useState<IWorkspace | null>(
-    null
-  );
+  const [selectedWorkspace, setSelectedWorkspace] =
+    useState<ICompanyData | null>(null);
   const [isHoveredDropdown, setIsHoveredDropdown] = useState(false); // ← новое
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -44,7 +44,7 @@ const ChooseWorkspace = () => {
     };
   }, []);
 
-  const selectWorkspaceHandler = (workspace: IWorkspace) => {
+  const selectWorkspaceHandler = (workspace: ICompanyData) => {
     setSelectedWorkspace(workspace);
     setIsLoading(true);
   };
@@ -60,8 +60,6 @@ const ChooseWorkspace = () => {
     navigate(`${ROUTES.COMPANY}/${selectedWorkspace?.id}`);
   };
 
-  const SelecteIcon = workspacesState?.current?.icon;
-
   return (
     <div className="p-2 bg-zinc-50">
       <Preloader
@@ -69,28 +67,21 @@ const ChooseWorkspace = () => {
         onLoadingComplete={handleLoadingComplete}
         text={
           selectedWorkspace
-            ? `Loading ${selectedWorkspace.title}`
+            ? `Loading ${selectedWorkspace.name}`
             : 'Loading workspace'
         }
         logo={
-          // !selectedWorkspace?.logoUrl ? (
-          //   <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
-          //     {selectedWorkspace?.title[0]}
-          //   </div>
-          // ) : (
-          //   <img
-          //     src={selectedWorkspace?.logoUrl}
-          //     alt={`${selectedWorkspace?.title} logo`}
-          //     className="w-16 h-16 object-cover rounded-xl"
-          //   />
-          // )
-          <img
-            src={
-              selectedWorkspace?.logoUrl || selectedWorkspace?.placeholderLogo
-            }
-            alt={`${selectedWorkspace?.title} logo`}
-            className="w-16 h-16 object-cover rounded-xl"
-          />
+          selectedWorkspace?.logoUrl ? (
+            <img
+              src={selectedWorkspace?.logoUrl}
+              alt={`${selectedWorkspace?.name} logo`}
+              className="w-16 h-16 object-cover rounded-xl"
+            />
+          ) : (
+            <div className="mr-2 flex-shrink-0 w-16 h-16 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+              <IconBuildings />
+            </div>
+          )
         }
       />
       {workspacesState.list.length ? (
@@ -106,27 +97,27 @@ const ChooseWorkspace = () => {
               {workspacesState?.current?.logoUrl ? (
                 <img
                   src={workspacesState?.current?.logoUrl}
-                  alt={`${workspacesState?.current?.title} logo`}
+                  alt={`${workspacesState?.current?.name} logo`}
                   width={32}
                   height={32}
                   className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
-                  {SelecteIcon && <SelecteIcon />}
+                  <IconBuildings />
                 </div>
               )}
             </div>
             <div className="flex flex-col gap-0.5 leading-none text-left min-w-0">
               <span className="text-sm font-semibold truncate">
-                {workspacesState?.current?.title}
+                {workspacesState?.current?.name}
               </span>
               <span className="text-xs text-gray-500 dark:text-gray-400">
-                {workspacesState?.current?.shortType}{' '}
-                {workspacesState?.current?.shortType === 'Corporation'
+                {workspacesState?.current?.type_name}{' '}
+                {workspacesState?.current?.type_name === 'Corporation'
                   ? '- Florida'
                   : ''}
-                {workspacesState?.current?.shortType === 'LLC'
+                {workspacesState?.current?.type_name === 'LLC'
                   ? '- Delaware'
                   : ''}
               </span>
@@ -150,7 +141,6 @@ const ChooseWorkspace = () => {
                 </div>
                 <div className="p-1.5">
                   {workspacesState.list.map((workspace) => {
-                    const Icon = workspace.icon;
                     const isActive =
                       !isHoveredDropdown &&
                       workspacesState?.current?.id === workspace.id;
@@ -160,6 +150,10 @@ const ChooseWorkspace = () => {
                         onClick={() => {
                           selectWorkspaceHandler(workspace);
                           setIsOpen(false);
+                          localStorage.setItem(
+                            'selected_company',
+                            `${workspace?.id}`
+                          );
                         }}
                         className={classNames(
                           'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm',
@@ -168,18 +162,20 @@ const ChooseWorkspace = () => {
                       >
                         <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md overflow-hidden border border-gray-100 dark:bg-gray-700">
                           {!workspace.logoUrl ? (
-                            <Icon className={`h-4 w-4 text-gray-900`} />
+                            <IconBuildings
+                              className={`h-4 w-4 text-gray-900`}
+                            />
                           ) : (
                             <img
                               src={workspace.logoUrl}
-                              alt={`${workspace.title} logo`}
+                              alt={`${workspace.name} logo`}
                               width={22}
                               height={22}
                               className="w-full h-full object-cover"
                             />
                           )}
                         </div>
-                        <span className="text-sm">{workspace.title}</span>
+                        <span className="text-sm">{workspace.name}</span>
                         {workspacesState?.current?.id === workspace.id && (
                           <Check className="ml-auto h-4 w-4 text-black" />
                         )}

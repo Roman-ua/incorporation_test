@@ -34,6 +34,7 @@ import ElementsButtons from './pages/elements/nested/ElementsButtons';
 import ElementsNotions from './pages/elements/nested/ElementsNotions';
 import ElementsAddress from './pages/elements/nested/ElementsAddress';
 import WorkspacesPage from './pages/workspaces/WorkspacesPage';
+import DataRequestWrapper from './components/root/DataRequestWrapper';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -79,64 +80,66 @@ function App() {
     <>
       <Toaster richColors theme={theme.theme} />
       <Router>
-        <Routes>
-          <Route
-            path={ROUTES.RECOVERY_PASS}
-            element={<RecoverPasswordPage />}
-          />
-          <Route
-            path={ROUTES.RECOVERY_PASS_CONFIRM}
-            element={<RecoveryPassConfirm />}
-          />
-          <Route
-            path={ROUTES.ANN_REPORT_REVIEW}
-            element={<AnnualReportReview />}
-          />
-          <Route
-            path={ROUTES.ANN_REPORT_ADD}
-            element={<AddFullReportProcess />}
-          />
-          <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
-            <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
+        <DataRequestWrapper>
+          <Routes>
+            <Route
+              path={ROUTES.RECOVERY_PASS}
+              element={<RecoverPasswordPage />}
+            />
+            <Route
+              path={ROUTES.RECOVERY_PASS_CONFIRM}
+              element={<RecoveryPassConfirm />}
+            />
+            <Route
+              path={ROUTES.ANN_REPORT_REVIEW}
+              element={<AnnualReportReview />}
+            />
+            <Route
+              path={ROUTES.ANN_REPORT_ADD}
+              element={<AddFullReportProcess />}
+            />
+            <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
+              <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
 
-            <Route element={<ProtectedRoutes />}>
-              <Route path={ROUTES.ELEMENTS} element={<Elements />} />
-              <Route
-                path={ROUTES.ELEMENTS_BUTTONS}
-                element={<ElementsButtons />}
-              />
-              <Route
-                path={ROUTES.ELEMENTS_NOTIONS}
-                element={<ElementsNotions />}
-              />
-              <Route
-                path={ROUTES.ELEMENTS_ADDRESS}
-                element={<ElementsAddress />}
-              />
-              <Route path={ROUTES.EMAILS} element={<RenderEmails />} />
-              <Route path={ROUTES.MAIL} element={<Mail />} />
-              <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
-              <Route path={ROUTES.SERVICES} element={<Services />} />
-              <Route path={ROUTES.ORDERS} element={<Orders />} />
-              <Route path={ROUTES.INVOICES} element={<Invoices />} />
-              <Route path={`${ROUTES.HOME}`} element={<CompanyPage />} />
-              <Route path={ROUTES.ACCOUNT} element={<Account />} />
-              <Route path={ROUTES.PEOPLE} element={<People />} />
-              <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
-              <Route
-                path={`${ROUTES.PERSON}/:id`}
-                element={<PersonPageDetails />}
-              />
-              <Route path={ROUTES.EIN} element={<Ein />} />
+              <Route element={<ProtectedRoutes />}>
+                <Route path={ROUTES.ELEMENTS} element={<Elements />} />
+                <Route
+                  path={ROUTES.ELEMENTS_BUTTONS}
+                  element={<ElementsButtons />}
+                />
+                <Route
+                  path={ROUTES.ELEMENTS_NOTIONS}
+                  element={<ElementsNotions />}
+                />
+                <Route
+                  path={ROUTES.ELEMENTS_ADDRESS}
+                  element={<ElementsAddress />}
+                />
+                <Route path={ROUTES.EMAILS} element={<RenderEmails />} />
+                <Route path={ROUTES.MAIL} element={<Mail />} />
+                <Route path={ROUTES.DOCUMENTS} element={<Documents />} />
+                <Route path={ROUTES.SERVICES} element={<Services />} />
+                <Route path={ROUTES.ORDERS} element={<Orders />} />
+                <Route path={ROUTES.INVOICES} element={<Invoices />} />
+                <Route path={`${ROUTES.HOME}`} element={<CompanyPage />} />
+                <Route path={ROUTES.ACCOUNT} element={<Account />} />
+                <Route path={ROUTES.PEOPLE} element={<People />} />
+                <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
+                <Route
+                  path={`${ROUTES.PERSON}/:id`}
+                  element={<PersonPageDetails />}
+                />
+                <Route path={ROUTES.EIN} element={<Ein />} />
+              </Route>
             </Route>
-          </Route>
-          <Route
-            path={ROUTES.REDIRECT}
-            element={<Navigate to={ROUTES.HOME} />}
-          />
-        </Routes>
+            <Route
+              path={ROUTES.REDIRECT}
+              element={<Navigate to={ROUTES.HOME} />}
+            />
+          </Routes>
+        </DataRequestWrapper>
       </Router>
     </>
   );

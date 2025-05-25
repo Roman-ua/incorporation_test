@@ -91,13 +91,13 @@ const USAddressForm = ({
     isCreateUser ? value?.country : 'United States'
   );
   const [address, setAddress] = useState<{
-    address0: string;
+    line1: string;
     [key: string]: string;
   }>({
-    address0: value?.address0 || '',
-    address1: value?.address1 || '',
-    address2: value?.address2 || '',
-    address3: value?.address3 || '',
+    line1: value?.line1 || '',
+    line2: value?.line2 || '',
+    line3: value?.line3 || '',
+    line4: value?.line4 || '',
   });
 
   const [city, setCity] = useState(value?.city || '');
@@ -107,8 +107,8 @@ const USAddressForm = ({
   const [focused, setFocused] = useState(false);
 
   const validationData = isCreateUser
-    ? { country, address0: address.address0, city }
-    : { country, address0: address.address0, city, zip, state };
+    ? { country, line1: address.line1, city }
+    : { country, line1: address.line1, city, zip, state };
 
   const setZipHandler = (value: string) => {
     let cleanedValue = value.replace(/[^0-9-]/g, '');
@@ -139,10 +139,10 @@ const USAddressForm = ({
     setZip('');
 
     setAddress({
-      address0: '',
-      address1: '',
-      address2: '',
-      address3: '',
+      line1: '',
+      line2: '',
+      line3: '',
+      line4: '',
     });
 
     setCountry(value?.country);
@@ -154,10 +154,10 @@ const USAddressForm = ({
     setZip(value?.zip || '');
 
     setAddress({
-      address0: value?.address0 || '',
-      address1: value?.address1 || '',
-      address2: value?.address2 || '',
-      address3: value?.address3 || '',
+      line1: value?.line1 || '',
+      line2: value?.line2 || '',
+      line3: value?.line3 || '',
+      line4: value?.line4 || '',
     });
 
     setCountry(value?.country || '');
@@ -170,7 +170,7 @@ const USAddressForm = ({
   }, [address, state, city, country, zip]);
 
   useEffect(() => {
-    if (value?.address2) {
+    if (value?.line3) {
       setAddressFields((prevState) => {
         if (prevState.length < 3) {
           return [...prevState, { title: 'Address', type: 'text' }];
@@ -178,7 +178,7 @@ const USAddressForm = ({
         return prevState;
       });
     }
-    if (value?.address3) {
+    if (value?.line4) {
       setAddressFields((prevState) => {
         if (prevState.length < 4) {
           return [...prevState, { title: 'Address', type: 'text' }];
@@ -232,20 +232,20 @@ const USAddressForm = ({
                   className={classNames(
                     inputCommonClasses,
                     `w-full ${index === 0 ? 'rounded-t-md' : ''} border-0`,
-                    requiredError && index === 0 && !address[`address${index}`]
+                    requiredError && index === 0 && !address[`line${index + 1}`]
                       ? 'bg-red-50'
                       : 'bg-transparent'
                   )}
                   type={field.type}
                   onFocus={() => setFocusedInput(index)}
                   onBlur={() => setFocusedInput(-1)}
-                  value={address[`address${index}`]}
+                  value={address[`line${index + 1}`]}
                   data-1p-ignore={true}
                   disabled={disabledFlag}
                   onChange={(e) =>
                     setAddress({
                       ...address,
-                      [`address${index}`]: e.target.value,
+                      [`line${index + 1}`]: e.target.value,
                     })
                   }
                   placeholder={field.title}

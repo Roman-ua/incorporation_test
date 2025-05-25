@@ -6,7 +6,7 @@ import StepsProgress from './components/StepsProgress';
 import CommonTextInput from './components/CommonTextInput';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ROUTES } from '../../constants/navigation/routes';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
@@ -16,6 +16,8 @@ import SeparatedCards from './components/SeparatedCards';
 import ConfirmPage from './components/ConfirmPage';
 import USAddressForm from './components/USAddressForm';
 import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithArrow';
+import useCompany from '../../utils/hooks/Company/useCompany';
+import { ICompanyDataForSave } from '../../state/types/company';
 
 export const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
@@ -39,21 +41,21 @@ const status = [
 ];
 
 const stepOneSchema = yup.object().shape({
-  companyName: yup
+  name: yup
     .string()
     .required('Company Name is required')
     .matches(VALIDATORS.NAME),
-  registeredIn: yup.string().required('State of Registration is required'),
-  companyType: yup.string().required('State of Registration is required'),
+  state_name: yup.string().required('State of Registration is required'),
+  type_name: yup.string().required('State of Registration is required'),
 });
 
 const stepTwoSchema = yup.object().shape({
-  registrationDate: yup.string().required('Registration Date is required'),
-  registrationNumber: yup
+  registration_date: yup.string().required('Registration Date is required'),
+  registration_number: yup
     .string()
     .required('Registration Date is required')
     .matches(VALIDATORS.COMPANY_NUMBER),
-  status: yup.string().required('State of Registration is required'),
+  status_name: yup.string().required('State of Registration is required'),
 });
 
 const stepThreeSchema = yup.object().shape({
@@ -73,24 +75,24 @@ const localStorageKey = 'multistep-form-data';
 type Step = 'stepOneData' | 'stepTwoData' | 'stepThreeData';
 
 export type StepOneData = {
-  registeredIn: string;
-  companyName: string;
-  companyType: string;
+  state_name: string;
+  name: string;
+  type_name: string;
 };
 
 export type StepTwoData = {
-  registrationDate: string;
-  registrationNumber: string;
-  status: string;
+  registration_date: string;
+  registration_number: string;
+  status_name: string;
 };
 
 export type StepThreeData = {
   address: {
     country?: string;
-    address0?: string;
-    address1?: string;
-    address2?: string;
-    address3?: string;
+    line1?: string;
+    line2?: string;
+    line3?: string;
+    line4?: string;
     city?: string;
     zip?: string;
     state?: string;
@@ -100,21 +102,21 @@ export type StepThreeData = {
 type FormData = StepOneData & StepTwoData & StepThreeData;
 
 const defaultStepOneValues: StepOneData = {
-  registeredIn: '',
-  companyName: '',
-  companyType: '',
+  state_name: '',
+  name: '',
+  type_name: '',
 };
 
 const defaultStepTwoValues: StepTwoData = {
-  registrationDate: '',
-  registrationNumber: '',
-  status: '',
+  registration_date: '',
+  registration_number: '',
+  status_name: '',
 };
 
 const defaultStepThreeValues: StepThreeData = {
   address: {
     country: 'United States',
-    address0: '',
+    line1: '',
     city: '',
     zip: '',
     state: '',
@@ -135,7 +137,9 @@ const queryKeyHandler = (location: Location, key: string, value?: string) => {
 };
 
 const CreateCompany = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  const { createCompanyHandler } = useCompany();
 
   const parsedData = JSON.parse(
     localStorage.getItem(localStorageKey) as string
@@ -270,7 +274,7 @@ const CreateCompany = () => {
               Object.values({
                 country: stepThreeFormObserver.address?.country,
                 city: stepThreeFormObserver.address?.city,
-                address0: stepThreeFormObserver.address?.address0,
+                address0: stepThreeFormObserver.address?.line1,
                 state: stepThreeFormObserver.address?.state,
                 zip: stepThreeFormObserver.address?.zip,
               }) as string[]
@@ -282,7 +286,7 @@ const CreateCompany = () => {
             <form onSubmit={stepOneForm.handleSubmit(handleStepOneSubmit)}>
               <div>
                 <Controller
-                  name="companyName"
+                  name="name"
                   control={stepOneForm.control}
                   render={({ field }) => (
                     <>
@@ -296,14 +300,14 @@ const CreateCompany = () => {
                         heading="Company Name"
                         requiredError={Object.keys(
                           stepOneForm.formState.errors
-                        ).includes('companyName')}
+                        ).includes('name')}
                       />
                       <Separator />
                     </>
                   )}
                 />
                 <Controller
-                  name="companyType"
+                  name="type_name"
                   control={stepOneForm.control}
                   render={({ field }) => (
                     <div className="mb-16">
@@ -314,13 +318,13 @@ const CreateCompany = () => {
                         changeEvent={field.onChange}
                         requiredError={Object.keys(
                           stepOneForm.formState.errors
-                        ).includes('companyType')}
+                        ).includes('type_name')}
                       />
                     </div>
                   )}
                 />
                 <Controller
-                  name="registeredIn"
+                  name="state_name"
                   control={stepOneForm.control}
                   render={({ field }) => (
                     <div className="mb-16">
@@ -331,7 +335,7 @@ const CreateCompany = () => {
                         changeEvent={field.onChange}
                         requiredError={Object.keys(
                           stepOneForm.formState.errors
-                        ).includes('registeredIn')}
+                        ).includes('state_name')}
                       />
                     </div>
                   )}
@@ -351,7 +355,7 @@ const CreateCompany = () => {
             <form onSubmit={stepTwoForm.handleSubmit(handleStepTwoSubmit)}>
               <div>
                 <Controller
-                  name="registrationDate"
+                  name="registration_date"
                   control={stepTwoForm.control}
                   render={({ field }) => {
                     return (
@@ -360,7 +364,7 @@ const CreateCompany = () => {
                           field={field}
                           requiredError={Object.keys(
                             stepTwoForm.formState.errors
-                          ).includes('registrationDate')}
+                          ).includes('registration_date')}
                         />
                         <Separator />
                       </>
@@ -368,7 +372,7 @@ const CreateCompany = () => {
                   }}
                 />
                 <Controller
-                  name="registrationNumber"
+                  name="registration_number"
                   control={stepTwoForm.control}
                   render={({ field }) => (
                     <>
@@ -382,14 +386,14 @@ const CreateCompany = () => {
                         extraStyles="mb-16"
                         requiredError={Object.keys(
                           stepTwoForm.formState.errors
-                        ).includes('registrationNumber')}
+                        ).includes('registration_number')}
                       />
                       <Separator />
                     </>
                   )}
                 />
                 <Controller
-                  name="status"
+                  name="status_name"
                   control={stepTwoForm.control}
                   render={({ field }) => (
                     <div className="mb-16">
@@ -401,7 +405,7 @@ const CreateCompany = () => {
                         secondTitle={'Company status'}
                         requiredError={Object.keys(
                           stepTwoForm.formState.errors
-                        ).includes('status')}
+                        ).includes('status_name')}
                       />
                     </div>
                   )}
@@ -487,7 +491,13 @@ const CreateCompany = () => {
                         (value) => value
                       )
                     }
-                    onClick={() => navigate(ROUTES.HOME)}
+                    onClick={() => {
+                      createCompanyHandler({
+                        ...stepOneData,
+                        ...stepTwoData,
+                        ...stepThreeData.address,
+                      } as ICompanyDataForSave);
+                    }}
                     className="min-w-28 rounded-md bg-mainBlue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sideBarBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-500 disabled:cursor-not-allowed"
                   >
                     Submit

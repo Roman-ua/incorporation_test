@@ -2,9 +2,9 @@ import React from 'react';
 import SeparatedCards from '../../createCompany/components/SeparatedCards';
 
 const companyTypes = [
-  { fullName: 'Corporation', shortName: 'C-corp' },
-  { fullName: 'Limited Liability Company', shortName: 'LLC' },
-  { fullName: 'Non-profit', shortName: 'Non-profit' },
+  { fullName: 'Corporation', shortName: 'C-corp', title: 'C-corp' },
+  { fullName: 'Limited Liability Company', shortName: 'LLC', title: 'LLC' },
+  { fullName: 'Non-profit', shortName: 'Non-profit', title: 'Non-profit' },
 ];
 
 const SeparatedCardsElements = () => {

@@ -1,3 +1,5 @@
+import { ICompanyData } from '../state/types/company';
+
 export interface Address {
   country?: string;
   address0?: string;
@@ -79,10 +81,10 @@ export interface MockAnnualReportData {
 export type AddressFields = {
   type?: string;
   country?: string;
-  address0?: string;
-  address1?: string;
-  address2?: string;
-  address3?: string;
+  line1?: string;
+  line2?: string;
+  line3?: string;
+  line4?: string;
   city?: string;
   zip?: string;
   state?: string;
@@ -101,7 +103,7 @@ export interface IFiles {
 
 export interface MockData {
   taxId: string;
-  status: string;
+  status: { id: number; name: string };
   companyName: string;
   lastVerifDate: string;
   documentType: string[];
@@ -109,17 +111,6 @@ export interface MockData {
   relatedDocument: IFiles | null;
 }
 
-export interface MockCompany {
-  registeredIn: string;
-  companyName: string;
-  companyType: string;
-  registrationDate: string;
-  registrationNumber: string;
-  taxId: string;
-  status: string;
-  address: Address;
-}
-
-export type UpdatedCompanyState = Partial<MockCompany>;
+export type UpdatedCompanyState = Partial<ICompanyData>;
 
 export type UpdatedState = Partial<MockData>;

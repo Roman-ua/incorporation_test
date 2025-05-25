@@ -41,10 +41,10 @@ const CustomCalendar = ({ field, requiredError }: IProps) => {
   const [selectedDay, setSelectedDay] = useState(today);
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
-
+  // MMMM dd, yyyy
   useEffect(() => {
     if (!field.value) {
-      field.onChange(format(today, 'MMMM dd, yyyy'));
+      field.onChange(format(today, 'yyyy-MM-dd'));
     }
   }, []);
 
@@ -129,7 +129,7 @@ const CustomCalendar = ({ field, requiredError }: IProps) => {
                       onClick={() => {
                         if (isSameMonth(day, firstDayCurrentMonth)) {
                           setSelectedDay(day);
-                          field.onChange(format(day, 'MMMM dd, yyyy'));
+                          field.onChange(format(day, 'yyyy-MM-dd'));
                         }
                       }}
                       className={classNames(

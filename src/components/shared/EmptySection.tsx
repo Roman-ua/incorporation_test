@@ -13,7 +13,7 @@ export function EmptySection({
   onAction = () => {},
 }: EmptySectionProps) {
   return (
-    <div className="mb-12 relative overflow-hidden w-full rounded-md border border-dashed bg-gradient-to-b from-background to-muted/30 p-10 flex flex-col items-center justify-center text-center min-h-[200px]">
+    <div className="relative overflow-hidden w-full rounded-md border border-dashed bg-gradient-to-b from-background to-muted/30 p-10 flex flex-col items-center justify-center text-center min-h-[200px]">
       <div className="relative max-w-md mx-auto">
         <div className="mb-4 relative flex items-center justify-center">
           <FiPlusCircle className="h-8 w-8 text-gray-900" />

@@ -52,18 +52,18 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
           removed ? 'line-through text-gray-400' : 'text-gray-800'
         )}
       >
-        <span>{address.address0}, </span>
-        {address.address1 && <span>{address.address1}</span>}
+        <span>{address.line1}, </span>
+        {address.line2 && <span>{address.line2}</span>}
       </div>
       <div
         className={classNames(
           removed ? 'line-through text-gray-400' : 'text-gray-800'
         )}
       >
-        {address.address2 && <span>{address.address2}</span>}
-        {address.address3 && (
+        {address.line3 && <span>{address.line3}</span>}
+        {address.line4 && (
           <span>
-            {address.address2 ? ',' : ''} {address.address3}
+            {address.line3 ? ',' : ''} {address.line4}
           </span>
         )}
       </div>
@@ -201,7 +201,7 @@ const AddPersonProcess = () => {
   };
 
   useEffect(() => {
-    if (address.address0) {
+    if (address.line1) {
       setCompletedSteps(true);
     } else {
       setCompletedSteps(false);

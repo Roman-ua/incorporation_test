@@ -1,10 +1,10 @@
 export const fields = [
-  { key: 'companyName', name: 'Company Name', step: 0 },
-  { key: 'companyType', name: 'Company Type', step: 0 },
-  { key: 'registeredIn', name: 'State of Registration', step: 0 },
-  { key: 'registrationDate', name: 'Registration Date', step: 1 },
-  { key: 'registrationNumber', name: 'Registration Number', step: 1 },
-  { key: 'status', name: 'Company Status', step: 1 },
+  { key: 'name', name: 'Company Name', step: 0 },
+  { key: 'type_name', name: 'Company Type', step: 0 },
+  { key: 'state_name', name: 'State of Registration', step: 0 },
+  { key: 'registration_date', name: 'Registration Date', step: 1 },
+  { key: 'registration_number', name: 'Registration Number', step: 1 },
+  { key: 'status_name', name: 'Company Status', step: 1 },
   { key: 'address', name: 'Address', step: 2 },
 ];
 

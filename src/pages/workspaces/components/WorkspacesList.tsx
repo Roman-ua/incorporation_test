@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import WorkspacesState, { IWorkspace } from '../../../state/atoms/Workspaces';
+import WorkspacesState from '../../../state/atoms/Workspaces';
 
 import { Preloader } from './Preloader';
 import { ROUTES } from '../../../constants/navigation/routes';
@@ -9,6 +9,8 @@ import { ArrowUpRight } from 'lucide-react';
 import { classNames } from '../../../utils/helpers';
 import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
 import { EmptySection } from '../../../components/shared/EmptySection';
+import { IconBuildings } from '@tabler/icons-react';
+import { ICompanyData } from '../../../state/types/company';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -30,13 +32,13 @@ export function WorkspacesList() {
 
   const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedWorkspace, setSelectedWorkspace] = useState<IWorkspace | null>(
-    null
-  );
+  const [selectedWorkspace, setSelectedWorkspace] =
+    useState<ICompanyData | null>(null);
 
-  const selectWorkspaceHandler = (workspace: IWorkspace) => {
+  const selectWorkspaceHandler = (workspace: ICompanyData) => {
     setSelectedWorkspace(workspace);
     setIsLoading(true);
+    localStorage.setItem('selected_company', `${workspace?.name}`);
   };
 
   const handleLoadingComplete = () => {
@@ -57,28 +59,21 @@ export function WorkspacesList() {
         onLoadingComplete={handleLoadingComplete}
         text={
           selectedWorkspace
-            ? `Loading ${selectedWorkspace.title}`
+            ? `Loading ${selectedWorkspace.name}`
             : 'Loading workspace'
         }
         logo={
-          // !selectedWorkspace?.logoUrl ? (
-          //   <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-gray-200 bg-zinc-50 text-2xl font-bold text-gray-800">
-          //     {selectedWorkspace?.title[0]}
-          //   </div>
-          // ) : (
-          //   <img
-          //     src={selectedWorkspace?.logoUrl}
-          //     alt={`${selectedWorkspace?.title} logo`}
-          //     className="w-16 h-16 object-cover rounded-xl"
-          //   />
-          // )
-          <img
-            src={
-              selectedWorkspace?.logoUrl || selectedWorkspace?.placeholderLogo
-            }
-            alt={`${selectedWorkspace?.title} logo`}
-            className="w-16 h-16 object-cover rounded-xl"
-          />
+          selectedWorkspace?.logoUrl ? (
+            <img
+              src={selectedWorkspace?.logoUrl}
+              alt={`${selectedWorkspace?.name} logo`}
+              className="w-16 h-16 object-cover rounded-xl"
+            />
+          ) : (
+            <div className="mr-2 flex-shrink-0 w-16 h-16 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+              <IconBuildings />
+            </div>
+          )
         }
       />
       {workspacesState.list.length ? (
@@ -103,8 +98,6 @@ export function WorkspacesList() {
               <div className="pl-2 flex items-center justify-end ml-auto"></div>
             </div>
             {workspacesState.list.map((workspace, rowIndex) => {
-              const Icon = workspace.icon;
-
               return (
                 <div
                   onClick={() => selectWorkspaceHandler(workspace)}
@@ -112,39 +105,39 @@ export function WorkspacesList() {
                   className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
                 >
                   <div className="w-[27%] pr-2 flex items-center justify-start font-bold text-gray-900">
-                    {workspace.logoUrl ? (
+                    {workspace?.logoUrl ? (
                       <img
                         src={workspace?.logoUrl}
-                        alt={`${workspace?.title} logo`}
+                        alt={`${workspace?.name} logo`}
                         className="mr-2 w-8 h-8 object-cover rounded-lg"
                       />
                     ) : (
                       <div className="mr-2 flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
-                        <Icon />
+                        <IconBuildings />
                       </div>
                     )}
-                    <span>{workspace.title}</span>
+                    <span>{workspace.name}</span>
                   </div>
 
                   <div className="w-[25%] px-2 flex items-center justify-start text-gray-900">
-                    {workspace.companyType}
+                    {workspace?.type?.name}
                   </div>
                   <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
                     <StateSolidIconHandler
                       simpleIcon={true}
-                      selectedState={workspace.registeredIn || 'Florida'}
-                      state={workspace.registeredIn || 'Florida'}
+                      selectedState={workspace?.state?.name || 'Florida'}
+                      state={workspace?.state?.name || 'Florida'}
                     />
-                    {workspace.registeredIn}
+                    {workspace?.state?.name}
                   </div>
                   <div className="w-[15%] px-2 flex items-center justify-start text-gray-900 justify-end">
                     <span
                       className={classNames(
                         'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                        statusBadge(workspace?.status)
+                        statusBadge(workspace?.status?.name)
                       )}
                     >
-                      {workspace?.status}
+                      {workspace?.status?.name}
                     </span>
                   </div>
                   <div className="pl-2 flex items-center justify-end ml-auto">

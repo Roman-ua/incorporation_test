@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SectionHeading from './components/SectionHeading';
 import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
 import { USStates } from '../../constants/form/form';
 import { companyTypes } from '../createCompany/CreateCompany';
 import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler';
-import { copyToClipboard } from '../../utils/helpers';
+import { copyToClipboard, formatDateToLongForm } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 import { IoMdCheckmark } from 'react-icons/io';
@@ -12,20 +12,17 @@ import { IoMdCheckmark } from 'react-icons/io';
 import AnnualReportsListFL from './components/AnnualReportsListFL';
 import RelatedPeopleList from './components/RelatedPeopleList';
 import AddEinModal from '../EIN/components/modals/AddEinModal';
-import {
-  MockCompany,
-  MockData,
-  UpdatedCompanyState,
-} from '../../interfaces/interfaces';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import EinState from '../../state/atoms/EIN';
+import { UpdatedCompanyState } from '../../interfaces/interfaces';
+import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { AddPersonModal } from './modals/AddPersonToCompanyModal';
 import AddReportProcess from '../report/components/AddReportProcess';
-import CompanyState from '../../state/atoms/Company';
+
 import PeopleState from '../../state/atoms/People';
 import InvoicesList from './components/Invoices';
 import LinkToXeroModal from './components/LinkToXeroModal';
 import InvoicesState from '../../state/atoms/Invoices';
+import WorkspacesState from '../../state/atoms/Workspaces';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -47,54 +44,45 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const CompanyPage = () => {
-  const setEinState = useSetRecoilState(EinState);
-  const companyData = useRecoilValue(CompanyState);
+  // const setEinState = useSetRecoilState(EinState);
+  const workspacesState = useRecoilValue(WorkspacesState);
   const [peopleState, setPeopleState] = useRecoilState(PeopleState);
   const [invoicesList, setInvoicesList] = useRecoilState(InvoicesState);
-
+  console.log(workspacesState, 'workspacesState');
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
   const [openLinkToXero, setOpenLinkToXero] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [addReportModal, setOpenAddReportModal] = useState(false);
-  const [data, setData] = React.useState<MockCompany>(companyData);
 
   const navigate = useNavigate();
 
   const saveHandler = (updatedState: UpdatedCompanyState) => {
-    setData((prevData) => {
-      const newData = { ...prevData };
-
-      Object.keys(updatedState).forEach((key) => {
-        const typedKey = key as keyof MockData;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        newData[typedKey] = updatedState[typedKey];
-      });
-
-      return newData;
-    });
-
-    setEinState((prev) => ({
-      ...prev,
-      taxId: updatedState.taxId || '',
-    }));
+    console.log(updatedState, 'updatedState');
+    // setData((prevData) => {
+    //   const newData = { ...prevData };
+    //   Object.keys(updatedState).forEach((key) => {
+    //     const typedKey = key as keyof MockData;
+    //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //     // @ts-expect-error
+    //     newData[typedKey] = updatedState[typedKey];
+    //   });
+    //   return newData;
+    // });
+    // setEinState((prev) => ({
+    //   ...prev,
+    //   taxId: updatedState.taxId || '',
+    // }));
   };
 
-  useEffect(() => {
-    if (!companyData.companyName) {
-      navigate(ROUTES.WORKSPACES);
-    }
-  }, [companyData]);
-
-  return data ? (
+  return workspacesState.current?.name ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">
       {open && (
         <AddEinModal
           isOpen={open}
           isOnlyNumber={true}
           setOpen={setOpen}
-          companyName={data.companyName || ''}
+          companyName={workspacesState.current?.name || ''}
           saveHandler={saveHandler}
         />
       )}
@@ -118,7 +106,7 @@ const CompanyPage = () => {
         />
       )}
       <AddPersonModal
-        companyType={data.companyType}
+        companyType={workspacesState.current?.type_name}
         isOpen={openAddPersonModal}
         onClose={() => setOpenAddPersonModal(false)}
         onAdd={(person) =>
@@ -133,10 +121,10 @@ const CompanyPage = () => {
 
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span className="text-2xl font-bold text-gray-700">
-          {data.companyName}
+          {workspacesState.current?.name}
         </span>
         <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-          c_1v2FG
+          c_{workspacesState.current?.id}
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
@@ -146,17 +134,17 @@ const CompanyPage = () => {
           <span
             className={classNames(
               'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-              statusBadge(data?.status)
+              statusBadge(workspacesState.current?.status?.name)
             )}
           >
-            {data?.status}
+            {workspacesState.current?.status?.name}
           </span>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">EIN (Tax ID)</dt>
           <dd
             onClick={(event) => {
-              if (!data?.taxId) {
+              if (!workspacesState.current?.taxId) {
                 setOpen(true);
               } else {
                 event.preventDefault();
@@ -165,33 +153,37 @@ const CompanyPage = () => {
             }}
             className={classNames(
               'text-nowrap text-base  tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer',
-              data?.taxId ? 'font-semibold' : 'hover:text-mainBlue'
+              workspacesState.current?.taxId
+                ? 'font-semibold'
+                : 'hover:text-mainBlue'
             )}
           >
-            {data?.taxId || 'Add EIN (Tax ID)'}
-            {data?.taxId && (
+            {workspacesState.current?.taxId || 'Add EIN (Tax ID)'}
+            {workspacesState.current?.taxId && (
               <>
                 <IoMdCheckmark
                   className={classNames(
                     'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
-                    copied === data?.taxId ? 'opacity-100' : 'opacity-0'
+                    copied === workspacesState.current?.taxId
+                      ? 'opacity-100'
+                      : 'opacity-0'
                   )}
                 />
                 <MdOutlineCopyAll
                   onClick={(event) => {
                     event.stopPropagation();
-                    setCopied(data?.taxId);
+                    setCopied(workspacesState.current?.taxId);
 
                     const timer = setTimeout(() => {
                       clearTimeout(timer);
                       setCopied('');
                     }, 700);
 
-                    copyToClipboard(data?.taxId);
+                    copyToClipboard(workspacesState.current?.taxId);
                   }}
                   className={classNames(
                     'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
-                    copied !== data?.taxId
+                    copied !== workspacesState.current?.taxId
                       ? 'opacity-0 group-hover:opacity-100'
                       : 'opacity-0'
                   )}
@@ -204,12 +196,12 @@ const CompanyPage = () => {
         <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">Registration #</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700 relative group pr-6 hover:cursor-pointer">
-            {data?.registrationNumber}
+            {workspacesState.current?.registration_number}
 
             <IoMdCheckmark
               className={classNames(
                 'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
-                copied === data?.registrationNumber
+                copied === workspacesState.current?.registration_number
                   ? 'opacity-100'
                   : 'opacity-0'
               )}
@@ -217,18 +209,18 @@ const CompanyPage = () => {
             <MdOutlineCopyAll
               onClick={(event) => {
                 event.stopPropagation();
-                setCopied(data?.registrationNumber);
+                setCopied(workspacesState.current?.registration_number);
 
                 const timer = setTimeout(() => {
                   clearTimeout(timer);
                   setCopied('');
                 }, 700);
 
-                copyToClipboard(data?.registrationNumber);
+                copyToClipboard(workspacesState.current?.registration_number);
               }}
               className={classNames(
                 'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
-                copied !== data?.registrationNumber
+                copied !== workspacesState.current?.registration_number
                   ? 'opacity-0 group-hover:opacity-100'
                   : 'opacity-0'
               )}
@@ -240,8 +232,9 @@ const CompanyPage = () => {
           <dt className="text-nowrap text-sm text-gray-500">Type</dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
             {
-              companyTypes.find((item) => item.fullName === data?.companyType)
-                ?.fullName
+              companyTypes.find(
+                (item) => item.shortName === workspacesState.current?.type?.name
+              )?.fullName
             }
           </dd>
         </div>
@@ -250,10 +243,10 @@ const CompanyPage = () => {
           <dd className="text-nowrap text-base flex items-center font-semibold tracking-tight text-gray-700">
             <StateSolidIconHandler
               simpleIcon={true}
-              selectedState={data?.registeredIn.split(' ')[2] || 'Florida'}
-              state={data?.registeredIn.split(' ')[2] || 'Florida'}
+              selectedState={workspacesState.current?.state_name || 'Florida'}
+              state={workspacesState.current?.state_name || 'Florida'}
             />
-            {data?.registeredIn.split(' ')[2] || 'Florida'}
+            {workspacesState.current?.state_name || 'Florida'}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-6">
@@ -261,68 +254,78 @@ const CompanyPage = () => {
             Registration Date
           </dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
-            {data?.registrationDate}
+            {formatDateToLongForm(workspacesState.current?.registration_date)}
           </dd>
         </div>
-        <div className="flex flex-col gap-y-1 ml-auto">
-          <dt className="text-nowrap text-sm text-gray-500">People</dt>
-          <div className="isolate flex -space-x-2 overflow-hidden">
-            <div className="flex text-xs items-center justify-center font-bold relative z-40 inline-block size-6 rounded-full ring-2 ring-white bg-gray-400 text-white">
-              U
+        {peopleState.length ? (
+          <div className="flex flex-col gap-y-1 ml-auto">
+            <dt className="text-nowrap text-sm text-gray-500">People</dt>
+            <div className="isolate flex -space-x-2 overflow-hidden">
+              <div className="flex text-xs items-center justify-center font-bold relative z-40 inline-block size-6 rounded-full ring-2 ring-white bg-gray-400 text-white">
+                U
+              </div>
+              <img
+                alt=""
+                src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                className="relative z-30 inline-block size-6 rounded-full ring-2 ring-white"
+              />
+              <img
+                alt=""
+                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                className="relative z-20 inline-block size-6 rounded-full ring-2 ring-white"
+              />
+              <div className="flex text-xs items-center justify-center font-bold relative z-10 inline-block size-6 rounded-full ring-2 ring-white bg-gray-400 text-white">
+                K
+              </div>
+              <img
+                alt=""
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                className="relative z-0 inline-block size-6 rounded-full ring-2 ring-white"
+              />
             </div>
-            <img
-              alt=""
-              src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              className="relative z-30 inline-block size-6 rounded-full ring-2 ring-white"
-            />
-            <img
-              alt=""
-              src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              className="relative z-20 inline-block size-6 rounded-full ring-2 ring-white"
-            />
-            <div className="flex text-xs items-center justify-center font-bold relative z-10 inline-block size-6 rounded-full ring-2 ring-white bg-gray-400 text-white">
-              K
-            </div>
-            <img
-              alt=""
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              className="relative z-0 inline-block size-6 rounded-full ring-2 ring-white"
-            />
           </div>
-        </div>
+        ) : (
+          <div></div>
+        )}
       </dl>
       <SectionHeading title="Address" />
       <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
         <>
           <div className="text-sm text-gray-500 mb-1">Main</div>
           <div>
-            <span>{data.address.address0}, </span>
-            {data.address.address1 && <span>{data.address.address1}</span>}
+            <span>{workspacesState.current?.line1}, </span>
+            {workspacesState.current?.line1 && (
+              <span>{workspacesState.current?.line1}</span>
+            )}
           </div>
           <div>
-            {data.address.address2 && <span>{data.address.address2}</span>}
-            {data.address.address3 && (
+            {workspacesState.current?.line2 && (
+              <span>{workspacesState.current?.line2}</span>
+            )}
+            {workspacesState.current?.line3 && (
               <span>
-                {data.address.address2 ? ',' : ''} {data.address.address3}
+                {workspacesState.current?.line2 ? ',' : ''}{' '}
+                {workspacesState.current?.line3}
               </span>
             )}
           </div>
           <div>
-            <span>{data.address.city}, </span>
+            <span>{workspacesState.current?.city}, </span>
             <span>
-              {USStates.find((item) => item.title === data.address.state)
-                ?.value || ''}{' '}
+              {USStates.find(
+                (item) => item.title === workspacesState.current?.state.name
+              )?.value || ''}{' '}
             </span>
-            <span>{data.address.zip}</span>
+            <span>{workspacesState.current?.zip}</span>
           </div>
-          <div>{data.address.country}</div>
+          <div>{workspacesState.current?.country.full_name}</div>
         </>
       </div>
       <RelatedPeopleList
         peopleState={peopleState}
         addPersonHandler={() => setOpenAddPersonModal(true)}
       />
-      {data?.registeredIn.split(' ')[2] === 'Florida' && (
+      {workspacesState.current?.state?.name === 'Florida' && (
         <AnnualReportsListFL
           addReportModal={() => navigate(ROUTES.ANN_REPORT_ADD)}
         />
