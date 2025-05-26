@@ -5,11 +5,11 @@ import { classNames } from '../../../utils/helpers';
 
 const WorkspacesListHeaderCompanies = () => {
   return (
-    <div className="p-1">
-      <div className="relative w-full">
+    <div className="p-1 w-full">
+      <div className="relative">
         <button
           className={classNames(
-            'w-full flex items-center gap-2 p-2 rounded-md transition-colors hover:cursor-default'
+            'flex items-center gap-2 p-2 rounded-md transition-colors hover:cursor-default'
           )}
         >
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">

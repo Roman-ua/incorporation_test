@@ -12,7 +12,13 @@ const UseUserData = () => {
   };
 
   const logout = async () => {
-    window.location.replace(`${process.env.REACT_APP_MAIN_URL}/user/auth0/logout/`);
+    const respose = await axiosInstance.post(
+      `${process.env.REACT_APP_MAIN_URL}/user/auth0/logout/`
+    );
+
+    if (respose?.data?.auth0_logout_url) {
+      window.location.replace(`${respose?.data?.auth0_logout_url}`);
+    }
   };
   return { getUserData, logout };
 };

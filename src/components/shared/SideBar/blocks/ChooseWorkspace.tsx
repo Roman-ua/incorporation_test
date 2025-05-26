@@ -22,12 +22,11 @@ const ChooseWorkspace = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWorkspace, setSelectedWorkspace] =
     useState<ICompanyData | null>(null);
-  const [isHoveredDropdown, setIsHoveredDropdown] = useState(false); // ← новое
+  const [isHoveredDropdown, setIsHoveredDropdown] = useState(false);
 
   const [isOpen, setIsOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

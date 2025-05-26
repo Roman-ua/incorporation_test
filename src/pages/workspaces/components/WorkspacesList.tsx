@@ -89,10 +89,10 @@ export function WorkspacesList() {
               <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
                 Type
               </div>
-              <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
+              <div className="w-[20%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
                 State
               </div>
-              <div className="w-[25%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500 justify-end">
+              <div className="w-[25%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
                 Status
               </div>
               <div className="pl-2 flex items-center justify-end ml-auto"></div>
@@ -122,7 +122,7 @@ export function WorkspacesList() {
                   <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
                     {workspace?.type?.name}
                   </div>
-                  <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
+                  <div className="w-[20%] px-2 flex items-center justify-start text-gray-900">
                     <StateSolidIconHandler
                       simpleIcon={true}
                       selectedState={workspace?.state?.name || 'Florida'}
@@ -130,7 +130,7 @@ export function WorkspacesList() {
                     />
                     {workspace?.state?.name}
                   </div>
-                  <div className="w-[25%] px-2 flex items-center justify-start text-gray-900 justify-end">
+                  <div className="w-[25%] px-2 flex items-center justify-start text-gray-900">
                     <span
                       className={classNames(
                         'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',

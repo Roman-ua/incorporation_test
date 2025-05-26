@@ -13,7 +13,7 @@ interface PreloaderProps {
 export const Preloader: React.FC<PreloaderProps> = ({
   isLoading,
   onLoadingComplete,
-  duration = 1500,
+  duration = 800,
   text = 'Loading workspace',
   logo,
 }) => {
