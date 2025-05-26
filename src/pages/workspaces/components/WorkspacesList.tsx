@@ -86,13 +86,13 @@ export function WorkspacesList() {
                 <span>Company Name</span>
               </div>
 
-              <div className="w-[25%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
+              <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
                 Type
               </div>
               <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500">
                 State
               </div>
-              <div className="w-[15%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500 justify-end">
+              <div className="w-[25%] px-2 flex items-center justify-start font-semibold text-xs text-gray-500 justify-end">
                 Status
               </div>
               <div className="pl-2 flex items-center justify-end ml-auto"></div>
@@ -119,7 +119,7 @@ export function WorkspacesList() {
                     <span>{workspace.name}</span>
                   </div>
 
-                  <div className="w-[25%] px-2 flex items-center justify-start text-gray-900">
+                  <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
                     {workspace?.type?.name}
                   </div>
                   <div className="w-[15%] px-2 flex items-center justify-start text-gray-900">
@@ -130,7 +130,7 @@ export function WorkspacesList() {
                     />
                     {workspace?.state?.name}
                   </div>
-                  <div className="w-[15%] px-2 flex items-center justify-start text-gray-900 justify-end">
+                  <div className="w-[25%] px-2 flex items-center justify-start text-gray-900 justify-end">
                     <span
                       className={classNames(
                         'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',

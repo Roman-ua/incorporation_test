@@ -7,6 +7,8 @@ import {
   ICompanyData,
   ICompanyDataForSave,
 } from '../../../state/types/company';
+import { toast } from 'sonner';
+import axios, { AxiosError } from 'axios';
 
 const useCompany = () => {
   const navigate = useNavigate();
@@ -46,18 +48,39 @@ const useCompany = () => {
   };
 
   const createCompanyHandler = async (data: ICompanyDataForSave) => {
-    const response = await axiosInstance.post('/company/create/', data);
-    if (response.data?.name) {
-      localStorage.setItem('selected_company', `${response.data?.name}`);
-      setCompaniesList((prevState) => {
-        return {
-          ...prevState,
-          current: response.data,
-          list: [...prevState.list, response.data],
-        };
-      });
+    try {
+      const response = await axiosInstance.post('/company/create/', data);
+      if (response.data?.name) {
+        toast.success('Success', {
+          description: `Company ${response.data?.name} created successfully`,
+        });
 
-      navigate(ROUTES.HOME);
+        localStorage.setItem('selected_company', `${response.data?.name}`);
+        setCompaniesList((prevState) => {
+          return {
+            ...prevState,
+            current: response.data,
+            list: [...prevState.list, response.data],
+          };
+        });
+
+        localStorage.removeItem('finalFormData');
+        localStorage.removeItem('multistep-form-data');
+
+        navigate(ROUTES.HOME);
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
