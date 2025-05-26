@@ -5,8 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import StepsProgress from './components/StepsProgress';
 import CommonTextInput from './components/CommonTextInput';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { ROUTES } from '../../constants/navigation/routes';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
@@ -137,7 +136,7 @@ const queryKeyHandler = (location: Location, key: string, value?: string) => {
 };
 
 const CreateCompany = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { createCompanyHandler } = useCompany();
 
@@ -258,9 +257,9 @@ const CreateCompany = () => {
           </h1>
         </div>
         <div className="w-1/4 pr-2 flex items-end justify-end">
-          <Link to={ROUTES.HOME}>
+          <div onClick={() => navigate(-1)}>
             <XMarkIcon className="w-6 h-6" />
-          </Link>
+          </div>
         </div>
       </div>
       <div className="min-h-[calc(100vh-65px)] bg-mainBackground m-auto flex items-start justify-between w-full max-lg:flex-col px-6 pt-10 max-lg:pt-32 max-lg:pb-20">
