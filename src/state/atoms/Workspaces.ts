@@ -5,6 +5,7 @@ import { defaultCompanyItem } from '../../constants/company/company';
 const workspaces = [defaultCompanyItem];
 
 export interface IWorkspaces {
+  dataRequested: boolean;
   current: ICompanyData;
   list: typeof workspaces | [];
 }
@@ -12,6 +13,7 @@ export interface IWorkspaces {
 const WorkspacesState = atom<IWorkspaces>({
   key: 'WorkspacesState',
   default: {
+    dataRequested: false,
     current: defaultCompanyItem,
     list: [],
   },

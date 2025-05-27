@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PageLoader from './PageLoader';
 import UseUserData from '../../utils/hooks/UserData/UseUserData';
+import { useRecoilValue } from 'recoil';
+import UserProfileState from '../../state/atoms/UserProfile';
+import useCompany from '../../utils/hooks/Company/useCompany';
+import WorkspacesState from '../../state/atoms/Workspaces';
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -8,14 +12,17 @@ interface AuthWrapperProps {
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [authChecking, setAuthChecking] = useState(true);
-
+  const userData = useRecoilValue(UserProfileState);
+  const { dataRequested } = useRecoilValue(WorkspacesState);
   const { getUserData } = UseUserData();
+  const { getCompaniesList } = useCompany();
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
     if (!authChecking && token) {
       getUserData();
+      getCompaniesList();
     }
   }, [authChecking]);
 
@@ -71,7 +78,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
     }
   }, []);
 
-  if (authChecking) {
+  if (authChecking || !userData.data.id || !dataRequested) {
     // Render a loading indicator while the authentication status is being confirmed
     return <PageLoader />; // Replace with an actual loader/spinner if available
   }

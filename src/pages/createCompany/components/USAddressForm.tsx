@@ -64,6 +64,7 @@ const USAddressForm = ({
   copyClickHandler,
   showClear,
 }: IProps) => {
+  const [saved, setSaved] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [done, setDone] = React.useState(false);
   const [focusedInput, setFocusedInput] = useState(-1);
@@ -128,6 +129,7 @@ const USAddressForm = ({
     ) {
       setDone(true);
       setFromState({ country, ...address, city, zip, state });
+      setSaved(true);
     } else if (typeof setMandatoryError === 'function') {
       setMandatoryError();
     }
@@ -242,12 +244,13 @@ const USAddressForm = ({
                   value={address[`line${index + 1}`]}
                   data-1p-ignore={true}
                   disabled={disabledFlag}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setAddress({
                       ...address,
                       [`line${index + 1}`]: e.target.value,
-                    })
-                  }
+                    });
+                    setSaved(false);
+                  }}
                   placeholder={field.title}
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-2/4">
@@ -285,7 +288,10 @@ const USAddressForm = ({
               type="text"
               value={city}
               disabled={disabledFlag}
-              onChange={(e) => setCity(e.target.value)}
+              onChange={(e) => {
+                setCity(e.target.value);
+                setSaved(false);
+              }}
               data-1p-ignore={true}
               placeholder="City"
             />
@@ -295,7 +301,10 @@ const USAddressForm = ({
               list={USStates}
               withIcon={false}
               onToggle={() => openStateHandler(!isOpenStates)}
-              onChange={(val) => setState(val)}
+              onChange={(val) => {
+                setState(val);
+                setSaved(false);
+              }}
               selectedValue={
                 USStates.find(
                   (option) => option.title === state
@@ -315,7 +324,10 @@ const USAddressForm = ({
               type="text"
               value={zip}
               disabled={disabledFlag}
-              onChange={(e) => setZipHandler(e.target.value)}
+              onChange={(e) => {
+                setZipHandler(e.target.value);
+                setSaved(false);
+              }}
               data-1p-ignore={true}
               placeholder="Zip Code"
             />
@@ -326,7 +338,10 @@ const USAddressForm = ({
             list={COUNTRIES}
             withIcon={true}
             onToggle={() => openCountryHandler(!isOpen)}
-            onChange={(val) => setCountry(val)}
+            onChange={(val) => {
+              setCountry(val);
+              setSaved(false);
+            }}
             selectedValue={
               COUNTRIES.find(
                 (option) => option.title === country
@@ -391,7 +406,7 @@ const USAddressForm = ({
                     : 'text-gray-900 '
                 )}
               >
-                Save
+                {!saved ? 'Save' : 'Saved'}
               </button>
             )}
           </div>

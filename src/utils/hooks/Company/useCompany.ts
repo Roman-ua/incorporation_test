@@ -33,6 +33,7 @@ const useCompany = () => {
       const result = {
         ...prevData,
         list: response.data,
+        dataRequested: true,
       };
 
       if (selectedCompanyName) {

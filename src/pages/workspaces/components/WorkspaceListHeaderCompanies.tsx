@@ -5,7 +5,7 @@ import { classNames } from '../../../utils/helpers';
 
 const WorkspacesListHeaderCompanies = () => {
   return (
-    <div className="p-1 w-full">
+    <div className="p-2 w-full">
       <div className="relative">
         <button
           className={classNames(

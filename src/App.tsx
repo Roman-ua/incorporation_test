@@ -34,7 +34,7 @@ import ElementsButtons from './pages/elements/nested/ElementsButtons';
 import ElementsNotions from './pages/elements/nested/ElementsNotions';
 import ElementsAddress from './pages/elements/nested/ElementsAddress';
 import WorkspacesPage from './pages/workspaces/WorkspacesPage';
-import DataRequestWrapper from './components/root/DataRequestWrapper';
+import AuthWrapper from './components/root/AuthWrapper';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -78,9 +78,9 @@ function App() {
 
   return (
     <>
-      <Toaster richColors theme={theme.theme} />
+      <Toaster theme={theme.theme} />
       <Router>
-        <DataRequestWrapper>
+        <AuthWrapper>
           <Routes>
             <Route
               path={ROUTES.RECOVERY_PASS}
@@ -139,7 +139,7 @@ function App() {
               element={<Navigate to={ROUTES.HOME} />}
             />
           </Routes>
-        </DataRequestWrapper>
+        </AuthWrapper>
       </Router>
     </>
   );
