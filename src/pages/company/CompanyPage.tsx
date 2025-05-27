@@ -294,13 +294,13 @@ const CompanyPage = () => {
           <div className="text-sm text-gray-500 mb-1">Main</div>
           <div>
             <span>{workspacesState.current?.line1}, </span>
-            {workspacesState.current?.line1 && (
-              <span>{workspacesState.current?.line1}</span>
+            {workspacesState.current?.line2 && (
+              <span>{workspacesState.current?.line2}</span>
             )}
           </div>
           <div>
-            {workspacesState.current?.line2 && (
-              <span>{workspacesState.current?.line2}</span>
+            {workspacesState.current?.line3 && (
+              <span>{workspacesState.current?.line3}</span>
             )}
             {workspacesState.current?.line3 && (
               <span>

@@ -152,7 +152,7 @@ const ChooseWorkspace = () => {
                           setIsOpen(false);
                           localStorage.setItem(
                             'selected_company',
-                            `${workspace?.id}`
+                            `${workspace?.name}`
                           );
                         }}
                         className={classNames(
