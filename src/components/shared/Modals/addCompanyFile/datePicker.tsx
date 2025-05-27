@@ -95,8 +95,14 @@ interface IProps {
   value?: string;
   mandatoryError?: boolean;
   setValue: (value: string) => void;
+  extraStyles?: string;
 }
-const DatePicker = ({ value, setValue, mandatoryError }: IProps) => {
+const DatePicker = ({
+  value,
+  setValue,
+  mandatoryError,
+  extraStyles,
+}: IProps) => {
   const dateRef = React.useRef(null);
   const inputRef = React.useRef(null);
   const inputValueRef = React.useRef('');
@@ -128,7 +134,7 @@ const DatePicker = ({ value, setValue, mandatoryError }: IProps) => {
 
       if (isValid(parsedDate) && isKb) {
         setInputValue(format(parsedDate as Date, 'MMMM dd, yyyy'));
-        setValue(format(parsedDate as Date, 'MMMM dd, yyyy'));
+        setValue(format(parsedDate as Date, 'yyyy-MM-dd'));
       }
 
       if (isValid(parsedDate)) {
@@ -175,8 +181,9 @@ const DatePicker = ({ value, setValue, mandatoryError }: IProps) => {
       <input
         ref={inputRef}
         className={classNames(
-          'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer',
-          mandatoryError && !inputValue ? 'bg-red-50' : 'bg-white'
+          'block rounded-md border w-full border-gray-200 p-2 mb-2 text-gray-900 disabled:text-opacity-50 hover:cursor-pointer',
+          mandatoryError && !inputValue ? 'bg-red-50' : 'bg-white',
+          extraStyles || 'placeholder:text-gray-500 text-md'
         )}
         value={inputValue}
         onChange={(e) => validateDateInput(e.target.value, false)}
@@ -199,8 +206,10 @@ const DatePicker = ({ value, setValue, mandatoryError }: IProps) => {
                 setValue('');
                 setCalendarValue(null);
               } else {
-                const formattedDate = format(date, 'MMMM dd, yyyy');
-                setInputValue(formattedDate);
+                const formattedDate = format(date, 'yyyy-MM-dd');
+                const formattedInputDate = format(date, 'MMMM dd, yyyy');
+
+                setInputValue(formattedInputDate);
                 setValue(formattedDate);
                 setCalendarValue(date);
               }

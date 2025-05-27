@@ -6,7 +6,6 @@ import StepsProgress from './components/StepsProgress';
 import CommonTextInput from './components/CommonTextInput';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useLocation, useNavigate } from 'react-router-dom';
-import CustomCalendar from './components/CustomCalendar';
 import StateCards from './components/StateCards';
 import JoinedCard from './components/JoinedCard';
 import Separator from './components/Separator';
@@ -17,6 +16,8 @@ import USAddressForm from './components/USAddressForm';
 import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithArrow';
 import useCompany from '../../utils/hooks/Company/useCompany';
 import { ICompanyDataForSave } from '../../state/types/company';
+import DatePicker from '../../components/shared/Modals/addCompanyFile/datePicker';
+import SectionHeading from './components/SectionHeading';
 
 export const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
@@ -359,11 +360,16 @@ const CreateCompany = () => {
                   render={({ field }) => {
                     return (
                       <>
-                        <CustomCalendar
-                          field={field}
-                          requiredError={Object.keys(
-                            stepTwoForm.formState.errors
-                          ).includes('registration_date')}
+                        <SectionHeading
+                          text={'Registration Date'}
+                          status={true}
+                          hideStatus={true}
+                        />
+                        <DatePicker
+                          extraStyles="placeholder:text-gray-300 font-bold"
+                          mandatoryError={false}
+                          value={field.value}
+                          setValue={field.onChange}
                         />
                         <Separator />
                       </>
