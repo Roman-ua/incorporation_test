@@ -12,8 +12,10 @@ const UseUserData = () => {
   };
 
   const logout = async () => {
+    const refresh_token = localStorage.getItem('refreshToken');
     const respose = await axiosInstance.post(
-      `${process.env.REACT_APP_MAIN_URL}/user/auth0/logout/`
+      `${process.env.REACT_APP_MAIN_URL}/user/auth0/logout/`,
+      { refresh_token }
     );
 
     if (respose?.data?.auth0_logout_url) {
