@@ -1,16 +1,12 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import CountrySelector from '../CountrySelect/selector';
-import {
-  // inputError,
-  // inputSimpleFocus,
-  USStates,
-} from '../../../constants/form/form';
-import { SelectMenuOption } from '../CountrySelect/types';
-import { COUNTRIES } from '../CountrySelect/countries';
 import React, { useState } from 'react';
 import { classNames } from '../../../utils/helpers';
 import { AddressFields } from '../../../interfaces/interfaces';
 import { VALIDATORS } from '../../../constants/regexs';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
+import { CountryOrState } from '../../../state/types/globalDataTypes';
 
 interface IProps {
   disabledFlag: boolean;
@@ -42,6 +38,7 @@ const SimpleAddressForm = ({
   const [addressFields, setAddressFields] =
     useState<{ title: string; type: string }[]>(addressFieldsMock);
 
+  const countriesData = useRecoilValue(GlobalDataState);
   const openCountryHandler = (value: boolean) => {
     if (isOpenStates) {
       setIsOpenStates(false);
@@ -84,7 +81,7 @@ const SimpleAddressForm = ({
       )}
     >
       {addressFields.map((field, index) => {
-        const addressKey = `address${index}` as keyof AddressFields;
+        const addressKey = `line${index + 1}` as keyof AddressFields;
 
         return (
           <div
@@ -100,17 +97,11 @@ const SimpleAddressForm = ({
                   ? 'bg-red-50'
                   : 'bg-transparent'
               )}
-              // className={classNames(
-              //   'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
-              //   requiredError && index === 0 && !data[addressKey]
-              //     ? inputError
-              //     : inputSimpleFocus
-              // )}
               type={field.type}
               value={data[addressKey]}
               data-1p-ignore={true}
               disabled={disabledFlag}
-              onChange={(e) => setData(`address${index}`, e.target.value)}
+              onChange={(e) => setData(addressKey, e.target.value)}
               placeholder={field.title}
             />
             <div className="absolute right-2 top-1/2 -translate-y-2/4">
@@ -150,14 +141,14 @@ const SimpleAddressForm = ({
         <CountrySelector
           id={'states'}
           open={isOpenStates}
-          list={USStates}
+          list={countriesData.states}
           withIcon={false}
           onToggle={() => openStateHandler(!isOpenStates)}
           onChange={(val) => setData('state', val)}
           selectedValue={
-            USStates.find(
-              (option) => option.title === data?.state
-            ) as SelectMenuOption
+            countriesData.states.find(
+              (option) => option.name === data?.state
+            ) as CountryOrState
           }
           disableDropDown={disabledFlag || stateDisabled}
           inputExtraStyles={`${requiredError && !data.state ? 'bg-red-50' : 'bg-white'} min-w-[110px] max-w-[110px]`}
@@ -180,14 +171,15 @@ const SimpleAddressForm = ({
       <CountrySelector
         id={'countries'}
         open={isOpen}
-        list={COUNTRIES}
+        list={countriesData.countryies}
         withIcon={true}
+        isCountry={true}
         onToggle={() => openCountryHandler(!isOpen)}
         onChange={(val) => setData('country', val)}
         selectedValue={
-          COUNTRIES.find(
-            (option) => option.title === 'United States'
-          ) as SelectMenuOption
+          countriesData.countryies.find(
+            (option) => option.full_name === 'United States'
+          ) as CountryOrState
         }
         disableDropDown={countryDisabled}
         inputExtraStyles={`${countryDisabled && 'opacity-40'} w-full `}

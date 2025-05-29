@@ -1,9 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
-import { SelectMenuOption } from './types';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { CountryOrState } from '../../../state/types/globalDataTypes';
 
 export interface CountrySelectorProps {
   id: string;
@@ -11,9 +9,9 @@ export interface CountrySelectorProps {
   disabled?: boolean;
   onToggle: () => void;
   withIcon: boolean;
-  list: { title: string; value: string }[];
-  onChange: (value: SelectMenuOption['value']) => void;
-  selectedValue: SelectMenuOption;
+  list: CountryOrState[];
+  onChange: (value: string) => void;
+  selectedValue: CountryOrState;
   inputExtraStyles?: string;
   wrapperExtraStyles?: string;
   disableDropDown?: boolean;
@@ -23,6 +21,21 @@ export interface CountrySelectorProps {
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
+
+const getDisplayValue = (item: CountryOrState) => {
+  if (!item) return;
+  return 'full_name' in item ? item.full_name : item.name;
+};
+
+const getShortValue = (item: CountryOrState) => {
+  if (!item) return;
+  return 'short_name' in item ? item.short_name : item.abbreviation;
+};
+
+const getFlagCode = (item: CountryOrState) => {
+  if (!item) return;
+  return 'short_name' in item ? item.short_name : item.abbreviation;
+};
 
 export default function CountrySelector({
   id,
@@ -113,12 +126,14 @@ export default function CountrySelector({
             <span className="truncate flex items-center">
               {withIcon && (
                 <img
-                  alt={`${selectedValue.value}`}
-                  src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${selectedValue.value}.svg`}
+                  alt={`${getFlagCode(selectedValue)}`}
+                  src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${getFlagCode(selectedValue)}.svg`}
                   className={'inline mr-2 h-4 rounded-sm'}
                 />
               )}
-              {id === 'states' ? selectedValue.value : selectedValue.title}
+              {isCountry
+                ? getDisplayValue(selectedValue)
+                : getShortValue(selectedValue)}
             </span>
           ) : (
             <span className="truncate flex items-center text-gray-500">
@@ -173,12 +188,12 @@ export default function CountrySelector({
               >
                 {list.filter((country) => {
                   if (isCountry) {
-                    return country.title
-                      .toLowerCase()
+                    return getDisplayValue(country)
+                      ?.toLowerCase()
                       .includes(query.toLowerCase());
                   } else {
-                    return country.value
-                      .toLowerCase()
+                    return getShortValue(country)
+                      ?.toLowerCase()
                       .includes(query.toLowerCase());
                   }
                 }).length === 0 ? (
@@ -189,12 +204,12 @@ export default function CountrySelector({
                   list
                     .filter((country) => {
                       if (isCountry) {
-                        return country.title
-                          .toLowerCase()
+                        return getDisplayValue(country)
+                          ?.toLowerCase()
                           .includes(query.toLowerCase());
                       } else {
-                        return country.value
-                          .toLowerCase()
+                        return getShortValue(country)
+                          ?.toLowerCase()
                           .includes(query.toLowerCase());
                       }
                     })
@@ -208,22 +223,25 @@ export default function CountrySelector({
                           id="listbox-option-0"
                           role="option"
                           onClick={() => {
-                            onChange(value.title);
+                            onChange(getDisplayValue(value) || '');
                             setQuery('');
                             onToggle();
                           }}
                         >
                           {withIcon && (
                             <img
-                              alt={`${value.value}`}
-                              src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${value.value}.svg`}
+                              alt={`${getDisplayValue(value)}`}
+                              src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${getFlagCode(value)}.svg`}
                               className={'inline mr-2 h-4 rounded-sm'}
                             />
                           )}
                           <span className="text-md font-normal truncate">
-                            {id === 'states' ? value.value : value.title}
+                            {isCountry
+                              ? getDisplayValue(value)
+                              : getShortValue(value)}
                           </span>
-                          {value.value === selectedValue?.value ? (
+                          {getDisplayValue(value) ===
+                          getDisplayValue(selectedValue) ? (
                             <span className="text-blue-600 absolute inset-y-0 right-0 flex items-center pr-2">
                               <svg
                                 className="h-5 w-5"

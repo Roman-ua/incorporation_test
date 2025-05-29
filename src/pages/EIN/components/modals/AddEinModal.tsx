@@ -3,38 +3,41 @@ import DropFileArea from '../../../../components/shared/Modals/addCompanyFile/Dr
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import DatePicker from '../../../../components/shared/Modals/addCompanyFile/datePicker';
 import FileDownloadProgress from '../../../createCompany/components/UploadedFile';
-import {
-  AddressFields,
-  IFiles,
-  UpdatedState,
-} from '../../../../interfaces/interfaces';
+import { AddressFields } from '../../../../interfaces/interfaces';
 import SimpleAddressForm from '../../../../components/shared/SimpleAddressForm/SimpleAddressForm';
-import { truncateString } from '../../../../utils/helpers';
+import {
+  bytesToMB,
+  getFileExtension,
+  truncateString,
+} from '../../../../utils/helpers';
 import XBtn from '../../../../components/shared/buttons/XBtn';
 import ModalWrapperLayout from '../../../../components/shared/Modals/ModalWrapperLayout';
 import { inputError } from '../../../../constants/form/form';
 import { inputSimpleFocus } from '../../../../constants/form/form';
+import { EinDocumentCreate } from '../../../../state/types/einTypes';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../../state/atoms/GlobalData';
 
 interface IProps {
   isOpen: boolean;
   setOpen: (value: boolean) => void;
   isOnlyNumber: boolean;
   companyName?: string;
-  saveHandler: (data: UpdatedState) => void;
+  saveHandler: (data: EinDocumentCreate) => void;
   ein?: string;
-  docType?: string[];
+  docType?: string;
   lastVerifDate?: string;
 }
 
 const labels = [
-  'CP575A',
-  'Screenshot',
-  'CP575G',
-  '147C',
-  'Faxed SS-4',
-  'W-9',
-  'CP577',
-  'CP577E',
+  { type: 'type1', label: 'CP575A' },
+  { type: 'type2', label: 'Screenshot' },
+  { type: 'type3', label: 'CP575G' },
+  { type: 'type4', label: '147C' },
+  { type: 'type5', label: 'Faxed SS-4' },
+  { type: 'type6', label: 'W-9' },
+  { type: 'type7', label: 'CP577' },
+  { type: 'type8', label: 'CP577E' },
 ];
 
 function classNames(...classes: (string | boolean)[]) {
@@ -52,12 +55,12 @@ const AddEinModal = ({
   ein,
 }: IProps) => {
   const [einNumber, setEinNumber] = React.useState<string>(ein || '');
-  const [file, setFile] = React.useState<IFiles | null>(null);
+  const [file, setFile] = React.useState<File | null>(null);
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>(
     companyName || ''
   );
   const [isNumberOnly, setIsNumberOnly] = React.useState(isOnlyNumber);
-  const [selectedDocType, setSelectedDocType] = React.useState('');
+  const [selectedDocType, setSelectedDocType] = React.useState(docType || '');
   const [mandatoryError, setMandatoryError] = React.useState(false);
   const [dateValue, setDateValue] = React.useState<string>(lastVerifDate || '');
   const [address, setAddress] = React.useState<AddressFields>({
@@ -70,6 +73,9 @@ const AddEinModal = ({
     zip: '',
     state: '',
   });
+  console.log(address, 'address');
+
+  const { states, countryies } = useRecoilValue(GlobalDataState);
   const setSelectedDocTypeHandler = (label: string) => {
     if (selectedDocType === label) {
       setSelectedDocType('');
@@ -134,6 +140,7 @@ const AddEinModal = ({
     cancelState();
     setFile(null);
   };
+  console.log(selectedDocType, 'selectedDocType');
 
   const inputCommonClasses =
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
@@ -162,7 +169,7 @@ const AddEinModal = ({
               EIN (Tax ID) Number
             </label>
             <input
-              disabled={!isNumberOnly && !!einNumber}
+              disabled={!isNumberOnly && !!ein}
               onChange={(e) => handleInputChange(e)}
               className={classNames(
                 'w-full px-3 py-2 border rounded-md focus:outline-none',
@@ -195,8 +202,8 @@ const AddEinModal = ({
                 <FileDownloadProgress
                   deleteFileHandler={deleteFileHandler}
                   fileName={truncateString(selectedFile.name, 15)}
-                  fileSize={`${selectedFile?.size} MB`}
-                  fileFormat={selectedFile.format}
+                  fileSize={`${bytesToMB(selectedFile?.size)} MB`}
+                  fileFormat={getFileExtension(selectedFile)}
                   duration={3}
                 />
               </div>
@@ -246,19 +253,19 @@ const AddEinModal = ({
                 Document Type
               </div>
               <div className="flex items-center justify-start flex-wrap">
-                {labels.map((label) => (
+                {labels.map((type) => (
                   <div
-                    onClick={() => setSelectedDocTypeHandler(label)}
+                    onClick={() => setSelectedDocTypeHandler(type.label)}
                     className={classNames(
                       'text-sm font-bold text-gray-700 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
-                      selectedDocType === label
+                      selectedDocType === type.label
                         ? 'bg-sideBarBlue text-white border-sideBarBlue'
                         : 'border-gray-300 hover:border-sideBarBlue hover:text-sideBarBlue',
                       mandatoryError && !selectedDocType && 'bg-red-50'
                     )}
-                    key={label}
+                    key={type.type}
                   >
-                    {label}
+                    {type.label}
                   </div>
                 ))}
               </div>
@@ -296,19 +303,26 @@ const AddEinModal = ({
             <div
               onClick={() => {
                 if (validationHandler(isNumberOnly)) {
+                  const stateId = states.find(
+                    (state) => state.name === address.state
+                  )?.id;
+                  const countryId = countryies.find(
+                    (country) => country.full_name === address.country
+                  )?.id;
                   saveHandler({
-                    taxId: einNumber,
-                    companyName: companyNameOnDock,
-                    documentType: docType
-                      ? [...(docType as string[]), selectedDocType]
-                      : [selectedDocType],
-                    lastVerifDate: dateValue,
-                    relatedDocument: {
-                      ...selectedFile,
-                      dueDate: dateValue,
-                      dockType: selectedDocType,
-                    },
-                    relatedAddress: address,
+                    ein_number: einNumber,
+                    company_name: companyNameOnDock,
+                    document_type: selectedDocType,
+                    document_date: dateValue,
+                    document: file,
+                    line1: address.line1 || '',
+                    line2: address?.line2,
+                    line3: address?.line3,
+                    line4: address?.line4,
+                    city: address?.city || '',
+                    state: stateId || 1,
+                    zip: address?.zip || '',
+                    country: countryId || 1,
                   });
                   cleanUpHandler();
                   setOpen(false);

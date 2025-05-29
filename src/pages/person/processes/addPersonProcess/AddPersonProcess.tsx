@@ -10,17 +10,14 @@ import SimpleAddressForm from '../../../../components/shared/SimpleAddressForm/S
 import SimpleAddressFormNotUS from '../../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import SwitchButton from '../../../../components/shared/SwitchButton/SwitchButton';
 
-import {
-  inputError,
-  inputSimpleFocus,
-  USStates,
-} from '../../../../constants/form/form';
+import { inputError, inputSimpleFocus } from '../../../../constants/form/form';
 import USAddressForm from '../../../createCompany/components/USAddressForm';
 import { BiEditAlt } from 'react-icons/bi';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import PeopleState from '../../../../state/atoms/People';
 import { validateEmail } from '../../../../utils/validators';
 import PersonAvatar from '../../components/personAvatar';
+import GlobalDataState from '../../../../state/atoms/GlobalData';
 
 const defaultUS = {
   country: 'United States',
@@ -45,6 +42,8 @@ const defaultOther = {
 };
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <>
       <div
@@ -74,7 +73,8 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
       >
         <span>{address.city}, </span>
         <span>
-          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+          {globalData.states.find((item) => item.name === address.state)
+            ?.abbreviation || ''}{' '}
         </span>
         <span>{address.zip}</span>
       </div>

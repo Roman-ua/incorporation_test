@@ -5,18 +5,19 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 
 import { IoMdCheckmark } from 'react-icons/io';
-import { copyToClipboard } from '../../utils/helpers';
+import { copyToClipboard, formatDateToLongForm } from '../../utils/helpers';
 import AddEinModal from './components/modals/AddEinModal';
-import { MockData, UpdatedState } from '../../interfaces/interfaces';
-import { USStates } from '../../constants/form/form';
 import ActionUploadBlock from './components/ActionUploadBlock';
-import EinFilesSection from './components/FilesSection';
 import DeleteEinFileModal from './components/modals/DeleteEinFile';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import EinState from '../../state/atoms/EIN';
-import UpdateEinNumberModal from './components/ChangeEinNumberModal';
 import { IconSettings } from '@tabler/icons-react';
+import useEin from '../../utils/hooks/EIN/useEin';
+import { EinDocumentCreate } from '../../state/types/einTypes';
+import GlobalDataState from '../../state/atoms/GlobalData';
+import UpdateEinNumberModal from './components/ChangeEinNumberModal';
 import ChangeEINStatus from './components/modals/ChangeEINStatus';
+import EinFilesSection from './components/FilesSection';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -46,27 +47,13 @@ const Ein = () => {
 
   const [data, setData] = useRecoilState(EinState);
 
+  const globalData = useRecoilValue(GlobalDataState);
+
   const navigate = useNavigate();
+  const { createEin } = useEin();
 
-  const saveHandler = (updatedState: UpdatedState) => {
-    setData((prevData) => {
-      const newData = { ...prevData };
-
-      Object.keys(updatedState).forEach((key) => {
-        const typedKey = key as keyof MockData;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        newData[typedKey] = updatedState[typedKey];
-      });
-
-      if (
-        newData.relatedDocument &&
-        newData.relatedDocument?.dockType !== 'Screenshot'
-      ) {
-        newData.status = 'Confirmed';
-      }
-      return newData;
-    });
+  const saveHandler = (einData: EinDocumentCreate) => {
+    createEin(einData);
   };
 
   return data ? (
@@ -77,10 +64,10 @@ const Ein = () => {
           isOnlyNumber={false}
           setOpen={setOpen}
           saveHandler={saveHandler}
-          ein={data?.taxId}
-          docType={data?.documentType}
-          lastVerifDate={data?.lastVerifDate}
-          companyName={data?.companyName || ''}
+          ein={data?.ein_number}
+          docType={data?.document_type}
+          lastVerifDate={data?.document_date}
+          companyName={data?.company_name || ''}
         />
       )}
       <DeleteEinFileModal
@@ -91,13 +78,18 @@ const Ein = () => {
       <UpdateEinNumberModal
         open={openUpdateEin}
         setOpen={setOpenUpdateEin}
-        value={data.taxId}
+        value={data.ein_number}
         proceedHandler={(newValue) => {
-          setData((prev) => ({ ...prev, taxId: newValue }));
+          setData((prevState) => {
+            if (prevState) {
+              return { ...prevState, ein_number: newValue };
+            }
+            return prevState;
+          });
         }}
       />
       <ChangeEINStatus
-        prevStatus={data?.status}
+        prevStatus={data?.status_display || ''}
         open={openUpdateEinStatus}
         setOpen={setOpenUpdateEinStatus}
         submitHandler={setData}
@@ -118,7 +110,7 @@ const Ein = () => {
           }}
           className="text-2xl font-bold text-gray-700 group hover:cursor-pointer flex items-center relative pr-7"
         >
-          {data?.taxId || ''}
+          {data?.ein_number || ''}
           <IoMdCheckmark
             className={classNames(
               'w-5 h-5 text-gray-500 group-hover:text-gray-500 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1.5',
@@ -133,7 +125,7 @@ const Ein = () => {
           />
         </span>
         <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-          ein_1v2FG
+          ein_{data.id}
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
@@ -149,19 +141,19 @@ const Ein = () => {
           <span
             className={classNames(
               'text-nowrap w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-              statusBadge(data?.status)
+              statusBadge(data?.status_display || '')
             )}
           >
-            {data.status}
+            {data.status_display}
           </span>
         </div>
         <div className="flex flex-col gap-y-1 border-l pl-5 pr-3">
           <dt className="text-sm text-gray-500">Company</dt>
           <span
-            onClick={() => navigate(`${ROUTES.COMPANY}/123`)}
+            onClick={() => navigate(`${ROUTES.COMPANY}`)}
             className="text-nowrap flex items-center text-base font-semibold tracking-tight text-gray-700 group hover:cursor-pointer"
           >
-            {data?.companyName}
+            {data?.company_name}
             <MdOpenInNew className="text-gray-500 text-sm ml-2 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </span>
         </div>
@@ -170,24 +162,19 @@ const Ein = () => {
             Last Verification Date
           </dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
-            {data?.lastVerifDate || '-'}
+            {formatDateToLongForm(data?.document_date) || '-'}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Document Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center flex-wrap">
-            {data?.documentType?.length
-              ? data.documentType.map((item) => (
-                  <div
-                    key={item}
-                    className={classNames(
-                      'text-nowrap flex items-center text-xs px-2 py-1 font-medium rounded-md ring-1 ring-inset mr-1 mb-1 bg-gray-100 text-gray-700 ring-gray-600/20'
-                    )}
-                  >
-                    {item}
-                  </div>
-                ))
-              : '-'}
+            <div
+              className={classNames(
+                'text-nowrap flex items-center text-xs px-2 py-1 font-medium rounded-md ring-1 ring-inset mr-1 mb-1 bg-gray-100 text-gray-700 ring-gray-600/20'
+              )}
+            >
+              {data?.document_type_display || '-'}
+            </div>
           </dd>
         </div>
         <div className="ml-auto mt-auto transition-all ease-in-out duration-150">
@@ -201,50 +188,47 @@ const Ein = () => {
         </div>
       </dl>
 
-      {!data?.relatedDocument && (
+      {!data?.document && (
         <div className="w-full flex items-center justify-center pb-2 pr-2 mt-8">
           <ActionUploadBlock setOpen={() => setOpen(true)} />
         </div>
       )}
 
-      {data.relatedAddress && data.relatedAddress?.address0 && (
+      {data.line1 && (
         <>
           <SectionHeading title="Related Address" />
           <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
             <>
               <div>
-                <span>{data.relatedAddress.address0}, </span>
-                {data.relatedAddress.address1 && (
-                  <span>{data.relatedAddress.address1}</span>
-                )}
+                <span>{data.line1}, </span>
+                {data.line2 && <span>{data.line2}</span>}
               </div>
               <div>
-                {data.relatedAddress.address2 && (
-                  <span>{data.relatedAddress.address2}</span>
-                )}
-                {data.relatedAddress.address3 && (
+                {data.line3 && <span>{data.line3}</span>}
+                {data.line4 && (
                   <span>
-                    {data.relatedAddress.address2 ? ',' : ''}{' '}
-                    {data.relatedAddress.address3}
+                    {data.line3 ? ',' : ''} {data.line4}
                   </span>
                 )}
               </div>
               <div>
-                <span>{data.relatedAddress.city}, </span>
+                <span>{data.city}, </span>
                 <span>
-                  {USStates.find(
-                    (item) => item.title === data.relatedAddress?.state
-                  )?.value || ''}{' '}
+                  {globalData.states.find((item) => item.id === data.state)
+                    ?.abbreviation || ''}{' '}
                 </span>
-                <span>{data.relatedAddress.zip}</span>
+                <span>{data.zip}</span>
               </div>
-              <div>{data.relatedAddress.country}</div>
+              <div>
+                {globalData.countryies.find((item) => item.id === data.country)
+                  ?.full_name || '-'}
+              </div>
             </>
           </div>
         </>
       )}
 
-      {data?.relatedDocument && (
+      {data?.document && (
         <>
           <SectionHeading
             title="Confirmation Document"
@@ -252,16 +236,7 @@ const Ein = () => {
             removeMargin={true}
             clickHandler={() => setOpen(true)}
           />
-          <EinFilesSection
-            files={[
-              data.relatedDocument,
-              data.relatedDocument,
-              data.relatedDocument,
-            ]}
-            removeFileHandler={() => setOpenDeleteConfirmation(true)}
-            address={data.relatedAddress}
-            companyName={data.companyName}
-          />
+          <EinFilesSection data={data} />
         </>
       )}
     </div>

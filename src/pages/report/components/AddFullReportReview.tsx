@@ -5,10 +5,8 @@ import {
   dockFieldHandler,
   truncateString,
 } from '../../../utils/helpers';
-import { USStates } from '../../../constants/form/form';
 import {
   AddressFields,
-  IFiles,
   MockAnnualReportData,
   Person,
 } from '../../../interfaces/interfaces';
@@ -23,8 +21,12 @@ import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropF
 
 import useFileUpload from '../../../utils/hooks/useFileUpload';
 import UploadedFileSmall from './UploadedFileSmall';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <>
       <div
@@ -54,7 +56,8 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
       >
         <span>{address.city}, </span>
         <span>
-          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+          {globalData.states.find((item) => item.name === address.state)
+            ?.abbreviation || ''}{' '}
         </span>
         <span>{address.zip}</span>
       </div>
@@ -86,7 +89,7 @@ interface IProps {
   setPeople: (data: Person) => void;
   setUpdatedMailingAddress: (data: AddressFields | null) => void;
   setUpdatedAddress: (data: AddressFields | null) => void;
-  file: IFiles;
+  file: File | null;
 }
 
 const AddFullReportReview = ({
@@ -275,11 +278,12 @@ const AddFullReportReview = ({
           {selectedFile?.name ? (
             <div className="w-full">
               <UploadedFileSmall
-                file={selectedFile.file as File}
+                file={selectedFile as File}
                 deleteFileHandler={deleteFileHandler}
                 fileName={truncateString(selectedFile.name, 15)}
                 fileSize={`${selectedFile?.size} MB`}
-                fileFormat={selectedFile.format}
+                // fileFormat={selectedFile.format}
+                fileFormat={'Jpeg'}
                 duration={0}
                 hideProgressBar={true}
               />

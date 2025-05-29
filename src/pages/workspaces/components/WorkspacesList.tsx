@@ -11,6 +11,7 @@ import StateSolidIconHandler from '../../../components/shared/StateSolidIconHand
 import { EmptySection } from '../../../components/shared/EmptySection';
 import { IconBuildings } from '@tabler/icons-react';
 import { ICompanyData } from '../../../state/types/company';
+import useEin from '../../../utils/hooks/EIN/useEin';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -29,6 +30,7 @@ const statusBadge = (status: string) => {
 
 export function WorkspacesList() {
   const navigate = useNavigate();
+  const { getEin } = useEin();
 
   const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +40,7 @@ export function WorkspacesList() {
   const selectWorkspaceHandler = (workspace: ICompanyData) => {
     setSelectedWorkspace(workspace);
     setIsLoading(true);
+    getEin(workspace.id);
     localStorage.setItem('selected_company', `${workspace?.name}`);
   };
 

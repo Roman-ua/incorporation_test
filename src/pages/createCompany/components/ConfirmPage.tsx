@@ -1,5 +1,7 @@
 import React from 'react';
-import { fields, USStates } from '../../../constants/form/form';
+import { fields } from '../../../constants/form/form';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 // import ConfettiAp from '../../../components/shared/Confetti';
 
 interface IProps {
@@ -34,12 +36,13 @@ const ConfirmPage = ({
   stepThreeData,
   setCurrentStep,
 }: IProps) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   const fieldsData = {
     0: stepOneData,
     1: stepTwoData,
     2: stepThreeData,
   };
-  console.log(fieldsData, 'fieldsData');
   return (
     <div>
       <div className="px-4 sm:px-0">
@@ -92,9 +95,9 @@ const ConfirmPage = ({
                           <div>
                             <span>{fieldValue.city}, </span>
                             <span>
-                              {USStates.find(
-                                (item) => item.title === fieldValue.state
-                              )?.value || ''}{' '}
+                              {globalData.states.find(
+                                (item) => item.name === fieldValue.state
+                              )?.abbreviation || ''}{' '}
                             </span>
                             <span>{fieldValue.zip}</span>
                           </div>

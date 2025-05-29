@@ -78,3 +78,14 @@ export function formatDateToLongForm(dateString: string): string {
   const parsedDate = parseISO(dateString);
   return format(parsedDate, 'MMMM dd, yyyy');
 }
+
+export const bytesToMB = (bytes: number, decimals = 2): number => {
+  if (!bytes) return 0;
+  const mb = bytes / (1024 * 1024);
+  return parseFloat(mb.toFixed(decimals));
+};
+
+export const getFileExtension = (file: File): string => {
+  const name = file.name;
+  return name.substring(name.lastIndexOf('.')).toLowerCase();
+};

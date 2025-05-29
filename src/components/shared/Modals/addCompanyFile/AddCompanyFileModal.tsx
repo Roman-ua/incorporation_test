@@ -89,7 +89,8 @@ const AddCompanyFileModal = ({ open, setOpen }: IProps) => {
                     deleteFileHandler={deleteFileHandler}
                     fileName={selectedFile.name}
                     fileSize={`${selectedFile?.size} MB`}
-                    fileFormat={selectedFile.format}
+                    // fileFormat={selectedFile.format}
+                    fileFormat={'Jpeg'}
                     duration={3}
                   />
                 </div>

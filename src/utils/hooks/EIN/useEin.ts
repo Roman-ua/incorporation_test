@@ -1,12 +1,19 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import axiosInstance from '../../../api/axios';
-import { IEin } from '../../../state/atoms/EIN';
 import WorkspacesState from '../../../state/atoms/Workspaces';
+import { EinDocumentCreate } from '../../../state/types/einTypes';
+import EinState from '../../../state/atoms/EIN';
 
 const useEin = () => {
   const workspacesState = useRecoilValue(WorkspacesState);
+  const setEin = useSetRecoilState(EinState);
 
-  const createEin = async (data: IEin) => {
+  const getEin = async (id: number) => {
+    const response = await axiosInstance.get(`/company/${id}/ein-documents/`);
+    setEin(response.data?.[0] || null);
+  };
+
+  const createEin = async (data: EinDocumentCreate) => {
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
@@ -17,7 +24,7 @@ const useEin = () => {
       }
     });
 
-    const response = await axiosInstance.post(
+    await axiosInstance.post(
       `/company/${workspacesState.current.id}/ein-documents/`,
       formData,
       {
@@ -27,9 +34,9 @@ const useEin = () => {
       }
     );
 
-    console.log(response.data);
+    await getEin(workspacesState.current.id);
   };
-  const getEin = () => {};
+
   return { createEin, getEin };
 };
 

@@ -2,17 +2,21 @@ import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import React, { useState } from 'react';
 import ModalLayout from '../../../../components/shared/Modals/ModalLayout';
 import { SetterOrUpdater } from 'recoil';
-import { IEin } from '../../../../state/atoms/EIN';
 import { classNames } from '../../../../utils/helpers';
+import { EinDocumentGet } from '../../../../state/types/einTypes';
 
 interface IProps {
   open: boolean;
   setOpen: (value: boolean) => void;
-  submitHandler: SetterOrUpdater<IEin>;
+  submitHandler: SetterOrUpdater<EinDocumentGet | null>;
   prevStatus: string;
 }
 
-const list = ['Confirmation Needed', 'Confirmed', 'Cancelled'];
+const list = [
+  { display: 'Confirmation Needed', value: 'pending' },
+  { display: 'Confirmed', value: 'approved' },
+  { display: 'Cancelled', value: 'rejected' },
+];
 
 const btnStyleHandler = (status: string) => {
   switch (status) {
@@ -37,10 +41,15 @@ const ChangeEINStatus = ({
 }: IProps) => {
   const [currentStatus, setCurrentStatus] = useState(prevStatus);
   const submit = () => {
-    submitHandler((prevState) => ({
-      ...prevState,
-      status: currentStatus,
-    }));
+    submitHandler((prevState) => {
+      if (prevState) {
+        return {
+          ...prevState,
+          status: currentStatus as 'pending' | 'approved' | 'rejected',
+        };
+      }
+      return prevState;
+    });
     setOpen(false);
   };
 
@@ -60,16 +69,16 @@ const ChangeEINStatus = ({
                 <div className="flex items-center justify-start flex-wrap gap-2">
                   {list.map((label) => (
                     <div
-                      onClick={() => setCurrentStatus(label)}
+                      onClick={() => setCurrentStatus(label.value)}
                       className={classNames(
                         'text-sm font-bold text-gray-500 py-1.5 px-3 border rounded mr-1 mb-1 transition-all duration-150 ease-in-out hover:cursor-pointer',
-                        currentStatus === label
-                          ? btnStyleHandler(currentStatus)
+                        currentStatus === label.value
+                          ? btnStyleHandler(label.display)
                           : 'border-gray-300 hover:border-gray-700 hover:text-gray-700'
                       )}
-                      key={label}
+                      key={label.value}
                     >
-                      {label}
+                      {label.display}
                     </div>
                   ))}
                 </div>

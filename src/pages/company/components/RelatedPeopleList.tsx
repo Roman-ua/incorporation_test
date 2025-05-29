@@ -2,10 +2,11 @@ import SectionHeading from './SectionHeading';
 import React from 'react';
 import { classNames } from '../../../utils/helpers';
 import { Person } from '../modals/AddPersonToCompanyModal';
-import { USStates } from '../../../constants/form/form';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
 import { EmptySection } from '../../../components/shared/EmptySection';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -29,6 +30,7 @@ interface IProps {
 
 const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
   const navigate = useNavigate();
+  const globalData = useRecoilValue(GlobalDataState);
 
   return (
     <>
@@ -99,9 +101,9 @@ const RelatedPeopleList = ({ addPersonHandler, peopleState }: IProps) => {
                       <div>
                         <span>{person.address.city}, </span>
                         <span>
-                          {USStates.find(
-                            (item) => item.title === person.address.state
-                          )?.value || ''}{' '}
+                          {globalData.states.find(
+                            (item) => item.name === person.address.state
+                          )?.abbreviation || ''}{' '}
                         </span>
                         <span>{person.address.zip}</span>
                       </div>

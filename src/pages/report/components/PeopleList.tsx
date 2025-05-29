@@ -1,5 +1,4 @@
 import SectionHeading from '../../company/components/SectionHeading';
-import { USStates } from '../../../constants/form/form';
 import React from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { FaSignature } from 'react-icons/fa6';
@@ -7,6 +6,8 @@ import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 import { IconPlus, IconSettings, IconTrashX } from '@tabler/icons-react';
 import { Person } from '../../../interfaces/interfaces';
 import { classNames } from '../../../utils/helpers';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 interface IProps {
   editableList?: boolean;
@@ -24,6 +25,8 @@ const PeopleList = ({
   removeAction,
   data,
 }: IProps) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <div className="mb-8">
       {!hideHeading && <SectionHeading title="People" />}
@@ -78,8 +81,9 @@ const PeopleList = ({
               <div>
                 <span>{person.address.city}, </span>
                 <span>
-                  {USStates.find((item) => item.title === person.address.state)
-                    ?.value || ''}{' '}
+                  {globalData.states.find(
+                    (item) => item.name === person.address.state
+                  )?.abbreviation || ''}{' '}
                 </span>
                 <span>{person.address.zip}</span>
               </div>

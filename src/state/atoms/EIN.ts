@@ -1,27 +1,9 @@
 import { atom } from 'recoil';
-import { Address, IFiles } from '../../interfaces/interfaces';
+import { EinDocumentGet } from '../types/einTypes';
 
-export interface IEin {
-  taxId: string;
-  status: string;
-  companyName: string;
-  lastVerifDate: string;
-  documentType: string[];
-  relatedAddress: Address | null;
-  relatedDocument: IFiles | null;
-}
-
-const EinState = atom<IEin>({
+const EinState = atom<EinDocumentGet | null>({
   key: 'EinState',
-  default: {
-    taxId: '12-3456789',
-    status: 'Confirmation Needed',
-    companyName: 'ABC Company Inc.',
-    lastVerifDate: '',
-    documentType: [],
-    relatedAddress: null,
-    relatedDocument: null,
-  },
+  default: null,
 });
 
 export default EinState;

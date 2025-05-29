@@ -5,7 +5,6 @@ import {
   Person,
   ReportData,
 } from '../../../interfaces/interfaces';
-import { USStates } from '../../../constants/form/form';
 import { classNames, dockFieldHandler } from '../../../utils/helpers';
 import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
 import TooltipWrapper from '../../../components/shared/TooltipWrapper';
@@ -21,6 +20,8 @@ import PersonDataHandling from '../../../components/shared/PersonData/PersonData
 import { BiEditAlt } from 'react-icons/bi';
 import RegAgentDataHandling from '../components/RegisteredAgentHandling';
 import { TbUserPlus } from 'react-icons/tb';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 interface IProps {
   reportData: ReportData;
@@ -56,6 +57,8 @@ const statusBadge = (status: string) => {
 };
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <>
       <div
@@ -85,7 +88,8 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
       >
         <span>{address.city}, </span>
         <span>
-          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+          {globalData.states.find((item) => item.name === address.state)
+            ?.abbreviation || ''}{' '}
         </span>
         <span>{address.zip}</span>
       </div>
@@ -113,6 +117,7 @@ const SubmitReviewStep = ({
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
   const [addressCopied, setAddressCopied] = useState(false);
+  const globalData = useRecoilValue(GlobalDataState);
 
   const undoAddress = (key: string) => {
     setReportData((prevState) => ({ ...prevState, [key]: null }));
@@ -731,10 +736,10 @@ const SubmitReviewStep = ({
                       <div>
                         <span>{agentreportData.address.city}, </span>
                         <span>
-                          {USStates.find(
+                          {globalData.states.find(
                             (item) =>
-                              item.title === agentreportData.address.state
-                          )?.value || ''}{' '}
+                              item.name === agentreportData.address.state
+                          )?.abbreviation || ''}{' '}
                         </span>
                         <span>{agentreportData.address.zip}</span>
                         {agentreportData.address?.county && (

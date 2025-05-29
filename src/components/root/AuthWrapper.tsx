@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import UserProfileState from '../../state/atoms/UserProfile';
 import useCompany from '../../utils/hooks/Company/useCompany';
 import WorkspacesState from '../../state/atoms/Workspaces';
+import useGlobalData from '../../utils/hooks/GlobalData/useGlobalData';
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const { dataRequested } = useRecoilValue(WorkspacesState);
   const { getUserData } = UseUserData();
   const { getCompaniesList } = useCompany();
+  const { getAllGlobalData } = useGlobalData();
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -23,6 +25,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
     if (!authChecking && token) {
       getUserData();
       getCompaniesList();
+      getAllGlobalData();
     }
   }, [authChecking]);
 

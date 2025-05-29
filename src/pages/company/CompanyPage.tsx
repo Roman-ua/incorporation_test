@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import SectionHeading from './components/SectionHeading';
 import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
-import { USStates } from '../../constants/form/form';
 import { companyTypes } from '../createCompany/CreateCompany';
 import StateSolidIconHandler from '../../components/shared/StateSolidIconHandler';
 import { copyToClipboard, formatDateToLongForm } from '../../utils/helpers';
@@ -12,7 +11,6 @@ import { IoMdCheckmark } from 'react-icons/io';
 import AnnualReportsListFL from './components/AnnualReportsListFL';
 import RelatedPeopleList from './components/RelatedPeopleList';
 import AddEinModal from '../EIN/components/modals/AddEinModal';
-import { UpdatedCompanyState } from '../../interfaces/interfaces';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { AddPersonModal } from './modals/AddPersonToCompanyModal';
@@ -23,6 +21,10 @@ import InvoicesList from './components/Invoices';
 import LinkToXeroModal from './components/LinkToXeroModal';
 import InvoicesState from '../../state/atoms/Invoices';
 import WorkspacesState from '../../state/atoms/Workspaces';
+import { EinDocumentCreate } from '../../state/types/einTypes';
+import useEin from '../../utils/hooks/EIN/useEin';
+import GlobalDataState from '../../state/atoms/GlobalData';
+import EinState from '../../state/atoms/EIN';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -44,35 +46,23 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 const CompanyPage = () => {
-  // const setEinState = useSetRecoilState(EinState);
+  const einState = useRecoilValue(EinState);
   const workspacesState = useRecoilValue(WorkspacesState);
+
   const [peopleState, setPeopleState] = useRecoilState(PeopleState);
   const [invoicesList, setInvoicesList] = useRecoilState(InvoicesState);
-  console.log(workspacesState, 'workspacesState');
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
   const [openLinkToXero, setOpenLinkToXero] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [addReportModal, setOpenAddReportModal] = useState(false);
 
+  const globalData = useRecoilValue(GlobalDataState);
   const navigate = useNavigate();
+  const { createEin } = useEin();
 
-  const saveHandler = (updatedState: UpdatedCompanyState) => {
-    console.log(updatedState, 'updatedState');
-    // setData((prevData) => {
-    //   const newData = { ...prevData };
-    //   Object.keys(updatedState).forEach((key) => {
-    //     const typedKey = key as keyof MockData;
-    //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //     // @ts-expect-error
-    //     newData[typedKey] = updatedState[typedKey];
-    //   });
-    //   return newData;
-    // });
-    // setEinState((prev) => ({
-    //   ...prev,
-    //   taxId: updatedState.taxId || '',
-    // }));
+  const saveHandler = (einData: EinDocumentCreate) => {
+    createEin(einData);
   };
 
   return workspacesState.current?.name ? (
@@ -144,7 +134,7 @@ const CompanyPage = () => {
           <dt className="text-nowrap text-sm text-gray-500">EIN (Tax ID)</dt>
           <dd
             onClick={(event) => {
-              if (!workspacesState.current?.taxId) {
+              if (!einState) {
                 setOpen(true);
               } else {
                 event.preventDefault();
@@ -158,13 +148,13 @@ const CompanyPage = () => {
                 : 'hover:text-mainBlue'
             )}
           >
-            {workspacesState.current?.taxId || 'Add EIN (Tax ID)'}
-            {workspacesState.current?.taxId && (
+            {einState?.ein_number || 'Add EIN (Tax ID)'}
+            {einState?.ein_number && (
               <>
                 <IoMdCheckmark
                   className={classNames(
                     'text-gray-500 text-sm ml-2 absolute right-1 top-1 transition-all ease-in-out duration-150',
-                    copied === workspacesState.current?.taxId
+                    copied === einState?.ein_number
                       ? 'opacity-100'
                       : 'opacity-0'
                   )}
@@ -172,18 +162,18 @@ const CompanyPage = () => {
                 <MdOutlineCopyAll
                   onClick={(event) => {
                     event.stopPropagation();
-                    setCopied(workspacesState.current?.taxId);
+                    setCopied(einState?.ein_number);
 
                     const timer = setTimeout(() => {
                       clearTimeout(timer);
                       setCopied('');
                     }, 700);
 
-                    copyToClipboard(workspacesState.current?.taxId);
+                    copyToClipboard(einState?.ein_number);
                   }}
                   className={classNames(
                     'text-gray-500 text-sm ml-2 absolute right-1 top-1  transition-all ease-in-out duration-150',
-                    copied !== workspacesState.current?.taxId
+                    copied !== einState?.ein_number
                       ? 'opacity-0 group-hover:opacity-100'
                       : 'opacity-0'
                   )}
@@ -312,9 +302,9 @@ const CompanyPage = () => {
           <div>
             <span>{workspacesState.current?.city}, </span>
             <span>
-              {USStates.find(
-                (item) => item.title === workspacesState.current?.state.name
-              )?.value || ''}{' '}
+              {globalData.states.find(
+                (item) => item.name === workspacesState.current?.state.name
+              )?.abbreviation || ''}{' '}
             </span>
             <span>{workspacesState.current?.zip}</span>
           </div>

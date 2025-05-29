@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { classNames, truncateString } from '../../../utils/helpers';
 import PageSign from '../../../components/shared/PageSign';
-import { AddressFields, IFiles, Person } from '../../../interfaces/interfaces';
+import { AddressFields, Person } from '../../../interfaces/interfaces';
 import AddFullReportSteps from './AddFullReportSteps';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
@@ -96,7 +96,7 @@ const AddFullReportProcess = () => {
   const [stateId, setStateId] = React.useState<string>('');
   const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
 
-  const [file, setFile] = React.useState<IFiles | null>(null);
+  const [file, setFile] = React.useState<File | null>(null);
 
   const setStateIdHandler = (value: string) => {
     const sanitizedValue = value.replace(/[^a-zA-Z0-9]/g, '');
@@ -127,13 +127,13 @@ const AddFullReportProcess = () => {
     setReportYear(year);
   };
 
-  const firstStepDisabled = () => !stateId || !file?.file || !reportYear;
+  const firstStepDisabled = () => !stateId || !file || !reportYear;
 
   const submitStepHandler = (
     e: React.FormEvent<HTMLFormElement>,
     step: number
   ) => {
-    if (step === 1 && (!stateId || !file?.file || !reportYear)) {
+    if (step === 1 && (!stateId || !file || !reportYear)) {
       e.preventDefault();
       e.stopPropagation();
       setMandatoryErrorStep(step);
@@ -161,7 +161,7 @@ const AddFullReportProcess = () => {
       mailingAddress.line1 &&
       agentName &&
       people.length &&
-      file?.file
+      file
     ) {
       setCompletedSteps(true);
     } else {
@@ -262,8 +262,9 @@ const AddFullReportProcess = () => {
                         deleteFileHandler={deleteFileHandler}
                         fileName={truncateString(selectedFile.name, 15)}
                         fileSize={`${selectedFile?.size} MB`}
-                        fileFormat={selectedFile.format}
-                        file={selectedFile?.file as File}
+                        // fileFormat={selectedFile.format}
+                        fileFormat={'Jpeg'}
+                        file={selectedFile}
                         wrapperStyles={'h-[225px]'}
                       />
                     </div>

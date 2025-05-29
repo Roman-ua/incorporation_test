@@ -14,7 +14,6 @@ import {
 import PageSign from '../../../components/shared/PageSign';
 import type {
   AddressFields,
-  IFiles,
   Person,
   ReportData,
 } from '../../../interfaces/interfaces';
@@ -27,7 +26,6 @@ import {
   dockFieldHandler,
 } from '../../../utils/helpers';
 import AddressAsTable from '../../../components/shared/AddressRender/AddressAsTable';
-import { USStates } from '../../../constants/form/form';
 import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { LuArrowUpRight } from 'react-icons/lu';
@@ -35,6 +33,8 @@ import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 import CopyButton from '../../../components/shared/CopyBtn/CopyButton';
 import FeeFile from './FeeFile';
 import StateSolidIconHandler from '../../../components/shared/StateSolidIconHandler';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 const steps = [
   // {
@@ -114,11 +114,13 @@ const ProcessingReport = ({
   const [expandedSteps, setExpandedSteps] = useState<number[]>([]);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
-  const [feeFile, setFeeFile] = useState<IFiles | null>(null);
-  const [repFile, setRepFile] = useState<IFiles | null>(null);
+  const [feeFile, setFeeFile] = useState<File | null>(null);
+  const [repFile, setRepFile] = useState<File | null>(null);
 
   const [dateValue, setDateValue] = React.useState<string>(formattedDate || '');
   const [documentNumber, setDocumentNumber] = React.useState<string>('');
+
+  const globalData = useRecoilValue(GlobalDataState);
 
   useEffect(() => {
     if (completedSteps.length > 4) {
@@ -172,11 +174,11 @@ const ProcessingReport = ({
       markAsCompleted(index);
       return;
     }
-    if (index === 3 && !!feeFile?.file) {
+    if (index === 3 && !!feeFile) {
       markAsCompleted(index);
       return;
     }
-    if (index === 4 && !!repFile?.file && !!dateValue && !!documentNumber) {
+    if (index === 4 && !!repFile && !!dateValue && !!documentNumber) {
       markAsCompleted(index);
       return;
     }
@@ -189,13 +191,13 @@ const ProcessingReport = ({
     }
 
     if (title === 'Pay Government Fee') {
-      return completedSteps.includes(index) && !!feeFile?.file;
+      return completedSteps.includes(index) && !!feeFile;
     }
 
     if (title === 'Save Annual Report') {
       return (
         completedSteps.includes(index) &&
-        !!repFile?.file &&
+        !!repFile &&
         !!dateValue &&
         !!documentNumber
       );
@@ -205,14 +207,14 @@ const ProcessingReport = ({
   };
 
   const mandatoryCheckHandler = (index: number) => {
-    if (index === 3 && !expandedSteps.includes(index) && !feeFile?.file) {
+    if (index === 3 && !expandedSteps.includes(index) && !feeFile) {
       return 'border-red-500 border-2';
     }
 
     if (
       index === 4 &&
       !expandedSteps.includes(index) &&
-      !repFile?.file &&
+      !repFile &&
       !documentNumber
     ) {
       return 'border-red-500 border-2';
@@ -476,10 +478,10 @@ const ProcessingReport = ({
                               <div>
                                 <span>{mockAgent.address.city}, </span>
                                 <span>
-                                  {USStates.find(
+                                  {globalData.states.find(
                                     (item) =>
-                                      item.title === mockAgent.address.state
-                                  )?.value || ''}{' '}
+                                      item.name === mockAgent.address.state
+                                  )?.abbreviation || ''}{' '}
                                 </span>
                                 <span>{mockAgent.address.zip}</span>
                                 {mockAgent.address?.county && (

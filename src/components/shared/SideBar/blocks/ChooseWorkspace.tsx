@@ -13,9 +13,12 @@ import { classNames } from '../../../../utils/helpers';
 import logo from '../../../../images/icon_square.png';
 import { IconBuildings } from '@tabler/icons-react';
 import { ICompanyData } from '../../../../state/types/company';
+import useEin from '../../../../utils/hooks/EIN/useEin';
 
 const ChooseWorkspace = () => {
   const navigate = useNavigate();
+  const { getEin } = useEin();
+
   const [workspacesState, setWorkspacesState] =
     useRecoilState<IWorkspaces>(WorkspacesState);
 
@@ -150,6 +153,7 @@ const ChooseWorkspace = () => {
                         onClick={() => {
                           selectWorkspaceHandler(workspace);
                           setIsOpen(false);
+                          getEin(workspace.id);
                           localStorage.setItem(
                             'selected_company',
                             `${workspace?.name}`

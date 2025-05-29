@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import CountrySelector from '../../../components/shared/CountrySelect/selector';
-import { COUNTRIES } from '../../../components/shared/CountrySelect/countries';
-import { SelectMenuOption } from '../../../components/shared/CountrySelect/types';
 import { PlusIcon } from '@heroicons/react/24/outline';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import CustomButton from '../../../components/shared/ButtonWithLoader/Button';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
+import { CountryOrState } from '../../../state/types/globalDataTypes';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -45,6 +46,8 @@ const AddressForm = ({ setFromState }: IProps) => {
   const [isOpenStates, setIsOpenStates] = useState(false);
   const [addressFields, setAddressFields] =
     useState<{ title: string; type: string }[]>(addressFieldsMock);
+
+  const countriesData = useRecoilValue(GlobalDataState);
 
   const openCountryHandler = (value: boolean) => {
     if (isOpenStates) {
@@ -98,15 +101,16 @@ const AddressForm = ({ setFromState }: IProps) => {
         <CountrySelector
           id={'countries'}
           open={isOpen}
-          list={COUNTRIES}
+          list={countriesData.countryies}
           withIcon={true}
           onToggle={() => openCountryHandler(!isOpen)}
           onChange={(val) => setCountry(val)}
           selectedValue={
-            COUNTRIES.find(
-              (option) => option.title === country
-            ) as SelectMenuOption
+            countriesData.countryies.find(
+              (option) => option.full_name === country
+            ) as CountryOrState
           }
+          isCountry={true}
           disableDropDown={false}
           wrapperExtraStyles={'rounded-b-none border-t-0 border-l-0 border-r-0'}
         />

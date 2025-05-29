@@ -1,14 +1,17 @@
 import SectionHeading from '../../company/components/SectionHeading';
 import React from 'react';
-import { USStates } from '../../../constants/form/form';
 import { IconInfoCircle } from '@tabler/icons-react';
 import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 import { Agent } from '../../../interfaces/interfaces';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 interface IProps {
   data: Agent;
 }
 const RegisteredAgent = ({ data }: IProps) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <>
       <SectionHeading title="Registered Agent" />
@@ -37,8 +40,9 @@ const RegisteredAgent = ({ data }: IProps) => {
             <div>
               <span>{data.address.city}, </span>
               <span>
-                {USStates.find((item) => item.title === data.address.state)
-                  ?.value || ''}{' '}
+                {globalData.states.find(
+                  (item) => item.name === data.address.state
+                )?.abbreviation || ''}{' '}
               </span>
               <span>{data.address.zip}</span>
               {data.address?.county && (

@@ -1,6 +1,7 @@
+import { useRecoilValue } from 'recoil';
 import SectionHeading from '../../company/components/SectionHeading';
-import { USStates } from '../../../constants/form/form';
 import React from 'react';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 const mockData = {
   id: 1,
   year: 2021,
@@ -39,6 +40,8 @@ const mockData = {
   signed: 'John Doe',
 };
 const Addresses = () => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <>
       <SectionHeading title="Address" />
@@ -66,8 +69,9 @@ const Addresses = () => {
             <div>
               <span>{mockData.address.city}, </span>
               <span>
-                {USStates.find((item) => item.title === mockData.address.state)
-                  ?.value || ''}{' '}
+                {globalData.states.find(
+                  (item) => item.name === mockData.address.state
+                )?.abbreviation || ''}{' '}
               </span>
               <span>{mockData.address.zip}</span>
             </div>
@@ -97,8 +101,9 @@ const Addresses = () => {
             <div>
               <span>{mockData.address.city}, </span>
               <span>
-                {USStates.find((item) => item.title === mockData.address.state)
-                  ?.value || ''}{' '}
+                {globalData.states.find(
+                  (item) => item.name === mockData.address.state
+                )?.abbreviation || ''}{' '}
               </span>
               <span>{mockData.address.zip}</span>
             </div>

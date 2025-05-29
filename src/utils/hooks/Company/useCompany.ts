@@ -9,10 +9,12 @@ import {
 } from '../../../state/types/company';
 import { toast } from 'sonner';
 import axios, { AxiosError } from 'axios';
+import useEin from '../EIN/useEin';
 
 const useCompany = () => {
   const navigate = useNavigate();
   const setCompaniesList = useSetRecoilState(WorkspacesState);
+  const { getEin } = useEin();
 
   const getAllowedCompanyTypes = async () => {
     const response = await axiosInstance.get('/company/types/');
@@ -28,6 +30,13 @@ const useCompany = () => {
     }
 
     const selectedCompanyName = localStorage.getItem('selected_company');
+
+    if (selectedCompanyName) {
+      const lastSelectedCompany = response.data.find(
+        (company: ICompanyData) => company.name === selectedCompanyName
+      );
+      await getEin(lastSelectedCompany.id);
+    }
 
     setCompaniesList((prevData) => {
       const result = {

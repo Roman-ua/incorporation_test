@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import CountrySelector from '../../../components/shared/CountrySelect/selector';
-import { COUNTRIES } from '../../../components/shared/CountrySelect/countries';
-import { SelectMenuOption } from '../../../components/shared/CountrySelect/types';
-import { USStates } from '../../../constants/form/form';
 import { VALIDATORS } from '../../../constants/regexs';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import SectionHeading from './SectionHeading';
 import { AddressFields } from '../../../interfaces/interfaces';
 import { MdOutlinePlaylistRemove } from 'react-icons/md';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
+import { CountryOrState } from '../../../state/types/globalDataTypes';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -72,6 +72,8 @@ const USAddressForm = ({
   const [addressFields, setAddressFields] =
     useState<{ title: string; type: string }[]>(addressFieldsMock);
   const [isOpenStates, setIsOpenStates] = useState(false);
+
+  const countriesData = useRecoilValue(GlobalDataState);
 
   const openCountryHandler = (value: boolean) => {
     if (isOpenStates) {
@@ -298,7 +300,7 @@ const USAddressForm = ({
             <CountrySelector
               id={'states'}
               open={isOpenStates}
-              list={USStates}
+              list={countriesData.states}
               withIcon={false}
               onToggle={() => openStateHandler(!isOpenStates)}
               onChange={(val) => {
@@ -306,9 +308,9 @@ const USAddressForm = ({
                 setSaved(false);
               }}
               selectedValue={
-                USStates.find(
-                  (option) => option.title === state
-                ) as SelectMenuOption
+                countriesData.states.find(
+                  (option) => option.name === state
+                ) as CountryOrState
               }
               disableDropDown={disabledFlag}
               inputExtraStyles={'min-w-[80px] max-w-[80px] text-base'}
@@ -335,7 +337,7 @@ const USAddressForm = ({
           <CountrySelector
             id={'countries'}
             open={isOpen}
-            list={COUNTRIES}
+            list={countriesData.countryies}
             withIcon={true}
             onToggle={() => openCountryHandler(!isOpen)}
             onChange={(val) => {
@@ -343,10 +345,11 @@ const USAddressForm = ({
               setSaved(false);
             }}
             selectedValue={
-              COUNTRIES.find(
-                (option) => option.title === country
-              ) as SelectMenuOption
+              countriesData.countryies.find(
+                (option) => option.full_name === country
+              ) as CountryOrState
             }
+            isCountry={true}
             inputExtraStyles={`${!enableCountry && 'opacity-40'} ${requiredError && !country ? 'bg-red-50 rounded-b-md' : 'bg-transparent'} w-full `}
             disableDropDown={!enableCountry}
             wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !country ? 'bg-red-50' : 'bg-transparent'}`}

@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
-import { IFiles } from '../../../interfaces/interfaces';
 
 interface IProps {
-  setFile: (file: IFiles) => void;
+  setFile: (file: File | null) => void;
 }
 
 const FeeFile = ({ setFile }: IProps) => {
@@ -29,7 +28,8 @@ const FeeFile = ({ setFile }: IProps) => {
             deleteFileHandler={deleteFileHandler}
             fileName={selectedFile.name}
             fileSize={`${selectedFile?.size} MB`}
-            fileFormat={selectedFile.format}
+            // fileFormat={selectedFile?.format}
+            fileFormat={'Jpeg'}
             duration={3}
             wrapperStyles={'bg-white'}
           />

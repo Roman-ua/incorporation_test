@@ -1,11 +1,12 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import CountrySelector from '../CountrySelect/selector';
-import { SelectMenuOption } from '../CountrySelect/types';
-import { COUNTRIES } from '../CountrySelect/countries';
 import React, { useState } from 'react';
 import { classNames } from '../../../utils/helpers';
 import { AddressFields } from '../../../interfaces/interfaces';
 import { VALIDATORS } from '../../../constants/regexs';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
+import { CountryOrState } from '../../../state/types/globalDataTypes';
 
 interface IProps {
   disabledFlag: boolean;
@@ -32,6 +33,8 @@ const SimpleAddressFormNotUS = ({
   const [isOpenStates, setIsOpenStates] = useState(false);
   const [addressFields, setAddressFields] =
     useState<{ title: string; type: string }[]>(addressFieldsMock);
+
+  const countriesData = useRecoilValue(GlobalDataState);
 
   const openCountryHandler = (value: boolean) => {
     if (isOpenStates) {
@@ -153,15 +156,15 @@ const SimpleAddressFormNotUS = ({
       <CountrySelector
         id={'countries'}
         open={isOpen}
-        list={COUNTRIES}
+        list={countriesData.countryies}
         isCountry={true}
         withIcon={true}
         onToggle={() => openCountryHandler(!isOpen)}
         onChange={(val) => setData('country', val)}
         selectedValue={
-          COUNTRIES.find(
-            (option) => option.title === data.country
-          ) as SelectMenuOption
+          countriesData.countryies.find(
+            (option) => option.full_name === data.country
+          ) as CountryOrState
         }
         disableDropDown={false}
         inputExtraStyles={`w-full ${requiredError && !data.country ? 'bg-red-50' : 'bg-white'} rounded-b-md`}

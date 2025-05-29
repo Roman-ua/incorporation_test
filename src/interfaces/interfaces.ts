@@ -91,14 +91,7 @@ export type AddressFields = {
 };
 
 export interface IFiles {
-  id: number;
   file: File | { name: string; link: string } | null;
-  name: string;
-  status: string;
-  dueDate: string;
-  size?: number;
-  format: string;
-  dockType?: string;
 }
 
 export interface MockData {

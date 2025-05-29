@@ -1,12 +1,10 @@
 import {
   AddressFields,
   Agent,
-  IFiles,
   ReportData,
 } from '../../../interfaces/interfaces';
 import SectionHeading from '../../company/components/SectionHeading';
 import { classNames, dockFieldHandler } from '../../../utils/helpers';
-import { USStates } from '../../../constants/form/form';
 import TooltipWrapper from '../../../components/shared/TooltipWrapper';
 import { IconInfoCircle } from '@tabler/icons-react';
 import React, { useEffect } from 'react';
@@ -15,6 +13,8 @@ import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePic
 import FileDownloadProgress from '../../createCompany/components/UploadedFile';
 import DropFileArea from '../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import useFileUpload from '../../../utils/hooks/useFileUpload';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 interface IProps {
   data: ReportData;
@@ -24,11 +24,13 @@ interface IProps {
   dateValue: string;
   setDocumentNumber: (value: string) => void;
   documentNumber: string;
-  setRepFile: (file: IFiles) => void;
+  setRepFile: (file: File | null) => void;
   hideRemovedPeople?: boolean;
 }
 
 const RenderAddress = (removed: boolean, address: AddressFields) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <div className="text-sm">
       <div
@@ -58,7 +60,8 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
       >
         <span>{address.city}, </span>
         <span>
-          {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+          {globalData.states.find((item) => item.name === address.state)
+            ?.abbreviation || ''}{' '}
         </span>
         <span>{address.zip}</span>
       </div>
@@ -85,8 +88,10 @@ const AddReportDocShort = ({
   setRepFile,
   hideRemovedPeople,
 }: IProps) => {
-  const [file, setFile] = React.useState<IFiles | null>(null);
+  const [file, setFile] = React.useState<File | null>(null);
   console.log(file, 'file');
+
+  const globalData = useRecoilValue(GlobalDataState);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -206,9 +211,9 @@ const AddReportDocShort = ({
               <div>
                 <span>{agentdata.address.city}, </span>
                 <span>
-                  {USStates.find(
-                    (item) => item.title === agentdata.address.state
-                  )?.value || ''}{' '}
+                  {globalData.states.find(
+                    (item) => item.name === agentdata.address.state
+                  )?.abbreviation || ''}{' '}
                 </span>
                 <span>{agentdata.address.zip}</span>
                 {agentdata.address?.county && (
@@ -260,7 +265,8 @@ const AddReportDocShort = ({
                 deleteFileHandler={deleteFileHandler}
                 fileName={selectedFile.name}
                 fileSize={`${selectedFile?.size} MB`}
-                fileFormat={selectedFile.format}
+                // fileFormat={selectedFile.format}
+                fileFormat={'Jpeg'}
                 duration={3}
                 wrapperStyles={'bg-white'}
               />

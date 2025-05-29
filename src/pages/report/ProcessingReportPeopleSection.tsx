@@ -1,7 +1,6 @@
 import { classNames } from '../../utils/helpers';
 import TooltipWrapper from '../../components/shared/TooltipWrapper';
 import { FaSignature } from 'react-icons/fa6';
-import { USStates } from '../../constants/form/form';
 import {
   IconArrowBackUp,
   // IconPlus,
@@ -13,6 +12,8 @@ import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithA
 import React, { useEffect, useState } from 'react';
 import { Person } from '../../interfaces/interfaces';
 import { mockPeople } from '../../mock/mockData';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../state/atoms/GlobalData';
 interface IProps {
   disableEdit: boolean;
   propData?: Person[];
@@ -31,8 +32,8 @@ const ProcessingReportPeopleSection = ({
   const [peopleDataDuplicate, setPeopleDataDuplicate] = useState<Person[]>(
     propData || mockPeople
   );
-  console.log(peopleDataDuplicate, 'peopleDataDuplicate');
   const [editingPersonId, setEditingPersonId] = useState(-1);
+  const globalData = useRecoilValue(GlobalDataState);
 
   useEffect(() => {
     if (propData?.length) {
@@ -170,9 +171,9 @@ const ProcessingReportPeopleSection = ({
                   <div>
                     <span>{person.address.city}, </span>
                     <span>
-                      {USStates.find(
-                        (item) => item.title === person.address.state
-                      )?.value || ''}{' '}
+                      {globalData.states.find(
+                        (item) => item.name === person.address.state
+                      )?.abbreviation || ''}{' '}
                     </span>
                     <span>{person.address.zip}</span>
                   </div>

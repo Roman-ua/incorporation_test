@@ -50,9 +50,9 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
 
   const fileIconHandler = (type: string) => {
     switch (type) {
-      case 'pdf':
+      case '.pdf':
         return <IconFileTypePdf className="w-6 h-6 text-gray-500 mr-1.5" />;
-      case 'jpg':
+      case '.jpg':
         return <IconFileTypeJpg className="w-6 h-6 text-gray-500 mr-1.5" />;
       default:
         return <IconFileTypeJpg className="w-6 h-6 text-gray-500 mr-1.5" />;

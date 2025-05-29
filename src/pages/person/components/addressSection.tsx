@@ -1,8 +1,8 @@
 import React from 'react';
 import SectionHeading from '../../company/components/SectionHeading';
-
-import { USStates } from '../../../constants/form/form';
 import { AddressFields } from '../../../interfaces/interfaces';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 interface AddressSectionProps {
   address: {
@@ -18,6 +18,8 @@ interface AddressSectionProps {
 }
 
 const RenderAddress = (address: AddressFields) => {
+  const globalData = useRecoilValue(GlobalDataState);
+
   return (
     <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
       <>
@@ -37,7 +39,8 @@ const RenderAddress = (address: AddressFields) => {
         <div>
           <span>{address.city}, </span>
           <span>
-            {USStates.find((item) => item.title === address.state)?.value || ''}{' '}
+            {globalData.states.find((item) => item.name === address.state)
+              ?.abbreviation || ''}{' '}
           </span>
           <span>{address.zip}</span>
         </div>
