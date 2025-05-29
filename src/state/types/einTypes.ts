@@ -1,5 +1,3 @@
-import { IFiles } from '../../interfaces/interfaces';
-
 export interface EinDocumentGet {
   id: number; // readOnly
   company: number;
