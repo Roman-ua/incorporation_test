@@ -119,6 +119,34 @@ const AddEinModal = ({
     }));
   };
 
+  const clickSaveHandler = () => {
+    if (validationHandler(isNumberOnly)) {
+      const stateId = states.find((state) => state.name === address.state)?.id;
+      const countryId = countryies.find(
+        (country) => country.full_name === address.country
+      )?.id;
+      saveHandler({
+        ein_number: einNumber,
+        company_name: companyNameOnDock,
+        document_type: selectedDocType,
+        document_date: dateValue,
+        document: file,
+        line1: address.line1 || '',
+        line2: address?.line2,
+        line3: address?.line3,
+        line4: address?.line4,
+        city: address?.city || '',
+        state: stateId || 1,
+        zip: address?.zip || '',
+        country: countryId || 1,
+      });
+      cleanUpHandler();
+      setOpen(false);
+    } else {
+      setMandatoryError(true);
+    }
+  };
+
   const {
     inputRef,
     selectedFile,
@@ -301,35 +329,7 @@ const AddEinModal = ({
               Cancel
             </div>
             <div
-              onClick={() => {
-                if (validationHandler(isNumberOnly)) {
-                  const stateId = states.find(
-                    (state) => state.name === address.state
-                  )?.id;
-                  const countryId = countryies.find(
-                    (country) => country.full_name === address.country
-                  )?.id;
-                  saveHandler({
-                    ein_number: einNumber,
-                    company_name: companyNameOnDock,
-                    document_type: selectedDocType,
-                    document_date: dateValue,
-                    document: file,
-                    line1: address.line1 || '',
-                    line2: address?.line2,
-                    line3: address?.line3,
-                    line4: address?.line4,
-                    city: address?.city || '',
-                    state: stateId || 1,
-                    zip: address?.zip || '',
-                    country: countryId || 1,
-                  });
-                  cleanUpHandler();
-                  setOpen(false);
-                } else {
-                  setMandatoryError(true);
-                }
-              }}
+              onClick={clickSaveHandler}
               className={classNames(
                 'ml-2 block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
                 validationHandler(isNumberOnly)
