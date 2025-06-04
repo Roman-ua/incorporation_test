@@ -20,53 +20,61 @@ const useCompany = () => {
   const { getEin } = useEin();
 
   const getAllowedCompanyTypes = async () => {
-    const response = await axiosInstance.get('/company/types/');
-    console.log(response, 'response');
+    try {
+      const response = await axiosInstance.get('/company/types/');
+      console.log(response, 'response');
+    } catch (error) {
+      console.log(error, 'error');
+    }
   };
 
   const getCompaniesList = async () => {
-    const response = await axiosInstance.get('/company/list/');
+    try {
+      const response = await axiosInstance.get('/company/list/');
 
-    if (!response.data.length) {
-      setCompaniesList((prevData) => {
-        return {
-          ...prevData,
-          dataRequested: true,
-        };
-      });
+      if (!response.data.length) {
+        setCompaniesList((prevData) => {
+          return {
+            ...prevData,
+            dataRequested: true,
+          };
+        });
 
-      navigate(ROUTES.WORKSPACES);
-      return;
-    }
-
-    const selectedCompanyName = localStorage.getItem('selected_company');
-
-    if (selectedCompanyName) {
-      const lastSelectedCompany = response.data.find(
-        (company: ICompanyData) => company.name === selectedCompanyName
-      );
-
-      if (lastSelectedCompany?.ein) {
-        await getEin(lastSelectedCompany.ein);
+        navigate(ROUTES.WORKSPACES);
+        return;
       }
-    }
 
-    setCompaniesList((prevData) => {
-      const result = {
-        ...prevData,
-        list: response.data,
-        dataRequested: true,
-      };
+      const selectedCompanyName = localStorage.getItem('selected_company');
 
       if (selectedCompanyName) {
         const lastSelectedCompany = response.data.find(
           (company: ICompanyData) => company.name === selectedCompanyName
         );
 
-        result.current = lastSelectedCompany;
+        if (lastSelectedCompany?.ein) {
+          await getEin(lastSelectedCompany.ein);
+        }
       }
-      return result;
-    });
+
+      setCompaniesList((prevData) => {
+        const result = {
+          ...prevData,
+          list: response.data,
+          dataRequested: true,
+        };
+
+        if (selectedCompanyName) {
+          const lastSelectedCompany = response.data.find(
+            (company: ICompanyData) => company.name === selectedCompanyName
+          );
+
+          result.current = lastSelectedCompany;
+        }
+        return result;
+      });
+    } catch (error) {
+      console.log(error, 'error');
+    }
   };
 
   const createCompanyHandler = async (data: ICompanyDataForSave) => {
@@ -107,15 +115,18 @@ const useCompany = () => {
   };
 
   const getSpecificCompany = async (id: number) => {
-    const response = await axiosInstance.get(`/company/${id}/`);
-    console.log(response, 'response');
-    if (response.data.message === 'Company details fetched successfully') {
-      setCompaniesList((prevState) => {
-        return {
-          ...prevState,
-          current: response.data.company_details,
-        };
-      });
+    try {
+      const response = await axiosInstance.get(`/company/${id}/`);
+      if (response.data.message === 'Company details fetched successfully') {
+        setCompaniesList((prevState) => {
+          return {
+            ...prevState,
+            current: response.data.company_details,
+          };
+        });
+      }
+    } catch (error) {
+      console.log(error, 'error');
     }
   };
 
