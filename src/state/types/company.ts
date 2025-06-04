@@ -17,6 +17,7 @@ export interface ICompanyData {
   country: { id: number; short_name: string; full_name: string };
   zip: string;
   logoUrl?: string;
+  ein: number | null;
 }
 
 export interface ICompanyDataForSave {

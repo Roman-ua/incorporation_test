@@ -22,7 +22,7 @@ const ModalWrapperLayout = ({
           onClose={closeModal}
           className="fixed inset-0 z-50 overflow-y-auto"
         >
-          <div className="min-h-screen px-4 text-center">
+          <div className="min-h-screen px-4 py-2 text-center">
             <Dialog.Overlay
               as={motion.div}
               initial={{ opacity: 0 }}

@@ -9,28 +9,31 @@ import { copyToClipboard, formatDateToLongForm } from '../../utils/helpers';
 import AddEinModal from './components/modals/AddEinModal';
 import ActionUploadBlock from './components/ActionUploadBlock';
 import DeleteEinFileModal from './components/modals/DeleteEinFile';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import EinState from '../../state/atoms/EIN';
-import { IconSettings } from '@tabler/icons-react';
+import { IconSettings, IconTrashX } from '@tabler/icons-react';
 import useEin from '../../utils/hooks/EIN/useEin';
 import { EinDocumentCreate } from '../../state/types/einTypes';
 import GlobalDataState from '../../state/atoms/GlobalData';
 import UpdateEinNumberModal from './components/ChangeEinNumberModal';
 import ChangeEINStatus from './components/modals/ChangeEINStatus';
 import EinFilesSection from './components/FilesSection';
+import DeleteEinModal from './components/modals/DeleteEin';
+import { EIN_STATUSES } from '../../constants/ein/ein';
 
 const statusBadge = (status: string) => {
+  console.log(status, 'status');
   switch (status) {
     case 'Confirmation Needed':
       return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20';
     case 'Confirmed':
       return 'bg-green-50 text-green-700 ring-green-600/20';
     case 'Archived':
-      return 'bg-grey-50 text-grey-700 ring-grey-600/20';
+      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
     case 'Cancelled':
       return 'bg-red-50 text-red-700 ring-red-600/20';
     default:
-      return 'bg-grey-50 text-grey-700 ring-grey-600/20';
+      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
   }
 };
 
@@ -44,16 +47,29 @@ const Ein = () => {
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [openUpdateEin, setOpenUpdateEin] = useState(false);
   const [openUpdateEinStatus, setOpenUpdateEinStatus] = useState(false);
+  const [openDeleteEin, setOpenDeleteEin] = useState(false);
 
   const [data, setData] = useRecoilState(EinState);
 
   const globalData = useRecoilValue(GlobalDataState);
+  const setEin = useSetRecoilState(EinState);
 
   const navigate = useNavigate();
-  const { createEin } = useEin();
+  const { createEin, deleteEin, updateEinStatus } = useEin();
+  // const { getSpecificCompany } = useCompany();
 
   const saveHandler = (einData: EinDocumentCreate) => {
     createEin(einData);
+    // getSpecificCompany(data?.company.id as number);
+  };
+
+  const deleteEinHandler = async () => {
+    if (!data) return;
+
+    await deleteEin(data.company.ein);
+    navigate(`${ROUTES.HOME}`);
+
+    setEin(null);
   };
 
   return data ? (
@@ -65,36 +81,51 @@ const Ein = () => {
           setOpen={setOpen}
           saveHandler={saveHandler}
           ein={data?.ein_number}
-          docType={data?.document_type}
-          lastVerifDate={data?.document_date}
-          companyName={data?.company_name || ''}
+          docType={data?.ein_documents[0]?.document_type || ''}
+          lastVerifDate={data?.ein_documents[0]?.document_date || ''}
+          companyName={data?.company.name || ''}
         />
       )}
-      <DeleteEinFileModal
-        open={openDeleteConfirmation}
-        setOpen={setOpenDeleteConfirmation}
-        proceedHandler={() => {}}
-      />
-      <UpdateEinNumberModal
-        open={openUpdateEin}
-        setOpen={setOpenUpdateEin}
-        value={data.ein_number}
-        proceedHandler={(newValue) => {
-          setData((prevState) => {
-            if (prevState) {
-              return { ...prevState, ein_number: newValue };
-            }
-            return prevState;
-          });
-        }}
-      />
-      <ChangeEINStatus
-        prevStatus={data?.status_display || ''}
-        open={openUpdateEinStatus}
-        setOpen={setOpenUpdateEinStatus}
-        submitHandler={setData}
-      />
-
+      {openDeleteConfirmation && (
+        <DeleteEinFileModal
+          open={openDeleteConfirmation}
+          setOpen={setOpenDeleteConfirmation}
+          proceedHandler={() => {}}
+        />
+      )}
+      {openDeleteEin && (
+        <DeleteEinModal
+          open={openDeleteEin}
+          setOpen={setOpenDeleteEin}
+          proceedHandler={deleteEinHandler}
+        />
+      )}
+      {openUpdateEin && (
+        <UpdateEinNumberModal
+          open={openUpdateEin}
+          setOpen={setOpenUpdateEin}
+          value={data.ein_number}
+          proceedHandler={(newValue) => {
+            setData((prevState) => {
+              if (prevState) {
+                return { ...prevState, ein_number: newValue };
+              }
+              return prevState;
+            });
+          }}
+        />
+      )}
+      {openUpdateEinStatus && (
+        <ChangeEINStatus
+          prevStatus={data?.status || ''}
+          open={openUpdateEinStatus}
+          setOpen={setOpenUpdateEinStatus}
+          submitHandler={(status) => {
+            updateEinStatus(data?.company.ein, status, data.ein_number);
+            setOpenUpdateEinStatus(false);
+          }}
+        />
+      )}
       <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
         <span
           onClick={(event) => {
@@ -123,9 +154,13 @@ const Ein = () => {
               !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
             )}
           />
+          <IconTrashX
+            onClick={() => setOpenDeleteEin(true)}
+            className="w-5 h-5 text-red-500 group-hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150 ml-1 absolute -right-6 top-1"
+          />
         </span>
         <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-          ein_{data.id}
+          ein_{data.company.ein}
           <MdOutlineCopyAll className="text-base ml-2" />
         </span>
       </div>
@@ -141,10 +176,12 @@ const Ein = () => {
           <span
             className={classNames(
               'text-nowrap w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-              statusBadge(data?.status_display || '')
+              statusBadge(
+                EIN_STATUSES[data.status as keyof typeof EIN_STATUSES] || ''
+              )
             )}
           >
-            {data.status_display}
+            {EIN_STATUSES[data.status as keyof typeof EIN_STATUSES] || '-'}
           </span>
         </div>
         <div className="flex flex-col gap-y-1 border-l pl-5 pr-3">
@@ -153,7 +190,7 @@ const Ein = () => {
             onClick={() => navigate(`${ROUTES.COMPANY}`)}
             className="text-nowrap flex items-center text-base font-semibold tracking-tight text-gray-700 group hover:cursor-pointer"
           >
-            {data?.company_name}
+            {data?.company.name}
             <MdOpenInNew className="text-gray-500 text-sm ml-2 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
           </span>
         </div>
@@ -162,19 +199,28 @@ const Ein = () => {
             Last Verification Date
           </dt>
           <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
-            {formatDateToLongForm(data?.document_date) || '-'}
+            {formatDateToLongForm(data?.last_verification_date || '') || '-'}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Document Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center flex-wrap">
-            <div
-              className={classNames(
-                'text-nowrap flex items-center text-xs px-2 py-1 font-medium rounded-md ring-1 ring-inset mr-1 mb-1 bg-gray-100 text-gray-700 ring-gray-600/20'
-              )}
-            >
-              {data?.document_type_display || '-'}
-            </div>
+            {data?.ein_documents.length > 0 ? (
+              data?.ein_documents.map((item) => (
+                <div
+                  key={item.id}
+                  className={classNames(
+                    'text-nowrap flex items-center text-xs px-2 py-1 font-medium rounded-md ring-1 ring-inset mr-1 mb-1 bg-gray-100 text-gray-700 ring-gray-600/20'
+                  )}
+                >
+                  {item.document_type_display}
+                </div>
+              ))
+            ) : (
+              <div className="text-nowrap flex items-center px-2 py-1 mr-1 mb-1 text-gray-700 font-semibold text-base">
+                -
+              </div>
+            )}
           </dd>
         </div>
         <div className="ml-auto mt-auto transition-all ease-in-out duration-150">
@@ -187,48 +233,52 @@ const Ein = () => {
           </button>
         </div>
       </dl>
-
-      {!data?.document && (
+      {!data?.ein_documents.length && (
         <div className="w-full flex items-center justify-center pb-2 pr-2 mt-8">
           <ActionUploadBlock setOpen={() => setOpen(true)} />
         </div>
       )}
-
-      {data.line1 && (
+      {data?.ein_documents?.length > 0 && (
         <>
           <SectionHeading title="Related Address" />
           <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
             <>
               <div>
-                <span>{data.line1}, </span>
-                {data.line2 && <span>{data.line2}</span>}
+                <span>{data.ein_documents[0].line1}, </span>
+                {data.ein_documents[0].line2 && (
+                  <span>{data.ein_documents[0].line2}</span>
+                )}
               </div>
               <div>
-                {data.line3 && <span>{data.line3}</span>}
-                {data.line4 && (
+                {data.ein_documents[0].line3 && (
+                  <span>{data.ein_documents[0].line3}</span>
+                )}
+                {data.ein_documents[0].line4 && (
                   <span>
-                    {data.line3 ? ',' : ''} {data.line4}
+                    {data.ein_documents[0].line3 ? ',' : ''}{' '}
+                    {data.ein_documents[0].line4}
                   </span>
                 )}
               </div>
               <div>
-                <span>{data.city}, </span>
+                <span>{data.ein_documents[0].city}, </span>
                 <span>
-                  {globalData.states.find((item) => item.id === data.state)
-                    ?.abbreviation || ''}{' '}
+                  {globalData.states.find(
+                    (item) => item.id === data.ein_documents[0].state
+                  )?.abbreviation || ''}{' '}
                 </span>
-                <span>{data.zip}</span>
+                <span>{data.ein_documents[0].zip}</span>
               </div>
               <div>
-                {globalData.countryies.find((item) => item.id === data.country)
-                  ?.full_name || '-'}
+                {globalData.countryies.find(
+                  (item) => item.id === data.ein_documents[0].country
+                )?.full_name || '-'}
               </div>
             </>
           </div>
         </>
       )}
-
-      {data?.document && (
+      {data?.ein_documents.length > 0 && (
         <>
           <SectionHeading
             title="Confirmation Document"

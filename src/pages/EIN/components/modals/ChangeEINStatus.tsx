@@ -1,21 +1,19 @@
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import React, { useState } from 'react';
 import ModalLayout from '../../../../components/shared/Modals/ModalLayout';
-import { SetterOrUpdater } from 'recoil';
 import { classNames } from '../../../../utils/helpers';
-import { EinDocumentGet } from '../../../../state/types/einTypes';
 
 interface IProps {
   open: boolean;
   setOpen: (value: boolean) => void;
-  submitHandler: SetterOrUpdater<EinDocumentGet | null>;
+  submitHandler: (status: string) => void;
   prevStatus: string;
 }
 
 const list = [
-  { display: 'Confirmation Needed', value: 'pending' },
-  { display: 'Confirmed', value: 'approved' },
-  { display: 'Cancelled', value: 'rejected' },
+  { display: 'Confirmation Needed', value: 'confirmation_needed' },
+  { display: 'Confirmed', value: 'confirmed' },
+  { display: 'Archived', value: 'archived' },
 ];
 
 const btnStyleHandler = (status: string) => {
@@ -40,18 +38,6 @@ const ChangeEINStatus = ({
   prevStatus,
 }: IProps) => {
   const [currentStatus, setCurrentStatus] = useState(prevStatus);
-  const submit = () => {
-    submitHandler((prevState) => {
-      if (prevState) {
-        return {
-          ...prevState,
-          status: currentStatus as 'pending' | 'approved' | 'rejected',
-        };
-      }
-      return prevState;
-    });
-    setOpen(false);
-  };
 
   return (
     <Dialog open={open} onClose={setOpen} className="fixed z-30">
@@ -64,7 +50,7 @@ const ChangeEINStatus = ({
                 actionBtnTitle="Update"
                 setOpen={setOpen}
                 cancelHandler={() => setOpen(false)}
-                submitHandler={submit}
+                submitHandler={() => submitHandler(currentStatus)}
               >
                 <div className="flex items-center justify-start flex-wrap gap-2">
                   {list.map((label) => (

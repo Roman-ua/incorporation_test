@@ -75,6 +75,7 @@ export function truncateString(text: string, maxLength: number) {
 }
 
 export function formatDateToLongForm(dateString: string): string {
+  if (!dateString) return '-';
   const parsedDate = parseISO(dateString);
   return format(parsedDate, 'MMMM dd, yyyy');
 }

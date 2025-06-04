@@ -18,7 +18,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const { getUserData } = UseUserData();
   const { getCompaniesList } = useCompany();
   const { getAllGlobalData } = useGlobalData();
-
+  console.log(dataRequested, 'dataRequested');
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 

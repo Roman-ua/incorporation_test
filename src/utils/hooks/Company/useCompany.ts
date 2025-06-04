@@ -10,10 +10,13 @@ import {
 import { toast } from 'sonner';
 import axios, { AxiosError } from 'axios';
 import useEin from '../EIN/useEin';
+import EinState from '../../../state/atoms/EIN';
 
 const useCompany = () => {
   const navigate = useNavigate();
   const setCompaniesList = useSetRecoilState(WorkspacesState);
+  const setEin = useSetRecoilState(EinState);
+
   const { getEin } = useEin();
 
   const getAllowedCompanyTypes = async () => {
@@ -25,6 +28,13 @@ const useCompany = () => {
     const response = await axiosInstance.get('/company/list/');
 
     if (!response.data.length) {
+      setCompaniesList((prevData) => {
+        return {
+          ...prevData,
+          dataRequested: true,
+        };
+      });
+
       navigate(ROUTES.WORKSPACES);
       return;
     }
@@ -35,7 +45,10 @@ const useCompany = () => {
       const lastSelectedCompany = response.data.find(
         (company: ICompanyData) => company.name === selectedCompanyName
       );
-      await getEin(lastSelectedCompany.id);
+
+      if (lastSelectedCompany?.ein) {
+        await getEin(lastSelectedCompany.ein);
+      }
     }
 
     setCompaniesList((prevData) => {
@@ -52,7 +65,6 @@ const useCompany = () => {
 
         result.current = lastSelectedCompany;
       }
-
       return result;
     });
   };
@@ -76,7 +88,7 @@ const useCompany = () => {
 
         localStorage.removeItem('finalFormData');
         localStorage.removeItem('multistep-form-data');
-
+        setEin(null);
         navigate(ROUTES.HOME);
       }
     } catch (error: unknown) {
@@ -94,10 +106,24 @@ const useCompany = () => {
     }
   };
 
+  const getSpecificCompany = async (id: number) => {
+    const response = await axiosInstance.get(`/company/${id}/`);
+    console.log(response, 'response');
+    if (response.data.message === 'Company details fetched successfully') {
+      setCompaniesList((prevState) => {
+        return {
+          ...prevState,
+          current: response.data.company_details,
+        };
+      });
+    }
+  };
+
   return {
     getCompaniesList,
     createCompanyHandler,
     getAllowedCompanyTypes,
+    getSpecificCompany,
   };
 };
 

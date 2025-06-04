@@ -60,9 +60,11 @@ const CompanyPage = () => {
   const globalData = useRecoilValue(GlobalDataState);
   const navigate = useNavigate();
   const { createEin } = useEin();
+  // const { getSpecificCompany } = useCompany();
 
   const saveHandler = (einData: EinDocumentCreate) => {
     createEin(einData);
+    // getSpecificCompany(workspacesState.current.id);
   };
 
   return workspacesState.current?.name ? (

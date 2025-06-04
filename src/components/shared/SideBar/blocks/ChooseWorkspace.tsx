@@ -3,7 +3,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { ROUTES } from '../../../../constants/navigation/routes';
 import { Preloader } from '../../../../pages/workspaces/components/Preloader';
 import WorkspacesState, {
@@ -14,6 +14,7 @@ import logo from '../../../../images/icon_square.png';
 import { IconBuildings } from '@tabler/icons-react';
 import { ICompanyData } from '../../../../state/types/company';
 import useEin from '../../../../utils/hooks/EIN/useEin';
+import EinState from '../../../../state/atoms/EIN';
 
 const ChooseWorkspace = () => {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ const ChooseWorkspace = () => {
   const [isHoveredDropdown, setIsHoveredDropdown] = useState(false);
 
   const [isOpen, setIsOpen] = React.useState(false);
+
+  const setEin = useSetRecoilState(EinState);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -153,7 +156,13 @@ const ChooseWorkspace = () => {
                         onClick={() => {
                           selectWorkspaceHandler(workspace);
                           setIsOpen(false);
-                          getEin(workspace.id);
+
+                          if (workspace?.ein) {
+                            getEin(workspace.ein);
+                          } else {
+                            setEin(null);
+                          }
+
                           localStorage.setItem(
                             'selected_company',
                             `${workspace?.name}`

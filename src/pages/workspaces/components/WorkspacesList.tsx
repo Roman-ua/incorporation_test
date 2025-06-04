@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import WorkspacesState from '../../../state/atoms/Workspaces';
 
 import { Preloader } from './Preloader';
@@ -12,6 +12,7 @@ import { EmptySection } from '../../../components/shared/EmptySection';
 import { IconBuildings } from '@tabler/icons-react';
 import { ICompanyData } from '../../../state/types/company';
 import useEin from '../../../utils/hooks/EIN/useEin';
+import EinState from '../../../state/atoms/EIN';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -32,6 +33,7 @@ export function WorkspacesList() {
   const navigate = useNavigate();
   const { getEin } = useEin();
 
+  const setEin = useSetRecoilState(EinState);
   const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWorkspace, setSelectedWorkspace] =
@@ -40,7 +42,13 @@ export function WorkspacesList() {
   const selectWorkspaceHandler = (workspace: ICompanyData) => {
     setSelectedWorkspace(workspace);
     setIsLoading(true);
-    getEin(workspace.id);
+
+    if (workspace?.ein) {
+      getEin(workspace.ein);
+    } else {
+      setEin(null);
+    }
+
     localStorage.setItem('selected_company', `${workspace?.name}`);
   };
 

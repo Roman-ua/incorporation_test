@@ -17,4 +17,5 @@ export const defaultCompanyItem = {
   type: { id: 0, name: '', full_name: null },
   zip: '',
   logoUrl: '',
+  ein: null,
 };
