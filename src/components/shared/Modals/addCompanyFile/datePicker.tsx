@@ -117,7 +117,7 @@ const DatePicker = ({
   const validateDateInput = (input: string, isKb: boolean) => {
     if (!isKb) {
       setInputValue(input);
-      setValue(input);
+      setValue(format(input, 'yyyy-MM-dd'));
     }
 
     const formats = [

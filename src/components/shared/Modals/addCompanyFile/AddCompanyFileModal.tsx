@@ -17,7 +17,6 @@ const labels = [
   'CP575G',
   '147C',
   'Faxed SS-4',
-  'W-9',
   'CP577',
   'CP577E',
 ];

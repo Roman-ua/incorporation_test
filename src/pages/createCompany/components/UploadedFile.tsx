@@ -89,17 +89,7 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
                 {progress === 100 ? (
                   <IconCheck className="w-3.5 h-3.5 text-green-500 ml-2" />
                 ) : (
-                  <div className="text-right text-xs text-gray-500 ml-2 relative pl-5">
-                    <span className="absolute left-0 top-0">
-                      {Math.max(
-                        0,
-                        parseFloat(
-                          (duration - (progress / 100) * duration).toFixed(1)
-                        )
-                      )}
-                    </span>
-                    sec left
-                  </div>
+                  <div></div>
                 )}
               </div>
             </div>

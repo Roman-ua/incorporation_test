@@ -13,7 +13,6 @@ import {
 import XBtn from '../../../../components/shared/buttons/XBtn';
 import ModalWrapperLayout from '../../../../components/shared/Modals/ModalWrapperLayout';
 import { inputError } from '../../../../constants/form/form';
-import { inputSimpleFocus } from '../../../../constants/form/form';
 import { EinDocumentCreate } from '../../../../state/types/einTypes';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../../state/atoms/GlobalData';
@@ -35,7 +34,6 @@ const labels = [
   { type: 'type3', label: 'CP575G' },
   { type: 'type4', label: '147C' },
   { type: 'type5', label: 'Faxed SS-4' },
-  { type: 'type6', label: 'W-9' },
   { type: 'type7', label: 'CP577' },
   { type: 'type8', label: 'CP577E' },
 ];
@@ -201,7 +199,7 @@ const AddEinModal = ({
               onChange={(e) => handleInputChange(e)}
               className={classNames(
                 'w-full px-3 py-2 border rounded-md focus:outline-none',
-                mandatoryError && !einNumber ? inputError : inputSimpleFocus
+                mandatoryError && !einNumber ? inputError : ''
               )}
               data-1p-ignore={true}
               type="text"
@@ -305,6 +303,9 @@ const AddEinModal = ({
                   Address on the Document
                 </div>
                 <SimpleAddressForm
+                  extraWrapperClass={
+                    'border border-sideBarBlue shadow-[0_0_0_1px_#0277ff]'
+                  }
                   disabledFlag={false}
                   inputCommonClasses={inputCommonClasses}
                   requiredError={mandatoryError}

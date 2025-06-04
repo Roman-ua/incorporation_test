@@ -14,7 +14,6 @@ export const fileLabels = [
   { title: 'CP575G', value: 'CP575G' },
   { title: '147C', value: '147C' },
   { title: 'Faxed SS-4', value: 'Faxed SS-4' },
-  { title: 'W-9', value: 'W-9' },
   { title: 'CP577', value: 'CP577' },
   { title: 'CP577E', value: 'CP577E' },
 ];
@@ -24,5 +23,7 @@ export const inputError =
 
 export const inputSimpleFocus =
   'focus:ring-2 focus:ring-black focus:border-transparent';
+export const inputFocusBlue =
+  'focus:ring-2 focus:ring-sideBarBlue focus:border-transparent';
 export const inputStyle =
   'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0';

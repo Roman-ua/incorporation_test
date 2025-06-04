@@ -53,14 +53,6 @@ const mockFiles = [
     date: 'November 23, 2021',
   },
   {
-    id: 6,
-    icon: 'W-9',
-    name: 'File Six',
-    label: 'W-9',
-    type: 'pdf',
-    date: 'November 23, 2021',
-  },
-  {
     id: 7,
     icon: 'CP577',
     name: 'File Seven',

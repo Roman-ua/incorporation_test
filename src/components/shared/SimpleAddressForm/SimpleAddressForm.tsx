@@ -16,6 +16,7 @@ interface IProps {
   countryDisabled: boolean;
   setData: (key: string, value: string) => void;
   stateDisabled?: boolean;
+  extraWrapperClass?: string;
 }
 
 const addressFieldsMock = [
@@ -24,6 +25,7 @@ const addressFieldsMock = [
 ];
 
 const SimpleAddressForm = ({
+  extraWrapperClass,
   disabledFlag,
   inputCommonClasses,
   requiredError,
@@ -69,6 +71,9 @@ const SimpleAddressForm = ({
     return index < 3 && index === addressFields.length - 1 && !disabledFlag;
   };
 
+  const borderFocusState =
+    extraWrapperClass || 'border border-black shadow-[0_0_0_1px_#000]';
+
   return (
     <div
       onFocus={() => setFocused(true)}
@@ -76,7 +81,7 @@ const SimpleAddressForm = ({
       className={classNames(
         'rounded-md border w-full',
         'transition-all duration-150 ease-in-out',
-        focused ? 'border border-black shadow-[0_0_0_1px_#000]' : '',
+        focused ? borderFocusState : '',
         !focused ? 'bg-inputBackground' : 'bg-white'
       )}
     >

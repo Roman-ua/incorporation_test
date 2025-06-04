@@ -33,8 +33,8 @@ const EinFilesSection = ({ data }: IProps) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(link.href);
     } catch (err) {
-      console.error('Ошибка скачивания:', err);
-      alert('Не удалось скачать файл');
+      console.error('Error downloading file:', err);
+      alert('Failed to download file');
     }
   };
 
@@ -54,7 +54,7 @@ const EinFilesSection = ({ data }: IProps) => {
           <div className="w-[20%] pr-2 flex flex-col items-start justify-start font-bold text-gray-900">
             {formatDateToLongForm(item.document_date)}
             <span className="font-normal text-gray-700 text-xs">
-              {data.company.name}
+              {item.company_name}
             </span>
           </div>
           <div className="w-[15%] px-2 flex items-center justify-start">
