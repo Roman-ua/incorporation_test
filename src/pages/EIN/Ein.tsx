@@ -206,16 +206,13 @@ const Ein = () => {
           <dt className="text-sm text-gray-500">Document Type</dt>
           <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center flex-wrap">
             {data?.ein_documents.length > 0 ? (
-              data?.ein_documents.map((item) => (
-                <div
-                  key={item.id}
-                  className={classNames(
-                    'text-nowrap flex items-center text-xs px-2 py-1 font-medium rounded-md ring-1 ring-inset mr-1 mb-1 bg-gray-100 text-gray-700 ring-gray-600/20'
-                  )}
-                >
-                  {item.document_type_display}
-                </div>
-              ))
+              <div
+                className={classNames(
+                  'text-nowrap flex items-center text-xs px-2 py-1 font-medium rounded-md ring-1 ring-inset mr-1 mb-1 bg-gray-100 text-gray-700 ring-gray-600/20'
+                )}
+              >
+                {data?.ein_documents[0]?.document_type_display}
+              </div>
             ) : (
               <div className="text-nowrap flex items-center px-2 py-1 mr-1 mb-1 text-gray-700 font-semibold text-base">
                 -

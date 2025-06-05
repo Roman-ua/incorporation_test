@@ -4,13 +4,13 @@ import React from 'react';
 
 import { ArrowUpRight, CircleUser, LogOut } from 'lucide-react';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-import { TbHelp } from 'react-icons/tb';
 import { classNames } from '../../../../utils/helpers';
 import { useRecoilValue } from 'recoil';
 import UserProfileState from '../../../../state/atoms/UserProfile';
 import UseUserData from '../../../../utils/hooks/UserData/UseUserData';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../../constants/navigation/routes';
+import { PiChatCircleDotsBold } from 'react-icons/pi';
 const UserProfile = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const userData = useRecoilValue(UserProfileState);
@@ -54,8 +54,8 @@ const UserProfile = () => {
             'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80 hover:cursor-pointer'
           )}
         >
-          <TbHelp className="h-4 w-4" />
-          <span>Get Help</span>
+          <PiChatCircleDotsBold className="h-4 w-4" />
+          <span>Contact us</span>
         </a>
       </div>
       <div className="p-2 bg-zinc-50">

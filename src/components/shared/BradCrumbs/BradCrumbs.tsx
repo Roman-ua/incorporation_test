@@ -18,8 +18,8 @@ import {
 } from 'lucide-react';
 import { IconFileInvoice } from '@tabler/icons-react';
 import { classNames } from '../../../utils/helpers';
-import CompanyState from '../../../state/atoms/Company';
 import { useRecoilValue } from 'recoil';
+import WorkspacesState from '../../../state/atoms/Workspaces';
 
 const iconHandler = (label: string): BreadcrumbItem['icon'] => {
   switch (label) {
@@ -44,23 +44,31 @@ const iconHandler = (label: string): BreadcrumbItem['icon'] => {
 
 export default function Breadcrumbs() {
   const location = useLocation();
-  const companyData = useRecoilValue(CompanyState);
+  const { current } = useRecoilValue(WorkspacesState);
 
   const path = location.pathname.split('/').filter(Boolean);
 
   const label = path[path.length - 1] || 'dashboard';
   const Icon = iconHandler(label);
 
-  const SecondPart = ({ path, value }: { path: string; value: string }) => {
-    if (path === 'dashboard' && value) {
+  const SecondPart = ({ path }: { path: string }) => {
+    if (path === 'ein') {
       return (
         <>
           <ChevronRight className="h-3 w-3 text-gray-900" />
-          <span>{value}</span>
+          <span>EIN (Tax ID)</span>
         </>
       );
     }
+
     return <></>;
+  };
+
+  const FirstPart = ({ path, value }: { path: string; value: string }) => {
+    if (path === 'ein' && value) {
+      return <span>{value}</span>;
+    }
+    return <span className="capitalize">{label}</span>;
   };
 
   return (
@@ -72,8 +80,8 @@ export default function Breadcrumbs() {
     >
       <Icon className="h-3.5 w-3.5" />
       <ChevronRight className="h-3 w-3 text-gray-900" />
-      <span className="capitalize">{label}</span>
-      <SecondPart path={label} value={companyData?.name} />
+      <FirstPart path={label} value={current?.name} />
+      <SecondPart path={label} />
     </div>
   );
 }
