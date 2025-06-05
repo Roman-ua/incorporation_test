@@ -6,6 +6,7 @@ const useGlobalData = () => {
   const setGlobalData = useSetRecoilState(GlobalDataState);
   const getAllGlobalData = async () => {
     const data = {
+      dataRequested: false,
       countryies: [],
       states: [],
       statuses: [],
@@ -24,6 +25,7 @@ const useGlobalData = () => {
     const respTypes = await axiosInstance.get('/company/types/');
     data.types = respTypes.data;
 
+    data.dataRequested = true;
     setGlobalData(data);
   };
   return { getAllGlobalData };

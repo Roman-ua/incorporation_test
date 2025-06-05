@@ -6,6 +6,7 @@ import UserProfileState from '../../state/atoms/UserProfile';
 import useCompany from '../../utils/hooks/Company/useCompany';
 import WorkspacesState from '../../state/atoms/Workspaces';
 import useGlobalData from '../../utils/hooks/GlobalData/useGlobalData';
+import GlobalDataState from '../../state/atoms/GlobalData';
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [authChecking, setAuthChecking] = useState(true);
   const userData = useRecoilValue(UserProfileState);
   const { dataRequested } = useRecoilValue(WorkspacesState);
+  const globalData = useRecoilValue(GlobalDataState);
   const { getUserData } = UseUserData();
   const { getCompaniesList } = useCompany();
   const { getAllGlobalData } = useGlobalData();
@@ -81,7 +83,12 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
     }
   }, []);
 
-  if (authChecking || !userData.data.id || !dataRequested) {
+  if (
+    authChecking ||
+    !userData.data.id ||
+    !dataRequested ||
+    !globalData.dataRequested
+  ) {
     // Render a loading indicator while the authentication status is being confirmed
     return <PageLoader />; // Replace with an actual loader/spinner if available
   }
