@@ -20,6 +20,8 @@ import { IconFileInvoice } from '@tabler/icons-react';
 import { classNames } from '../../../utils/helpers';
 import { useRecoilValue } from 'recoil';
 import WorkspacesState from '../../../state/atoms/Workspaces';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../../../constants/navigation/routes';
 
 const iconHandler = (label: string): BreadcrumbItem['icon'] => {
   switch (label) {
@@ -66,7 +68,7 @@ export default function Breadcrumbs() {
 
   const FirstPart = ({ path, value }: { path: string; value: string }) => {
     if (path === 'ein' && value) {
-      return <span>{value}</span>;
+      return <Link to={`${ROUTES.HOME}`}>{value}</Link>;
     }
     return <span className="capitalize">{label}</span>;
   };
@@ -74,8 +76,7 @@ export default function Breadcrumbs() {
   return (
     <div
       className={classNames(
-        'flex items-center',
-        'pointer-events-none font-medium py-2 px-4 flex flex-wrap items-center gap-1.5 text-sm'
+        'font-medium py-2 px-4 flex flex-wrap items-center gap-1.5 text-sm'
       )}
     >
       <Icon className="h-3.5 w-3.5" />

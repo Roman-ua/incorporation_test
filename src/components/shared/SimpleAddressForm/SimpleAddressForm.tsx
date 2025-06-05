@@ -17,6 +17,7 @@ interface IProps {
   setData: (key: string, value: string) => void;
   stateDisabled?: boolean;
   extraWrapperClass?: string;
+  disableExtraLines?: boolean;
 }
 
 const addressFieldsMock = [
@@ -27,6 +28,7 @@ const addressFieldsMock = [
 const SimpleAddressForm = ({
   extraWrapperClass,
   disabledFlag,
+  disableExtraLines,
   inputCommonClasses,
   requiredError,
   countryDisabled,
@@ -110,7 +112,7 @@ const SimpleAddressForm = ({
               placeholder={field.title}
             />
             <div className="absolute right-2 top-1/2 -translate-y-2/4">
-              {moreFieldAllowed(index) && (
+              {moreFieldAllowed(index) && !disableExtraLines && (
                 <div
                   onClick={() => {
                     if (addressFields.length < 4) {
@@ -163,7 +165,9 @@ const SimpleAddressForm = ({
           className={classNames(
             inputCommonClasses,
             'min-w-[110px] max-w-[110px] border-t-0 border-r-0 border-l-gray-200',
-            requiredError && !data?.zip ? 'bg-red-50' : 'bg-transparent'
+            requiredError && (!data?.zip || data.zip?.length !== 5)
+              ? 'bg-red-50'
+              : 'bg-transparent'
           )}
           type="text"
           value={data?.zip}

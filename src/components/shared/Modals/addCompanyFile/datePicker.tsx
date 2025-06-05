@@ -96,12 +96,14 @@ interface IProps {
   mandatoryError?: boolean;
   setValue: (value: string) => void;
   extraStyles?: string;
+  disableFuture?: boolean;
 }
 const DatePicker = ({
   value,
   setValue,
   mandatoryError,
   extraStyles,
+  disableFuture,
 }: IProps) => {
   const dateRef = React.useRef(null);
   const inputRef = React.useRef(null);
@@ -200,6 +202,7 @@ const DatePicker = ({
             weekStart={1}
             inline
             theme={customTheme}
+            maxDate={disableFuture ? today : undefined}
             onChange={(date) => {
               if (date === null) {
                 setInputValue('');

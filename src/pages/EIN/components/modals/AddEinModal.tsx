@@ -87,6 +87,7 @@ const AddEinModal = ({
       return !!einNumber;
     } else {
       return (
+        address.zip?.length === 5 &&
         !!einNumber &&
         !!selectedDocType &&
         !!companyNameOnDock &&
@@ -227,7 +228,7 @@ const AddEinModal = ({
               <div className="w-full">
                 <FileDownloadProgress
                   deleteFileHandler={deleteFileHandler}
-                  fileName={truncateString(selectedFile.name, 15)}
+                  fileName={truncateString(selectedFile.name, 30)}
                   fileSize={`${bytesToMB(selectedFile?.size)} MB`}
                   fileFormat={getFileExtension(selectedFile)}
                   duration={3}
@@ -253,6 +254,7 @@ const AddEinModal = ({
                 Document Date
               </div>
               <DatePicker
+                disableFuture={true}
                 mandatoryError={mandatoryError}
                 value={dateValue}
                 setValue={setDateValue}
@@ -303,6 +305,7 @@ const AddEinModal = ({
                   Address on the Document
                 </div>
                 <SimpleAddressForm
+                  disableExtraLines={true}
                   extraWrapperClass={
                     'border border-sideBarBlue shadow-[0_0_0_1px_#0277ff]'
                   }
