@@ -16,6 +16,9 @@ import { inputError } from '../../../../constants/form/form';
 import { EinDocumentCreate } from '../../../../state/types/einTypes';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../../state/atoms/GlobalData';
+import { LockKeyhole } from 'lucide-react';
+import { BiEditAlt } from 'react-icons/bi';
+import TooltipWrapper from '../../../../components/root/IconWithTooltipWrapper';
 
 interface IProps {
   isOpen: boolean;
@@ -57,6 +60,9 @@ const AddEinModal = ({
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>(
     companyName || ''
   );
+
+  const [isCompanyNameDisabled, setIsCompanyNameDisabled] =
+    React.useState(!!companyName);
   const [isNumberOnly, setIsNumberOnly] = React.useState(isOnlyNumber);
   const [selectedDocType, setSelectedDocType] = React.useState(docType || '');
   const [mandatoryError, setMandatoryError] = React.useState(false);
@@ -188,7 +194,7 @@ const AddEinModal = ({
             </h2>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 relative">
             <label
               htmlFor="EIN"
               className="block text-sm font-medium text-slate-700"
@@ -200,13 +206,21 @@ const AddEinModal = ({
               onChange={(e) => handleInputChange(e)}
               className={classNames(
                 'w-full px-3 py-2 border rounded-md focus:outline-none',
-                mandatoryError && !einNumber ? inputError : ''
+                mandatoryError && !einNumber ? inputError : '',
+                !!ein && 'opacity-50'
               )}
               data-1p-ignore={true}
               type="text"
               placeholder="EIN number"
               value={einNumber}
             />
+            {!!ein && (
+              <div className="absolute right-2.5 top-[46%]">
+                <TooltipWrapper text="EIN number can not be edited">
+                  <LockKeyhole className="w-4 h-4 text-gray-700 opacity-50" />
+                </TooltipWrapper>
+              </div>
+            )}
           </div>
           {isNumberOnly && (
             <div
@@ -260,11 +274,12 @@ const AddEinModal = ({
                 setValue={setDateValue}
               />
             </div>
-            <div className="mt-6">
+            <div className="mt-6 relative">
               <div className="text-gray-700 text-sm mb-2 font-bold">
                 Company Name on the Document
               </div>
               <input
+                disabled={isCompanyNameDisabled}
                 onChange={(e) => setCompanyNameOnDock(e.target.value)}
                 className={classNames(
                   'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
@@ -274,6 +289,23 @@ const AddEinModal = ({
                 placeholder="Company Name"
                 value={companyNameOnDock}
               />
+              {!!isCompanyNameDisabled && (
+                <div className="absolute right-8 top-[58%]">
+                  <TooltipWrapper text="Edit company name">
+                    <BiEditAlt
+                      onClick={() => setIsCompanyNameDisabled(false)}
+                      className="w-4 h-4 text-gray-700 hover:cursor-pointer opacity-50 hover:opacity-100 transition-all duration-150 ease-in-out"
+                    />
+                  </TooltipWrapper>
+                </div>
+              )}
+              {!!isCompanyNameDisabled && (
+                <div className="absolute right-2.5 top-[58%]">
+                  <TooltipWrapper text="Company name can be edited">
+                    <LockKeyhole className="w-4 h-4 text-gray-700 opacity-50" />
+                  </TooltipWrapper>
+                </div>
+              )}
             </div>
 
             <div className="mt-6">

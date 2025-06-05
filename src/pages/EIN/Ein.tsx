@@ -81,8 +81,8 @@ const Ein = () => {
           setOpen={setOpen}
           saveHandler={saveHandler}
           ein={data?.ein_number}
-          docType={data?.ein_documents[0]?.document_type || ''}
-          lastVerifDate={data?.ein_documents[0]?.document_date || ''}
+          docType={''}
+          lastVerifDate={''}
           companyName={data?.company.name || ''}
         />
       )}
