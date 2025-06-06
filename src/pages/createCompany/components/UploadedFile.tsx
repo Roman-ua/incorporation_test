@@ -74,7 +74,7 @@ const FileDownloadProgress: React.FC<FileDownloadProgressProps> = ({
           wrapperStyles || ''
         )}
       >
-        <div className="flex-1 hover:cursor-pointer">
+        <div className="flex-1">
           <div
             onClick={handleFileClick}
             className="flex items-center justify-start gap-2"

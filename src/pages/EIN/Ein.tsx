@@ -242,9 +242,9 @@ const Ein = () => {
           <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
             <>
               <div>
-                <span>{data.ein_documents[0].line1}, </span>
+                <span>{data.ein_documents[0].line1}</span>
                 {data.ein_documents[0].line2 && (
-                  <span>{data.ein_documents[0].line2}</span>
+                  <span>, {data.ein_documents[0].line2}</span>
                 )}
               </div>
               <div>

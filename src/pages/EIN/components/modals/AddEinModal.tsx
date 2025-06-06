@@ -290,19 +290,12 @@ const AddEinModal = ({
                 value={companyNameOnDock}
               />
               {!!isCompanyNameDisabled && (
-                <div className="absolute right-8 top-[58%]">
+                <div className="absolute right-2.5 top-[58%]">
                   <TooltipWrapper text="Edit company name">
                     <BiEditAlt
                       onClick={() => setIsCompanyNameDisabled(false)}
                       className="w-4 h-4 text-gray-700 hover:cursor-pointer opacity-50 hover:opacity-100 transition-all duration-150 ease-in-out"
                     />
-                  </TooltipWrapper>
-                </div>
-              )}
-              {!!isCompanyNameDisabled && (
-                <div className="absolute right-2.5 top-[58%]">
-                  <TooltipWrapper text="Company name can be edited">
-                    <LockKeyhole className="w-4 h-4 text-gray-700 opacity-50" />
                   </TooltipWrapper>
                 </div>
               )}
