@@ -6,6 +6,9 @@ import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import { EinDocumentGet } from '../../../state/types/einTypes';
 import useEin from '../../../utils/hooks/EIN/useEin';
+import { AxiosError } from 'axios';
+import { toast } from 'sonner';
+import axios from 'axios';
 
 interface IProps {
   data: EinDocumentGet;
@@ -32,9 +35,17 @@ const EinFilesSection = ({ data }: IProps) => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(link.href);
-    } catch (err) {
-      console.error('Error downloading file:', err);
-      alert('Failed to download file');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 

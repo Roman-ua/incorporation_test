@@ -24,7 +24,16 @@ const useCompany = () => {
       const response = await axiosInstance.get('/company/types/');
       console.log(response, 'response');
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
@@ -73,7 +82,16 @@ const useCompany = () => {
         return result;
       });
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
@@ -126,7 +144,16 @@ const useCompany = () => {
         });
       }
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 

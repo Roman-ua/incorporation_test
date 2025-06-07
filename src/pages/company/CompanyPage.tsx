@@ -145,7 +145,7 @@ const CompanyPage = () => {
             }}
             className={classNames(
               'text-nowrap text-base  tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer',
-              workspacesState.current?.taxId
+              workspacesState.current?.ein
                 ? 'font-semibold'
                 : 'hover:text-mainBlue'
             )}

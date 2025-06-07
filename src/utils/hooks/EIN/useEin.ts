@@ -4,6 +4,10 @@ import WorkspacesState from '../../../state/atoms/Workspaces';
 import { EinDocumentCreate } from '../../../state/types/einTypes';
 import EinState from '../../../state/atoms/EIN';
 
+import { AxiosError } from 'axios';
+import { toast } from 'sonner';
+import axios from 'axios';
+
 const useEin = () => {
   const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
   const setEin = useSetRecoilState(EinState);
@@ -31,7 +35,16 @@ const useEin = () => {
         await getEin(compnyResponse.data.company_details.ein);
       }
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
@@ -49,7 +62,16 @@ const useEin = () => {
         setEin(einElement || null);
       }
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
@@ -66,6 +88,10 @@ const useEin = () => {
         if (response.data.ein) {
           await getEin(response.data.ein.id);
         }
+
+        toast.success('Success', {
+          description: `EIN ${data.ein_number} created successfully`,
+        });
 
         return;
       }
@@ -91,8 +117,21 @@ const useEin = () => {
       );
 
       await updateLocalCompany();
-    } catch (error) {
-      console.log(error, 'error');
+
+      toast.success('Success', {
+        description: `EIN ${data.ein_number} created successfully`,
+      });
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
@@ -100,8 +139,21 @@ const useEin = () => {
     try {
       await axiosInstance.delete(`/company/ein/${id}/`);
       await updateLocalCompany();
+
+      toast.success('Success', {
+        description: `EIN deleted successfully`,
+      });
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
@@ -112,8 +164,21 @@ const useEin = () => {
       if (workspacesState.current.ein) {
         await getEin(workspacesState.current.ein);
       }
+
+      toast.success('Success', {
+        description: `EIN document deleted successfully`,
+      });
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
@@ -132,8 +197,21 @@ const useEin = () => {
       if (workspacesState.current.ein) {
         await getEin(workspacesState.current.ein);
       }
+
+      toast.success('Success', {
+        description: `EIN status updated successfully`,
+      });
     } catch (error) {
-      console.log(error, 'error');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.error('Error!', {
+          description: axiosError.message ?? 'Unknown error',
+        });
+      } else {
+        toast.error('Unexpected Error', {
+          description: 'Something went wrong',
+        });
+      }
     }
   };
 
