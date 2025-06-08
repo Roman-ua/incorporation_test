@@ -18,7 +18,6 @@ import RenderEmails from './pages/emails/Emails';
 import ReportPage from './pages/report/ReportPage';
 import AnnualReportReview from './pages/report/AnnualReportReview';
 import AddFullReportProcess from './pages/report/components/AddFullReportProcess';
-import RecoverPasswordPage from './pages/login/RecoverPAsswordPage';
 import PersonPageDetails from './pages/person/PersonPageDetails';
 import People from './pages/people/People';
 import AddPersonProcess from './pages/person/processes/addPersonProcess/AddPersonProcess';
@@ -78,10 +77,6 @@ function App() {
       <Router>
         <AuthWrapper>
           <Routes>
-            <Route
-              path={ROUTES.RECOVERY_PASS}
-              element={<RecoverPasswordPage />}
-            />
             <Route
               path={ROUTES.RECOVERY_PASS_CONFIRM}
               element={<RecoveryPassConfirm />}
