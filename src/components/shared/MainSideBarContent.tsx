@@ -7,6 +7,8 @@ import { LuClipboardList, LuConciergeBell, LuFileStack } from 'react-icons/lu';
 import { BiBuildings, BiReceipt } from 'react-icons/bi';
 import { IoPeopleOutline } from 'react-icons/io5';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { useRecoilValue } from 'recoil';
+import WorkspacesState from '../../state/atoms/Workspaces';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -36,6 +38,15 @@ const teams = [
 const MainSideBarContent = ({ pathname }: { pathname: string }) => {
   const [elementsOpen, setElementsOpen] = useState(false);
   const navigate = useNavigate();
+  const workspacesState = useRecoilValue(WorkspacesState);
+
+  const handleNavigate = (href: string) => {
+    if (href === ROUTES.HOME) {
+      return `${href}?id=${workspacesState.current.id}`;
+    } else {
+      return href;
+    }
+  };
 
   return (
     <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -44,7 +55,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
           {navigation.map((item) => (
             <li key={item.name}>
               <Link
-                to={item.href}
+                to={handleNavigate(item.href)}
                 className={classNames(
                   'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
                   item.href === pathname && 'text-sideBarBlue font-semibold'

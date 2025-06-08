@@ -53,8 +53,8 @@ export default function Breadcrumbs() {
   const label = path[path.length - 1] || 'dashboard';
   const Icon = iconHandler(label);
 
-  const SecondPart = ({ path }: { path: string }) => {
-    if (path === 'ein') {
+  const SecondPart = () => {
+    if (path.includes('ein')) {
       return (
         <>
           <ChevronRight className="h-3 w-3 text-gray-900" />
@@ -63,12 +63,34 @@ export default function Breadcrumbs() {
       );
     }
 
+    if (path.includes('invoices')) {
+      return (
+        <>
+          <ChevronRight className="h-3 w-3 text-gray-900" />
+          <span>Invoices</span>
+        </>
+      );
+    }
+
+    if (path.includes('dashboard')) {
+      return (
+        <>
+          {/* <ChevronRight className="h-3 w-3 text-gray-900" />
+          <span>C_{current?.id}</span> */}
+        </>
+      );
+    }
+
     return <></>;
   };
 
-  const FirstPart = ({ path, value }: { path: string; value: string }) => {
-    if (path === 'ein' && value) {
-      return <Link to={`${ROUTES.HOME}`}>{value}</Link>;
+  const FirstPart = ({ value }: { value: string }) => {
+    if (path.includes('dashboard')) {
+      return <span className="capitalize">Dashboard</span>;
+    }
+
+    if (path.includes('ein') && value) {
+      return <Link to={`${ROUTES.HOME}?id=${current?.id}`}>{value}</Link>;
     }
     return <span className="capitalize">{label}</span>;
   };
@@ -81,8 +103,8 @@ export default function Breadcrumbs() {
     >
       <Icon className="h-3.5 w-3.5" />
       <ChevronRight className="h-3 w-3 text-gray-900" />
-      <FirstPart path={label} value={current?.name} />
-      <SecondPart path={label} />
+      <FirstPart value={current?.name} />
+      <SecondPart />
     </div>
   );
 }

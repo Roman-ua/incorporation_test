@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axiosInstance from '../../../api/axios';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { useSetRecoilState } from 'recoil';
@@ -14,6 +14,9 @@ import EinState from '../../../state/atoms/EIN';
 
 const useCompany = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get('id');
+
   const setCompaniesList = useSetRecoilState(WorkspacesState);
   const setEin = useSetRecoilState(EinState);
 
@@ -53,11 +56,11 @@ const useCompany = () => {
         return;
       }
 
-      const selectedCompanyName = localStorage.getItem('selected_company');
+      const selectedCompanyId = id || localStorage.getItem('selected_company');
 
-      if (selectedCompanyName) {
+      if (selectedCompanyId) {
         const lastSelectedCompany = response.data.find(
-          (company: ICompanyData) => company.name === selectedCompanyName
+          (company: ICompanyData) => company.id === +selectedCompanyId
         );
 
         if (lastSelectedCompany?.ein) {
@@ -72,9 +75,9 @@ const useCompany = () => {
           dataRequested: true,
         };
 
-        if (selectedCompanyName) {
+        if (selectedCompanyId) {
           const lastSelectedCompany = response.data.find(
-            (company: ICompanyData) => company.name === selectedCompanyName
+            (company: ICompanyData) => company.id === +selectedCompanyId
           );
 
           result.current = lastSelectedCompany;
@@ -115,7 +118,7 @@ const useCompany = () => {
         localStorage.removeItem('finalFormData');
         localStorage.removeItem('multistep-form-data');
         setEin(null);
-        navigate(ROUTES.HOME);
+        navigate(`${ROUTES.HOME}?id=${response.data.id}`);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

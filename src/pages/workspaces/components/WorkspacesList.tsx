@@ -49,7 +49,7 @@ export function WorkspacesList() {
       setEin(null);
     }
 
-    localStorage.setItem('selected_company', `${workspace?.name}`);
+    localStorage.setItem('selected_company', `${workspace?.id}`);
   };
 
   const handleLoadingComplete = () => {

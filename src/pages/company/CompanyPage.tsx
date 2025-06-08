@@ -140,7 +140,9 @@ const CompanyPage = () => {
                 setOpen(true);
               } else {
                 event.preventDefault();
-                navigate(ROUTES.EIN);
+                navigate(
+                  `${ROUTES.EIN}?id=${workspacesState.current.id}&ein_id=${einState.company.ein}`
+                );
               }
             }}
             className={classNames(

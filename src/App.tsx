@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import { ROUTES } from './constants/navigation/routes';
 import ProtectedRoutes from './components/shared/ProtectedRoutes';
@@ -35,6 +30,7 @@ import ElementsNotions from './pages/elements/nested/ElementsNotions';
 import ElementsAddress from './pages/elements/nested/ElementsAddress';
 import WorkspacesPage from './pages/workspaces/WorkspacesPage';
 import AuthWrapper from './components/root/AuthWrapper';
+import RedirectPage from './pages/redirect/Redirect';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -134,10 +130,7 @@ function App() {
                 <Route path={ROUTES.EIN} element={<Ein />} />
               </Route>
             </Route>
-            <Route
-              path={ROUTES.REDIRECT}
-              element={<Navigate to={ROUTES.HOME} />}
-            />
+            <Route path={ROUTES.REDIRECT} element={<RedirectPage />} />
           </Routes>
         </AuthWrapper>
       </Router>
