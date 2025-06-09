@@ -75,7 +75,7 @@ const useEin = () => {
     }
   };
 
-  const createEin = async (data: EinDocumentCreate) => {
+  const createEin = async (data: EinDocumentCreate, documentFlag: boolean) => {
     try {
       if (!data.document) {
         const response = await axiosInstance.post(
@@ -89,8 +89,8 @@ const useEin = () => {
           await getEin(response.data.ein.id);
         }
 
-        toast.success('Success', {
-          description: `EIN ${data.ein_number} created successfully`,
+        toast.success('Tax ID Added', {
+          description: `Your Tax ID (EIN) has been successfully added to ${data.company_name}`,
         });
 
         return;
@@ -118,18 +118,23 @@ const useEin = () => {
 
       await updateLocalCompany();
 
-      toast.success('Success', {
-        description: `EIN ${data.ein_number} created successfully`,
-      });
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        toast.error('Error!', {
-          description: axiosError.message ?? 'Unknown error',
+      if (documentFlag) {
+        toast.success('Document Added', {
+          description: `Your ${data.document_type} confirmation document has been uploaded for ${data.company_name}`,
         });
       } else {
-        toast.error('Unexpected Error', {
-          description: 'Something went wrong',
+        toast.success('Tax ID Added', {
+          description: `Your Tax ID (EIN) has been successfully added to ${data.company_name}`,
+        });
+      }
+    } catch (error: unknown) {
+      if (documentFlag) {
+        toast.error('Oops', {
+          description: `We couldn’t upload your ${data.document_type} document for ${data.company_name}. Please try again.`,
+        });
+      } else {
+        toast.error('Oops', {
+          description: `We couldn’t add your Tax ID (EIN) for ${data.company_name}. Please try again.`,
         });
       }
     }
@@ -187,6 +192,7 @@ const useEin = () => {
     status: string,
     einNumber: string
   ) => {
+    console.log(status);
     try {
       await axiosInstance.patch(`/company/ein/${id}/`, {
         ein_number: einNumber,
@@ -198,9 +204,15 @@ const useEin = () => {
         await getEin(workspacesState.current.ein);
       }
 
-      toast.success('Success', {
-        description: `EIN status updated successfully`,
-      });
+      if (status === 'confirmed') {
+        toast.success('Tax ID Confirmed', {
+          description: `Your Tax ID (EIN) status for ${workspacesState.current.name} is now Confirmed.`,
+        });
+      } else {
+        toast.success('Success', {
+          description: `EIN status updated successfully`,
+        });
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;

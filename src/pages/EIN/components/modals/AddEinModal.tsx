@@ -22,13 +22,14 @@ import TooltipWrapper from '../../../../components/root/IconWithTooltipWrapper';
 
 interface IProps {
   isOpen: boolean;
-  setOpen: (value: boolean) => void;
+  setOpen: () => void;
   isOnlyNumber: boolean;
   companyName?: string;
-  saveHandler: (data: EinDocumentCreate) => void;
+  saveHandler: (data: EinDocumentCreate, documentFlag: boolean) => void;
   ein?: string;
   docType?: string;
   lastVerifDate?: string;
+  documentFlag: boolean;
 }
 
 const labels = [
@@ -54,6 +55,7 @@ const AddEinModal = ({
   lastVerifDate,
   docType,
   ein,
+  documentFlag,
 }: IProps) => {
   const [einNumber, setEinNumber] = React.useState<string>(ein || '');
   const [file, setFile] = React.useState<File | null>(null);
@@ -130,23 +132,26 @@ const AddEinModal = ({
       const countryId = countryies.find(
         (country) => country.full_name === address.country
       )?.id;
-      saveHandler({
-        ein_number: einNumber,
-        company_name: companyNameOnDock,
-        document_type: selectedDocType,
-        document_date: dateValue,
-        document: file,
-        line1: address.line1 || '',
-        line2: address?.line2,
-        line3: address?.line3,
-        line4: address?.line4,
-        city: address?.city || '',
-        state: stateId || 1,
-        zip: address?.zip || '',
-        country: countryId || 1,
-      });
+      saveHandler(
+        {
+          ein_number: einNumber,
+          company_name: companyNameOnDock,
+          document_type: selectedDocType,
+          document_date: dateValue,
+          document: file,
+          line1: address.line1 || '',
+          line2: address?.line2,
+          line3: address?.line3,
+          line4: address?.line4,
+          city: address?.city || '',
+          state: stateId || 1,
+          zip: address?.zip || '',
+          country: countryId || 1,
+        },
+        documentFlag
+      );
       cleanUpHandler();
-      setOpen(false);
+      setOpen();
     } else {
       setMandatoryError(true);
     }
@@ -179,7 +184,7 @@ const AddEinModal = ({
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   return (
-    <ModalWrapperLayout closeModal={() => setOpen(false)} isOpen={isOpen}>
+    <ModalWrapperLayout closeModal={setOpen} isOpen={isOpen}>
       <>
         <div className={classNames(isNumberOnly ? 'p-6' : 'pt-6 pl-6 pr-6')}>
           <div className="mb-6">
@@ -188,7 +193,7 @@ const AddEinModal = ({
               <XBtn
                 clickHandler={() => {
                   cleanUpHandler();
-                  setOpen(false);
+                  setOpen();
                 }}
               />
             </h2>
@@ -351,7 +356,7 @@ const AddEinModal = ({
             <div
               onClick={() => {
                 cleanUpHandler();
-                setOpen(false);
+                setOpen();
               }}
               className="mr-2 block px-3 py-2 text-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer"
             >

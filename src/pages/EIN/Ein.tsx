@@ -44,6 +44,7 @@ function classNames(...classes: (string | boolean)[]) {
 const Ein = () => {
   const [copied, setCopied] = React.useState('');
   const [open, setOpen] = useState(false);
+  const [dockumentFlag, setDocumentFlag] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [openUpdateEin, setOpenUpdateEin] = useState(false);
   const [openUpdateEinStatus, setOpenUpdateEinStatus] = useState(false);
@@ -58,9 +59,14 @@ const Ein = () => {
   const { createEin, deleteEin, updateEinStatus } = useEin();
   // const { getSpecificCompany } = useCompany();
 
-  const saveHandler = (einData: EinDocumentCreate) => {
-    createEin(einData);
+  const saveHandler = (einData: EinDocumentCreate, documentFlag: boolean) => {
+    createEin(einData, documentFlag);
     // getSpecificCompany(data?.company.id as number);
+  };
+
+  const closeEinModalHAndler = () => {
+    setOpen(false);
+    setDocumentFlag(false);
   };
 
   const deleteEinHandler = async () => {
@@ -78,7 +84,8 @@ const Ein = () => {
         <AddEinModal
           isOpen={open}
           isOnlyNumber={false}
-          setOpen={setOpen}
+          setOpen={closeEinModalHAndler}
+          documentFlag={dockumentFlag}
           saveHandler={saveHandler}
           ein={data?.ein_number}
           docType={''}
@@ -281,7 +288,10 @@ const Ein = () => {
             title="Confirmation Document"
             btnTitle="Upload Confirmation Document"
             removeMargin={true}
-            clickHandler={() => setOpen(true)}
+            clickHandler={() => {
+              setDocumentFlag(true);
+              setOpen(true);
+            }}
           />
           <EinFilesSection data={data} />
         </>

@@ -62,9 +62,13 @@ const CompanyPage = () => {
   const { createEin } = useEin();
   // const { getSpecificCompany } = useCompany();
 
-  const saveHandler = (einData: EinDocumentCreate) => {
-    createEin(einData);
+  const saveHandler = (einData: EinDocumentCreate, documentFlag: boolean) => {
+    createEin(einData, documentFlag);
     // getSpecificCompany(workspacesState.current.id);
+  };
+
+  const closeEinModalHandler = () => {
+    setOpen(false);
   };
 
   return workspacesState.current?.name ? (
@@ -73,7 +77,8 @@ const CompanyPage = () => {
         <AddEinModal
           isOpen={open}
           isOnlyNumber={true}
-          setOpen={setOpen}
+          setOpen={closeEinModalHandler}
+          documentFlag={false}
           companyName={workspacesState.current?.name || ''}
           saveHandler={saveHandler}
         />
