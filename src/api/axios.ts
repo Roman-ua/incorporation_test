@@ -44,7 +44,9 @@ axiosInstance.interceptors.response.use(
 
       const refreshToken = localStorage.getItem('refreshToken');
       if (!refreshToken) {
-        localStorage.clear();
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
         window.location.replace(
           `${process.env.REACT_APP_MAIN_URL}/user/auth0/authorize/`
         );
@@ -77,7 +79,8 @@ axiosInstance.interceptors.response.use(
 
           return axiosInstance(originalRequest);
         } else {
-          localStorage.clear();
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
           window.location.replace(
             `${process.env.REACT_APP_MAIN_URL}/user/auth0/authorize/`
           );
@@ -85,7 +88,9 @@ axiosInstance.interceptors.response.use(
         }
       } catch (err) {
         console.error('Token refresh failed:', err);
-        localStorage.clear();
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
         window.location.replace(
           `${process.env.REACT_APP_MAIN_URL}/user/auth0/authorize/`
         );
