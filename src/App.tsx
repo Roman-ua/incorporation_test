@@ -114,7 +114,7 @@ function App() {
                 <Route path={ROUTES.SERVICES} element={<Services />} />
                 <Route path={ROUTES.ORDERS} element={<Orders />} />
                 <Route path={ROUTES.INVOICES} element={<Invoices />} />
-                <Route path={`${ROUTES.HOME}`} element={<CompanyPage />} />
+                <Route path={`${ROUTES.HOME}/:id`} element={<CompanyPage />} />
                 <Route path={ROUTES.ACCOUNT} element={<Account />} />
                 <Route path={ROUTES.PEOPLE} element={<People />} />
                 <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
@@ -122,7 +122,7 @@ function App() {
                   path={`${ROUTES.PERSON}/:id`}
                   element={<PersonPageDetails />}
                 />
-                <Route path={ROUTES.EIN} element={<Ein />} />
+                <Route path={`${ROUTES.EIN}/:id/:ein`} element={<Ein />} />
               </Route>
             </Route>
             <Route path={ROUTES.REDIRECT} element={<RedirectPage />} />

@@ -73,7 +73,7 @@ const Ein = () => {
     if (!data) return;
 
     await deleteEin(data.company.ein);
-    navigate(`${ROUTES.HOME}?id=${data.company.id}`);
+    navigate(`${ROUTES.HOME}/c_${data.company.id}`);
 
     setEin(null);
   };

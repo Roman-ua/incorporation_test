@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../api/axios';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { useSetRecoilState } from 'recoil';
@@ -11,11 +11,11 @@ import { toast } from 'sonner';
 import axios, { AxiosError } from 'axios';
 import useEin from '../EIN/useEin';
 import EinState from '../../../state/atoms/EIN';
+import useCompanyIdFromUrl from './useCompanyIdBAsedLocation';
 
 const useCompany = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get('id');
+  const id = useCompanyIdFromUrl();
 
   const setCompaniesList = useSetRecoilState(WorkspacesState);
   const setEin = useSetRecoilState(EinState);
@@ -118,7 +118,7 @@ const useCompany = () => {
         localStorage.removeItem('finalFormData');
         localStorage.removeItem('multistep-form-data');
         setEin(null);
-        navigate(`${ROUTES.HOME}?id=${response.data.id}`);
+        navigate(`${ROUTES.HOME}/c_${response.data.id}`);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

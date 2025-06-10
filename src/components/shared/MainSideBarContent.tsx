@@ -42,7 +42,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
 
   const handleNavigate = (href: string) => {
     if (href === ROUTES.HOME) {
-      return `${href}?id=${workspacesState.current.id}`;
+      return `${href}/c_${workspacesState.current?.id}`;
     } else {
       return href;
     }

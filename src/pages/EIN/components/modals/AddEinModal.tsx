@@ -79,7 +79,6 @@ const AddEinModal = ({
     zip: '',
     state: '',
   });
-  console.log(address, 'address');
 
   const { states, countryies } = useRecoilValue(GlobalDataState);
   const setSelectedDocTypeHandler = (label: string) => {
@@ -90,18 +89,25 @@ const AddEinModal = ({
     }
   };
 
-  const validationHandler = (flag: boolean) => {
+  const validationHandler = (flag: boolean, type: string) => {
+    const checkFlag =
+      type === 'Screenshot'
+        ? !!einNumber &&
+          !!selectedDocType &&
+          !!companyNameOnDock &&
+          !!file?.size &&
+          !!dateValue
+        : address.zip?.length === 5 &&
+          !!einNumber &&
+          !!selectedDocType &&
+          !!companyNameOnDock &&
+          !!file?.size &&
+          !!dateValue;
+
     if (flag) {
       return !!einNumber;
     } else {
-      return (
-        address.zip?.length === 5 &&
-        !!einNumber &&
-        !!selectedDocType &&
-        !!companyNameOnDock &&
-        !!file?.size &&
-        !!dateValue
-      );
+      return checkFlag;
     }
   };
 
@@ -127,7 +133,7 @@ const AddEinModal = ({
   };
 
   const clickSaveHandler = () => {
-    if (validationHandler(isNumberOnly)) {
+    if (validationHandler(isNumberOnly, selectedDocType)) {
       const stateId = states.find((state) => state.name === address.state)?.id;
       const countryId = countryies.find(
         (country) => country.full_name === address.country
@@ -366,7 +372,7 @@ const AddEinModal = ({
               onClick={clickSaveHandler}
               className={classNames(
                 'ml-2 block rounded-md  px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer',
-                validationHandler(isNumberOnly)
+                validationHandler(isNumberOnly, selectedDocType)
                   ? 'bg-mainBlue hover:bg-sideBarBlue'
                   : 'bg-gray-500'
               )}

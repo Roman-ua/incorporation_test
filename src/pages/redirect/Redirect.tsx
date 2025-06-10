@@ -7,11 +7,11 @@ import WorkspacesState from '../../state/atoms/Workspaces';
 const RedirectPage = () => {
   const workspacesState = useRecoilValue(WorkspacesState);
 
-  if (!workspacesState.current.id) {
+  if (!workspacesState.current?.id) {
     return <Navigate to={ROUTES.WORKSPACES} />;
   }
 
-  return <Navigate to={`${ROUTES.HOME}?id=${workspacesState.current.id}`} />;
+  return <Navigate to={`${ROUTES.HOME}/c_${workspacesState.current?.id}`} />;
 };
 
 export default RedirectPage;

@@ -90,7 +90,7 @@ export default function Breadcrumbs() {
     }
 
     if (path.includes('ein') && value) {
-      return <Link to={`${ROUTES.HOME}?id=${current?.id}`}>{value}</Link>;
+      return <Link to={`${ROUTES.HOME}/c_${current?.id}`}>{value}</Link>;
     }
     return <span className="capitalize">{label}</span>;
   };

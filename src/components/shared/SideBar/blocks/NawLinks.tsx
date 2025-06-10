@@ -18,6 +18,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../../constants/navigation/routes';
 import { classNames } from '../../../../utils/helpers';
 
+import { useRecoilValue } from 'recoil';
+import WorkspacesState from '../../../../state/atoms/Workspaces';
+
 const navigationItems = [
   {
     id: 'Dashboard',
@@ -90,7 +93,7 @@ const hideInternal = true;
 const NawLinks = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
+  const workspacesState = useRecoilValue(WorkspacesState);
   const [activeItem, setActiveItem] = React.useState('home');
   const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
 
@@ -104,6 +107,13 @@ const NawLinks = () => {
   // Check if an item is expanded
   const isExpanded = (id: string) => expandedItems.includes(id);
 
+  const handleNavigate = (href: string) => {
+    if (href === ROUTES.HOME) {
+      return `${href}/c_${workspacesState.current?.id}`;
+    } else {
+      return href;
+    }
+  };
   return (
     <div className="flex-1 overflow-auto bg-zinc-50">
       {/* Navigation Section */}
@@ -116,7 +126,7 @@ const NawLinks = () => {
             return (
               <Link
                 key={item.id}
-                to={item.href}
+                to={handleNavigate(item.href)}
                 onClick={() => {
                   setActiveItem(item.id);
                 }}
