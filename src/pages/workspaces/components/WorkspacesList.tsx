@@ -88,7 +88,7 @@ export function WorkspacesList() {
         }
       />
       {workspacesState.list.length ? (
-        <div className="w-full overflow-hidden mb-12 container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-16 text-sm">
+        <div className="w-full overflow-hidden mb-12 container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-16 mt-3 text-sm">
           <div>
             <div
               className={`flex py-1 group text-xs transition-all ease-in-out duration-150 border-b border-gray-100`}
@@ -120,10 +120,10 @@ export function WorkspacesList() {
                       <img
                         src={workspace?.logoUrl}
                         alt={`${workspace?.name} logo`}
-                        className="mr-2 w-8 h-8 object-cover rounded-lg"
+                        className="mr-2 w-7 h-7 object-cover rounded-lg"
                       />
                     ) : (
-                      <div className="mr-2 flex-shrink-0 w-8 h-8 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+                      <div className="mr-2 flex-shrink-0 w-7 h-7 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
                         <IconBuildings />
                       </div>
                     )}
