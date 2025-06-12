@@ -25,11 +25,10 @@ interface IProps {
   setOpen: () => void;
   isOnlyNumber: boolean;
   companyName?: string;
-  saveHandler: (data: EinDocumentCreate, documentFlag: boolean) => void;
+  saveHandler: (data: EinDocumentCreate) => void;
   ein?: string;
   docType?: string;
   lastVerifDate?: string;
-  documentFlag: boolean;
 }
 
 const labels = [
@@ -55,7 +54,6 @@ const AddEinModal = ({
   lastVerifDate,
   docType,
   ein,
-  documentFlag,
 }: IProps) => {
   const [einNumber, setEinNumber] = React.useState<string>(ein || '');
   const [file, setFile] = React.useState<File | null>(null);
@@ -138,24 +136,21 @@ const AddEinModal = ({
       const countryId = countryies.find(
         (country) => country.full_name === address.country
       )?.id;
-      saveHandler(
-        {
-          ein_number: einNumber,
-          company_name: companyNameOnDock,
-          document_type: selectedDocType,
-          document_date: dateValue,
-          document: file,
-          line1: address.line1 || '',
-          line2: address?.line2,
-          line3: address?.line3,
-          line4: address?.line4,
-          city: address?.city || '',
-          state: stateId || 1,
-          zip: address?.zip || '',
-          country: countryId || 1,
-        },
-        documentFlag
-      );
+      saveHandler({
+        ein_number: einNumber,
+        company_name: companyNameOnDock,
+        document_type: selectedDocType,
+        document_date: dateValue,
+        document: file,
+        line1: address.line1 || '',
+        line2: address?.line2,
+        line3: address?.line3,
+        line4: address?.line4,
+        city: address?.city || '',
+        state: stateId || 1,
+        zip: address?.zip || '',
+        country: countryId || 1,
+      });
       cleanUpHandler();
       setOpen();
     } else {

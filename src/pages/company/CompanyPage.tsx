@@ -62,8 +62,8 @@ const CompanyPage = () => {
   const { createEin } = useEin();
   // const { getSpecificCompany } = useCompany();
 
-  const saveHandler = (einData: EinDocumentCreate, documentFlag: boolean) => {
-    createEin(einData, documentFlag);
+  const saveHandler = (einData: EinDocumentCreate) => {
+    createEin(einData);
     // getSpecificCompany(workspacesState.current.id);
   };
 
@@ -78,7 +78,6 @@ const CompanyPage = () => {
           isOpen={open}
           isOnlyNumber={true}
           setOpen={closeEinModalHandler}
-          documentFlag={false}
           companyName={workspacesState.current?.name || ''}
           saveHandler={saveHandler}
         />

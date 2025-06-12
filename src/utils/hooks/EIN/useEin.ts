@@ -3,10 +3,9 @@ import axiosInstance from '../../../api/axios';
 import WorkspacesState from '../../../state/atoms/Workspaces';
 import { EinDocumentCreate } from '../../../state/types/einTypes';
 import EinState from '../../../state/atoms/EIN';
-
-import { AxiosError } from 'axios';
+import { ErrorResponse } from '../../../state/types/errors';
+import { errorHandler, successHandler } from '../../helpers';
 import { toast } from 'sonner';
-import axios from 'axios';
 
 const useEin = () => {
   const [workspacesState, setWorkspacesState] = useRecoilState(WorkspacesState);
@@ -35,16 +34,8 @@ const useEin = () => {
         await getEin(compnyResponse.data.company_details.ein);
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        toast.error('Error!', {
-          description: axiosError.message ?? 'Unknown error',
-        });
-      } else {
-        toast.error('Unexpected Error', {
-          description: 'Something went wrong',
-        });
-      }
+      const errorResponse = error as ErrorResponse;
+      errorHandler(errorResponse);
     }
   };
 
@@ -62,20 +53,12 @@ const useEin = () => {
         setEin(einElement || null);
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        toast.error('Error!', {
-          description: axiosError.message ?? 'Unknown error',
-        });
-      } else {
-        toast.error('Unexpected Error', {
-          description: 'Something went wrong',
-        });
-      }
+      const errorResponse = error as ErrorResponse;
+      errorHandler(errorResponse);
     }
   };
 
-  const createEin = async (data: EinDocumentCreate, documentFlag: boolean) => {
+  const createEin = async (data: EinDocumentCreate) => {
     try {
       if (!data.document) {
         const response = await axiosInstance.post(
@@ -89,10 +72,10 @@ const useEin = () => {
           await getEin(response.data.ein.id);
         }
 
-        toast.success('Tax ID Added', {
-          description: `Your Tax ID (EIN) has been successfully added to ${data.company_name}`,
-        });
-
+        successHandler(
+          response.data.messages || [],
+          response.data.titles || []
+        );
         return;
       }
 
@@ -106,7 +89,7 @@ const useEin = () => {
         }
       });
 
-      await axiosInstance.post(
+      const responseEin = await axiosInstance.post(
         `/company/${workspacesState.current.id}/ein-documents/`,
         formData,
         {
@@ -118,25 +101,13 @@ const useEin = () => {
 
       await updateLocalCompany();
 
-      if (documentFlag) {
-        toast.success('Document Added', {
-          description: `Your ${data.document_type} confirmation document has been uploaded for ${data.company_name}`,
-        });
-      } else {
-        toast.success('Tax ID Added', {
-          description: `Your Tax ID (EIN) has been successfully added to ${data.company_name}`,
-        });
-      }
+      successHandler(
+        responseEin.data.messages || [],
+        responseEin.data.titles || []
+      );
     } catch (error: unknown) {
-      if (documentFlag) {
-        toast.error('Oops', {
-          description: `We couldn’t upload your ${data.document_type} document for ${data.company_name}. Please try again.`,
-        });
-      } else {
-        toast.error('Oops', {
-          description: `We couldn’t add your Tax ID (EIN) for ${data.company_name}. Please try again.`,
-        });
-      }
+      const errorResponse = error as ErrorResponse;
+      errorHandler(errorResponse);
     }
   };
 
@@ -149,16 +120,8 @@ const useEin = () => {
         description: `EIN deleted successfully`,
       });
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        toast.error('Error!', {
-          description: axiosError.message ?? 'Unknown error',
-        });
-      } else {
-        toast.error('Unexpected Error', {
-          description: 'Something went wrong',
-        });
-      }
+      const errorResponse = error as ErrorResponse;
+      errorHandler(errorResponse);
     }
   };
 
@@ -174,16 +137,8 @@ const useEin = () => {
         description: `EIN document deleted successfully`,
       });
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        toast.error('Error!', {
-          description: axiosError.message ?? 'Unknown error',
-        });
-      } else {
-        toast.error('Unexpected Error', {
-          description: 'Something went wrong',
-        });
-      }
+      const errorResponse = error as ErrorResponse;
+      errorHandler(errorResponse);
     }
   };
 
@@ -192,9 +147,8 @@ const useEin = () => {
     status: string,
     einNumber: string
   ) => {
-    console.log(status);
     try {
-      await axiosInstance.patch(`/company/ein/${id}/`, {
+      const response = await axiosInstance.patch(`/company/ein/${id}/`, {
         ein_number: einNumber,
         status: status,
         last_verification_date: new Date().toISOString().split('T')[0],
@@ -204,26 +158,10 @@ const useEin = () => {
         await getEin(workspacesState.current.ein);
       }
 
-      if (status === 'confirmed') {
-        toast.success('Tax ID Confirmed', {
-          description: `Your Tax ID (EIN) status for ${workspacesState.current.name} is now Confirmed.`,
-        });
-      } else {
-        toast.success('Success', {
-          description: `EIN status updated successfully`,
-        });
-      }
+      successHandler(response.data.messages || [], response.data.titles || []);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        toast.error('Error!', {
-          description: axiosError.message ?? 'Unknown error',
-        });
-      } else {
-        toast.error('Unexpected Error', {
-          description: 'Something went wrong',
-        });
-      }
+      const errorResponse = error as ErrorResponse;
+      errorHandler(errorResponse);
     }
   };
 

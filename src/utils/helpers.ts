@@ -1,7 +1,9 @@
 import { AddressFields } from '../interfaces/interfaces';
 import { clsx, type ClassValue } from 'clsx';
 import { format, parseISO } from 'date-fns';
+import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
+import { ErrorResponse } from '../state/types/errors';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -89,4 +91,25 @@ export const bytesToMB = (bytes: number, decimals = 2): number => {
 export const getFileExtension = (file: File): string => {
   const name = file.name;
   return name.substring(name.lastIndexOf('.')).toLowerCase();
+};
+
+export const errorHandler = (errorResponse: ErrorResponse) => {
+  if (errorResponse?.response?.data?.errors) {
+    errorResponse?.response?.data?.errors?.forEach((error, index) => {
+      toast.error(errorResponse?.response?.data?.titles[index], {
+        description: error,
+      });
+    });
+  }
+};
+
+export const successHandler = (
+  successResponseText: string[],
+  successResponseTitles: string[]
+) => {
+  successResponseText.forEach((text, index) => {
+    toast.success(successResponseTitles[index], {
+      description: text,
+    });
+  });
 };
