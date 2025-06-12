@@ -242,7 +242,7 @@ const Ein = () => {
           <ActionUploadBlock setOpen={() => setOpen(true)} />
         </div>
       )}
-      {data?.ein_documents?.length > 0 && (
+      {data?.ein_documents?.length > 0 && data.ein_documents[0]?.line1 && (
         <>
           <SectionHeading title="Related Address" />
           <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">

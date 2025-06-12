@@ -78,7 +78,7 @@ const EinFilesSection = ({ data }: IProps) => {
             </span>
           </div>
           <div className="w-[60%] px-2 text-gray-900 flex items-center justify-start">
-            {item.line1 && (
+            {item.line1 ? (
               <div>
                 <span>{item.line1}, </span>
                 {item.line2 && <span>{item.line2}, </span>}
@@ -104,6 +104,8 @@ const EinFilesSection = ({ data }: IProps) => {
                   )?.full_name || '-'}
                 </span>
               </div>
+            ) : (
+              '-'
             )}
           </div>
           <div className="pl-2 flex items-center justify-end ml-auto transition-all duration-150 ease-in-out">
