@@ -1,5 +1,13 @@
 import { useRef, useState } from 'react';
 
+const allowedTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'application/pdf',
+];
+
 const useFileUpload = (file?: File | null) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(file || null);
@@ -37,20 +45,28 @@ const useFileUpload = (file?: File | null) => {
   };
 
   const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (errorState) {
-      setErrorState('');
-    }
-    console.log(e.target.files, 'e.target.files');
+    if (errorState) setErrorState('');
+
     if (e.target.files) {
       const file = e.target.files[0];
+
+      if (!allowedTypes.includes(file.type)) {
+        setErrorState('Only image or PDF files are allowed');
+        return;
+      }
+
       await convertHandler(file);
     }
   };
 
   const handleFileDrop = async (file: File) => {
-    if (errorState) {
-      setErrorState('');
+    if (errorState) setErrorState('');
+
+    if (!allowedTypes.includes(file.type)) {
+      setErrorState('Only image or PDF files are allowed');
+      return;
     }
+
     await convertHandler(file);
   };
 

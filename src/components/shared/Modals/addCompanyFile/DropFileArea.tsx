@@ -66,6 +66,7 @@ const FileDropArea = ({
                 id="file-upload"
                 name="file-upload"
                 type="file"
+                accept="image/*,.pdf"
                 className={`sr-only`}
                 onChange={(e) => handleFileInput(e)}
               />
