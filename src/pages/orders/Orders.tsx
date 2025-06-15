@@ -1,6 +1,7 @@
 import React from 'react';
+import ComingSoon from '../comingSoon/ComingSoon';
 const Orders = () => {
-  return <div>Orders</div>;
+  return <ComingSoon />;
 };
 
 export default Orders;

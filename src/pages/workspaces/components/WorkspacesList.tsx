@@ -88,7 +88,7 @@ export function WorkspacesList() {
         }
       />
       {workspacesState.list.length ? (
-        <div className="w-full overflow-hidden mb-12 container max-w-5xl mx-auto pl-10 pr-10 pb-8 pt-16 mt-3 text-sm">
+        <div className="w-full overflow-hidden mb-12 container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-16 mt-3 text-sm">
           <div>
             <div
               className={`flex py-1 group text-xs transition-all ease-in-out duration-150 border-b border-gray-100`}

@@ -2,6 +2,7 @@ import React from 'react';
 import { fields } from '../../../constants/form/form';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
+import { formatDateToLongForm } from '../../../utils/helpers';
 // import ConfettiAp from '../../../components/shared/Confetti';
 
 interface IProps {
@@ -10,6 +11,19 @@ interface IProps {
   stepThreeData: { address: { [key: string]: string } };
   setCurrentStep: (value: number) => void;
 }
+
+interface AddressData {
+  line1: string;
+  line2?: string;
+  line3?: string;
+  line4?: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+}
+
+type FieldData = string | AddressData;
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -43,6 +57,58 @@ const ConfirmPage = ({
     1: stepTwoData,
     2: stepThreeData,
   };
+
+  const fieldsContentHandler = (
+    field: string,
+    data: FieldData
+  ): React.ReactNode => {
+    const addressData = data as AddressData;
+
+    switch (field) {
+      case 'registration_date':
+        return formatDateToLongForm(data as string);
+      case 'status_name':
+        return (
+          <span
+            className={classNames(
+              'ml-6 w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
+              statusBadge(data as string)
+            )}
+          >
+            {data as string}
+          </span>
+        );
+      case 'address':
+        return (
+          <>
+            <div>
+              <span>{addressData.line1}, </span>
+              {addressData.line2 && <span>{addressData.line2}</span>}
+            </div>
+            <div>
+              {addressData.line3 && <span>{addressData.line3}</span>}
+              {addressData.line4 && (
+                <span>
+                  {addressData.line3 ? ',' : ''} {addressData.line4}
+                </span>
+              )}
+            </div>
+            <div>
+              <span>{addressData.city}, </span>
+              <span>
+                {globalData.states.find(
+                  (item) => item.name === addressData.state
+                )?.abbreviation || ''}{' '}
+              </span>
+              <span>{addressData.zip}</span>
+            </div>
+            <div>{addressData.country}</div>
+          </>
+        );
+      default:
+        return data as string;
+    }
+  };
   return (
     <div>
       <div className="px-4 sm:px-0">
@@ -74,37 +140,7 @@ const ConfirmPage = ({
                 <dd className="mt-1 flex leading-6 text-md text-black font-semibold sm:col-span-2 sm:mt-0">
                   {stateHandler ? (
                     <span className="flex-grow items-center">
-                      {field.key === 'address' && stateHandler && (
-                        <>
-                          <div>
-                            <span>{fieldValue.line1}, </span>
-                            {fieldValue.line2 && (
-                              <span>{fieldValue.line2}</span>
-                            )}
-                          </div>
-                          <div>
-                            {fieldValue.line3 && (
-                              <span>{fieldValue.line3}</span>
-                            )}
-                            {fieldValue.line4 && (
-                              <span>
-                                {fieldValue.line3 ? ',' : ''} {fieldValue.line4}
-                              </span>
-                            )}
-                          </div>
-                          <div>
-                            <span>{fieldValue.city}, </span>
-                            <span>
-                              {globalData.states.find(
-                                (item) => item.name === fieldValue.state
-                              )?.abbreviation || ''}{' '}
-                            </span>
-                            <span>{fieldValue.zip}</span>
-                          </div>
-                          <div>{fieldValue.country}</div>
-                        </>
-                      )}
-                      {field.key !== 'address' && fieldValue}
+                      {fieldsContentHandler(field.key, fieldValue)}
                       {index === 0 && stepTwoData?.status_name && (
                         <span
                           className={classNames(

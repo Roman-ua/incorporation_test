@@ -1,6 +1,8 @@
 import React from 'react';
+import ComingSoon from '../comingSoon/ComingSoon';
+
 const Mail = () => {
-  return <div>Mail</div>;
+  return <ComingSoon />;
 };
 
 export default Mail;

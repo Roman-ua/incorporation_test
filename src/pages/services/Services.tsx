@@ -1,6 +1,7 @@
 import React from 'react';
+import ComingSoon from '../comingSoon/ComingSoon';
 const Services = () => {
-  return <div>Services</div>;
+  return <ComingSoon />;
 };
 
 export default Services;
