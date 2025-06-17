@@ -28,4 +28,5 @@ export const ROUTES = {
   EMAILS: '/emails',
   REPORT_REVIEW: '/report_review',
   WORKSPACES: '/companies',
+  USERS: '/users',
 };

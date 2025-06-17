@@ -30,6 +30,7 @@ import ElementsAddress from './pages/elements/nested/ElementsAddress';
 import WorkspacesPage from './pages/workspaces/WorkspacesPage';
 import AuthWrapper from './components/root/AuthWrapper';
 import RedirectPage from './pages/redirect/Redirect';
+import Users from './pages/Internal/Users/Users';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -118,6 +119,7 @@ function App() {
                 <Route path={ROUTES.ACCOUNT} element={<Account />} />
                 <Route path={ROUTES.PEOPLE} element={<People />} />
                 <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
+                <Route path={ROUTES.USERS} element={<Users />} />
                 <Route
                   path={`${ROUTES.PERSON}/:id`}
                   element={<PersonPageDetails />}

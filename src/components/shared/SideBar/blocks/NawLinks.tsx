@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import { IconFileInvoice } from '@tabler/icons-react';
 
-import { LuFileStack } from 'react-icons/lu';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../../constants/navigation/routes';
 import { classNames } from '../../../../utils/helpers';
@@ -61,6 +60,7 @@ const internalItems = [
     id: 'Elements',
     label: 'Elements',
     icon: Puzzle,
+    show: false,
     children: [
       { id: 'buttons', label: 'Buttons', href: ROUTES.ELEMENTS_BUTTONS },
       {
@@ -73,22 +73,16 @@ const internalItems = [
     ],
   },
   {
-    id: 'Emails',
-    label: 'Emails',
-    icon: LuFileStack,
-    href: ROUTES.EMAILS,
-    children: [],
-  },
-  {
-    id: 'Report Confirmation',
-    label: 'Annual Report Confirmation',
-    icon: FileText,
-    href: ROUTES.REPORT_REVIEW,
+    id: 'Users',
+    label: 'Users',
+    show: true,
+    icon: Users,
+    href: ROUTES.USERS,
     children: [],
   },
 ];
 
-const hideInternal = true;
+const hideInternal = false;
 // Internal items with nested structure
 const NawLinks = () => {
   const { pathname } = useLocation();
@@ -144,12 +138,13 @@ const NawLinks = () => {
       </div>
       {/* Internal Section */}
       {!hideInternal && (
-        <div className="px-4">
+        <div className="px-2">
           <h3 className="px-2 text-xs font-medium text-gray-400 tracking-wider mb-2">
             Internal
           </h3>
           <nav className="space-y-1">
             {internalItems.map((item) => {
+              if (!item.show) return null;
               const Icon = item.icon;
               const hasChildren = item.children && item.children.length > 0;
               const expanded = isExpanded(item.id);
@@ -194,7 +189,7 @@ const NawLinks = () => {
                           className="overflow-hidden"
                         >
                           <div className="pl-8 space-y-1">
-                            {item.children.map((child) => (
+                            {item.children?.map((child) => (
                               <Link
                                 key={`${item.id}-${child.id}`}
                                 to={child.href}
