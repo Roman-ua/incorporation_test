@@ -176,7 +176,10 @@ export default function DataTable() {
           >
             {searchColumns.find((col) => col.key === searchColumn)?.label}
             <svg
-              className="w-3.5 h-3.5"
+              className={classNames(
+                'w-3.5 h-3.5 transition-transform duration-200',
+                showColumnsMenu ? 'rotate-180' : ''
+              )}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -216,11 +219,11 @@ export default function DataTable() {
       </div>
 
       {/* Table */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
+      <div className="border border-gray-200 rounded-lg">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="text-left text-xs p-3 font-medium text-gray-900">
+          <thead className="bg-gray-50 border-b border-gray-200 rounded-t-lg">
+            <tr className="rounded-t-lg">
+              <th className="text-left text-xs p-3 font-medium text-gray-900 rounded-t-lg">
                 <div className="flex items-center gap-1">
                   Email
                   <svg
@@ -262,10 +265,10 @@ export default function DataTable() {
               <th className="text-left text-xs p-3 font-medium text-gray-900">
                 Related companies
               </th>
-              <th className="w-12 p-4"></th>
+              <th className="w-12 p-4 rounded-t-lg"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="rounded-b-lg">
             {filteredData.map((row) => (
               <tr key={row.id} className="border-b border-gray-100">
                 <td className="p-3 text-gray-900">{row.email}</td>
