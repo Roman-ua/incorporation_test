@@ -82,7 +82,7 @@ const internalItems = [
   },
 ];
 
-const hideInternal = false;
+const hideInternal = true;
 // Internal items with nested structure
 const NawLinks = () => {
   const { pathname } = useLocation();
