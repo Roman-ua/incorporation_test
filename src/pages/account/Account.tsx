@@ -1,27 +1,10 @@
 import React from 'react';
-import AccountInfo from './components/AccountInfo';
-// import SecurityInfo from './components/SecurityInfo';
-// const secondaryNavigation = [
-//   { name: 'Account', href: '#', current: true },
-//   { name: 'Security', href: '#', current: false },
-//   { name: 'Notifications', href: '#', current: false },
-//   { name: 'Billing', href: '#', current: false },
-// ];
+import { PersonProfile } from './components/personProfile';
 
-// function classNames(...classes: string[]) {
-//   return classes.filter(Boolean).join(' ');
-// }
-
-const Account = () => {
-  // const [currentMenuItem, setCurrentMenuItem] = useState('Account');
+export default function PersonPageDetails() {
   return (
-    <div>
-      <main>
-        <h1 className="sr-only">Account Settings</h1>
-        <AccountInfo />
-      </main>
+    <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">
+      <PersonProfile />
     </div>
   );
-};
-
-export default Account;
+}
