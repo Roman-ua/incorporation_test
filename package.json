@@ -10,6 +10,7 @@
     "@radix-ui/react-slot": "^1.2.0",
     "@tabler/icons-preact": "^3.31.0",
     "@tabler/icons-react": "^3.22.0",
+    "@tanstack/react-table": "^8.21.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
