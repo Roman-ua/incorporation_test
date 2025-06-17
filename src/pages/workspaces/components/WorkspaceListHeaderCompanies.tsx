@@ -2,14 +2,18 @@ import { LayoutGrid } from 'lucide-react';
 import React from 'react';
 
 import { classNames } from '../../../utils/helpers';
+import { ROUTES } from '../../../constants/navigation/routes';
+import { useNavigate } from 'react-router-dom';
 
 const WorkspacesListHeaderCompanies = () => {
+  const navigate = useNavigate();
   return (
     <div className="p-2 w-full">
       <div className="relative">
         <button
+          onClick={() => navigate(ROUTES.WORKSPACES)}
           className={classNames(
-            'flex items-center gap-2 p-2 rounded-md transition-colors hover:cursor-default'
+            'flex items-center gap-2 p-2 rounded-md transition-colors hover:cursor-pointer'
           )}
         >
           <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">

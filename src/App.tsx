@@ -31,6 +31,7 @@ import WorkspacesPage from './pages/workspaces/WorkspacesPage';
 import AuthWrapper from './components/root/AuthWrapper';
 import RedirectPage from './pages/redirect/Redirect';
 import Users from './pages/Internal/Users/Users';
+import SidebarLayoutWorkspaces from './components/shared/SidebarLayoutWorkspaces';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -91,9 +92,12 @@ function App() {
               element={<AddFullReportProcess />}
             />
             <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
+            <Route element={<SidebarLayoutWorkspaces />}>
+              <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
+              <Route path={ROUTES.USERS} element={<Users />} />
+            </Route>
             <Route element={<ProtectedRoute />}>
               <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
-              <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
 
               <Route element={<ProtectedRoutes />}>
                 <Route path={ROUTES.ELEMENTS} element={<Elements />} />
@@ -119,7 +123,6 @@ function App() {
                 <Route path={ROUTES.ACCOUNT} element={<Account />} />
                 <Route path={ROUTES.PEOPLE} element={<People />} />
                 <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
-                <Route path={ROUTES.USERS} element={<Users />} />
                 <Route
                   path={`${ROUTES.PERSON}/:id`}
                   element={<PersonPageDetails />}
