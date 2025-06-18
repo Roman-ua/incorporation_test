@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import logo1 from '../../../../images/mocklogos/AlphaWave.jpg';
-import logo2 from '../../../../images/mocklogos/Calescence.jpg';
-import logo3 from '../../../../images/mocklogos/Clandestine.jpg';
 import { classNames } from '../../../../utils/helpers';
 import { inputSimpleFocus } from '../../../../constants/form/form';
+import { IconBuildings } from '@tabler/icons-react';
 interface Company {
   id: string;
   name: string;
@@ -25,13 +23,13 @@ const sampleData: TableRow[] = [
     name: 'Ken Thompson',
     status: 'Active',
     relatedCompanies: [
-      { id: '1', name: 'Google', logo: logo1 },
+      { id: '1', name: 'Google', logo: '' },
       {
         id: '2',
         name: 'Microsoft',
-        logo: logo2,
+        logo: '',
       },
-      { id: '3', name: 'Apple', logo: logo3 },
+      { id: '3', name: 'Apple', logo: '' },
     ],
   },
   {
@@ -40,8 +38,8 @@ const sampleData: TableRow[] = [
     name: 'Carmella Rodriguez',
     status: 'Inactive',
     relatedCompanies: [
-      { id: '4', name: 'Meta', logo: logo3 },
-      { id: '5', name: 'Netflix', logo: logo2 },
+      { id: '4', name: 'Meta', logo: '' },
+      { id: '5', name: 'Netflix', logo: '' },
     ],
   },
   {
@@ -50,10 +48,10 @@ const sampleData: TableRow[] = [
     name: 'Silas Chen',
     status: 'Active',
     relatedCompanies: [
-      { id: '6', name: 'Tesla', logo: logo1 },
-      { id: '7', name: 'SpaceX', logo: logo2 },
-      { id: '8', name: 'Amazon', logo: logo3 },
-      { id: '9', name: 'Stripe', logo: logo1 },
+      { id: '6', name: 'Tesla', logo: '' },
+      { id: '7', name: 'SpaceX', logo: '' },
+      { id: '8', name: 'Amazon', logo: '' },
+      { id: '9', name: 'Stripe', logo: '' },
     ],
   },
   {
@@ -65,7 +63,7 @@ const sampleData: TableRow[] = [
       {
         id: '10',
         name: 'Shopify',
-        logo: logo1,
+        logo: '',
       },
     ],
   },
@@ -75,8 +73,8 @@ const sampleData: TableRow[] = [
     name: 'Abraham Foster',
     status: 'Active',
     relatedCompanies: [
-      { id: '11', name: 'Uber', logo: logo3 },
-      { id: '12', name: 'Airbnb', logo: logo2 },
+      { id: '11', name: 'Uber', logo: '' },
+      { id: '12', name: 'Airbnb', logo: '' },
     ],
   },
 ];
@@ -132,15 +130,19 @@ export default function DataTable() {
           {visibleCompanies.map((company, index) => (
             <div
               key={company.id}
-              className="w-8 h-8 bg-gray-200 border-2 border-white rounded-md overflow-hidden"
+              className="w-8 h-8 bg-gray-100 border-2 border-white flex items-center justify-center rounded-md overflow-hidden"
               style={{ zIndex: visibleCompanies.length - index }}
               title={company.name}
             >
-              <img
-                src={company.logo || '/placeholder.svg'}
-                alt={company.name}
-                className="w-full h-full object-cover"
-              />
+              {company.logo ? (
+                <img
+                  src={company.logo || '/placeholder.svg'}
+                  alt={company.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <IconBuildings className="w-5 h-5" />
+              )}
             </div>
           ))}
         </div>
@@ -223,24 +225,6 @@ export default function DataTable() {
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200 rounded-t-lg">
             <tr className="rounded-t-lg">
-              <th className="text-left text-xs p-3 font-medium text-gray-900 rounded-t-lg">
-                <div className="flex items-center gap-1">
-                  Email
-                  <svg
-                    className="w-4 h-4 hover:cursor-pointer"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-                    />
-                  </svg>
-                </div>
-              </th>
               <th className="text-left text-xs p-3 font-medium text-gray-900">
                 <div className="flex items-center gap-1">
                   Name
@@ -259,6 +243,25 @@ export default function DataTable() {
                   </svg>
                 </div>
               </th>
+              <th className="text-left text-xs p-3 font-medium text-gray-900 rounded-t-lg">
+                <div className="flex items-center gap-1">
+                  Email
+                  <svg
+                    className="w-4 h-4 hover:cursor-pointer"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+                    />
+                  </svg>
+                </div>
+              </th>
+
               <th className="text-left text-xs p-3 font-medium text-gray-900">
                 Status
               </th>
@@ -271,8 +274,9 @@ export default function DataTable() {
           <tbody className="rounded-b-lg">
             {filteredData.map((row) => (
               <tr key={row.id} className="border-b border-gray-100">
-                <td className="p-3 text-gray-900">{row.email}</td>
                 <td className="p-3 text-gray-900 font-medium">{row.name}</td>
+                <td className="p-3 text-gray-900">{row.email}</td>
+
                 <td className="p-3">
                   <span
                     className={classNames(
