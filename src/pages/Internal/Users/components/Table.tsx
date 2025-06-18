@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { classNames } from '../../../../utils/helpers';
+import { classNames, truncateString } from '../../../../utils/helpers';
 import { inputSimpleFocus } from '../../../../constants/form/form';
 import { IconBuildings } from '@tabler/icons-react';
+import { ArrowDownUp, Check } from 'lucide-react';
+import { BsThreeDots } from 'react-icons/bs';
+
 interface Company {
   id: string;
   name: string;
@@ -62,7 +65,7 @@ const sampleData: TableRow[] = [
     relatedCompanies: [
       {
         id: '10',
-        name: 'Shopify',
+        name: 'Real Constanta LLC',
         logo: '',
       },
     ],
@@ -72,17 +75,8 @@ const sampleData: TableRow[] = [
     email: 'abe45@example.com',
     name: 'Abraham Foster',
     status: 'Active',
-    relatedCompanies: [
-      { id: '11', name: 'Uber', logo: '' },
-      { id: '12', name: 'Airbnb', logo: '' },
-    ],
+    relatedCompanies: [{ id: '11', name: 'DMCA Now LLC', logo: '' }],
   },
-];
-
-const searchColumns = [
-  { key: 'email', label: 'Email' },
-  { key: 'name', label: 'Name' },
-  { key: 'status', label: 'Status' },
 ];
 
 const statusBadge = (status: string) => {
@@ -98,57 +92,53 @@ const statusBadge = (status: string) => {
   }
 };
 
+const columns = [
+  { key: 'name', label: 'Name', sortable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  { key: 'status', label: 'Status', sortable: false },
+  { key: 'relatedCompanies', label: 'Related companies', sortable: false },
+];
+
 export default function DataTable() {
   const [filter, setFilter] = useState('');
 
   const [showColumnsMenu, setShowColumnsMenu] = useState(false);
   const [showActionMenu, setShowActionMenu] = useState<string | null>(null);
-  const [searchColumn, setSearchColumn] = useState('email');
+  const [visibleColumns, setVisibleColumns] = useState(
+    columns.map((col) => col.key)
+  );
 
-  const filteredData = sampleData.filter((row) => {
-    const searchValue = filter.toLowerCase();
-    switch (searchColumn) {
-      case 'email':
-        return row.email.toLowerCase().includes(searchValue);
-      case 'name':
-        return row.name.toLowerCase().includes(searchValue);
-      case 'status':
-        return row.status.toLowerCase().includes(searchValue);
-      default:
-        return true;
-    }
-  });
+  const handleColumnVisibility = (columnKey: string) => {
+    setVisibleColumns((prev) =>
+      prev.includes(columnKey)
+        ? prev.filter((key) => key !== columnKey)
+        : [...prev, columnKey]
+    );
+  };
 
   const renderCompanyLogos = (companies: Company[]) => {
-    const maxVisible = 3;
-    const visibleCompanies = companies.slice(0, maxVisible);
-    const remainingCount = companies.length - maxVisible;
-
     return (
       <div className="flex items-center">
-        <div className="flex -space-x-2">
-          {visibleCompanies.map((company, index) => (
-            <div
-              key={company.id}
-              className="w-8 h-8 bg-gray-100 border-2 border-white flex items-center justify-center rounded-md overflow-hidden"
-              style={{ zIndex: visibleCompanies.length - index }}
-              title={company.name}
-            >
-              {company.logo ? (
-                <img
-                  src={company.logo || '/placeholder.svg'}
-                  alt={company.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <IconBuildings className="w-5 h-5" />
-              )}
-            </div>
-          ))}
-        </div>
-        {remainingCount > 0 && (
-          <div className="ml-2 text-sm text-gray-500 font-medium">
-            +{remainingCount}
+        {companies.length > 0 && (
+          <div key={companies[0].id} className="flex items-center gap-2">
+            {companies[0].logo ? (
+              <img
+                src={companies[0].logo || '/placeholder.svg'}
+                alt={companies[0].name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <IconBuildings className="w-5 h-5" />
+            )}
+            <span className="text-sm text-gray-900 font-medium">
+              {truncateString(companies[0].name, 20)}
+            </span>
+
+            {companies.length > 1 && (
+              <div className="text-sm text-gray-500 font-medium">
+                +{companies.length - 1}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -158,15 +148,15 @@ export default function DataTable() {
   return (
     <>
       {/* Header */}
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-10 mb-4">
         <div className="flex-1 relative">
           <input
             type="text"
-            placeholder={`Filter by ${searchColumns.find((col) => col.key === searchColumn)?.label.toLowerCase()}...`}
+            placeholder={`Filter by email...`}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className={classNames(
-              'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ring-offset-0',
+              'w-1/2 px-3 py-1 border flex h-9 min-w-0 border-gray-300 rounded-md focus:outline-none ring-offset-0 text-sm placeholder:text-gray-400',
               inputSimpleFocus
             )}
           />
@@ -174,12 +164,12 @@ export default function DataTable() {
         <div className="relative">
           <button
             onClick={() => setShowColumnsMenu(!showColumnsMenu)}
-            className="px-3 py-3 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none flex items-center gap-1 text-xs font-medium"
+            className="px-4 py-2 h-9 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none flex items-center gap-2 text-sm font-medium"
           >
-            {searchColumns.find((col) => col.key === searchColumn)?.label}
+            Columns
             <svg
               className={classNames(
-                'w-3.5 h-3.5 transition-transform duration-200',
+                'w-4 h-4 transition-transform duration-200',
                 showColumnsMenu ? 'rotate-180' : ''
               )}
               fill="none"
@@ -196,23 +186,19 @@ export default function DataTable() {
           </button>
 
           {showColumnsMenu && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-              <div className="p-2">
-                {searchColumns.map((column) => (
-                  <button
-                    key={column.key}
-                    onClick={() => {
-                      setSearchColumn(column.key);
-                      setShowColumnsMenu(false);
-                    }}
-                    className={`w-full text-left p-2 hover:bg-gray-50 rounded cursor-pointer text-xs ${
-                      searchColumn === column.key
-                        ? 'bg-gray-50 text-gray-900'
-                        : ''
-                    }`}
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-md z-10">
+              <div className="p-1">
+                {columns.map((col) => (
+                  <label
+                    key={col.key}
+                    onClick={() => handleColumnVisibility(col.key)}
+                    className="relative flex items-center gap-2 py-1.5 pr-2 pl-8 hover:bg-gray-50 text-sm cursor-pointer rounded-md"
                   >
-                    {column.label}
-                  </button>
+                    {visibleColumns.includes(col.key) && (
+                      <Check className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4" />
+                    )}
+                    {col.label}
+                  </label>
                 ))}
               </div>
             </div>
@@ -221,76 +207,60 @@ export default function DataTable() {
       </div>
 
       {/* Table */}
-      <div className="border border-gray-200 rounded-lg">
+      <div className="border border-gray-200 rounded-md">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200 rounded-t-lg">
-            <tr className="rounded-t-lg">
-              <th className="text-left text-xs p-3 font-medium text-gray-900">
-                <div className="flex items-center gap-1">
-                  Name
-                  <svg
-                    className="w-4 h-4 hover:cursor-pointer"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+          <thead className="border-b border-gray-200 rounded-t-md">
+            <tr className="rounded-t-md">
+              {columns
+                .filter((col) => visibleColumns.includes(col.key))
+                .map((column) => (
+                  <th
+                    key={column.key}
+                    className="text-left text-sm h-10 px-2 align-middle whitespace-nowrap font-medium text-gray-900"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-                    />
-                  </svg>
-                </div>
-              </th>
-              <th className="text-left text-xs p-3 font-medium text-gray-900 rounded-t-lg">
-                <div className="flex items-center gap-1">
-                  Email
-                  <svg
-                    className="w-4 h-4 hover:cursor-pointer"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-                    />
-                  </svg>
-                </div>
-              </th>
-
-              <th className="text-left text-xs p-3 font-medium text-gray-900">
-                Status
-              </th>
-              <th className="text-left text-xs p-3 font-medium text-gray-900">
-                Related companies
-              </th>
-              <th className="w-12 p-4 rounded-t-lg"></th>
+                    <div className="flex items-center gap-2">
+                      {column.label}
+                      {column.sortable && (
+                        <ArrowDownUp className="w-4 h-4 hover:cursor-pointer" />
+                      )}
+                    </div>
+                  </th>
+                ))}
+              <th className="w-12 h-9 px-4 py-2 rounded-t-md"></th>
             </tr>
           </thead>
-          <tbody className="rounded-b-lg">
-            {filteredData.map((row) => (
-              <tr key={row.id} className="border-b border-gray-100">
-                <td className="p-3 text-gray-900 font-medium">{row.name}</td>
-                <td className="p-3 text-gray-900">{row.email}</td>
-
-                <td className="p-3">
-                  <span
-                    className={classNames(
-                      'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                      statusBadge(row.status)
-                    )}
-                  >
-                    {row.status}
-                  </span>
-                </td>
-                <td className="p-3">
-                  {renderCompanyLogos(row.relatedCompanies)}
-                </td>
-                <td className="p-3">
+          <tbody className="rounded-b-md">
+            {sampleData.map((row) => (
+              <tr
+                key={row.id}
+                className="border-b border-gray-200 hover:bg-gray-50 transition-all duration-200"
+              >
+                {visibleColumns.includes('name') && (
+                  <td className="px-2 py-2 text-gray-900 font-medium">
+                    {row.name}
+                  </td>
+                )}
+                {visibleColumns.includes('email') && (
+                  <td className="px-2 py-2 text-gray-900">{row.email}</td>
+                )}
+                {visibleColumns.includes('status') && (
+                  <td className="px-2 py-2">
+                    <span
+                      className={classNames(
+                        'w-fit inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+                        statusBadge(row.status)
+                      )}
+                    >
+                      {row.status}
+                    </span>
+                  </td>
+                )}
+                {visibleColumns.includes('relatedCompanies') && (
+                  <td className="px-2 py-2">
+                    {renderCompanyLogos(row.relatedCompanies)}
+                  </td>
+                )}
+                <td className="pl-2 pr-4 py-2">
                   <div className="relative">
                     <button
                       onClick={() =>
@@ -298,19 +268,13 @@ export default function DataTable() {
                           showActionMenu === row.id ? null : row.id
                         )
                       }
-                      className="p-1 hover:bg-gray-100 rounded"
+                      className="p-1 hover:bg-gray-100 rounded-md w-8 h-8 flex items-center justify-center transition-all duration-200"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                      </svg>
+                      <BsThreeDots className="w-4 h-4" />
                     </button>
 
                     {showActionMenu === row.id && (
-                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-md z-10">
                         <div className="py-1">
                           <button className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray-400 cursor-not-allowed">
                             Delete
