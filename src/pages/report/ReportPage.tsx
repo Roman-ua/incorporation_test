@@ -77,7 +77,7 @@ const ReportPage = () => {
       <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
         <div className="flex flex-col gap-y-1 pr-5">
           <dt className="text-sm text-gray-500">Year</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700">
+          <dd className="text-base font-semibold   text-gray-700">
             {mockData?.year}
           </dd>
         </div>
@@ -94,13 +94,13 @@ const ReportPage = () => {
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
-          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6">
+          <dd className="text-nowrap text-base font-semibold   text-gray-700 relative pr-6">
             {mockData.companyName}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-nowrap text-sm text-gray-500">State</dt>
-          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700 relative pr-6 flex items-center justify-start">
+          <dd className="text-nowrap text-base font-semibold   text-gray-700 relative pr-6 flex items-center justify-start">
             <StateSolidIconHandler
               simpleIcon={true}
               selectedState={mockData.state || 'Florida'}

@@ -150,7 +150,7 @@ const CompanyPage = () => {
               }
             }}
             className={classNames(
-              'text-nowrap text-base  tracking-tight text-gray-700 relative pr-6 group hover:cursor-pointer',
+              'text-nowrap text-base    text-gray-700 relative pr-6 group hover:cursor-pointer',
               workspacesState.current?.ein
                 ? 'font-semibold'
                 : 'hover:text-mainBlue'
@@ -193,7 +193,7 @@ const CompanyPage = () => {
         </div>
         <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">Registration #</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700 relative group pr-6 hover:cursor-pointer">
+          <dd className="text-base font-semibold   text-gray-700 relative group pr-6 hover:cursor-pointer">
             {workspacesState.current?.registration_number}
 
             <IoMdCheckmark
@@ -228,7 +228,7 @@ const CompanyPage = () => {
         </div>
         <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">Type</dt>
-          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
+          <dd className="text-nowrap text-base font-semibold   text-gray-700">
             {
               companyTypes.find(
                 (item) => item.shortName === workspacesState.current?.type?.name
@@ -238,7 +238,7 @@ const CompanyPage = () => {
         </div>
         <div className="flex flex-col gap-y-1 border-l px-6">
           <dt className="text-nowrap text-sm text-gray-500">State</dt>
-          <dd className="text-nowrap text-base flex items-center font-semibold tracking-tight text-gray-700">
+          <dd className="text-nowrap text-base flex items-center font-semibold   text-gray-700">
             <StateSolidIconHandler
               simpleIcon={true}
               selectedState={workspacesState.current?.state_name || 'Florida'}
@@ -251,7 +251,7 @@ const CompanyPage = () => {
           <dt className="text-nowrap text-sm text-gray-500">
             Registration Date
           </dt>
-          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
+          <dd className="text-nowrap text-base font-semibold   text-gray-700">
             {formatDateToLongForm(workspacesState.current?.registration_date)}
           </dd>
         </div>

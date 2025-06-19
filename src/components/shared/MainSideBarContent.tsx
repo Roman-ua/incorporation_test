@@ -57,7 +57,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
               <Link
                 to={handleNavigate(item.href)}
                 className={classNames(
-                  'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                  '  text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
                   item.href === pathname && 'text-sideBarBlue font-semibold'
                 )}
               >
@@ -88,7 +88,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
                   <button
                     onClick={() => navigate(ROUTES.ELEMENTS)}
                     className={classNames(
-                      'tracking-normal text-gray-700 group flex w-full items-center justify-between gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                      '  text-gray-700 group flex w-full items-center justify-between gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
                       isActive && 'text-sideBarBlue font-semibold'
                     )}
                   >
@@ -162,7 +162,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
                 <Link
                   to={team.href}
                   className={classNames(
-                    'tracking-normal text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
+                    '  text-gray-700 group flex items-center gap-x-2 rounded-md px-2 py-1.5 text-base leading-2 transition-bg hover:bg-gray-200/50 transition-all ease-in-out duration-150',
                     isActive && 'text-sideBarBlue font-semibold'
                   )}
                 >
@@ -184,7 +184,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
       <li className="-mx-6 mt-auto max-lg:hidden">
         <Link
           to={ROUTES.ACCOUNT}
-          className="tracking-tight flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
+          className="  flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
         >
           <img
             className="h-8 w-8 rounded-full bg-gray-50"

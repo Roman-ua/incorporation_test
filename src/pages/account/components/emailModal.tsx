@@ -54,7 +54,7 @@ export function EmailModal({ setClose, open, onSubmit }: EmailModalProps) {
       <form onSubmit={handleSubmit} noValidate>
         <div className="p-6">
           <div className="mb-6">
-            <h2 className="text-xl font-medium tracking-tight">
+            <h2 className="text-xl font-medium  ">
               <span>Add Email</span>
               <XBtn clickHandler={setClose} />
             </h2>

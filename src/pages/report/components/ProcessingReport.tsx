@@ -237,7 +237,7 @@ const ProcessingReport = ({
             <dl className="w-full flex items-start justify-start overflow-x-scroll pb-1">
               <div className="flex flex-col gap-y-1 pr-5">
                 <dt className="text-sm text-gray-500">Year</dt>
-                <dd className="text-sm font-semibold tracking-tight text-gray-800">
+                <dd className="text-sm font-semibold   text-gray-800">
                   {data.year}
                 </dd>
               </div>
@@ -245,7 +245,7 @@ const ProcessingReport = ({
                 <dt className="text-nowrap text-sm text-gray-500">
                   Company Name
                 </dt>
-                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
                   {data.companyName}
                 </dd>
               </div>
@@ -253,13 +253,13 @@ const ProcessingReport = ({
                 <dt className="text-nowrap text-sm text-gray-500">
                   Filing Date
                 </dt>
-                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
                   {data.filingDate}
                 </dd>
               </div>
               <div className="flex flex-col gap-y-1 border-l px-5">
                 <dt className="text-nowrap text-sm text-gray-500">State</dt>
-                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative flex items-center justify-start">
+                <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative flex items-center justify-start">
                   <StateSolidIconHandler
                     simpleIcon={true}
                     selectedState={data.state || 'Florida'}
@@ -273,7 +273,7 @@ const ProcessingReport = ({
                 <dt className="text-nowrap text-sm text-gray-500">
                   {dockFieldHandler(data.state)}
                 </dt>
-                <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
                   {data.registrationNumber}
                 </dd>
               </div>

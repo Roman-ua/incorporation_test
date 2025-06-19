@@ -52,7 +52,7 @@ const LinkToXeroModal = ({ isOpen, setOpen, saveHandler }: IProps) => {
       <>
         <div className={'p-6'}>
           <div className="mb-6">
-            <h2 className="text-xl font-medium tracking-tight">
+            <h2 className="text-xl font-medium  ">
               <span>Link to Xero</span>
               <XBtn
                 clickHandler={() => {

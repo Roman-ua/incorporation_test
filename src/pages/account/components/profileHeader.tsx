@@ -81,7 +81,7 @@ export function ProfileHeader({
             <dt className="text-nowrap text-sm text-gray-500">Email</dt>
             <dd>
               {personDataForUpdate.email ? (
-                <p className="text-base font-semibold tracking-tight text-gray-700">
+                <p className="text-base font-semibold   text-gray-700">
                   {personDataForUpdate.email}
                 </p>
               ) : (
@@ -98,12 +98,12 @@ export function ProfileHeader({
           </div>
           <div className="flex flex-col gap-y-1 border-l px-6">
             <dt className="text-nowrap text-sm text-gray-500">Phone Number</dt>
-            <dd className="text-base font-semibold tracking-tight text-gray-700">
+            <dd className="text-base font-semibold   text-gray-700">
               +1 234 567 890
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 ml-auto">
-            <dd className="text-base font-semibold tracking-tight text-gray-700 overflow-visible">
+            <dd className="text-base font-semibold   text-gray-700 overflow-visible">
               {!croppedImage && (
                 <button
                   onClick={triggerFileUpload}

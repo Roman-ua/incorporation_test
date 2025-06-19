@@ -8,6 +8,8 @@ import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/Simp
 import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import XBtn from '../../../components/shared/buttons/XBtn';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { VALIDATORS } from '../../../constants/regexs';
+import { toast } from 'sonner';
 
 interface IProps {
   setOpen: () => void;
@@ -143,10 +145,16 @@ const AddPersonModal = ({
   };
 
   const addressHandler = (key: string, value: string) => {
-    setAddress((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setAddress((prevState) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const updatePersonAddressHandler = (updatedAddress: AddressFields) => {

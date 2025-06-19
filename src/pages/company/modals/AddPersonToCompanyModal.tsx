@@ -11,6 +11,8 @@ import XBtn from '../../../components/shared/buttons/XBtn';
 import { AvatarUpload } from '../components/AddPersonPhoto';
 import { validateEmail } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
+import { VALIDATORS } from '../../../constants/regexs';
+import { toast } from 'sonner';
 
 export interface Person {
   id: string;
@@ -115,10 +117,16 @@ export function AddPersonModal({
   };
 
   const addressHandler = (key: string, value: string) => {
-    setAddress((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setAddress((prevState) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -403,7 +411,7 @@ export function AddPersonModal({
     <ModalWrapperLayout closeModal={onClose} isOpen={isOpen}>
       <div className="p-6">
         <div className="mb-6">
-          <h2 className="text-xl font-medium tracking-tight">
+          <h2 className="text-xl font-medium  ">
             <span>Add New Person</span>
             <XBtn clickHandler={onClose} />
           </h2>

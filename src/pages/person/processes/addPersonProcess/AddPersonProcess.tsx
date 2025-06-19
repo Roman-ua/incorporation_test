@@ -18,6 +18,8 @@ import PeopleState from '../../../../state/atoms/People';
 import { validateEmail } from '../../../../utils/validators';
 import PersonAvatar from '../../components/personAvatar';
 import GlobalDataState from '../../../../state/atoms/GlobalData';
+import { VALIDATORS } from '../../../../constants/regexs';
+import { toast } from 'sonner';
 
 const defaultUS = {
   country: 'United States',
@@ -116,10 +118,16 @@ const AddPersonProcess = () => {
   // const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
 
   const addressHandler = (key: string, value: string) => {
-    setAddress((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setAddress((prevState) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const updateAddressHandler = (data: AddressFields, key: string) => {
@@ -407,7 +415,7 @@ const AddPersonProcess = () => {
                   <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll pb-1">
                     <div className="flex flex-col gap-y-1 pr-5">
                       <dt className="text-sm text-gray-500">First Name</dt>
-                      <dd className="text-sm font-semibold tracking-tight text-gray-800">
+                      <dd className="text-sm font-semibold   text-gray-800">
                         {firstName}
                       </dd>
                     </div>
@@ -415,7 +423,7 @@ const AddPersonProcess = () => {
                       <dt className="text-nowrap text-sm text-gray-500">
                         Last Name
                       </dt>
-                      <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                      <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
                         {lastName}
                       </dd>
                     </div>
@@ -423,7 +431,7 @@ const AddPersonProcess = () => {
                       <dt className="text-nowrap text-sm text-gray-500">
                         Email
                       </dt>
-                      <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+                      <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
                         {email}
                       </dd>
                     </div>

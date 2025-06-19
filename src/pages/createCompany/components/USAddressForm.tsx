@@ -8,6 +8,7 @@ import { MdOutlinePlaylistRemove } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import { CountryOrState } from '../../../state/types/globalDataTypes';
+import { toast } from 'sonner';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -247,10 +248,17 @@ const USAddressForm = ({
                   data-1p-ignore={true}
                   disabled={disabledFlag}
                   onChange={(e) => {
-                    setAddress({
-                      ...address,
-                      [`line${index + 1}`]: e.target.value,
-                    });
+                    if (VALIDATORS.LANGUAGE.test(e.target.value)) {
+                      setAddress({
+                        ...address,
+                        [`line${index + 1}`]: e.target.value,
+                      });
+                    } else {
+                      toast.error('Invalid language', {
+                        description:
+                          'Only English letters, numbers, and symbols are allowed',
+                      });
+                    }
                     setSaved(false);
                   }}
                   placeholder={field.title}
@@ -291,7 +299,14 @@ const USAddressForm = ({
               value={city}
               disabled={disabledFlag}
               onChange={(e) => {
-                setCity(e.target.value);
+                if (VALIDATORS.LANGUAGE.test(e.target.value)) {
+                  setCity(e.target.value);
+                } else {
+                  toast.error('Invalid language', {
+                    description:
+                      'Only English letters, numbers, and symbols are allowed',
+                  });
+                }
                 setSaved(false);
               }}
               data-1p-ignore={true}

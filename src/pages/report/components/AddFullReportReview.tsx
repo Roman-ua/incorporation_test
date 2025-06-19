@@ -224,25 +224,25 @@ const AddFullReportReview = ({
         <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll pb-1">
           <div className="flex flex-col gap-y-1 pr-5">
             <dt className="text-sm text-gray-500">Year</dt>
-            <dd className="text-sm font-semibold tracking-tight text-gray-800">
+            <dd className="text-sm font-semibold   text-gray-800">
               {reportYear}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Company Name</dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+            <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
               {mockData.companyName}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">Filing Date</dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+            <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
               {mockData.filingDate}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">State</dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative flex items-center justify-start">
+            <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative flex items-center justify-start">
               <StateSolidIconHandler
                 simpleIcon={true}
                 selectedState={mockData.state || 'Florida'}
@@ -256,14 +256,14 @@ const AddFullReportReview = ({
             <dt className="text-nowrap text-sm text-gray-500">
               {dockFieldHandler(mockData.state)}
             </dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative">
+            <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative">
               {mockData.registrationNumber}
             </dd>
           </div>
 
           <div className="flex flex-col gap-y-1 border-l px-5">
             <dt className="text-nowrap text-sm text-gray-500">State ID</dt>
-            <dd className="text-nowrap text-sm font-semibold tracking-tight text-gray-800 relative pr-6">
+            <dd className="text-nowrap text-sm font-semibold   text-gray-800 relative pr-6">
               {stateId}
             </dd>
           </div>

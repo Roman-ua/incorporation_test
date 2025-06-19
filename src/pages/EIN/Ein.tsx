@@ -192,7 +192,7 @@ const Ein = () => {
           <dt className="text-sm text-gray-500">Company</dt>
           <span
             onClick={() => navigate(`${ROUTES.COMPANY}`)}
-            className="text-nowrap flex items-center text-base font-semibold tracking-tight text-gray-700 group hover:cursor-pointer"
+            className="text-nowrap flex items-center text-base font-semibold   text-gray-700 group hover:cursor-pointer"
           >
             {data?.company.name}
             <MdOpenInNew className="text-gray-500 text-sm ml-2 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150" />
@@ -202,13 +202,13 @@ const Ein = () => {
           <dt className="text-nowrap text-sm text-gray-500">
             Last Verification Date
           </dt>
-          <dd className="text-nowrap text-base font-semibold tracking-tight text-gray-700">
+          <dd className="text-nowrap text-base font-semibold   text-gray-700">
             {formatDateToLongForm(data?.last_verification_date || '') || '-'}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-5">
           <dt className="text-sm text-gray-500">Document Type</dt>
-          <dd className="text-base font-semibold tracking-tight text-gray-700 flex items-center flex-wrap">
+          <dd className="text-base font-semibold   text-gray-700 flex items-center flex-wrap">
             {data?.ein_documents.length > 0 ? (
               <div
                 className={classNames(

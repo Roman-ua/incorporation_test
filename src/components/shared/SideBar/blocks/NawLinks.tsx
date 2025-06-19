@@ -139,7 +139,7 @@ const NawLinks = () => {
       {/* Internal Section */}
       {!hideInternal && (
         <div className="px-2">
-          <h3 className="px-2 text-xs font-medium text-gray-400 tracking-wider mb-2">
+          <h3 className="px-2 text-xs font-medium text-gray-400  r mb-2">
             Internal
           </h3>
           <nav className="space-y-1">

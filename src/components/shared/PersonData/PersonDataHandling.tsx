@@ -7,6 +7,8 @@ import SwitchButton from '../SwitchButton/SwitchButton';
 import SimpleAddressForm from '../SimpleAddressForm/SimpleAddressForm';
 import SimpleAddressFormNotUS from '../SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import XBtn from '../buttons/XBtn';
+import { VALIDATORS } from '../../../constants/regexs';
+import { toast } from 'sonner';
 
 interface IProps {
   person: Person | undefined;
@@ -160,10 +162,16 @@ const PersonDataHandling = ({
   };
 
   const addressHandler = (key: string, value: string) => {
-    setAddress((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setAddress((prevState) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const updatePersonAddressHandler = (updatedAddress: AddressFields) => {

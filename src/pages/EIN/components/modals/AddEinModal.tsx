@@ -19,6 +19,8 @@ import GlobalDataState from '../../../../state/atoms/GlobalData';
 import { LockKeyhole } from 'lucide-react';
 import { BiEditAlt } from 'react-icons/bi';
 import TooltipWrapper from '../../../../components/root/IconWithTooltipWrapper';
+import { VALIDATORS } from '../../../../constants/regexs';
+import { toast } from 'sonner';
 
 interface IProps {
   isOpen: boolean;
@@ -124,10 +126,16 @@ const AddEinModal = ({
   };
 
   const addressHandler = (key: string, value: string) => {
-    setAddress((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setAddress((prevState) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const clickSaveHandler = () => {
@@ -189,7 +197,7 @@ const AddEinModal = ({
       <>
         <div className={classNames(isNumberOnly ? 'p-6' : 'pt-6 pl-6 pr-6')}>
           <div className="mb-6">
-            <h2 className="text-xl font-medium tracking-tight">
+            <h2 className="text-xl font-medium  ">
               <span>Add EIN (Tax ID)</span>
               <XBtn
                 clickHandler={() => {

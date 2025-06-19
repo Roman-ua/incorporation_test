@@ -61,7 +61,7 @@ const SeparatedCards = ({
                     {stat.shortName}
                   </dt>
                 </div>
-                <dd className="pl-7 w-full flex-none text-sm font-medium tracking-tight text-gray-500">
+                <dd className="pl-7 w-full flex-none text-sm font-medium   text-gray-500">
                   {stat.fullName}
                 </dd>
               </div>

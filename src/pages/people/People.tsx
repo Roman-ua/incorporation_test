@@ -40,13 +40,13 @@ function People() {
         <div className="w-full overflow-auto text-sm">
           <div className="w-full divide-y divide-gray-300">
             <div className="flex py-3 pl-3 pr-3">
-              <div className="w-[25%] text-sm font-medium tracking-wide text-gray-500">
+              <div className="w-[25%] text-sm font-medium   text-gray-500">
                 Name
               </div>
-              <div className="w-[25%] text-sm font-medium tracking-wide text-gray-500">
+              <div className="w-[25%] text-sm font-medium   text-gray-500">
                 Email
               </div>
-              <div className="w-[50%] text-sm font-medium tracking-wide text-gray-500 text-right">
+              <div className="w-[50%] text-sm font-medium   text-gray-500 text-right">
                 Status
               </div>
             </div>

@@ -4,6 +4,8 @@ import { AddressFields } from '../../../interfaces/interfaces';
 import XBtn from '../../../components/shared/buttons/XBtn';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
+import { VALIDATORS } from '../../../constants/regexs';
+import { toast } from 'sonner';
 
 interface IProps {
   agentName: string;
@@ -91,10 +93,16 @@ const RegAgentDataHandling = ({
   };
 
   const addressHandler = (key: string, value: string) => {
-    setAddress((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setAddress((prevState) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const inputCommonClasses =

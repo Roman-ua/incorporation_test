@@ -93,31 +93,31 @@ const CompaniesList = () => {
             <tr>
               <th
                 scope="col"
-                className="whitespace-nowrap	 py-3 pl-3 pr-3 text-left text-sm font-medium tracking-wide text-gray-500"
+                className="whitespace-nowrap	 py-3 pl-3 pr-3 text-left text-sm font-medium   text-gray-500"
               >
                 Company Name
               </th>
               <th
                 scope="col"
-                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium tracking-wide text-gray-500"
+                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium   text-gray-500"
               >
                 Status
               </th>
               <th
                 scope="col"
-                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium tracking-wide text-gray-500"
+                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium   text-gray-500"
               >
                 Type
               </th>
               <th
                 scope="col"
-                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium tracking-wide text-gray-500 "
+                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium   text-gray-500 "
               >
                 Registration #
               </th>
               <th
                 scope="col"
-                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium tracking-wide text-gray-500"
+                className="whitespace-nowrap	 px-3 py-3 text-left text-sm font-medium   text-gray-500"
               >
                 State
               </th>

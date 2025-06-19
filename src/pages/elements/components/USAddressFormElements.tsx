@@ -2,16 +2,30 @@ import React from 'react';
 import SectionHeading from '../../createCompany/components/SectionHeading';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
+import { VALIDATORS } from '../../../constants/regexs';
+import { toast } from 'sonner';
 
 const USAddressFormElements = () => {
   const [state, setState] = React.useState({});
   const setDataHandler = (key: string, value: string) => {
-    setState({ ...state, [key]: value });
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setState({ ...state, [key]: value });
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const [stateTwo, setStateTwo] = React.useState({});
   const setDataTwoHandler = (key: string, value: string) => {
-    setStateTwo({ ...stateTwo, [key]: value });
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setStateTwo({ ...stateTwo, [key]: value });
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   return (

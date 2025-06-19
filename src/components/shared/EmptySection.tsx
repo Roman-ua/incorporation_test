@@ -18,7 +18,7 @@ export function EmptySection({
         <div className="mb-4 relative flex items-center justify-center">
           <FiPlusCircle className="h-8 w-8 text-gray-900" />
         </div>
-        <h3 className="font-bold tracking-tight mb-4">{title}</h3>
+        <h3 className="font-bold   mb-4">{title}</h3>
 
         <div
           className="px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"

@@ -6,6 +6,8 @@ import XBtn from '../../../components/shared/buttons/XBtn';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
+import { VALIDATORS } from '../../../constants/regexs';
+import { toast } from 'sonner';
 
 // Mock interfaces to match your original code
 interface IFiles {
@@ -118,10 +120,16 @@ const AddReportProcess: React.FC<MultiStepModalProps> = ({
   };
 
   const handleAddressChange = (key: string, value: string) => {
-    setAddress((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    if (VALIDATORS.LANGUAGE.test(value)) {
+      setAddress((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    } else {
+      toast.error('Invalid language', {
+        description: 'Only English letters, numbers, and symbols are allowed',
+      });
+    }
   };
 
   const validateStep = (step: number): boolean => {
