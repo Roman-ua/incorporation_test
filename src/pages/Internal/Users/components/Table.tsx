@@ -118,9 +118,9 @@ export default function DataTable() {
 
   const renderCompanyLogos = (companies: Company[]) => {
     return (
-      <div className="flex items-center">
+      <>
         {companies.length > 0 && (
-          <div key={companies[0].id} className="flex items-center gap-2">
+          <div key={companies[0].id} className="flex items-end gap-2">
             {companies[0].logo ? (
               <img
                 src={companies[0].logo || '/placeholder.svg'}
@@ -130,18 +130,18 @@ export default function DataTable() {
             ) : (
               <IconBuildings className="w-5 h-5" />
             )}
-            <span className="text-sm text-gray-900 font-medium">
+            <span className="text-sm text-gray-900 font-medium flex items-end leading-4">
               {truncateString(companies[0].name, 20)}
             </span>
 
             {companies.length > 1 && (
-              <div className="text-sm text-gray-500 font-medium">
+              <div className="text-sm text-gray-500 font-medium flex items-end leading-4">
                 +{companies.length - 1}
               </div>
             )}
           </div>
         )}
-      </div>
+      </>
     );
   };
 
