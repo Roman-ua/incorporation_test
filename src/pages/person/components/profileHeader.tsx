@@ -54,7 +54,7 @@ export function ProfileHeader({
         prevImage={personDataForUpdate.picture}
       />
       <div className="w-full">
-        <div className="w-full flex items-center justify-between pb-2 pr-2 mt-2 border-b">
+        <div className="w-full flex items-center justify-between pb-2 pr-2 mt-5 border-b">
           <div className="text-2xl text-gray-700 flex items-center gap-x-2">
             <span className="text-xl font-bold text-gray-900">
               {personDataForUpdate.name}
