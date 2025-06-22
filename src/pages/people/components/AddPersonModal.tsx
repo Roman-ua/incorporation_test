@@ -9,7 +9,6 @@ import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressForm
 import XBtn from '../../../components/shared/buttons/XBtn';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { VALIDATORS } from '../../../constants/regexs';
-import { toast } from 'sonner';
 
 interface IProps {
   setOpen: () => void;
@@ -107,7 +106,7 @@ const AddPersonModal = ({
   const [mandatoryError, setMandatoryError] = useState(false);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
-
+  const [languageError, setLanguageError] = React.useState<boolean>(false);
   const formTypeHandler = (value: 1 | 2) => {
     if (value === 1) {
       setAddress(defaultUS);
@@ -150,10 +149,11 @@ const AddPersonModal = ({
         ...prevState,
         [key]: value,
       }));
+      if (languageError) {
+        setLanguageError(false);
+      }
     } else {
-      toast.error('Invalid language', {
-        description: 'Only English letters, numbers, and symbols are allowed',
-      });
+      setLanguageError(true);
     }
   };
 
@@ -261,24 +261,31 @@ const AddPersonModal = ({
                   onSelect={formTypeHandler}
                 />
               </div>
-              {selected === 1 ? (
-                <SimpleAddressForm
-                  disabledFlag={false}
-                  inputCommonClasses={inputCommonClasses}
-                  requiredError={mandatoryError}
-                  countryDisabled={true}
-                  data={address}
-                  setData={addressHandler}
-                />
-              ) : (
-                <SimpleAddressFormNotUS
-                  disabledFlag={false}
-                  inputCommonClasses={inputCommonClasses}
-                  requiredError={mandatoryError}
-                  data={address}
-                  setData={addressHandler}
-                />
-              )}
+              <div className="relative">
+                {selected === 1 ? (
+                  <SimpleAddressForm
+                    disabledFlag={false}
+                    inputCommonClasses={inputCommonClasses}
+                    requiredError={mandatoryError}
+                    countryDisabled={true}
+                    data={address}
+                    setData={addressHandler}
+                  />
+                ) : (
+                  <SimpleAddressFormNotUS
+                    disabledFlag={false}
+                    inputCommonClasses={inputCommonClasses}
+                    requiredError={mandatoryError}
+                    data={address}
+                    setData={addressHandler}
+                  />
+                )}
+                {languageError && (
+                  <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
+                    ⚠️ We currently support only English letters for address.
+                  </div>
+                )}
+              </div>
               <div className="flex items-center justify-end w-full py-2">
                 <div className="w-1/2" />
                 {closeModalHandler && (

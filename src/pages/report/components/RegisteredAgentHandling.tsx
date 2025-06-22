@@ -5,7 +5,6 @@ import XBtn from '../../../components/shared/buttons/XBtn';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
 import { VALIDATORS } from '../../../constants/regexs';
-import { toast } from 'sonner';
 
 interface IProps {
   agentName: string;
@@ -71,7 +70,7 @@ const RegAgentDataHandling = ({
 }: IProps) => {
   const [agentNameLocal, setAgentNameLocal] = useState<string>(agentName);
   const [mandatoryError, setMandatoryError] = useState(false);
-
+  const [languageError, setLanguageError] = useState<boolean>(false);
   const [address, setAddress] = React.useState<AddressFields>(
     agentAddress || defaultUS
   );
@@ -98,10 +97,12 @@ const RegAgentDataHandling = ({
         ...prevState,
         [key]: value,
       }));
+
+      if (languageError) {
+        setLanguageError(false);
+      }
     } else {
-      toast.error('Invalid language', {
-        description: 'Only English letters, numbers, and symbols are allowed',
-      });
+      setLanguageError(true);
     }
   };
 
@@ -143,15 +144,22 @@ const RegAgentDataHandling = ({
           onSelect={() => {}}
         />
       </div>
-      <SimpleAddressForm
-        disabledFlag={false}
-        inputCommonClasses={inputCommonClasses}
-        requiredError={mandatoryError}
-        countryDisabled={true}
-        data={address}
-        setData={addressHandler}
-        stateDisabled={true}
-      />
+      <div className="relative">
+        <SimpleAddressForm
+          disabledFlag={false}
+          inputCommonClasses={inputCommonClasses}
+          requiredError={mandatoryError}
+          countryDisabled={true}
+          data={address}
+          setData={addressHandler}
+          stateDisabled={true}
+        />
+        {languageError && (
+          <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
+            ⚠️ We currently support only English letters for address.
+          </div>
+        )}
+      </div>
       <div className="flex items-center justify-end w-full py-2">
         {closeModalHandler && (
           <div

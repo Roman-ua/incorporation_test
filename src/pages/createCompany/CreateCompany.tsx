@@ -153,6 +153,7 @@ const CreateCompany = () => {
   const [currentStep, setCurrentStep] = useState<number>(
     +stepFormQuery || parsedData?.step || 0
   );
+  const [languageError, setLanguageError] = useState<boolean>(false);
   const [stepOneData, setStepOneData] = useState<StepOneData>(
     parsedData?.stepOneData || defaultStepOneValues
   );
@@ -439,7 +440,7 @@ const CreateCompany = () => {
                   name="address"
                   control={stepThreeForm.control}
                   render={({ field }) => (
-                    <div className="mb-16">
+                    <div className="mb-16 relative">
                       <USAddressForm
                         setFromState={field.onChange}
                         value={field?.value}
@@ -447,7 +448,15 @@ const CreateCompany = () => {
                           stepThreeForm.formState.errors
                         ).includes('address')}
                         heading={'Main Address'}
+                        setLanguageError={setLanguageError}
+                        languageError={languageError}
                       />
+                      {languageError && (
+                        <div className="absolute bottom-0 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
+                          ⚠️ We currently support only English letters for
+                          address.
+                        </div>
+                      )}
                     </div>
                   )}
                 />

@@ -19,7 +19,6 @@ import { validateEmail } from '../../../../utils/validators';
 import PersonAvatar from '../../components/personAvatar';
 import GlobalDataState from '../../../../state/atoms/GlobalData';
 import { VALIDATORS } from '../../../../constants/regexs';
-import { toast } from 'sonner';
 
 const defaultUS = {
   country: 'United States',
@@ -104,6 +103,7 @@ const AddPersonProcess = () => {
   const [peopleData, setPeopleData] = useRecoilState(PeopleState);
   const [image, setImage] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
+  const [languageError, setLanguageError] = useState<boolean>(false);
 
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
@@ -123,10 +123,12 @@ const AddPersonProcess = () => {
         ...prevState,
         [key]: value,
       }));
+
+      if (languageError) {
+        setLanguageError(false);
+      }
     } else {
-      toast.error('Invalid language', {
-        description: 'Only English letters, numbers, and symbols are allowed',
-      });
+      setLanguageError(true);
     }
   };
 
@@ -177,31 +179,6 @@ const AddPersonProcess = () => {
 
       navigate(ROUTES.PEOPLE);
     }
-
-    // setCurrentStep((prevState) => {
-    //   if (prevState === 5) return prevState;
-    //   setVisitedSteps([...visitedSteps, prevState]);
-    //   return prevState + 1;
-    // });
-
-    // if (step === 2) {
-    //   setPeopleData([
-    //     ...peopleData,
-    //     {
-    //       id: `${peopleData.length + 1}`,
-    //       fullName: `${firstName} ${lastName}`,
-    //       email,
-    //       sendInvitation: false,
-    //       titles: [],
-    //       dateAdded: new Date().toISOString(),
-    //       status: 'Active',
-    //       address: address,
-    //       picture: '',
-    //     },
-    //   ]);
-
-    //   navigate(ROUTES.PEOPLE);
-    // }
   };
 
   const cancelStepHandler = () => {
@@ -347,24 +324,32 @@ const AddPersonProcess = () => {
                         onSelect={formTypeHandler}
                       />
                     </div>
-                    {selected === 1 ? (
-                      <SimpleAddressForm
-                        disabledFlag={false}
-                        inputCommonClasses={inputCommonClasses}
-                        requiredError={false}
-                        countryDisabled={true}
-                        data={address}
-                        setData={addressHandler}
-                      />
-                    ) : (
-                      <SimpleAddressFormNotUS
-                        disabledFlag={false}
-                        inputCommonClasses={inputCommonClasses}
-                        requiredError={false}
-                        data={address}
-                        setData={addressHandler}
-                      />
-                    )}
+                    <div className="relative">
+                      {selected === 1 ? (
+                        <SimpleAddressForm
+                          disabledFlag={false}
+                          inputCommonClasses={inputCommonClasses}
+                          requiredError={false}
+                          countryDisabled={true}
+                          data={address}
+                          setData={addressHandler}
+                        />
+                      ) : (
+                        <SimpleAddressFormNotUS
+                          disabledFlag={false}
+                          inputCommonClasses={inputCommonClasses}
+                          requiredError={false}
+                          data={address}
+                          setData={addressHandler}
+                        />
+                      )}
+                      {languageError && (
+                        <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
+                          ⚠️ We currently support only English letters for
+                          address.
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -459,6 +444,8 @@ const AddPersonProcess = () => {
                             requiredError={false}
                             value={address}
                             showClear={true}
+                            setLanguageError={setLanguageError}
+                            languageError={languageError}
                           />
                         </>
                       ) : (

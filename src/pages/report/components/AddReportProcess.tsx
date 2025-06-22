@@ -7,7 +7,6 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import { VALIDATORS } from '../../../constants/regexs';
-import { toast } from 'sonner';
 
 // Mock interfaces to match your original code
 interface IFiles {
@@ -64,6 +63,7 @@ const AddReportProcess: React.FC<MultiStepModalProps> = ({
   const [dateValue, setDateValue] = useState('');
   const [file, setFile] = useState<IFiles | null>(null);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [languageError, setLanguageError] = useState<boolean>(false);
   const [address, setAddress] = useState<AddressFields>({
     country: 'United States',
     address0: '',
@@ -125,10 +125,12 @@ const AddReportProcess: React.FC<MultiStepModalProps> = ({
         ...prev,
         [key]: value,
       }));
+
+      if (languageError) {
+        setLanguageError(false);
+      }
     } else {
-      toast.error('Invalid language', {
-        description: 'Only English letters, numbers, and symbols are allowed',
-      });
+      setLanguageError(true);
     }
   };
 

@@ -56,7 +56,10 @@ const statusBadge = (status: string) => {
   }
 };
 
-const RenderAddress = (removed: boolean, address: AddressFields) => {
+const RenderAddress: React.FC<{ removed: boolean; address: AddressFields }> = ({
+  removed,
+  address,
+}) => {
   const globalData = useRecoilValue(GlobalDataState);
 
   return (
@@ -89,8 +92,8 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
         <span>{address.city}, </span>
         <span>
           {globalData.states.find((item) => item.name === address.state)
-            ?.abbreviation || ''}{' '}
-        </span>
+            ?.abbreviation || ''}
+        </span>{' '}
         <span>{address.zip}</span>
       </div>
       <div
@@ -117,6 +120,8 @@ const SubmitReviewStep = ({
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
   const [addressCopied, setAddressCopied] = useState(false);
+  const [languageError, setLanguageError] = useState<boolean>(false);
+
   const globalData = useRecoilValue(GlobalDataState);
 
   const undoAddress = (key: string) => {
@@ -137,6 +142,10 @@ const SubmitReviewStep = ({
 
     if (key === 'updatedAddress') {
       setEditingAddress(false);
+    }
+
+    if (languageError) {
+      setLanguageError(false);
     }
   };
 
@@ -173,6 +182,10 @@ const SubmitReviewStep = ({
 
     if (key === 'updatedAddress') {
       setEditingAddress(false);
+    }
+
+    if (languageError) {
+      setLanguageError(false);
     }
   };
 
@@ -386,7 +399,14 @@ const SubmitReviewStep = ({
           <div className="w-full">
             {editingAddress ? (
               <>
-                <div className="text-sm text-gray-500 mb-1">Main Address</div>
+                <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
+                  <span>Main Address</span>
+                  {languageError && (
+                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
+                      We currently support only English letters for address.
+                    </div>
+                  )}
+                </div>
                 <USAddressForm
                   disabledFlag={false}
                   copyTitle={'Copy to Mailing Address'}
@@ -399,6 +419,8 @@ const SubmitReviewStep = ({
                   requiredError={false}
                   value={reportData.updatedAddress || mockReportData.address}
                   showClear={true}
+                  setLanguageError={setLanguageError}
+                  languageError={languageError}
                 />
               </>
             ) : (
@@ -407,10 +429,12 @@ const SubmitReviewStep = ({
                 <div className="flex flex-col items-start justify-between w-full">
                   <div className="flex items-start justify-between w-full">
                     <div>
-                      {RenderAddress(
-                        false,
-                        reportData.updatedAddress || reportData.address
-                      )}
+                      <RenderAddress
+                        removed={false}
+                        address={
+                          reportData.updatedAddress || reportData.address
+                        }
+                      />
                     </div>
                     {!confirmStep && (
                       <div
@@ -429,10 +453,10 @@ const SubmitReviewStep = ({
                         {status === 'In Progress' ? (
                           <div />
                         ) : (
-                          RenderAddress(
-                            !!reportData.updatedAddress,
-                            reportData.address
-                          )
+                          <RenderAddress
+                            removed={!!reportData.updatedAddress}
+                            address={reportData.address}
+                          />
                         )}
                       </div>
                     )}
@@ -452,8 +476,13 @@ const SubmitReviewStep = ({
           <div className="w-full">
             {editingMailingAddress ? (
               <>
-                <div className="text-sm text-gray-500 mb-1">
-                  Mailing Address
+                <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
+                  <span>Mailing Address</span>
+                  {languageError && (
+                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
+                      We currently support only English letters for address.
+                    </div>
+                  )}
                 </div>
                 <USAddressForm
                   disabledFlag={false}
@@ -472,6 +501,8 @@ const SubmitReviewStep = ({
                     reportData.mailingAddress
                   }
                   showClear={true}
+                  setLanguageError={setLanguageError}
+                  languageError={languageError}
                 />
               </>
             ) : (
@@ -483,11 +514,13 @@ const SubmitReviewStep = ({
                   <div className="flex flex-col items-start justify-between w-full">
                     <div className="flex items-start justify-between w-full">
                       <div>
-                        {RenderAddress(
-                          false,
-                          reportData.updatedMailingAddress ||
+                        <RenderAddress
+                          removed={false}
+                          address={
+                            reportData.updatedMailingAddress ||
                             reportData.mailingAddress
-                        )}
+                          }
+                        />
                       </div>
                       {!confirmStep && (
                         <div
@@ -506,10 +539,10 @@ const SubmitReviewStep = ({
                           {status === 'In Progress' ? (
                             <div />
                           ) : (
-                            RenderAddress(
-                              !!reportData.updatedMailingAddress,
-                              reportData.mailingAddress
-                            )
+                            <RenderAddress
+                              removed={!!reportData.updatedMailingAddress}
+                              address={reportData.mailingAddress}
+                            />
                           )}
                         </div>
                       )}
@@ -613,7 +646,10 @@ const SubmitReviewStep = ({
                       person.removed ? 'text-gray-400' : 'text-gray-800'
                     )}
                   >
-                    {RenderAddress(person?.removed || false, person.address)}
+                    <RenderAddress
+                      removed={person?.removed || false}
+                      address={person.address}
+                    />
                   </div>
                 </div>
                 <div

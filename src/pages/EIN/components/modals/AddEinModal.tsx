@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import DropFileArea from '../../../../components/shared/Modals/addCompanyFile/DropFileArea';
 import useFileUpload from '../../../../utils/hooks/useFileUpload';
 import DatePicker from '../../../../components/shared/Modals/addCompanyFile/datePicker';
@@ -20,7 +20,6 @@ import { LockKeyhole } from 'lucide-react';
 import { BiEditAlt } from 'react-icons/bi';
 import TooltipWrapper from '../../../../components/root/IconWithTooltipWrapper';
 import { VALIDATORS } from '../../../../constants/regexs';
-import { toast } from 'sonner';
 
 interface IProps {
   isOpen: boolean;
@@ -62,6 +61,7 @@ const AddEinModal = ({
   const [companyNameOnDock, setCompanyNameOnDock] = React.useState<string>(
     companyName || ''
   );
+  const [languageError, setLanguageError] = useState<boolean>(false);
 
   const [isCompanyNameDisabled, setIsCompanyNameDisabled] =
     React.useState(!!companyName);
@@ -131,10 +131,12 @@ const AddEinModal = ({
         ...prevState,
         [key]: value,
       }));
+
+      if (languageError) {
+        setLanguageError(false);
+      }
     } else {
-      toast.error('Invalid language', {
-        description: 'Only English letters, numbers, and symbols are allowed',
-      });
+      setLanguageError(true);
     }
   };
 
@@ -246,7 +248,7 @@ const AddEinModal = ({
           )}
         </div>
         {!isNumberOnly && (
-          <div className="p-6">
+          <div className="p-6 pb-11">
             <div className="flex items-center justify-between">
               <div className="text-gray-700 text-sm mb-2 font-bold">
                 Upload EIN (Tax ID) Confirmation Document
@@ -339,7 +341,7 @@ const AddEinModal = ({
             </div>
 
             {selectedDocType && selectedDocType !== 'Screenshot' && (
-              <div className="mt-6">
+              <div className="mt-6 relative">
                 <div className="text-gray-700 text-sm mb-2 font-bold">
                   Address on the Document
                 </div>
@@ -355,6 +357,11 @@ const AddEinModal = ({
                   countryDisabled={true}
                   setData={addressHandler}
                 />
+                {languageError && (
+                  <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
+                    ⚠️ We currently support only English letters for address.
+                  </div>
+                )}
               </div>
             )}
           </div>

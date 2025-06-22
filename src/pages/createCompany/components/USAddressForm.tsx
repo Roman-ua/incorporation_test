@@ -8,7 +8,6 @@ import { MdOutlinePlaylistRemove } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import { CountryOrState } from '../../../state/types/globalDataTypes';
-import { toast } from 'sonner';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -30,6 +29,8 @@ interface IProps {
   copyTitle?: string;
   copyClickHandler?: (value: AddressFields) => void;
   showClear?: boolean;
+  setLanguageError: (value: boolean) => void;
+  languageError: boolean;
 }
 
 const addressFieldsMock = [
@@ -64,6 +65,8 @@ const USAddressForm = ({
   copyTitle,
   copyClickHandler,
   showClear,
+  setLanguageError,
+  languageError,
 }: IProps) => {
   const [saved, setSaved] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -253,11 +256,12 @@ const USAddressForm = ({
                         ...address,
                         [`line${index + 1}`]: e.target.value,
                       });
+
+                      if (languageError) {
+                        setLanguageError(false);
+                      }
                     } else {
-                      toast.error('Invalid language', {
-                        description:
-                          'Only English letters, numbers, and symbols are allowed',
-                      });
+                      setLanguageError(true);
                     }
                     setSaved(false);
                   }}
@@ -301,11 +305,12 @@ const USAddressForm = ({
               onChange={(e) => {
                 if (VALIDATORS.LANGUAGE.test(e.target.value)) {
                   setCity(e.target.value);
+
+                  if (languageError) {
+                    setLanguageError(false);
+                  }
                 } else {
-                  toast.error('Invalid language', {
-                    description:
-                      'Only English letters, numbers, and symbols are allowed',
-                  });
+                  setLanguageError(true);
                 }
                 setSaved(false);
               }}

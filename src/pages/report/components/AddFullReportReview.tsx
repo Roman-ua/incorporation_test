@@ -24,7 +24,10 @@ import UploadedFileSmall from './UploadedFileSmall';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 
-const RenderAddress = (removed: boolean, address: AddressFields) => {
+const RenderAddress: React.FC<{ removed: boolean; address: AddressFields }> = ({
+  removed,
+  address,
+}) => {
   const globalData = useRecoilValue(GlobalDataState);
 
   return (
@@ -57,8 +60,8 @@ const RenderAddress = (removed: boolean, address: AddressFields) => {
         <span>{address.city}, </span>
         <span>
           {globalData.states.find((item) => item.name === address.state)
-            ?.abbreviation || ''}{' '}
-        </span>
+            ?.abbreviation || ''}
+        </span>{' '}
         <span>{address.zip}</span>
       </div>
       <div
@@ -117,6 +120,7 @@ const AddFullReportReview = ({
   const [editingAddress, setEditingAddress] = useState(false);
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
   const [addressCopied, setAddressCopied] = useState(false);
+  const [languageError, setLanguageError] = useState<boolean>(false);
 
   const {
     inputRef,
@@ -307,8 +311,15 @@ const AddFullReportReview = ({
         <div className="w-full flex items-start justify-start gap-3 max-lg:flex-col">
           <div className="w-full">
             {editingAddress ? (
-              <>
-                <div className="text-sm text-gray-500 mb-1">Main Address</div>
+              <div className="relative">
+                <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
+                  <span>Main Address</span>
+                  {languageError && (
+                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
+                      We currently support only English letters for address.
+                    </div>
+                  )}
+                </div>
                 <USAddressForm
                   disabledFlag={false}
                   copyTitle={'Copy to Mailing Address'}
@@ -321,14 +332,21 @@ const AddFullReportReview = ({
                   requiredError={false}
                   value={updatedAddress || address}
                   showClear={true}
+                  setLanguageError={setLanguageError}
+                  languageError={languageError}
                 />
-              </>
+              </div>
             ) : (
               <div className="pr-2 text-gray-700 text-sm">
                 <div className="text-sm text-gray-500 mb-1">Main Address</div>
                 <div className="flex flex-col items-start justify-between w-full">
                   <div className="flex items-start justify-between w-full">
-                    <div>{RenderAddress(false, updatedAddress || address)}</div>
+                    <div>
+                      <RenderAddress
+                        removed={false}
+                        address={updatedAddress || address}
+                      />
+                    </div>
                     <div
                       onClick={() => {
                         setEditingAddress(true);
@@ -340,7 +358,12 @@ const AddFullReportReview = ({
                   </div>
                   <div className="flex items-start justify-between w-full group/updated">
                     {updatedAddress && (
-                      <div>{RenderAddress(!!updatedAddress, address)}</div>
+                      <div>
+                        <RenderAddress
+                          removed={!!updatedAddress}
+                          address={address}
+                        />
+                      </div>
                     )}
                     {updatedAddress && (
                       <div
@@ -357,9 +380,14 @@ const AddFullReportReview = ({
           </div>
           <div className="w-full">
             {editingMailingAddress ? (
-              <>
-                <div className="text-sm text-gray-500 mb-1">
-                  Mailing Address
+              <div className="relative">
+                <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
+                  <span>Mailing Address</span>
+                  {languageError && (
+                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
+                      We currently support only English letters for address.
+                    </div>
+                  )}
                 </div>
                 <USAddressForm
                   disabledFlag={false}
@@ -375,8 +403,10 @@ const AddFullReportReview = ({
                   requiredError={false}
                   value={updatedMailingAddress || mailingAddress}
                   showClear={true}
+                  setLanguageError={setLanguageError}
+                  languageError={languageError}
                 />
-              </>
+              </div>
             ) : (
               <div className="pr-2 text-gray-700 text-sm">
                 <div className="text-sm text-gray-500 mb-1">
@@ -386,10 +416,10 @@ const AddFullReportReview = ({
                   <div className="flex flex-col items-start justify-between w-full">
                     <div className="flex items-start justify-between w-full">
                       <div>
-                        {RenderAddress(
-                          false,
-                          updatedMailingAddress || mailingAddress
-                        )}
+                        <RenderAddress
+                          removed={false}
+                          address={updatedMailingAddress || mailingAddress}
+                        />
                       </div>
                       <div
                         onClick={() => {
@@ -403,10 +433,10 @@ const AddFullReportReview = ({
                     <div className="flex items-start justify-between w-full group/updated">
                       {updatedMailingAddress && (
                         <div>
-                          {RenderAddress(
-                            !!updatedMailingAddress,
-                            mailingAddress
-                          )}
+                          <RenderAddress
+                            removed={!!updatedMailingAddress}
+                            address={mailingAddress}
+                          />
                         </div>
                       )}
                       {updatedMailingAddress && (
@@ -452,11 +482,20 @@ const AddFullReportReview = ({
               </div>
             </div>
             <div className="flex items-start justify-start pb-2 w-1/2">
-              <div className="w-full text-gray-700 text-sm">
-                <div className="text-sm text-gray-500 mb-1">Address</div>
+              <div className="w-full text-gray-700 text-sm relative">
+                <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
+                  <span>Address</span>
+                  {languageError && (
+                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
+                      We currently support only English letters for address.
+                    </div>
+                  )}
+                </div>
                 {!editingAgent ? (
                   <div className="flex items-start justify-between w-full">
-                    <div>{RenderAddress(false, agentAddress)}</div>
+                    <div>
+                      <RenderAddress removed={false} address={agentAddress} />
+                    </div>
                     <div
                       onClick={() => {
                         setEditingAgent(true);
@@ -467,15 +506,19 @@ const AddFullReportReview = ({
                     </div>
                   </div>
                 ) : (
-                  <USAddressForm
-                    disabledFlag={false}
-                    setFromState={(data) => updateAgentAddress(data)}
-                    cancelAction={cancelAgentHandler}
-                    heading={''}
-                    requiredError={false}
-                    value={agentAddress}
-                    showClear={true}
-                  />
+                  <>
+                    <USAddressForm
+                      disabledFlag={false}
+                      setFromState={(data) => updateAgentAddress(data)}
+                      cancelAction={cancelAgentHandler}
+                      heading={''}
+                      requiredError={false}
+                      value={agentAddress}
+                      showClear={true}
+                      setLanguageError={setLanguageError}
+                      languageError={languageError}
+                    />
+                  </>
                 )}
               </div>
             </div>
