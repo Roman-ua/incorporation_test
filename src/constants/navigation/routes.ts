@@ -29,4 +29,12 @@ export const ROUTES = {
   REPORT_REVIEW: '/report_review',
   WORKSPACES: '/companies',
   USERS: '/users',
+  INTERNAL: '/internal',
+  INTERNAL_COMPANIES: '/internal/companies',
+  INTERNAL_USERS: '/internal/users',
+  INTERNAL_MAIL: '/internal/mail',
+  INTERNAL_DOCUMENTS: '/internal/documents',
+  INTERNAL_SERVICES: '/internal/services',
+  INTERNAL_ORDERS: '/internal/orders',
+  INTERNAL_INVOICES: '/internal/invoices',
 };

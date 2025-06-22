@@ -32,6 +32,8 @@ import AuthWrapper from './components/root/AuthWrapper';
 import RedirectPage from './pages/redirect/Redirect';
 import Users from './pages/Internal/Users/Users';
 import SidebarLayoutWorkspaces from './components/shared/SidebarLayoutWorkspaces';
+import SidebarLayoutAdmin from './components/shared/SideBarLayoutAdmin';
+import AdminsPage from './pages/admins/AdminsPage';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -92,6 +94,18 @@ function App() {
               element={<AddFullReportProcess />}
             />
             <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
+            <Route element={<SidebarLayoutAdmin />}>
+              <Route
+                path={ROUTES.INTERNAL_COMPANIES}
+                element={<AdminsPage />}
+              />
+              <Route path={ROUTES.INTERNAL_USERS} element={<Users />} />
+              <Route path={ROUTES.INTERNAL_MAIL} element={<Mail />} />
+              <Route path={ROUTES.INTERNAL_DOCUMENTS} element={<Documents />} />
+              <Route path={ROUTES.INTERNAL_SERVICES} element={<Services />} />
+              <Route path={ROUTES.INTERNAL_ORDERS} element={<Orders />} />
+              <Route path={ROUTES.INTERNAL_INVOICES} element={<Invoices />} />
+            </Route>
             <Route element={<SidebarLayoutWorkspaces />}>
               <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
               <Route path={ROUTES.USERS} element={<Users />} />

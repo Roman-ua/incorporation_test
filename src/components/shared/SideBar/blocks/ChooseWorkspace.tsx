@@ -15,6 +15,7 @@ import { IconBuildings } from '@tabler/icons-react';
 import { ICompanyData } from '../../../../state/types/company';
 import useEin from '../../../../utils/hooks/EIN/useEin';
 import EinState from '../../../../state/atoms/EIN';
+import { TbUserShield } from 'react-icons/tb';
 
 const ChooseWorkspace = () => {
   const navigate = useNavigate();
@@ -209,6 +210,17 @@ const ChooseWorkspace = () => {
                       <LuArrowUpRight className="h-4 w-4" />
                     </div>
                     <span className="text-sm">All Companies</span>
+                  </Link>
+                  <Link
+                    to={ROUTES.INTERNAL_COMPANIES}
+                    className={classNames(
+                      'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'
+                    )}
+                  >
+                    <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md overflow-hidden border border-gray-100 dark:bg-gray-700">
+                      <TbUserShield />
+                    </div>
+                    <span className="text-sm">Internal</span>
                   </Link>
                 </div>
               </motion.div>

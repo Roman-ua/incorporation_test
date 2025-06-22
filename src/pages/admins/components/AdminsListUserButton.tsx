@@ -11,9 +11,8 @@ import UseUserData from '../../../utils/hooks/UserData/UseUserData';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { PiChatCircleDotsBold } from 'react-icons/pi';
-import { TbUserShield } from 'react-icons/tb';
 
-const WorkspaceListUserButton = () => {
+const AdminsListUserButton = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
   const userData = useRecoilValue(UserProfileState);
   const { logout } = UseUserData();
@@ -41,13 +40,6 @@ const WorkspaceListUserButton = () => {
   return (
     <>
       <div className="px-2">
-        <div
-          onClick={() => navigate(ROUTES.INTERNAL_COMPANIES)}
-          className="text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80 hover:cursor-pointer"
-        >
-          <TbUserShield className="h-4 w-4" />
-          <span>Internal</span>
-        </div>
         <div
           onClick={() => navigate(ROUTES.CREATE_COMPANY)}
           className={classNames(
@@ -131,16 +123,6 @@ const WorkspaceListUserButton = () => {
                   >
                     <CircleUser className="h-4 w-4" />
                     <span>Account</span>
-                  </Link>
-                  <Link
-                    to={ROUTES.INTERNAL_COMPANIES}
-                    onClick={() => setIsUserMenuOpen(false)}
-                    className={classNames(
-                      'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'
-                    )}
-                  >
-                    <TbUserShield />
-                    <span>Internal</span>
                   </Link>
                 </div>
                 <div className="p-1 border-t border-gray-100">
@@ -272,4 +254,4 @@ const WorkspaceListUserButton = () => {
   // );
 };
 
-export default WorkspaceListUserButton;
+export default AdminsListUserButton;
