@@ -135,7 +135,18 @@ const RegAgentDataHandling = ({
         </div>
       </div>
       <div className="mb-2 flex items-end justify-between">
-        <span className="font-bold text-sm">Address</span>
+        <div className="flex items-center justify-start gap-3">
+          <span className="font-bold text-sm py-1">Address</span>
+          {languageError && (
+            <div
+              className={classNames(
+                'text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md'
+              )}
+            >
+              ⚠️ We currently support only English letters for address.
+            </div>
+          )}
+        </div>
         <SwitchButton
           disabled={true}
           option1="US Address"
@@ -154,11 +165,6 @@ const RegAgentDataHandling = ({
           setData={addressHandler}
           stateDisabled={true}
         />
-        {languageError && (
-          <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
-            ⚠️ We currently support only English letters for address.
-          </div>
-        )}
       </div>
       <div className="flex items-center justify-end w-full py-2">
         {closeModalHandler && (

@@ -342,8 +342,13 @@ const AddEinModal = ({
 
             {selectedDocType && selectedDocType !== 'Screenshot' && (
               <div className="mt-6 relative">
-                <div className="text-gray-700 text-sm mb-2 font-bold">
-                  Address on the Document
+                <div className="text-gray-700 text-sm mb-2 font-bold flex items-center justify-start gap-3">
+                  <span>Address on the Document</span>
+                  {languageError && (
+                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1.5 py-1 rounded-md">
+                      We currently support only English letters for address.
+                    </div>
+                  )}
                 </div>
                 <SimpleAddressForm
                   disableExtraLines={true}
@@ -357,11 +362,6 @@ const AddEinModal = ({
                   countryDisabled={true}
                   setData={addressHandler}
                 />
-                {languageError && (
-                  <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
-                    ⚠️ We currently support only English letters for address.
-                  </div>
-                )}
               </div>
             )}
           </div>

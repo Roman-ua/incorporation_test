@@ -264,7 +264,18 @@ const PersonDataHandling = ({
         </div>
       </div>
       <div className="mb-2 flex items-end justify-between">
-        <span className="font-bold text-sm">Address</span>
+        <div className="flex items-center justify-start gap-3">
+          <span className="font-bold text-sm py-1">Address</span>
+          {languageError && (
+            <div
+              className={classNames(
+                'text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md'
+              )}
+            >
+              ⚠️ We currently support only English letters for address.
+            </div>
+          )}
+        </div>
         <SwitchButton
           option1="US Address"
           option2="Other"
@@ -290,16 +301,6 @@ const PersonDataHandling = ({
             data={address}
             setData={addressHandler}
           />
-        )}
-        {languageError && (
-          <div
-            className={classNames(
-              'absolute -bottom-9 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md',
-              isCreateProcess ? 'left-0' : 'left-20'
-            )}
-          >
-            ⚠️ We currently support only English letters for address.
-          </div>
         )}
       </div>
       <div className="flex items-center justify-end w-full py-2">
