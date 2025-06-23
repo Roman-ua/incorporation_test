@@ -311,7 +311,7 @@ export function AddPersonModal({
           </div>
 
           <div className="mb-10">
-            <div className="flex items-end justify-between">
+            <div className="flex items-end justify-between mb-2">
               <span className="font-bold text-sm">Address</span>
               <SwitchButton
                 option1="US Address"
