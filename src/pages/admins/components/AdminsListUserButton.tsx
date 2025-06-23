@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import React from 'react';
 
-import { ArrowLeftFromLine, CircleUser, LogOut } from 'lucide-react';
+import { CircleUser, LayoutGrid, LogOut } from 'lucide-react';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { classNames } from '../../../utils/helpers';
 import { useRecoilValue } from 'recoil';
@@ -46,7 +46,7 @@ const AdminsListUserButton = () => {
             'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80 hover:cursor-pointer'
           )}
         >
-          <ArrowLeftFromLine className="h-4 w-4" />
+          <LayoutGrid className="w-4 h-4" />
           <span>All Companies</span>
         </div>
         <a

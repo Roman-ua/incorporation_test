@@ -1,17 +1,13 @@
 import React from 'react';
 
 import { classNames } from '../../../utils/helpers';
-import { ROUTES } from '../../../constants/navigation/routes';
-import { useNavigate } from 'react-router-dom';
 import { TbUserShield } from 'react-icons/tb';
 
 const AdminsListHeaderCompanies = () => {
-  const navigate = useNavigate();
   return (
     <div className="p-2 w-full">
       <div className="relative">
         <button
-          onClick={() => navigate(ROUTES.WORKSPACES)}
           className={classNames(
             'flex items-center gap-2 p-2 rounded-md transition-colors hover:cursor-pointer'
           )}
@@ -22,9 +18,7 @@ const AdminsListHeaderCompanies = () => {
             </div>
           </div>
           <div className="flex flex-col gap-0.5 leading-none text-left min-w-0">
-            <span className="text-sm font-semibold truncate">
-              Internal Dashboard
-            </span>
+            <span className="text-sm font-semibold truncate">Internal</span>
           </div>
         </button>
       </div>
