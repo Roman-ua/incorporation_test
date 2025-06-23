@@ -23,7 +23,7 @@ const AdminsListHeaderCompanies = () => {
           </div>
           <div className="flex flex-col gap-0.5 leading-none text-left min-w-0">
             <span className="text-sm font-semibold truncate">
-              Admin Dashboard
+              Internal Dashboard
             </span>
           </div>
         </button>

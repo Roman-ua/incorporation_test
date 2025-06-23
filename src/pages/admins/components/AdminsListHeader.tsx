@@ -9,9 +9,10 @@ import {
   Users,
 } from 'lucide-react';
 import { IconBuilding, IconFileInvoice } from '@tabler/icons-react';
-import WorkspaceListUserButton from './AdminsListUserButton';
+
 import { ROUTES } from '../../../constants/navigation/routes';
 import { useLocation, useNavigate } from 'react-router-dom';
+import AdminsListUserButton from './AdminsListUserButton';
 
 const menuItems = [
   { title: 'Companies', icon: IconBuilding, href: ROUTES.INTERNAL_COMPANIES },
@@ -52,7 +53,7 @@ const AdminsListHeader = () => {
         </div>
       </div>
       <div className="mt-auto">
-        <WorkspaceListUserButton />
+        <AdminsListUserButton />
       </div>
     </div>
   );

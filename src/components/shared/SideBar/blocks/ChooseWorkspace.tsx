@@ -211,6 +211,8 @@ const ChooseWorkspace = () => {
                     </div>
                     <span className="text-sm">All Companies</span>
                   </Link>
+                </div>
+                <div className="border-t border-gray-100 p-1.5">
                   <Link
                     to={ROUTES.INTERNAL_COMPANIES}
                     className={classNames(
