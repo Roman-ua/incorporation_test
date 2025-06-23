@@ -204,8 +204,8 @@ export function AddPersonModal({
           </h2>
         </div>
 
-        <form className="space-y-6">
-          <div className="flex gap-6">
+        <form>
+          <div className="flex gap-6 mb-6">
             <div className="flex-1 space-y-5">
               <div>
                 <AvatarUpload />
@@ -310,8 +310,8 @@ export function AddPersonModal({
             </div>
           </div>
 
-          <div>
-            <div className="mb-2 flex items-end justify-between">
+          <div className="mb-10">
+            <div className="flex items-end justify-between">
               <span className="font-bold text-sm">Address</span>
               <SwitchButton
                 option1="US Address"

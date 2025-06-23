@@ -140,7 +140,7 @@ const ChooseWorkspace = () => {
                 transition={{ duration: 0.2 }}
                 onMouseEnter={() => setIsHoveredDropdown(true)}
                 onMouseLeave={() => setIsHoveredDropdown(false)}
-                className="absolute left-[244px] -top-1 z-40 mt-1 w-[240px] max-h-[260px] rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md flex flex-col"
+                className="absolute left-[244px] -top-1 z-40 mt-1 w-[240px] max-h-[360px] rounded-md border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md flex flex-col"
               >
                 <div className="px-2.5 pt-2 font-semibold text-xs text-gray-500">
                   Companies
