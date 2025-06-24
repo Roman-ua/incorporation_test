@@ -8,6 +8,7 @@ import SimpleAddressForm from '../SimpleAddressForm/SimpleAddressForm';
 import SimpleAddressFormNotUS from '../SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import XBtn from '../buttons/XBtn';
 import { VALIDATORS } from '../../../constants/regexs';
+import { X } from 'lucide-react';
 
 interface IProps {
   person: Person | undefined;
@@ -266,15 +267,6 @@ const PersonDataHandling = ({
       <div className="mb-2 flex items-end justify-between">
         <div className="flex items-center justify-start gap-3">
           <span className="font-bold text-sm py-1">Address</span>
-          {languageError && (
-            <div
-              className={classNames(
-                'text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md'
-              )}
-            >
-              ⚠️ We currently support only English letters for address.
-            </div>
-          )}
         </div>
         <SwitchButton
           option1="US Address"
@@ -303,6 +295,28 @@ const PersonDataHandling = ({
           />
         )}
       </div>
+      {languageError ? (
+        <div
+          className={classNames(
+            'text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between w-full mt-2'
+          )}
+        >
+          <div>
+            ⚠️{' '}
+            <span className="ml-1">
+              We currently support only English letters for address.
+            </span>
+          </div>
+          <button
+            onClick={() => setLanguageError(false)}
+            className="hover:cursor-pointer"
+          >
+            <X className="w-3.5 h-3.5 text-gray-500" />
+          </button>
+        </div>
+      ) : (
+        <div className="h-7 mt-2" />
+      )}
       <div className="flex items-center justify-end w-full py-2">
         {removePersonHandler && localData?.id ? (
           <div

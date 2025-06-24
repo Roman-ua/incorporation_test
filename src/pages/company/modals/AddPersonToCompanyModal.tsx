@@ -12,6 +12,7 @@ import { AvatarUpload } from '../components/AddPersonPhoto';
 import { validateEmail } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
+import { X } from 'lucide-react';
 
 export interface Person {
   id: string;
@@ -345,14 +346,25 @@ export function AddPersonModal({
                 />
               )}
               {languageError && (
-                <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
-                  ⚠️ We currently support only English letters for address.
+                <div className="absolute -bottom-9 left-0 w-full text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between">
+                  <div>
+                    ⚠️{' '}
+                    <span className="ml-1">
+                      We currently support only English letters for address.
+                    </span>
+                  </div>
+                  <button
+                    className="hover:cursor-pointer"
+                    onClick={() => setLanguageError(false)}
+                  >
+                    <X className="w-3.5 h-3.5 text-gray-500" />
+                  </button>
                 </div>
               )}
             </motion.div>
           </div>
 
-          <div className="mr-auto flex items-center justify-end">
+          <div className="mr-auto flex items-center justify-end pt-1">
             <div className="w-1/2" />
             <div
               onClick={() => {

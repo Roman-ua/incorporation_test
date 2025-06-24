@@ -19,6 +19,7 @@ import { validateEmail } from '../../../../utils/validators';
 import PersonAvatar from '../../components/personAvatar';
 import GlobalDataState from '../../../../state/atoms/GlobalData';
 import { VALIDATORS } from '../../../../constants/regexs';
+import { X } from 'lucide-react';
 
 const defaultUS = {
   country: 'United States',
@@ -344,9 +345,24 @@ const AddPersonProcess = () => {
                         />
                       )}
                       {languageError && (
-                        <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
-                          ⚠️ We currently support only English letters for
-                          address.
+                        <div
+                          className={classNames(
+                            'text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between w-full mt-2'
+                          )}
+                        >
+                          <div>
+                            ⚠️{' '}
+                            <span className="ml-1">
+                              We currently support only English letters for
+                              address.
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => setLanguageError(false)}
+                            className="hover:cursor-pointer"
+                          >
+                            <X className="w-3.5 h-3.5 text-gray-500" />
+                          </button>
                         </div>
                       )}
                     </div>

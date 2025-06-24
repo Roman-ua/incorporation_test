@@ -12,12 +12,13 @@ import Separator from './components/Separator';
 import { VALIDATORS } from '../../constants/regexs';
 import SeparatedCards from './components/SeparatedCards';
 import ConfirmPage from './components/ConfirmPage';
-import USAddressForm from './components/USAddressForm';
 import ButtonWithArrow from '../../components/shared/ButtonWithArrow/ButtonWithArrow';
 import useCompany from '../../utils/hooks/Company/useCompany';
 import { ICompanyDataForSave } from '../../state/types/company';
 import DatePicker from '../../components/shared/Modals/addCompanyFile/datePicker';
 import SectionHeading from './components/SectionHeading';
+import SimpleAddressForm from '../../components/shared/SimpleAddressForm/SimpleAddressForm';
+import { X } from 'lucide-react';
 
 export const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
@@ -163,6 +164,9 @@ const CreateCompany = () => {
   const [stepThreeData, setStepThreeData] = useState<StepThreeData>(
     parsedData?.stepThreeData || defaultStepThreeValues
   );
+
+  const inputCommonClasses =
+    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   useEffect(() => {
     const savedData = localStorage.getItem(localStorageKey);
@@ -441,20 +445,47 @@ const CreateCompany = () => {
                   control={stepThreeForm.control}
                   render={({ field }) => (
                     <div className="mb-16 relative">
-                      <USAddressForm
-                        setFromState={field.onChange}
-                        value={field?.value}
+                      <SimpleAddressForm
+                        disabledFlag={false}
+                        extraWrapperClass={
+                          'border border-sideBarBlue shadow-[0_0_0_1px_#0277ff]'
+                        }
+                        inputCommonClasses={inputCommonClasses}
                         requiredError={Object.keys(
                           stepThreeForm.formState.errors
                         ).includes('address')}
-                        heading={'Main Address'}
-                        setLanguageError={setLanguageError}
-                        languageError={languageError}
+                        countryDisabled={true}
+                        data={field.value}
+                        setData={(key, value) => {
+                          if (VALIDATORS.LANGUAGE.test(value)) {
+                            field.onChange({
+                              ...field.value,
+                              [key]: value,
+                            });
+
+                            if (languageError) {
+                              setLanguageError(false);
+                            }
+                          } else {
+                            setLanguageError(true);
+                          }
+                        }}
                       />
                       {languageError && (
-                        <div className="absolute bottom-0 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
-                          ⚠️ We currently support only English letters for
-                          address.
+                        <div className="absolute -bottom-9 left-0 w-full text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between">
+                          <div>
+                            ⚠️{' '}
+                            <span className="ml-1">
+                              We currently support only English letters for
+                              address.
+                            </span>
+                          </div>
+                          <button
+                            className="hover:cursor-pointer"
+                            onClick={() => setLanguageError(false)}
+                          >
+                            <X className="w-3.5 h-3.5 text-gray-500" />
+                          </button>
                         </div>
                       )}
                     </div>

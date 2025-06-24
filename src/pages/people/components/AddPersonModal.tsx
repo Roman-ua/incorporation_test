@@ -282,7 +282,12 @@ const AddPersonModal = ({
                 )}
                 {languageError && (
                   <div className="absolute -bottom-9 left-0 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md">
-                    ⚠️ We currently support only English letters for address.
+                    <div>
+                      ⚠️{' '}
+                      <span className="ml-1">
+                        We currently support only English letters for address.
+                      </span>
+                    </div>
                   </div>
                 )}
               </div>
