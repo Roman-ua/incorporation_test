@@ -29,7 +29,7 @@ const AdminsListHeader = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="hidden lg:fixed lg:inset-y-0 lg:z-10 lg:flex lg:w-[255px] lg:flex-col">
+    <div className="hidden lg:fixed lg:inset-y-0 lg:z-10 lg:flex lg:w-[255px] lg:flex-col bg-zinc-50 border-r">
       <AdminsListHeaderCompanies />
       <div className="p-2 flex items-start flex-col space-y-1 justify-start text-sm w-full">
         <div className="text-xs text-gray-600 p-2">Pages</div>
@@ -40,8 +40,10 @@ const AdminsListHeader = () => {
               <div
                 onClick={() => navigate(item.href)}
                 className={classNames(
-                  'hover:cursor-pointer font-semibold hover:bg-gray-100/80 text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm',
-                  pathname === item.href && 'bg-gray-100/80'
+                  'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:cursor-pointer',
+                  pathname.includes(item.href)
+                    ? 'bg-gray-100'
+                    : 'hover:bg-gray-100/80'
                 )}
                 key={index}
               >

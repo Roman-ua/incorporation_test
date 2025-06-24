@@ -147,7 +147,7 @@ const ChooseWorkspace = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-1.5">
-                  {workspacesState.list.map((workspace) => {
+                  {workspacesState.list?.slice(0, 5).map((workspace) => {
                     const isActive =
                       !isHoveredDropdown &&
                       workspacesState?.current?.id === workspace.id;

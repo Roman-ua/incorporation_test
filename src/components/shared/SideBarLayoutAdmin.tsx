@@ -2,6 +2,7 @@ import React from 'react';
 
 import AdminsListHeader from '../../pages/admins/components/AdminsListHeader';
 import { Outlet } from 'react-router-dom';
+import Breadcrumbs from './BradCrumbs/BradCrumbs';
 
 const SidebarLayoutAdmin = () => {
   return (
@@ -11,6 +12,9 @@ const SidebarLayoutAdmin = () => {
           <AdminsListHeader />
         </div>
         <main className="lg:pl-64">
+          <div className="bg-white h-16 flex items-center justify-start">
+            <Breadcrumbs />
+          </div>
           <div>
             <Outlet />
           </div>
