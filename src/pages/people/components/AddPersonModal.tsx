@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { classNames } from '../../../utils/helpers';
+import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SimpleSelect from '../../../components/shared/SimpleSelect/SimpleSelect';
 import { mockTitleList } from '../../../mock/mockData';
 import { AddressFields, Person } from '../../../interfaces/interfaces';
@@ -144,14 +144,17 @@ const AddPersonModal = ({
   };
 
   const addressHandler = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setAddress((prevState) => ({
-        ...prevState,
-        [key]: value,
-      }));
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
+
+    const filteredResult = filterLatinOnly(value);
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }

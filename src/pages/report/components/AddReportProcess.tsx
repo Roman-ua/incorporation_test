@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { X, Upload, FileText } from 'lucide-react';
-import { classNames } from '../../../utils/helpers';
+import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import XBtn from '../../../components/shared/buttons/XBtn';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
@@ -64,6 +64,7 @@ const AddReportProcess: React.FC<MultiStepModalProps> = ({
   const [file, setFile] = useState<IFiles | null>(null);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [languageError, setLanguageError] = useState<boolean>(false);
+  console.log('languageError', languageError);
   const [address, setAddress] = useState<AddressFields>({
     country: 'United States',
     address0: '',
@@ -120,15 +121,17 @@ const AddReportProcess: React.FC<MultiStepModalProps> = ({
   };
 
   const handleAddressChange = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setAddress((prev) => ({
-        ...prev,
-        [key]: value,
-      }));
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const filteredResult = filterLatinOnly(value);
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }

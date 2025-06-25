@@ -3,18 +3,24 @@ import SectionHeading from '../../createCompany/components/SectionHeading';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import { VALIDATORS } from '../../../constants/regexs';
+import { filterLatinOnly } from '../../../utils/helpers';
 
 const USAddressFormElements = () => {
   const [state, setState] = React.useState({});
   const [languageError, setLanguageError] = React.useState<boolean>(false);
 
   const setDataHandler = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setState({ ...state, [key]: value });
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const filteredResult = filterLatinOnly(value);
+    setState((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }
@@ -22,12 +28,17 @@ const USAddressFormElements = () => {
 
   const [stateTwo, setStateTwo] = React.useState({});
   const setDataTwoHandler = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setStateTwo({ ...stateTwo, [key]: value });
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const filteredResult = filterLatinOnly(value);
+    setStateTwo((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }

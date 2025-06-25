@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { classNames } from '../../../../utils/helpers';
+import { classNames, filterLatinOnly } from '../../../../utils/helpers';
 import PageSign from '../../../../components/shared/PageSign';
 import { AddressFields } from '../../../../interfaces/interfaces';
 import AddFullReportSteps from './AddPersonSteps';
@@ -119,15 +119,17 @@ const AddPersonProcess = () => {
   // const [visitedSteps, setVisitedSteps] = useState<number[]>([]);
 
   const addressHandler = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setAddress((prevState) => ({
-        ...prevState,
-        [key]: value,
-      }));
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const filteredResult = filterLatinOnly(value);
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
-import { classNames } from '../../../utils/helpers';
+import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
@@ -118,15 +118,17 @@ export function AddPersonModal({
   };
 
   const addressHandler = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setAddress((prevState) => ({
-        ...prevState,
-        [key]: value,
-      }));
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const filteredResult = filterLatinOnly(value);
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }

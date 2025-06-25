@@ -1,4 +1,4 @@
-import { classNames } from '../../../utils/helpers';
+import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SimpleSelect from '../SimpleSelect/SimpleSelect';
 import { mockTitleList } from '../../../mock/mockData';
 import React, { useEffect, useState } from 'react';
@@ -163,15 +163,17 @@ const PersonDataHandling = ({
   };
 
   const addressHandler = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setAddress((prevState) => ({
-        ...prevState,
-        [key]: value,
-      }));
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const filteredResult = filterLatinOnly(value);
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }

@@ -7,6 +7,7 @@ import { AddressFields } from '../../../../interfaces/interfaces';
 import SimpleAddressForm from '../../../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import {
   bytesToMB,
+  filterLatinOnly,
   getFileExtension,
   truncateString,
 } from '../../../../utils/helpers';
@@ -126,15 +127,17 @@ const AddEinModal = ({
   };
 
   const addressHandler = (key: string, value: string) => {
-    if (VALIDATORS.LANGUAGE.test(value)) {
-      setAddress((prevState) => ({
-        ...prevState,
-        [key]: value,
-      }));
+    const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+    const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-      if (languageError) {
-        setLanguageError(false);
-      }
+    const filteredResult = filterLatinOnly(value);
+    setAddress((prevState) => ({
+      ...prevState,
+      [key]: filteredResult,
+    }));
+
+    if (isOnlyAllowed && !hasCyrillic) {
+      setLanguageError(false);
     } else {
       setLanguageError(true);
     }

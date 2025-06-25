@@ -405,13 +405,6 @@ const USAddressForm = ({
             wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !country ? 'bg-red-50' : 'bg-transparent'}`}
           />
         </div>
-        {/* {languageError ? (
-          <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
-            We currently support only English letters for address.
-          </div>
-        ) : (
-          <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2"></div>
-        )} */}
         {showLanguageError && (
           <LanguageErrorRender
             error={languageError}

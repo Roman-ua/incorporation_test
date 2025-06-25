@@ -12,3 +12,8 @@ export const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
+
+export const isLatin = (text: string): boolean => {
+  // eslint-disable-next-line no-control-regex
+  return /^[\x00-\x7F]*$/.test(text);
+};

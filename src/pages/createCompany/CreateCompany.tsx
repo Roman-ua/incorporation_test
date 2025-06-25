@@ -19,6 +19,7 @@ import DatePicker from '../../components/shared/Modals/addCompanyFile/datePicker
 import SectionHeading from './components/SectionHeading';
 import SimpleAddressForm from '../../components/shared/SimpleAddressForm/SimpleAddressForm';
 import { X } from 'lucide-react';
+import { filterLatinOnly } from '../../utils/helpers';
 
 export const companyTypes = [
   { fullName: 'Corporation', shortName: 'C-corp' },
@@ -457,15 +458,17 @@ const CreateCompany = () => {
                         countryDisabled={true}
                         data={field.value}
                         setData={(key, value) => {
-                          if (VALIDATORS.LANGUAGE.test(value)) {
-                            field.onChange({
-                              ...field.value,
-                              [key]: value,
-                            });
+                          const isOnlyAllowed = VALIDATORS.LANGUAGE.test(value);
+                          const hasCyrillic = /[\u0400-\u04FF]/.test(value);
 
-                            if (languageError) {
-                              setLanguageError(false);
-                            }
+                          const filteredResult = filterLatinOnly(value);
+                          field.onChange({
+                            ...field.value,
+                            [key]: filteredResult,
+                          });
+
+                          if (isOnlyAllowed && !hasCyrillic) {
+                            setLanguageError(false);
                           } else {
                             setLanguageError(true);
                           }
