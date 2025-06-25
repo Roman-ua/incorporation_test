@@ -27,13 +27,15 @@ import ThemeState from './state/atoms/Theme';
 import ElementsButtons from './pages/elements/nested/ElementsButtons';
 import ElementsNotions from './pages/elements/nested/ElementsNotions';
 import ElementsAddress from './pages/elements/nested/ElementsAddress';
-import WorkspacesPage from './pages/workspaces/WorkspacesPage';
+// import WorkspacesPage from './pages/workspaces/WorkspacesPage';
 import AuthWrapper from './components/root/AuthWrapper';
 import RedirectPage from './pages/redirect/Redirect';
 import Users from './pages/Internal/Users/Users';
-import SidebarLayoutWorkspaces from './components/shared/SidebarLayoutWorkspaces';
+// import SidebarLayoutWorkspaces from './components/shared/SidebarLayoutWorkspaces';
 import SidebarLayoutAdmin from './components/shared/SideBarLayoutAdmin';
 import AdminsPage from './pages/admins/AdminsPage';
+import SidebarLayoutAdmin2 from './components/shared/SideBarLayoutAdmin copy';
+import AdminsPage2 from './pages/admins copy/AdminsPage';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -106,13 +108,21 @@ function App() {
               <Route path={ROUTES.INTERNAL_ORDERS} element={<Orders />} />
               <Route path={ROUTES.INTERNAL_INVOICES} element={<Invoices />} />
             </Route>
-            <Route element={<SidebarLayoutWorkspaces />}>
+            {/* <Route element={<SidebarLayoutWorkspaces />}>
               <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
               <Route path={ROUTES.USERS} element={<Users />} />
+            </Route> */}
+            <Route element={<SidebarLayoutAdmin2 />}>
+              <Route path={ROUTES.WORKSPACES} element={<AdminsPage2 />} />
+              <Route path={ROUTES.ALL_USERS} element={<Users />} />
+              <Route path={ROUTES.ALL_MAIL} element={<Mail />} />
+              <Route path={ROUTES.ALL_DOCUMENTS} element={<Documents />} />
+              <Route path={ROUTES.ALL_SERVICES} element={<Services />} />
+              <Route path={ROUTES.ALL_ORDERS} element={<Orders />} />
+              <Route path={ROUTES.ALL_INVOICES} element={<Invoices />} />
             </Route>
             <Route element={<ProtectedRoute />}>
               <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
-
               <Route element={<ProtectedRoutes />}>
                 <Route path={ROUTES.ELEMENTS} element={<Elements />} />
                 <Route
