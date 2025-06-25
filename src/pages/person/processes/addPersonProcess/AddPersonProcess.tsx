@@ -462,6 +462,7 @@ const AddPersonProcess = () => {
                             showClear={true}
                             setLanguageError={setLanguageError}
                             languageError={languageError}
+                            showLanguageError={true}
                           />
                         </>
                       ) : (

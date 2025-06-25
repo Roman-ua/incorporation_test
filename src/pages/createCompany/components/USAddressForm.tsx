@@ -8,6 +8,7 @@ import { MdOutlinePlaylistRemove } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import { CountryOrState } from '../../../state/types/globalDataTypes';
+import { X } from 'lucide-react';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -31,6 +32,7 @@ interface IProps {
   showClear?: boolean;
   setLanguageError: (value: boolean) => void;
   languageError: boolean;
+  showLanguageError: boolean;
 }
 
 const addressFieldsMock = [
@@ -47,6 +49,33 @@ const areFieldsValid = (fields: {
     }
     return !!value;
   });
+};
+
+const LanguageErrorRender = ({
+  error,
+  setLanguageError,
+}: {
+  error: boolean;
+  setLanguageError: (value: boolean) => void;
+}) => {
+  return error ? (
+    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2 flex items-center justify-between w-full mt-1">
+      <div>
+        ⚠️{' '}
+        <span className="ml-1">
+          We currently support only English letters for address.
+        </span>
+      </div>
+      <button
+        onClick={() => setLanguageError(false)}
+        className="hover:cursor-pointer"
+      >
+        <X className="w-3 h-3 text-gray-500" />
+      </button>
+    </div>
+  ) : (
+    <div className="h-5 mt-1" />
+  );
 };
 
 const USAddressForm = ({
@@ -67,6 +96,7 @@ const USAddressForm = ({
   showClear,
   setLanguageError,
   languageError,
+  showLanguageError,
 }: IProps) => {
   const [saved, setSaved] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -375,12 +405,25 @@ const USAddressForm = ({
             wrapperExtraStyles={`rounded-b-0 border-0 ${requiredError && !country ? 'bg-red-50' : 'bg-transparent'}`}
           />
         </div>
+        {/* {languageError ? (
+          <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
+            We currently support only English letters for address.
+          </div>
+        ) : (
+          <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2"></div>
+        )} */}
+        {showLanguageError && (
+          <LanguageErrorRender
+            error={languageError}
+            setLanguageError={setLanguageError}
+          />
+        )}
         <div className="ml-auto flex items-center justify-between w-full">
           <div className="flex items-center justify-start">
             {deleteAction && (
               <div
                 onClick={deleteAction}
-                className="rounded-md bg-red-50 px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-2 text-gray-900 shadow-sm hover:bg-red-100 hover:cursor-pointer transition-all ease-in-out duration-150"
+                className="rounded-md bg-red-50 px-3 mr-auto h-[35px] text-sm font-semibold flex items-center mt-1 text-gray-900 shadow-sm hover:bg-red-100 hover:cursor-pointer transition-all ease-in-out duration-150"
               >
                 Delete
               </div>
@@ -399,7 +442,7 @@ const USAddressForm = ({
                   }
                   copyClickHandler({ country, ...address, city, zip, state });
                 }}
-                className="mt-2 rounded-md bg-transparent px-2.5 py-1 text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"
+                className="mt-1 rounded-md bg-transparent px-2.5 py-1 text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"
               >
                 {copyTitle || 'Copy to Mailing Address'}
               </div>
@@ -410,7 +453,7 @@ const USAddressForm = ({
               <button
                 type="button"
                 onClick={cancelAction}
-                className="mr-2 mt-2 ml-auto rounded-md bg-transparent px-2.5 py-1 text-sm font-medium text-gray-900 transition-all ease-in-out duration-150"
+                className="mr-2 mt-1 ml-auto rounded-md bg-transparent px-2.5 py-1 text-sm font-medium text-gray-900 transition-all ease-in-out duration-150"
               >
                 Cancel
               </button>
@@ -420,7 +463,7 @@ const USAddressForm = ({
                 type="button"
                 onClick={saveHandler}
                 className={classNames(
-                  'mt-2 px-2.5 py-1 border rounded-md  text-sm font-medium transition-all ease-in-out duration-150',
+                  'mt-1 px-2.5 py-1 border rounded-md  text-sm font-medium transition-all ease-in-out duration-150',
                   !(
                     areFieldsValid(validationData) &&
                     (!isCreateUser || additionalMandatoryCheck)

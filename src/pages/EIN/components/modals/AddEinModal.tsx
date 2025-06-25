@@ -16,7 +16,7 @@ import { inputError } from '../../../../constants/form/form';
 import { EinDocumentCreate } from '../../../../state/types/einTypes';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../../state/atoms/GlobalData';
-import { LockKeyhole } from 'lucide-react';
+import { LockKeyhole, X } from 'lucide-react';
 import { BiEditAlt } from 'react-icons/bi';
 import TooltipWrapper from '../../../../components/root/IconWithTooltipWrapper';
 import { VALIDATORS } from '../../../../constants/regexs';
@@ -248,7 +248,7 @@ const AddEinModal = ({
           )}
         </div>
         {!isNumberOnly && (
-          <div className="p-6 pb-11">
+          <div className="p-6 pb-3">
             <div className="flex items-center justify-between">
               <div className="text-gray-700 text-sm mb-2 font-bold">
                 Upload EIN (Tax ID) Confirmation Document
@@ -344,11 +344,6 @@ const AddEinModal = ({
               <div className="mt-6 relative">
                 <div className="text-gray-700 text-sm mb-2 font-bold flex items-center justify-start gap-3">
                   <span>Address on the Document</span>
-                  {languageError && (
-                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1.5 py-1 rounded-md">
-                      We currently support only English letters for address.
-                    </div>
-                  )}
                 </div>
                 <SimpleAddressForm
                   disableExtraLines={true}
@@ -362,6 +357,28 @@ const AddEinModal = ({
                   countryDisabled={true}
                   setData={addressHandler}
                 />
+                {languageError ? (
+                  <div
+                    className={classNames(
+                      'text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between w-full mt-2'
+                    )}
+                  >
+                    <div>
+                      ⚠️{' '}
+                      <span className="ml-1">
+                        We currently support only English letters for address.
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setLanguageError(false)}
+                      className="hover:cursor-pointer"
+                    >
+                      <X className="w-3.5 h-3.5 text-gray-500" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="h-7 mt-2" />
+                )}
               </div>
             )}
           </div>

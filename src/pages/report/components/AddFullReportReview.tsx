@@ -121,6 +121,9 @@ const AddFullReportReview = ({
   const [editingMailingAddress, setEditingMailingAddress] = useState(false);
   const [addressCopied, setAddressCopied] = useState(false);
   const [languageError, setLanguageError] = useState<boolean>(false);
+  const [languageErrorMailing, setLanguageErrorMailing] =
+    useState<boolean>(false);
+  const [languageErrorAgent, setLanguageErrorAgent] = useState<boolean>(false);
 
   const {
     inputRef,
@@ -314,11 +317,6 @@ const AddFullReportReview = ({
               <div className="relative">
                 <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
                   <span>Main Address</span>
-                  {languageError && (
-                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
-                      We currently support only English letters for address.
-                    </div>
-                  )}
                 </div>
                 <USAddressForm
                   disabledFlag={false}
@@ -334,6 +332,7 @@ const AddFullReportReview = ({
                   showClear={true}
                   setLanguageError={setLanguageError}
                   languageError={languageError}
+                  showLanguageError={true}
                 />
               </div>
             ) : (
@@ -383,11 +382,6 @@ const AddFullReportReview = ({
               <div className="relative">
                 <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
                   <span>Mailing Address</span>
-                  {languageError && (
-                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
-                      We currently support only English letters for address.
-                    </div>
-                  )}
                 </div>
                 <USAddressForm
                   disabledFlag={false}
@@ -403,8 +397,9 @@ const AddFullReportReview = ({
                   requiredError={false}
                   value={updatedMailingAddress || mailingAddress}
                   showClear={true}
-                  setLanguageError={setLanguageError}
-                  languageError={languageError}
+                  setLanguageError={setLanguageErrorMailing}
+                  languageError={languageErrorMailing}
+                  showLanguageError={true}
                 />
               </div>
             ) : (
@@ -485,11 +480,6 @@ const AddFullReportReview = ({
               <div className="w-full text-gray-700 text-sm relative">
                 <div className="text-sm text-gray-500 mb-1 flex items-center justify-start">
                   <span>Address</span>
-                  {languageError && (
-                    <div className="text-xs text-gray-900 bg-yellow-300/30 px-1 py-0.5 rounded-md ml-2">
-                      We currently support only English letters for address.
-                    </div>
-                  )}
                 </div>
                 {!editingAgent ? (
                   <div className="flex items-start justify-between w-full">
@@ -515,8 +505,9 @@ const AddFullReportReview = ({
                       requiredError={false}
                       value={agentAddress}
                       showClear={true}
-                      setLanguageError={setLanguageError}
-                      languageError={languageError}
+                      setLanguageError={setLanguageErrorAgent}
+                      languageError={languageErrorAgent}
+                      showLanguageError={true}
                     />
                   </>
                 )}
