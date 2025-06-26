@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { classNames, truncateString } from '../../../../utils/helpers';
-import { inputSimpleFocus } from '../../../../constants/form/form';
+import { truncateString } from '../../../../utils/helpers';
 import { IconBuildings } from '@tabler/icons-react';
-import { ArrowDownUp, Check } from 'lucide-react';
-import { BsThreeDots } from 'react-icons/bs';
+import SearchHeader from '../../../../components/shared/TableBlocks/SearchHeader';
+import TableHeaderCell from '../../../../components/shared/TableBlocks/TableHeaderCell';
+import TableHeaderRow from '../../../../components/shared/TableBlocks/TableHeaderRow';
+import TableBodyRow from '../../../../components/shared/TableBlocks/TableBodyRow';
+import TableBodyCell from '../../../../components/shared/TableBlocks/TableBodyCell';
+import TableStatusItem from '../../../../components/shared/TableBlocks/TableStatusItem';
+import TableThreeDotsMenu from '../../../../components/shared/TableBlocks/TableThreeDotsMenu';
 
 interface Company {
   id: string;
@@ -18,6 +22,12 @@ interface TableRow {
   status: 'Active' | 'Inactive' | 'Pending';
   relatedCompanies: Company[];
 }
+
+const dropMenuItems = [
+  { title: 'Delete', onClick: () => {} },
+  { title: 'Suspend', onClick: () => {} },
+  { title: 'Resend password', onClick: () => {} },
+];
 
 const sampleData: TableRow[] = [
   {
@@ -79,19 +89,6 @@ const sampleData: TableRow[] = [
   },
 ];
 
-const statusBadge = (status: string) => {
-  switch (status) {
-    case 'Active':
-      return 'bg-green-50 text-green-700 ring-green-600/20';
-    case 'Pending':
-      return 'bg-orange-50 text-orange-700 ring-orange-600/20';
-    case 'Inactive':
-      return 'bg-gray-50 text-gray-700 ring-gray-600/20';
-    default:
-      return 'bg-red-50 text-red-700 ring-red-600/20';
-  }
-};
-
 const columns = [
   { key: 'name', label: 'Name', sortable: true },
   { key: 'email', label: 'Email', sortable: true },
@@ -148,147 +145,55 @@ export default function DataTable() {
   return (
     <>
       {/* Header */}
-      <div className="flex items-center gap-10 mb-4">
-        <div className="flex-1 relative">
-          <input
-            type="text"
-            placeholder={`Filter by email...`}
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className={classNames(
-              'w-1/2 px-3 py-1 border flex h-9 min-w-0 border-gray-300 rounded-md focus:outline-none ring-offset-0 text-sm placeholder:text-gray-400',
-              inputSimpleFocus
-            )}
-          />
-        </div>
-        <div className="relative">
-          <button
-            onClick={() => setShowColumnsMenu(!showColumnsMenu)}
-            className="px-4 py-2 h-9 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none flex items-center gap-2 text-sm font-medium"
-          >
-            Columns
-            <svg
-              className={classNames(
-                'w-4 h-4 transition-transform duration-200',
-                showColumnsMenu ? 'rotate-180' : ''
-              )}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-
-          {showColumnsMenu && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-md z-10">
-              <div className="p-1">
-                {columns.map((col) => (
-                  <label
-                    key={col.key}
-                    onClick={() => handleColumnVisibility(col.key)}
-                    className="relative flex items-center gap-2 py-1.5 pr-2 pl-8 hover:bg-gray-50 text-sm cursor-pointer rounded-md"
-                  >
-                    {visibleColumns.includes(col.key) && (
-                      <Check className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4" />
-                    )}
-                    {col.label}
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <SearchHeader
+        filter={filter}
+        setFilter={setFilter}
+        showColumnsMenu={showColumnsMenu}
+        setShowColumnsMenu={setShowColumnsMenu}
+        columns={columns}
+        visibleColumns={visibleColumns}
+        handleColumnVisibility={handleColumnVisibility}
+      />
       {/* Table */}
       <div className="w-full text-sm">
         <div>
-          <div
-            className={`flex py-1 group text-xs transition-all ease-in-out duration-150 border-b border-gray-100`}
-          >
+          <TableHeaderRow>
             {columns
               .filter((col) => visibleColumns.includes(col.key))
               .map((column) => (
-                <div
-                  key={column.key}
-                  className="w-[20%] gap-2 px-2 flex items-center justify-start font-semibold text-xs text-gray-500"
-                >
-                  {column.label}
-                  {column.sortable && (
-                    <ArrowDownUp className="w-3.5 h-3.5 hover:cursor-pointer" />
-                  )}
-                </div>
+                <TableHeaderCell key={column.key} column={column} />
               ))}
             <div className="pl-2 flex items-center justify-end ml-auto"></div>
-          </div>
+          </TableHeaderRow>
           {sampleData.map((row) => (
-            <div
-              key={row.id}
-              className="flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100"
-            >
+            <TableBodyRow key={row.id}>
               {visibleColumns.includes('name') && (
-                <div className="w-[20%] px-2 flex items-center justify-start text-gray-900 font-medium">
+                <TableBodyCell additionalClasses="font-medium">
                   {row.name}
-                </div>
+                </TableBodyCell>
               )}
               {visibleColumns.includes('email') && (
-                <div className="w-[20%] px-2 flex items-center justify-start text-gray-900">
-                  {row.email}
-                </div>
+                <TableBodyCell>{row.email}</TableBodyCell>
               )}
               {visibleColumns.includes('status') && (
-                <div className="w-[20%] px-2 flex items-center justify-start">
-                  <span
-                    className={classNames(
-                      'w-fit inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
-                      statusBadge(row.status)
-                    )}
-                  >
-                    {row.status}
-                  </span>
-                </div>
+                <TableBodyCell>
+                  <TableStatusItem status={row.status} />
+                </TableBodyCell>
               )}
               {visibleColumns.includes('relatedCompanies') && (
-                <div className="w-[20%] px-2 flex items-center justify-start text-gray-900">
+                <TableBodyCell>
                   {renderCompanyLogos(row.relatedCompanies)}
-                </div>
+                </TableBodyCell>
               )}
-              <div className="w-[20%] ml-auto pl-2 flex items-center justify-end text-gray-900">
-                <div className="relative">
-                  <button
-                    onClick={() =>
-                      setShowActionMenu(
-                        showActionMenu === row.id ? null : row.id
-                      )
-                    }
-                    className="p-1 hover:bg-gray-100 rounded-md w-8 h-8 flex items-center justify-center transition-all duration-200"
-                  >
-                    <BsThreeDots className="w-4 h-4" />
-                  </button>
-
-                  {showActionMenu === row.id && (
-                    <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-md z-10">
-                      <div className="py-1">
-                        <button className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray-400 cursor-not-allowed">
-                          Delete
-                        </button>
-                        <button className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray-400 cursor-not-allowed">
-                          Suspend
-                        </button>
-                        <button className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray-400 cursor-not-allowed">
-                          Resend password
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+              <TableBodyCell additionalClasses="ml-auto pl-2 justify-end">
+                <TableThreeDotsMenu
+                  setShowActionMenu={setShowActionMenu}
+                  showActionMenu={showActionMenu}
+                  row={row}
+                  dropMenuItems={dropMenuItems}
+                />
+              </TableBodyCell>
+            </TableBodyRow>
           ))}
         </div>
       </div>
@@ -306,96 +211,3 @@ export default function DataTable() {
     </>
   );
 }
-
-// {
-//   tableType === 'default' && (
-//     <div className="border border-gray-200 rounded-md">
-//       <table className="w-full">
-//         <thead className="border-b border-gray-200 rounded-t-md">
-//           <tr className="rounded-t-md">
-//             {columns
-//               .filter((col) => visibleColumns.includes(col.key))
-//               .map((column) => (
-//                 <th
-//                   key={column.key}
-//                   className="text-left text-sm h-10 px-2 align-middle whitespace-nowrap font-medium text-gray-900"
-//                 >
-//                   <div className="flex items-center gap-2">
-//                     {column.label}
-//                     {column.sortable && (
-//                       <ArrowDownUp className="w-4 h-4 hover:cursor-pointer" />
-//                     )}
-//                   </div>
-//                 </th>
-//               ))}
-//             <th className="w-12 h-9 px-4 py-2 rounded-t-md"></th>
-//           </tr>
-//         </thead>
-//         <tbody className="rounded-b-md">
-//           {sampleData.map((row) => (
-//             <tr
-//               key={row.id}
-//               className="border-b border-gray-200 hover:bg-gray-50 transition-all duration-200"
-//             >
-//               {visibleColumns.includes('name') && (
-//                 <td className="px-2 py-2 text-gray-900 font-medium">
-//                   {row.name}
-//                 </td>
-//               )}
-//               {visibleColumns.includes('email') && (
-//                 <td className="px-2 py-2 text-gray-900">{row.email}</td>
-//               )}
-//               {visibleColumns.includes('status') && (
-//                 <td className="px-2 py-2">
-//                   <span
-//                     className={classNames(
-//                       'w-fit inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
-//                       statusBadge(row.status)
-//                     )}
-//                   >
-//                     {row.status}
-//                   </span>
-//                 </td>
-//               )}
-//               {visibleColumns.includes('relatedCompanies') && (
-//                 <td className="px-2 py-2">
-//                   {renderCompanyLogos(row.relatedCompanies)}
-//                 </td>
-//               )}
-//               <td className="pl-2 pr-4 py-2">
-//                 <div className="relative">
-//                   <button
-//                     onClick={() =>
-//                       setShowActionMenu(
-//                         showActionMenu === row.id ? null : row.id
-//                       )
-//                     }
-//                     className="p-1 hover:bg-gray-100 rounded-md w-8 h-8 flex items-center justify-center transition-all duration-200"
-//                   >
-//                     <BsThreeDots className="w-4 h-4" />
-//                   </button>
-
-//                   {showActionMenu === row.id && (
-//                     <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-md z-10">
-//                       <div className="py-1">
-//                         <button className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray-400 cursor-not-allowed">
-//                           Delete
-//                         </button>
-//                         <button className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray-400 cursor-not-allowed">
-//                           Suspend
-//                         </button>
-//                         <button className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray-400 cursor-not-allowed">
-//                           Resend password
-//                         </button>
-//                       </div>
-//                     </div>
-//                   )}
-//                 </div>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// }
