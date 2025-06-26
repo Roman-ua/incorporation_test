@@ -26,7 +26,7 @@ const AdminsListHeader2 = () => {
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-10 lg:flex lg:w-[255px] lg:flex-col  border-r">
       <AdminsListHeaderCompanies />
       <div className="p-2 flex items-start flex-col space-y-1 justify-start text-sm w-full">
-        <div className="text-xs text-gray-600 p-2">
+        <div className="font-semibold text-xs text-gray-500 p-2">
           Related to All Companies
         </div>
         <div className="flex flex-col w-full gap-1">

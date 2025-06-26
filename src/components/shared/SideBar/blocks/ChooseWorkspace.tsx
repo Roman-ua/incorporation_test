@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, LayoutGrid } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { LuArrowUpRight } from 'react-icons/lu';
 import { Link, useNavigate } from 'react-router-dom';
@@ -24,6 +24,7 @@ const ChooseWorkspace = () => {
   const [workspacesState, setWorkspacesState] =
     useRecoilState<IWorkspaces>(WorkspacesState);
 
+  const [allCompaniesLoading, setAllCompaniesLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWorkspace, setSelectedWorkspace] =
     useState<ICompanyData | null>(null);
@@ -66,6 +67,11 @@ const ChooseWorkspace = () => {
     navigate(`${ROUTES.COMPANY}/${selectedWorkspace?.id}`);
   };
 
+  const handleAllCompaniesLoadingComplete = () => {
+    setAllCompaniesLoading(false);
+    navigate(ROUTES.WORKSPACES);
+  };
+
   return (
     <div className="p-2 bg-zinc-50">
       <Preloader
@@ -88,6 +94,16 @@ const ChooseWorkspace = () => {
               <IconBuildings />
             </div>
           )
+        }
+      />
+      <Preloader
+        isLoading={allCompaniesLoading}
+        onLoadingComplete={handleAllCompaniesLoadingComplete}
+        text={'Loading All Companies'}
+        logo={
+          <div className="mr-2 flex-shrink-0 w-16 h-16 p-1 rounded-lg overflow-hidden flex items-center border border-gray-200 justify-center">
+            <LayoutGrid className="w-4 h-4" />
+          </div>
         }
       />
       {workspacesState.list.length ? (
@@ -197,20 +213,20 @@ const ChooseWorkspace = () => {
                 </div>
 
                 <div className="border-t border-gray-100 p-1.5">
-                  <Link
-                    to={ROUTES.WORKSPACES}
+                  <div
                     onClick={() => {
                       setIsOpen(false);
+                      setAllCompaniesLoading(true);
                     }}
                     className={classNames(
-                      'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'
+                      'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80 hover:cursor-pointer'
                     )}
                   >
                     <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md overflow-hidden border border-gray-100 dark:bg-gray-700">
                       <LuArrowUpRight className="h-4 w-4" />
                     </div>
                     <span className="text-sm">All Companies</span>
-                  </Link>
+                  </div>
                 </div>
                 <div className="border-t border-gray-100 p-1.5">
                   <Link
