@@ -1,9 +1,9 @@
 import React from 'react';
-
-import WorkspacesListHeader from '../../pages/workspaces/components/WorkspacesListHeader';
 import { Outlet } from 'react-router-dom';
+// import Breadcrumbs from './BradCrumbs/BradCrumbs';
+import WorkspacesListHeader from '../../pages/workspaces/components/WorkspacesListHeader';
 
-const SidebarLayoutWorkspaces = () => {
+const SidebarLayoutAdmin2 = () => {
   return (
     <>
       <div>
@@ -11,6 +11,9 @@ const SidebarLayoutWorkspaces = () => {
           <WorkspacesListHeader />
         </div>
         <main className="lg:pl-64">
+          <div className="bg-white h-16 flex items-center justify-start">
+            {/* <Breadcrumbs /> */}
+          </div>
           <div>
             <Outlet />
           </div>
@@ -20,4 +23,4 @@ const SidebarLayoutWorkspaces = () => {
   );
 };
 
-export default SidebarLayoutWorkspaces;
+export default SidebarLayoutAdmin2;
