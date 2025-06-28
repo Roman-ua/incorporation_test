@@ -33,8 +33,9 @@ import RedirectPage from './pages/redirect/Redirect';
 import Users from './pages/Internal/Users/Users';
 import SidebarLayoutWorkspaces from './components/shared/SidebarLayoutWorkspaces';
 import SidebarLayoutAdmin from './components/shared/SideBarLayoutAdmin';
-import AdminsPage from './pages/admins/AdminsPage';
+
 import WorkspacesPage from './pages/workspaces/WorkspacesPage';
+import Companies from './pages/Internal/Companies/Companies';
 
 function App() {
   const theme = useRecoilValue(ThemeState);
@@ -96,10 +97,7 @@ function App() {
             />
             <Route path={ROUTES.ADD_PERSON} element={<AddPersonProcess />} />
             <Route element={<SidebarLayoutAdmin />}>
-              <Route
-                path={ROUTES.INTERNAL_COMPANIES}
-                element={<AdminsPage />}
-              />
+              <Route path={ROUTES.INTERNAL_COMPANIES} element={<Companies />} />
               <Route path={ROUTES.INTERNAL_USERS} element={<Users />} />
               <Route path={ROUTES.INTERNAL_MAIL} element={<Mail />} />
               <Route path={ROUTES.INTERNAL_DOCUMENTS} element={<Documents />} />
