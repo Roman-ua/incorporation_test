@@ -3,6 +3,8 @@ import { classNames } from '../../../utils/helpers';
 import { MdOutlineCopyAll } from 'react-icons/md';
 import PersonAvatar from './personAvatar';
 import { PersonData } from './personProfile';
+import UserProfileState from '../../../state/atoms/UserProfile';
+import { useRecoilValue } from 'recoil';
 
 interface ProfileHeaderProps {
   picture: string;
@@ -31,8 +33,10 @@ export function ProfileHeader({
   personDataForUpdate,
   addPictureHandler,
 }: ProfileHeaderProps) {
+  const userData = useRecoilValue(UserProfileState);
+
   const [image, setImage] = useState<string | null>(
-    personDataForUpdate.picture
+    userData.data?.image || null
   );
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
@@ -51,17 +55,17 @@ export function ProfileHeader({
         croppedImage={croppedImage}
         setCroppedImage={setCroppedImage}
         addPictureHandler={addPictureHandler}
-        prevImage={personDataForUpdate.picture}
+        prevImage={userData.data?.image || null}
       />
       <div className="w-full">
         <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
           <div className="text-2xl text-gray-700 flex items-center gap-x-2">
             <span className="text-xl font-bold text-gray-900">
-              {personDataForUpdate.name}
+              {userData.data?.full_name || '-'}
             </span>
           </div>
           <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-            p_{personDataForUpdate.id}
+            p_{userData.data?.id}
             <MdOutlineCopyAll className="text-base ml-2" />
           </span>
         </div>
@@ -80,9 +84,9 @@ export function ProfileHeader({
           <div className="flex flex-col gap-y-1 border-l px-6">
             <dt className="text-nowrap text-sm text-gray-500">Email</dt>
             <dd>
-              {personDataForUpdate.email ? (
+              {userData.data?.email ? (
                 <p className="text-base font-semibold   text-gray-700">
-                  {personDataForUpdate.email}
+                  {userData.data?.email}
                 </p>
               ) : (
                 <div className="w-full flex justify-end">
@@ -99,7 +103,7 @@ export function ProfileHeader({
           <div className="flex flex-col gap-y-1 border-l px-6">
             <dt className="text-nowrap text-sm text-gray-500">Phone Number</dt>
             <dd className="text-base font-semibold   text-gray-700">
-              +1 234 567 890
+              {userData.data?.phone || '-'}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 ml-auto">

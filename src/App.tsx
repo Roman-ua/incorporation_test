@@ -5,7 +5,7 @@ import { ROUTES } from './constants/navigation/routes';
 import ProtectedRoutes from './components/shared/ProtectedRoutes';
 import RecoveryPassConfirm from './pages/recovery/RecoveryPassConfirm';
 import CreateCompany from './pages/createCompany/CreateCompany';
-import Account from './pages/account/Account';
+import AccountPage from './pages/account/Account';
 import Elements from './pages/elements/Elements';
 import CompanyPage from './pages/company/CompanyPage';
 import Mail from './pages/mail/Mail';
@@ -137,7 +137,10 @@ function App() {
                 <Route path={ROUTES.ORDERS} element={<Orders />} />
                 <Route path={ROUTES.INVOICES} element={<Invoices />} />
                 <Route path={`${ROUTES.HOME}/:id`} element={<CompanyPage />} />
-                <Route path={ROUTES.ACCOUNT} element={<Account />} />
+                <Route
+                  path={`${ROUTES.ACCOUNT}/:id`}
+                  element={<AccountPage />}
+                />
                 <Route path={ROUTES.PEOPLE} element={<People />} />
                 <Route path={`${ROUTES.REPORT}/:id`} element={<ReportPage />} />
                 <Route

@@ -205,6 +205,10 @@ export default function PersonAvatar({
           </div>
         ) : null}
 
+        {!image && !croppedImage && (
+          <div className="relative w-full h-full">asdassa</div>
+        )}
+
         {image && !croppedImage && (
           <div className="relative w-full h-full">
             <img

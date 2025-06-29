@@ -9,6 +9,7 @@ import { IoPeopleOutline } from 'react-icons/io5';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useRecoilValue } from 'recoil';
 import WorkspacesState from '../../state/atoms/Workspaces';
+import UserProfileState from '../../state/atoms/UserProfile';
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -38,6 +39,8 @@ const teams = [
 const MainSideBarContent = ({ pathname }: { pathname: string }) => {
   const [elementsOpen, setElementsOpen] = useState(false);
   const navigate = useNavigate();
+
+  const userData = useRecoilValue(UserProfileState);
   const workspacesState = useRecoilValue(WorkspacesState);
 
   const handleNavigate = (href: string) => {
@@ -183,7 +186,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
 
       <li className="-mx-6 mt-auto max-lg:hidden">
         <Link
-          to={ROUTES.ACCOUNT}
+          to={`${ROUTES.ACCOUNT}/p_${userData.data?.id}`}
           className="  flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
         >
           <img

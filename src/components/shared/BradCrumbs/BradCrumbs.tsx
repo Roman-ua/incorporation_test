@@ -15,6 +15,7 @@ import {
   ClipboardList,
   ConciergeBell,
   ChevronRight,
+  CircleUser,
 } from 'lucide-react';
 import { IconFileInvoice } from '@tabler/icons-react';
 import { classNames } from '../../../utils/helpers';
@@ -22,23 +23,26 @@ import { useRecoilValue } from 'recoil';
 import WorkspacesState from '../../../state/atoms/Workspaces';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
+import UserProfileState from '../../../state/atoms/UserProfile';
 
-const iconHandler = (label: string): BreadcrumbItem['icon'] => {
-  switch (label) {
-    case 'dashboard':
+const iconHandler = (path: string[]): BreadcrumbItem['icon'] => {
+  switch (true) {
+    case path.includes('dashboard'):
       return LayoutDashboard;
-    case 'mail':
+    case path.includes('mail'):
       return Mail;
-    case 'documents':
+    case path.includes('documents'):
       return FileText;
-    case 'services':
+    case path.includes('services'):
       return ConciergeBell;
-    case 'orders':
+    case path.includes('orders'):
       return ClipboardList;
-    case 'invoices':
+    case path.includes('invoices'):
       return IconFileInvoice;
-    case 'people':
+    case path.includes('people'):
       return Users;
+    case path.includes('account'):
+      return CircleUser;
     default:
       return LayoutDashboard;
   }
@@ -46,12 +50,14 @@ const iconHandler = (label: string): BreadcrumbItem['icon'] => {
 
 export default function Breadcrumbs() {
   const location = useLocation();
+  const userData = useRecoilValue(UserProfileState);
+
   const { current } = useRecoilValue(WorkspacesState);
 
   const path = location.pathname.split('/').filter(Boolean);
 
   const label = path[path.length - 1] || 'dashboard';
-  const Icon = iconHandler(label);
+  const Icon = iconHandler(path);
 
   const SecondPart = () => {
     if (path.includes('ein')) {
@@ -85,12 +91,17 @@ export default function Breadcrumbs() {
   };
 
   const FirstPart = ({ value }: { value: string }) => {
+    console.log(userData, 'userData');
+
     if (path.includes('dashboard')) {
       return <span className="capitalize">Dashboard</span>;
     }
 
     if (path.includes('ein') && value) {
       return <Link to={`${ROUTES.HOME}/c_${current?.id}`}>{value}</Link>;
+    }
+    if (path.includes('account') && value) {
+      return <div>{userData.data?.full_name || 'Account'}</div>;
     }
     return <span className="capitalize">{label}</span>;
   };

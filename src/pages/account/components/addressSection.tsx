@@ -3,6 +3,7 @@ import SectionHeading from '../../company/components/SectionHeading';
 import { AddressFields } from '../../../interfaces/interfaces';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
+import UserProfileState from '../../../state/atoms/UserProfile';
 
 interface AddressSectionProps {
   address: {
@@ -51,10 +52,11 @@ const RenderAddress = (address: AddressFields) => {
 };
 
 export function AddressSection({ address }: AddressSectionProps) {
+  const userData = useRecoilValue(UserProfileState);
   return (
     <div className="space-y-3 mb-12">
       <SectionHeading title="Address" />
-      <div>{RenderAddress(address)}</div>
+      <div>{userData.data.line1 ? RenderAddress(address) : '-'}</div>
     </div>
   );
 }
