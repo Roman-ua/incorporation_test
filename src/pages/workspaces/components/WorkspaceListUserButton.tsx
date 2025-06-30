@@ -11,6 +11,7 @@ import UseUserData from '../../../utils/hooks/UserData/UseUserData';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../constants/navigation/routes';
 import { PiChatCircleDotsBold } from 'react-icons/pi';
+import { TbUserShield } from 'react-icons/tb';
 
 const WorkspaceListUserButton = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
@@ -39,6 +40,16 @@ const WorkspaceListUserButton = () => {
   return (
     <>
       <div className="px-2">
+        <Link
+          to={ROUTES.INTERNAL_COMPANIES}
+          onClick={() => setIsUserMenuOpen(false)}
+          className={classNames(
+            'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'
+          )}
+        >
+          <TbUserShield />
+          <span>Internal</span>
+        </Link>
         <a
           href="mailto:support@incorporatenow.com"
           className={classNames(
