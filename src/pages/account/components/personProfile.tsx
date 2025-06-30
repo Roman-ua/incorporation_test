@@ -4,6 +4,7 @@ import { AddressSection } from './addressSection';
 import { CompaniesSection } from './companiesSection';
 import { EmailModal } from './emailModal';
 import ContactsSection from './contactsSection';
+import { UpdateAccountData } from './updateAccountData';
 
 // Sample data - in a real app this would come from an API
 interface Company {
@@ -73,6 +74,7 @@ const personData: PersonData = {
 };
 
 export function PersonProfile() {
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [personDataForUpdate, setPersonDataForUpdate] =
     useState<PersonData>(personData);
@@ -98,7 +100,13 @@ export function PersonProfile() {
 
   return (
     <div>
+      <UpdateAccountData
+        isOpen={updateModalOpen}
+        onClose={() => setUpdateModalOpen(false)}
+        onAdd={() => {}}
+      />
       <ProfileHeader
+        openEditModal={() => setUpdateModalOpen(true)}
         personDataForUpdate={personDataForUpdate}
         addPictureHandler={addPictureHandler}
         picture={personData.picture}

@@ -11,6 +11,7 @@ interface ProfileHeaderProps {
   onAddEmail: () => void;
   personDataForUpdate: PersonData;
   addPictureHandler: (data: string) => void;
+  openEditModal: () => void;
 }
 
 const statusBadge = (status: string) => {
@@ -32,6 +33,7 @@ export function ProfileHeader({
   onAddEmail,
   personDataForUpdate,
   addPictureHandler,
+  openEditModal,
 }: ProfileHeaderProps) {
   const userData = useRecoilValue(UserProfileState);
 
@@ -64,10 +66,19 @@ export function ProfileHeader({
               {userData.data?.full_name || '-'}
             </span>
           </div>
-          <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-            p_{userData.data?.id}
-            <MdOutlineCopyAll className="text-base ml-2" />
-          </span>
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={openEditModal}
+              className="mr-2 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+            >
+              Edit
+            </button>
+            <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
+              p_{userData.data?.id}
+              <MdOutlineCopyAll className="text-base ml-2" />
+            </span>
+          </div>
         </div>
         <dl className="w-full mt-4 flex items-start justify-start overflow-x-scroll">
           <div className="flex flex-col gap-y-1 pr-6">
