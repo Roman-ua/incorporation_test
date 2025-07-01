@@ -12,12 +12,12 @@ import { validateEmail } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
 import { X } from 'lucide-react';
+import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 
 export interface Person {
   id: string;
   fullName: string;
   email: string;
-  sendInvitation: boolean;
   titles: string[];
   dateAdded: string;
   status: string;
@@ -60,7 +60,6 @@ const defaultPerson = {
   telegram: '',
   whatsapp: '',
   linkedin: '',
-  sendInvitation: false,
   titles: [] as string[],
   dateAdded: format(new Date(), 'yyyy-MM-dd'),
   addressType: 'US' as 'US' | 'Other',
@@ -138,7 +137,6 @@ export function UpdateAccountData({
       id: crypto.randomUUID(),
       fullName: formData.fullName,
       email: formData.email,
-      sendInvitation: formData.sendInvitation,
       titles: formData.titles,
       dateAdded: formData.dateAdded,
       status: formData.status,
@@ -277,7 +275,7 @@ export function UpdateAccountData({
                   value={formData.email}
                 />
                 {error && (
-                  <span className="text-red-500 text-sm font-semibold absolute bottom-3 right-0">
+                  <span className="text-red-500 text-sm font-semibold absolute -bottom-6 right-0">
                     {error}
                   </span>
                 )}
@@ -298,16 +296,48 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData?.phone}
                 />
+                <div className="mt-2 flex gap-3 items-center">
+                  <Checkbox
+                    wrapperClass={'h-4 w-4 min-w-4 min-h-4'}
+                    iconClass={'h-2.5 w-2.5'}
+                    id={`WhatsApp`}
+                    title={'WhatsApp'}
+                    mandatoryError={false}
+                    underInput={true}
+                    checked={!!formData.whatsapp}
+                    onChange={(value) =>
+                      setFormData({
+                        ...formData,
+                        whatsapp: value ? formData.phone : '',
+                      })
+                    }
+                  />
+                  <Checkbox
+                    wrapperClass={'h-4 w-4 min-w-4 min-h-4'}
+                    iconClass={'h-2.5 w-2.5'}
+                    id={`Telegram`}
+                    title={'Telegram'}
+                    mandatoryError={false}
+                    underInput={true}
+                    checked={!!formData.telegram}
+                    onChange={(value) =>
+                      setFormData({
+                        ...formData,
+                        telegram: value ? formData.phone : '',
+                      })
+                    }
+                  />
+                </div>
                 {phoneError && (
-                  <span className="text-red-500 text-sm font-semibold absolute -bottom-6 right-0">
+                  <span className="text-red-500 text-sm font-semibold absolute bottom-1 right-0">
                     {phoneError}
                   </span>
                 )}
               </div>
 
-              <div className="flex gap-2 items-center justify-between">
+              {formData.telegram !== formData.phone && (
                 <div className="relative">
-                  <div className="mb-1 font-bold text-xs">Telegram</div>
+                  <div className="mb-1 font-bold text-sm">Telegram</div>
                   <input
                     onChange={() => {}}
                     className={classNames(
@@ -318,32 +348,25 @@ export function UpdateAccountData({
                     data-1p-ignore={true}
                     value={formData?.telegram}
                   />
+                  <div className="text-xs text-gray-500">
+                    Provide related phone number or your username.
+                  </div>
                 </div>
-                <div className="relative">
-                  <div className="mb-1 font-bold text-xs">WhatsApp</div>
-                  <input
-                    onChange={() => {}}
-                    className={classNames(
-                      'focus:ring-mainBlue block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
-                    )}
-                    type="text"
-                    placeholder="WhatsApp"
-                    data-1p-ignore={true}
-                    value={formData?.whatsapp}
-                  />
-                </div>
-                <div className="relative">
-                  <div className="mb-1 font-bold text-xs">LinkedIn</div>
-                  <input
-                    onChange={() => {}}
-                    className={classNames(
-                      'focus:ring-mainBlue block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
-                    )}
-                    type="text"
-                    placeholder="LinkedIn"
-                    data-1p-ignore={true}
-                    value={formData?.linkedin}
-                  />
+              )}
+              <div className="relative">
+                <div className="mb-1 font-bold text-sm">LinkedIn</div>
+                <input
+                  onChange={() => {}}
+                  className={classNames(
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                  )}
+                  type="text"
+                  placeholder="LinkedIn"
+                  data-1p-ignore={true}
+                  value={formData?.linkedin}
+                />
+                <div className="text-xs text-gray-500">
+                  Provide link to your LinkedIn profile.
                 </div>
               </div>
             </div>
