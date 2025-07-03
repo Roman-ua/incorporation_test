@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import SectionHeading from './components/SectionHeading';
 import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
 import { companyTypes } from '../createCompany/CreateCompany';
@@ -25,6 +25,7 @@ import { EinDocumentCreate } from '../../state/types/einTypes';
 import useEin from '../../utils/hooks/EIN/useEin';
 import GlobalDataState from '../../state/atoms/GlobalData';
 import EinState from '../../state/atoms/EIN';
+import CompanyLogoUpload from './components/CompanyLogoUpload';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -56,6 +57,9 @@ const CompanyPage = () => {
   const [openLinkToXero, setOpenLinkToXero] = useState(false);
   const [openAddPersonModal, setOpenAddPersonModal] = useState(false);
   const [addReportModal, setOpenAddReportModal] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const globalData = useRecoilValue(GlobalDataState);
   const navigate = useNavigate();
@@ -69,6 +73,10 @@ const CompanyPage = () => {
 
   const closeEinModalHandler = () => {
     setOpen(false);
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
   };
 
   return workspacesState.current?.name ? (
@@ -109,20 +117,42 @@ const CompanyPage = () => {
           setPeopleState((prevState) => [...prevState, person])
         }
       />
+      <CompanyLogoUpload
+        fileInputRef={fileInputRef}
+        image={image}
+        setImage={setImage}
+        croppedImage={croppedImage}
+        setCroppedImage={setCroppedImage}
+        addPictureHandler={() => {}}
+        prevImage={workspacesState.current?.logoUrl || null}
+      />
       <AddReportProcess
         saveHandler={() => {}}
         setOpen={setOpenAddReportModal}
         open={addReportModal}
       />
 
-      <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
+      <div
+        className={classNames(
+          'w-full flex items-center justify-between pb-2 pr-2 border-b',
+          croppedImage || image ? 'mt-5' : ''
+        )}
+      >
         <span className="text-2xl font-bold text-gray-700">
           {workspacesState.current?.name}
         </span>
-        <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
+        {/* <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
           c_{workspacesState.current?.id}
           <MdOutlineCopyAll className="text-base ml-2" />
-        </span>
+        </span> */}
+        {!croppedImage && (
+          <button
+            onClick={triggerFileUpload}
+            className="rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+          >
+            Upload Logo
+          </button>
+        )}
       </div>
       <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
         <div className="flex flex-col gap-y-1 pr-6">
