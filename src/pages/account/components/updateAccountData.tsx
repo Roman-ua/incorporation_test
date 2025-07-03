@@ -222,32 +222,31 @@ export function UpdateAccountData({
         <form>
           <div className="flex gap-6 mb-6">
             <div className="flex-1 space-y-5">
-              <div>
-                <AvatarUpload />
-              </div>
-              <div className="relative">
-                <div className="mb-1 font-bold text-sm">Full Name</div>
-                <input
-                  onChange={fullNameHandler}
-                  className={classNames(
-                    'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
-                    fullNameError &&
-                      'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
-                    mandatoryError && !formData?.fullName
-                      ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
-                      : 'focus:ring-mainBlue'
+              <div className="flex gap-4 items-center w-full">
+                <AvatarUpload removeControles={true} />
+                <div className="relative w-full">
+                  <input
+                    onChange={fullNameHandler}
+                    className={classNames(
+                      'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                      fullNameError &&
+                        'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
+                      mandatoryError && !formData?.fullName
+                        ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
+                        : 'focus:ring-mainBlue'
+                    )}
+                    type="text"
+                    placeholder="Full name"
+                    onBlur={fullNameValidator}
+                    data-1p-ignore={true}
+                    value={formData?.fullName}
+                  />
+                  {fullNameError && (
+                    <span className="text-red-500 text-sm font-semibold absolute -bottom-6 right-0">
+                      {fullNameError}
+                    </span>
                   )}
-                  type="text"
-                  placeholder="Full name"
-                  onBlur={fullNameValidator}
-                  data-1p-ignore={true}
-                  value={formData?.fullName}
-                />
-                {fullNameError && (
-                  <span className="text-red-500 text-sm font-semibold absolute -bottom-6 right-0">
-                    {fullNameError}
-                  </span>
-                )}
+                </div>
               </div>
 
               <div className="relative">
@@ -335,24 +334,22 @@ export function UpdateAccountData({
                 )}
               </div>
 
-              {formData.telegram !== formData.phone && (
-                <div className="relative">
-                  <div className="mb-1 font-bold text-sm">Telegram</div>
-                  <input
-                    onChange={() => {}}
-                    className={classNames(
-                      'focus:ring-mainBlue block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
-                    )}
-                    type="text"
-                    placeholder="Telegram"
-                    data-1p-ignore={true}
-                    value={formData?.telegram}
-                  />
-                  <div className="text-xs text-gray-500">
-                    Provide related phone number or your username.
-                  </div>
+              <div className="relative">
+                <div className="mb-1 font-bold text-sm">Telegram</div>
+                <input
+                  onChange={() => {}}
+                  className={classNames(
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                  )}
+                  type="text"
+                  placeholder="Telegram"
+                  data-1p-ignore={true}
+                  value={formData?.telegram}
+                />
+                <div className="text-xs text-gray-500">
+                  Provide related phone number or your username.
                 </div>
-              )}
+              </div>
               <div className="relative">
                 <div className="mb-1 font-bold text-sm">LinkedIn</div>
                 <input

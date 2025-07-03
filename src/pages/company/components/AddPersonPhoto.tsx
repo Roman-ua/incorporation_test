@@ -3,9 +3,13 @@ import { Camera } from 'lucide-react';
 
 interface AvatarUploadProps {
   onFileSelect?: (file: File) => void;
+  removeControles?: boolean;
 }
 
-export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
+export function AvatarUpload({
+  onFileSelect,
+  removeControles,
+}: AvatarUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -90,31 +94,33 @@ export function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
         )}
       </div>
 
-      <div>
-        <div className="flex items-center gap-4 mb-1">
-          <span
-            onClick={triggerFileInput}
-            className="w-fit text-sm font-bold text-gray-700 hover:text-gray-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
-          >
-            {preview ? 'Change' : 'Select image'}
-          </span>
-
-          {preview && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                removeImage();
-              }}
-              className="text-sm font-bold text-red-700 hover:text-red-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
+      {!removeControles && (
+        <div>
+          <div className="flex items-center gap-4 mb-1">
+            <span
+              onClick={triggerFileInput}
+              className="w-fit text-sm font-bold text-gray-700 hover:text-gray-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
             >
-              Delete
-            </button>
-          )}
+              {preview ? 'Change' : 'Select image'}
+            </span>
+
+            {preview && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeImage();
+                }}
+                className="text-sm font-bold text-red-700 hover:text-red-900 hover:cursor-pointer transition-all duration-150 ease-in-out"
+              >
+                Delete
+              </button>
+            )}
+          </div>
+          <div className="text-xs text-gray-500">
+            Image should be at least 400 x 400 px as a png or jpeg file.
+          </div>
         </div>
-        <div className="text-xs text-gray-500">
-          Image should be at least 400 x 400 px as a png or jpeg file.
-        </div>
-      </div>
+      )}
 
       <input
         ref={fileInputRef}

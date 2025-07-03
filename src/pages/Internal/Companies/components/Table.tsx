@@ -130,7 +130,7 @@ const DataTable = () => {
               onClick={() => selectWorkspaceHandler(company)}
             >
               {visibleColumns.includes('companyName') && (
-                <TableBodyCell additionalClasses="font-bold w-[27%]">
+                <TableBodyCell additionalClasses="w-[27%]">
                   {company?.logoUrl ? (
                     <img
                       src={company?.logoUrl}

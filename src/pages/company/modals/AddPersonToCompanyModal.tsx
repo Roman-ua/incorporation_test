@@ -211,7 +211,7 @@ export function AddPersonModal({
           <div className="flex gap-6 mb-6">
             <div className="flex-1 space-y-5">
               <div>
-                <AvatarUpload />
+                <AvatarUpload removeControles={true} />
               </div>
               <div className="relative">
                 <div className="mb-1 font-bold text-sm">Full Name</div>
