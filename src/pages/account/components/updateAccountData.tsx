@@ -11,7 +11,7 @@ import { AvatarUpload } from '../../company/components/AddPersonPhoto';
 import { validateEmail } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
-import { X } from 'lucide-react';
+import { Linkedin, Mail, Phone, Send, X } from 'lucide-react';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 
 export interface Person {
@@ -250,7 +250,8 @@ export function UpdateAccountData({
               </div>
 
               <div className="relative">
-                <div className="font-bold mb-1 text-sm">Email</div>
+                {/* <div className="font-bold mb-1 text-sm">Email</div> */}
+                <Mail className="w-4 h-4 text-gray-500 absolute top-[31%] left-2.5" />
                 <input
                   onChange={(e) => {
                     if (error) {
@@ -262,7 +263,7 @@ export function UpdateAccountData({
                   className={classNames(
                     isNotValidEmail &&
                       'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
-                    'block rounded-md border w-full  border-gray-200 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
                     mandatoryError && !formData?.email
                       ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
                       : 'focus:ring-mainBlue'
@@ -281,11 +282,12 @@ export function UpdateAccountData({
               </div>
 
               <div className="relative">
-                <div className="mb-1 font-bold text-sm">Phone</div>
+                {/* <div className="mb-1 font-bold text-sm">Phone</div> */}
+                <Phone className="w-4 h-4 text-gray-500 absolute top-[17%] left-2.5" />
                 <input
                   onChange={phoneHandler}
                   className={classNames(
-                    'block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                    'block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
                     phoneError &&
                       'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
                   )}
@@ -335,11 +337,12 @@ export function UpdateAccountData({
               </div>
 
               <div className="relative">
-                <div className="mb-1 font-bold text-sm">Telegram</div>
+                {/* <div className="mb-1 font-bold text-sm">Telegram</div> */}
+                <Send className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
                 <input
                   onChange={() => {}}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                   )}
                   type="text"
                   placeholder="Telegram"
@@ -351,11 +354,12 @@ export function UpdateAccountData({
                 </div>
               </div>
               <div className="relative">
-                <div className="mb-1 font-bold text-sm">LinkedIn</div>
+                {/* <div className="mb-1 font-bold text-sm">LinkedIn</div> */}
+                <Linkedin className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
                 <input
                   onChange={() => {}}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                   )}
                   type="text"
                   placeholder="LinkedIn"
