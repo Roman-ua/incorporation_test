@@ -14,6 +14,7 @@ module.exports = {
         geist: ['Geist', 'ui-sans-serif', 'system-ui'],
       },
       colors: {
+        foregraund: 'oklch(.97 0 0)',
         inputBackground: '#ffffff',
         mainBackground: '#fcfcfc',
         mainBlue: '#0277ff',

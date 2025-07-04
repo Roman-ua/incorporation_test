@@ -11,8 +11,16 @@ import { AvatarUpload } from '../../company/components/AddPersonPhoto';
 import { validateEmail } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
-import { Linkedin, Mail, Phone, Send, X } from 'lucide-react';
-import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
+import { X } from 'lucide-react';
+
+import ButtonWithIcon from '../../../components/shared/ButtonWithIcon/ButtonWithIcon';
+import {
+  PiLinkedinLogo,
+  PiTelegramLogo,
+  PiWhatsappLogoLight,
+} from 'react-icons/pi';
+import { MdOutlineMail } from 'react-icons/md';
+import { FiPhone } from 'react-icons/fi';
 
 export interface Person {
   id: string;
@@ -87,6 +95,9 @@ export function UpdateAccountData({
   const [formData, setFormData] = useState(defaultPerson);
   const [languageError, setLanguageError] = useState<boolean>(false);
   const [phoneError, setPhoneError] = React.useState<string>('');
+
+  const [showWhatsApp, setShowWhatsApp] = useState<boolean>(false);
+  const [showTelegram, setShowTelegram] = useState<boolean>(false);
 
   const cleanFormHandler = () => {
     setFormData(defaultPerson);
@@ -228,7 +239,7 @@ export function UpdateAccountData({
                   <input
                     onChange={fullNameHandler}
                     className={classNames(
-                      'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                      'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
                       fullNameError &&
                         'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
                       mandatoryError && !formData?.fullName
@@ -251,7 +262,7 @@ export function UpdateAccountData({
 
               <div className="relative">
                 {/* <div className="font-bold mb-1 text-sm">Email</div> */}
-                <Mail className="w-4 h-4 text-gray-500 absolute top-[31%] left-2.5" />
+                <MdOutlineMail className="w-4 h-4 text-gray-500 absolute top-[31%] left-2.5" />
                 <input
                   onChange={(e) => {
                     if (error) {
@@ -263,7 +274,7 @@ export function UpdateAccountData({
                   className={classNames(
                     isNotValidEmail &&
                       'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
-                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
                     mandatoryError && !formData?.email
                       ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
                       : 'focus:ring-mainBlue'
@@ -283,11 +294,11 @@ export function UpdateAccountData({
 
               <div className="relative">
                 {/* <div className="mb-1 font-bold text-sm">Phone</div> */}
-                <Phone className="w-4 h-4 text-gray-500 absolute top-[17%] left-2.5" />
+                <FiPhone className="w-4 h-4 text-gray-500 absolute top-[17%] left-2.5" />
                 <input
                   onChange={phoneHandler}
                   className={classNames(
-                    'block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer',
+                    'block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
                     phoneError &&
                       'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
                   )}
@@ -298,35 +309,29 @@ export function UpdateAccountData({
                   value={formData?.phone}
                 />
                 <div className="mt-2 flex gap-3 items-center">
-                  <Checkbox
-                    wrapperClass={'h-4 w-4 min-w-4 min-h-4'}
-                    iconClass={'h-2.5 w-2.5'}
-                    id={`WhatsApp`}
-                    title={'WhatsApp'}
-                    mandatoryError={false}
-                    underInput={true}
-                    checked={!!formData.whatsapp}
-                    onChange={(value) =>
+                  <ButtonWithIcon
+                    onClick={() => {
+                      setShowWhatsApp(!showWhatsApp);
                       setFormData({
                         ...formData,
-                        whatsapp: value ? formData.phone : '',
-                      })
-                    }
+                        whatsapp: formData.whatsapp ? '' : formData.phone,
+                      });
+                    }}
+                    active={showWhatsApp}
+                    title="WhatsApp"
+                    icon={<PiWhatsappLogoLight className="w-4 h-4 shrink-0" />}
                   />
-                  <Checkbox
-                    wrapperClass={'h-4 w-4 min-w-4 min-h-4'}
-                    iconClass={'h-2.5 w-2.5'}
-                    id={`Telegram`}
-                    title={'Telegram'}
-                    mandatoryError={false}
-                    underInput={true}
-                    checked={!!formData.telegram}
-                    onChange={(value) =>
+                  <ButtonWithIcon
+                    onClick={() => {
+                      setShowTelegram(!showTelegram);
                       setFormData({
                         ...formData,
-                        telegram: value ? formData.phone : '',
-                      })
-                    }
+                        telegram: formData.telegram ? '' : formData.phone,
+                      });
+                    }}
+                    active={showTelegram}
+                    title="Telegram"
+                    icon={<PiTelegramLogo className="w-4 h-4 shrink-0" />}
                   />
                 </div>
                 {phoneError && (
@@ -336,30 +341,51 @@ export function UpdateAccountData({
                 )}
               </div>
 
-              <div className="relative">
-                {/* <div className="mb-1 font-bold text-sm">Telegram</div> */}
-                <Send className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
-                <input
-                  onChange={() => {}}
-                  className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
-                  )}
-                  type="text"
-                  placeholder="Telegram"
-                  data-1p-ignore={true}
-                  value={formData?.telegram}
-                />
-                <div className="text-xs text-gray-500">
-                  Provide related phone number or your username.
+              {showWhatsApp && (
+                <div className="relative">
+                  {/* <div className="mb-1 font-bold text-sm">Telegram</div> */}
+                  <PiWhatsappLogoLight className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
+                  <input
+                    onChange={() => {}}
+                    className={classNames(
+                      'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                    )}
+                    type="text"
+                    placeholder="WhatsApp"
+                    data-1p-ignore={true}
+                    value={formData?.whatsapp}
+                  />
+                  <div className="text-xs text-gray-500">
+                    Provide related phone number.
+                  </div>
                 </div>
-              </div>
+              )}
+              {showTelegram && (
+                <div className="relative">
+                  {/* <div className="mb-1 font-bold text-sm">Telegram</div> */}
+                  <PiTelegramLogo className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
+                  <input
+                    onChange={() => {}}
+                    className={classNames(
+                      'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                    )}
+                    type="text"
+                    placeholder="Telegram"
+                    data-1p-ignore={true}
+                    value={formData?.telegram}
+                  />
+                  <div className="text-xs text-gray-500">
+                    Provide related phone number or your username.
+                  </div>
+                </div>
+              )}
               <div className="relative">
                 {/* <div className="mb-1 font-bold text-sm">LinkedIn</div> */}
-                <Linkedin className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
+                <PiLinkedinLogo className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
                 <input
                   onChange={() => {}}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
                   )}
                   type="text"
                   placeholder="LinkedIn"
