@@ -20,7 +20,8 @@ import {
   PiWhatsappLogoLight,
 } from 'react-icons/pi';
 import { MdOutlineMail } from 'react-icons/md';
-import { FiPhone } from 'react-icons/fi';
+
+import { PhoneWithValidation } from '../../../components/shared/PhoneWithValidation/PhoneWithValidation';
 
 export interface Person {
   id: string;
@@ -192,23 +193,6 @@ export function UpdateAccountData({
     }
   };
 
-  const phoneValidator = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
-    if (!value || value.length === 10) {
-      setPhoneError('');
-    } else {
-      setPhoneError('Provide a valid phone number.');
-    }
-  };
-
-  const phoneHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, phone: e.target.value });
-
-    if (phoneError) {
-      setPhoneError('');
-    }
-  };
-
   const fullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, fullName: e.target.value });
 
@@ -293,22 +277,17 @@ export function UpdateAccountData({
               </div>
 
               <div className="relative">
-                {/* <div className="mb-1 font-bold text-sm">Phone</div> */}
-                <FiPhone className="w-4 h-4 text-gray-500 absolute top-[17%] left-2.5" />
-                <input
-                  onChange={phoneHandler}
-                  className={classNames(
-                    'block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
-                    phoneError &&
-                      'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
-                  )}
-                  type="text"
+                <PhoneWithValidation
+                  value={formData.phone}
+                  onChange={(value) => {
+                    setFormData({ ...formData, phone: value });
+                  }}
+                  error={phoneError}
+                  setError={setPhoneError}
                   placeholder="Phone"
-                  onBlur={phoneValidator}
-                  data-1p-ignore={true}
-                  value={formData?.phone}
+                  required={true}
                 />
-                <div className="mt-2 flex gap-3 items-center">
+                <div className="flex gap-3 items-center">
                   <ButtonWithIcon
                     onClick={() => {
                       setShowWhatsApp(!showWhatsApp);
@@ -334,11 +313,6 @@ export function UpdateAccountData({
                     icon={<PiTelegramLogo className="w-4 h-4 shrink-0" />}
                   />
                 </div>
-                {phoneError && (
-                  <span className="text-red-500 text-sm font-semibold absolute bottom-1 right-0">
-                    {phoneError}
-                  </span>
-                )}
               </div>
 
               {showWhatsApp && (
