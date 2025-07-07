@@ -45,7 +45,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
 
   const handleNavigate = (href: string) => {
     if (href === ROUTES.HOME) {
-      return `${href}/c_${workspacesState.current?.id}`;
+      return `${href}/${workspacesState.current?.id}`;
     } else {
       return href;
     }
@@ -186,7 +186,7 @@ const MainSideBarContent = ({ pathname }: { pathname: string }) => {
 
       <li className="-mx-6 mt-auto max-lg:hidden">
         <Link
-          to={`${ROUTES.ACCOUNT}/p_${userData.data?.id}`}
+          to={`${ROUTES.ACCOUNT}/${userData.data?.id}`}
           className="  flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
         >
           <img

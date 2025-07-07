@@ -375,7 +375,7 @@ export function UpdateAccountData({
 
           <div className="mb-10">
             <div className="flex items-end justify-between mb-2">
-              <span className="font-bold text-sm">Address</span>
+              <span className="text-sm font-medium text-black">Address</span>
               <SwitchButton
                 option1="US Address"
                 option2="Other"

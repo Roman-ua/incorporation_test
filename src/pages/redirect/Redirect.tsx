@@ -11,7 +11,7 @@ const RedirectPage = () => {
     return <Navigate to={ROUTES.WORKSPACES} />;
   }
 
-  return <Navigate to={`${ROUTES.HOME}/c_${workspacesState.current?.id}`} />;
+  return <Navigate to={`${ROUTES.HOME}/${workspacesState.current?.id}`} />;
 };
 
 export default RedirectPage;

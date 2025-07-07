@@ -238,6 +238,7 @@ const CreateCompany = () => {
   };
 
   const handleStepThreeSubmit: SubmitHandler<StepThreeData> = (data) => {
+    console.log(data, 'data');
     setStepThreeData(data);
     setCurrentStep(3);
 

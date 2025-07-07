@@ -116,7 +116,7 @@ const WorkspaceListUserButton = () => {
                 </div>
                 <div className="p-1">
                   <Link
-                    to={`${ROUTES.ACCOUNT}/p_${userData.data?.id}`}
+                    to={`${ROUTES.ACCOUNT}/${userData.data?.id}`}
                     onClick={() => setIsUserMenuOpen(false)}
                     className={classNames(
                       'text-gray-900 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left outline-none ring-sidebar-ring transition-[width,height,padding] focus-visible:ring-2 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 h-9 text-sm hover:bg-gray-100/80'

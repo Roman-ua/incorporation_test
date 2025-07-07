@@ -8,6 +8,7 @@ import {
 } from 'libphonenumber-js';
 import { classNames } from '../../../utils/helpers';
 import { AnimatePresence, motion } from 'framer-motion';
+import { X } from 'lucide-react';
 
 const countryCodesEn = [
   { full_name: 'United States', short_name: 'US', code: '+1' },
@@ -237,7 +238,7 @@ export function PhoneWithValidation({
               setIsOpen(!isOpen);
             }}
             className={classNames(
-              'flex items-center justify-between w-[120px] max-md:w-[100px] px-4 py-2.5 text-sm border rounded-l-md bg-white focus:outline-none',
+              'relative flex items-center justify-between w-[120px] max-md:w-[100px] px-4 py-2.5 text-sm border rounded-l-md bg-white focus:outline-none',
               inputFocus && !error
                 ? 'ring-1 ring-blue-600  border-blue-600'
                 : '',
@@ -275,67 +276,6 @@ export function PhoneWithValidation({
 
           {/* Dropdown Menu */}
           {isOpen && (
-            // <div
-            //   className={`absolute z-10 w-[250px] ${
-            //     dropdownPosition === 'top'
-            //       ? 'bottom-full mb-1'
-            //       : 'top-full mt-1'
-            //   } bg-white border border-gray-300 rounded-md shadow-lg`}
-            // >
-            //   <div className="p-2">
-            //     <input
-            //       type="text"
-            //       value={searchTerm}
-            //       onChange={(e) => setSearchTerm(e.target.value)}
-            //       placeholder="Поиск страны..."
-            //       className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 "
-            //     />
-            //   </div>
-            //   <div className="max-h-[300px] overflow-y-auto">
-            //     {filteredCountries.length === 0 ? (
-            //       <div className="px-3 py-2 text-sm text-gray-500">
-            //         Страна не найдена
-            //       </div>
-            //     ) : (
-            //       filteredCountries.map((country) => (
-            //         <button
-            //           key={country.code}
-            //           type="button"
-            //           onClick={() => {
-            //             setIso?.(country.short_name);
-            //             handleCountrySelect(country);
-            //           }}
-            //           className="flex items-center justify-between w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
-            //         >
-            //           <img
-            //             alt={`${getDisplayValue(country)}`}
-            //             src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${getFlagCode(country)}.svg`}
-            //             className={'inline mr-2 h-4 rounded-sm'}
-            //           />
-            //           <span>
-            //             {country.full_name} {country.code}
-            //           </span>
-            //           {selectedCountry?.full_name === country.full_name && (
-            //             <svg
-            //               className="w-4 h-4 text-red-400"
-            //               fill="none"
-            //               stroke="currentColor"
-            //               viewBox="0 0 24 24"
-            //               xmlns="http://www.w3.org/2000/svg"
-            //             >
-            //               <path
-            //                 strokeLinecap="round"
-            //                 strokeLinejoin="round"
-            //                 strokeWidth={2}
-            //                 d="M5 13l4 4L19 7"
-            //               />
-            //             </svg>
-            //           )}
-            //         </button>
-            //       ))
-            //     )}
-            //   </div>
-            // </div>
             <AnimatePresence>
               {isOpen && (
                 <motion.ul
@@ -451,9 +391,17 @@ export function PhoneWithValidation({
         />
       </div>
       {error && (
-        <span className="text-red-500 text-sm font-semibold absolute -bottom-5 right-0">
-          {error}
-        </span>
+        <div className="absolute h-8 -bottom-8 right-0 w-1/2 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between">
+          <div>
+            ⚠️ <span className="ml-1">{error}</span>
+          </div>
+          <button
+            className="hover:cursor-pointer"
+            onClick={() => setError?.('')}
+          >
+            <X className="w-3.5 h-3.5 text-gray-500" />
+          </button>
+        </div>
       )}
     </div>
   );

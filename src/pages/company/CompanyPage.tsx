@@ -346,7 +346,7 @@ const CompanyPage = () => {
             </span>
             <span>{workspacesState.current?.zip}</span>
           </div>
-          <div>{workspacesState.current?.country.full_name}</div>
+          <div>{workspacesState.current?.country?.full_name}</div>
         </>
       </div>
       <RelatedPeopleList

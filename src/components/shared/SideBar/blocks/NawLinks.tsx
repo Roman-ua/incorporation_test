@@ -103,7 +103,7 @@ const NawLinks = () => {
 
   const handleNavigate = (href: string) => {
     if (href === ROUTES.HOME) {
-      return `${href}/c_${workspacesState.current?.id}`;
+      return `${href}/${workspacesState.current?.id}`;
     } else {
       return href;
     }

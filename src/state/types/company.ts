@@ -1,5 +1,5 @@
 export interface ICompanyData {
-  id: number;
+  id: string;
   state_name: string;
   name: string;
   type_name: string;
@@ -21,7 +21,7 @@ export interface ICompanyData {
 }
 
 export interface ICompanyDataForSave {
-  id: number;
+  id: string;
   state_name: string;
   name: string;
   type_name: string;

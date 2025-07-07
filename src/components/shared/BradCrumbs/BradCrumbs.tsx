@@ -98,7 +98,7 @@ export default function Breadcrumbs() {
     }
 
     if (path.includes('ein') && value) {
-      return <Link to={`${ROUTES.HOME}/c_${current?.id}`}>{value}</Link>;
+      return <Link to={`${ROUTES.HOME}/${current?.id}`}>{value}</Link>;
     }
     if (path.includes('account') && value) {
       return <div>{userData.data?.full_name || 'Account'}</div>;

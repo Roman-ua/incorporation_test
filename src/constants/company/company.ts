@@ -1,5 +1,5 @@
 export const defaultCompanyItem = {
-  id: 0,
+  id: '',
   state_name: '',
   name: '',
   type_name: '',

@@ -16,6 +16,7 @@ import { ErrorResponse } from '../../../state/types/errors';
 const useCompany = () => {
   const navigate = useNavigate();
   const id = useCompanyIdFromUrl();
+  console.log(id, 'id');
 
   const setCompaniesList = useSetRecoilState(WorkspacesState);
   const setEin = useSetRecoilState(EinState);
@@ -52,7 +53,7 @@ const useCompany = () => {
 
       if (selectedCompanyId) {
         const lastSelectedCompany = response.data.find(
-          (company: ICompanyData) => company.id === +selectedCompanyId
+          (company: ICompanyData) => company.id === selectedCompanyId
         );
 
         if (lastSelectedCompany?.ein) {
@@ -69,7 +70,7 @@ const useCompany = () => {
 
         if (selectedCompanyId) {
           const lastSelectedCompany = response.data.find(
-            (company: ICompanyData) => company.id === +selectedCompanyId
+            (company: ICompanyData) => company.id === selectedCompanyId
           );
 
           result.current = lastSelectedCompany;
@@ -103,7 +104,7 @@ const useCompany = () => {
         localStorage.removeItem('finalFormData');
         localStorage.removeItem('multistep-form-data');
         setEin(null);
-        navigate(`${ROUTES.HOME}/c_${response.data.id}`);
+        navigate(`${ROUTES.HOME}/${response.data.id}`);
       }
     } catch (error) {
       const errorResponse = error as ErrorResponse;
