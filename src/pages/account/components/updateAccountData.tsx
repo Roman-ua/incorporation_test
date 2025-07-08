@@ -11,7 +11,6 @@ import { AvatarUpload } from '../../company/components/AddPersonPhoto';
 import { validateEmail } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
-import { X } from 'lucide-react';
 
 import ButtonWithIcon from '../../../components/shared/ButtonWithIcon/ButtonWithIcon';
 import {
@@ -20,8 +19,8 @@ import {
   PiWhatsappLogoLight,
 } from 'react-icons/pi';
 import { MdOutlineMail } from 'react-icons/md';
-
 import { PhoneWithValidation } from '../../../components/shared/PhoneWithValidation/PhoneWithValidation';
+import WarningMessage from '../../../components/shared/WarningMessage/WarningMessage';
 
 export interface Person {
   id: string;
@@ -88,12 +87,12 @@ export function UpdateAccountData({
 }: AddPersonModalProps) {
   const [mandatoryError, setMandatoryError] = useState<boolean>(false);
   const [selected, setSelected] = useState<1 | 2>(1);
-
   const [address, setAddress] = React.useState<AddressFields>(defaultUS);
+  const [formData, setFormData] = useState(defaultPerson);
+
   const [error, setError] = React.useState<string>('');
   const [fullNameError, setFullNameError] = React.useState<string>('');
   const [isNotValidEmail, setIsNotValidEmail] = React.useState<boolean>(false);
-  const [formData, setFormData] = useState(defaultPerson);
   const [languageError, setLanguageError] = useState<boolean>(false);
   const [phoneError, setPhoneError] = React.useState<string>('');
 
@@ -103,6 +102,7 @@ export function UpdateAccountData({
   const cleanFormHandler = () => {
     setFormData(defaultPerson);
     setError('');
+    setPhoneError('');
     setAddress(defaultUS);
     setSelected(1);
     setMandatoryError(false);
@@ -205,25 +205,36 @@ export function UpdateAccountData({
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   return (
-    <ModalWrapperLayout closeModal={onClose} isOpen={isOpen}>
+    <ModalWrapperLayout
+      closeModal={() => {
+        cleanFormHandler();
+        onClose();
+      }}
+      isOpen={isOpen}
+    >
       <div className="p-6">
         <div className="mb-6">
           <h2 className="text-xl font-medium  ">
             <span>Update Account Data</span>
-            <XBtn clickHandler={onClose} />
+            <XBtn
+              clickHandler={() => {
+                cleanFormHandler();
+                onClose();
+              }}
+            />
           </h2>
         </div>
 
         <form>
           <div className="flex gap-6 mb-6">
             <div className="flex-1 space-y-5">
-              <div className="flex gap-4 items-center w-full">
+              <div className="flex gap-4 items-start w-full">
                 <AvatarUpload removeControles={true} />
                 <div className="relative w-full">
                   <input
                     onChange={fullNameHandler}
                     className={classNames(
-                      'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
+                      'mb-2 block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
                       fullNameError &&
                         'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
                       mandatoryError && !formData?.fullName
@@ -236,17 +247,22 @@ export function UpdateAccountData({
                     data-1p-ignore={true}
                     value={formData?.fullName}
                   />
+                  <div className="text-xs text-gray-500">
+                    Provide first and last name.
+                  </div>
                   {fullNameError && (
-                    <span className="text-red-500 text-sm font-semibold absolute -bottom-6 right-0">
-                      {fullNameError}
-                    </span>
+                    <WarningMessage
+                      message={fullNameError}
+                      onClose={() => setFullNameError('')}
+                      wrapperClass="absolute -bottom-1.5 right-0 w-[270px] text-xs"
+                    />
                   )}
                 </div>
               </div>
 
               <div className="relative">
                 {/* <div className="font-bold mb-1 text-sm">Email</div> */}
-                <MdOutlineMail className="w-4 h-4 text-gray-500 absolute top-[31%] left-2.5" />
+                <MdOutlineMail className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
                 <input
                   onChange={(e) => {
                     if (error) {
@@ -269,10 +285,13 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData.email}
                 />
+                <div className="text-xs text-gray-500">Provide your email.</div>
                 {error && (
-                  <span className="text-red-500 text-sm font-semibold absolute -bottom-6 right-0">
-                    {error}
-                  </span>
+                  <WarningMessage
+                    message={error}
+                    onClose={() => setError('')}
+                    wrapperClass="absolute -bottom-1.5 right-0 w-[270px] text-xs"
+                  />
                 )}
               </div>
 
@@ -408,20 +427,11 @@ export function UpdateAccountData({
                 />
               )}
               {languageError && (
-                <div className="absolute -bottom-9 left-0 w-full text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between">
-                  <div>
-                    ⚠️{' '}
-                    <span className="ml-1">
-                      We currently support only English letters for address.
-                    </span>
-                  </div>
-                  <button
-                    className="hover:cursor-pointer"
-                    onClick={() => setLanguageError(false)}
-                  >
-                    <X className="w-3.5 h-3.5 text-gray-500" />
-                  </button>
-                </div>
+                <WarningMessage
+                  message="We currently support only English letters for address."
+                  onClose={() => setLanguageError(false)}
+                  wrapperClass="absolute -bottom-9 left-0"
+                />
               )}
             </motion.div>
           </div>

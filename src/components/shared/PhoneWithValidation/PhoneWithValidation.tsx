@@ -9,8 +9,9 @@ import {
 } from 'libphonenumber-js';
 import { classNames } from '../../../utils/helpers';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X } from 'lucide-react';
+
 import examples from 'libphonenumber-js/examples.mobile.json';
+import WarningMessage from '../WarningMessage/WarningMessage';
 
 const countryCodesEn = [
   { full_name: 'United States', short_name: 'US', code: '+1' },
@@ -410,17 +411,11 @@ export function PhoneWithValidation({
         />
       </div>
       {error && (
-        <div className="absolute h-8 -bottom-8 right-0 w-1/2 text-sm text-gray-900 bg-yellow-300/30 px-2 py-1 rounded-md flex items-center justify-between">
-          <div>
-            ⚠️ <span className="ml-1">{error}</span>
-          </div>
-          <button
-            className="hover:cursor-pointer"
-            onClick={() => setError?.('')}
-          >
-            <X className="w-3.5 h-3.5 text-gray-500" />
-          </button>
-        </div>
+        <WarningMessage
+          message={error}
+          onClose={() => setError?.('')}
+          wrapperClass="absolute -bottom-6 right-0 w-[270px] text-xs"
+        />
       )}
     </div>
   );
