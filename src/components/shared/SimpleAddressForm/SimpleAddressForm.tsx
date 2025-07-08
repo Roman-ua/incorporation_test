@@ -43,6 +43,7 @@ const SimpleAddressForm = ({
     useState<{ title: string; type: string }[]>(addressFieldsMock);
 
   const countriesData = useRecoilValue(GlobalDataState);
+  console.log(countriesData, 'countriesData');
   const openCountryHandler = (value: boolean) => {
     if (isOpenStates) {
       setIsOpenStates(false);
@@ -187,7 +188,7 @@ const SimpleAddressForm = ({
         onChange={(val) => setData('country', val)}
         selectedValue={
           countriesData.countryies.find(
-            (option) => option.full_name === 'United States'
+            (option) => option.id === 'cc_e143ff71'
           ) as CountryOrState
         }
         disableDropDown={countryDisabled}

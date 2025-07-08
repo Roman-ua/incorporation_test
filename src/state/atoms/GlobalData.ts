@@ -2,10 +2,10 @@ import { atom } from 'recoil';
 
 export interface IGloblData {
   dataRequested: boolean;
-  countryies: { id: number; short_name: string; full_name: string }[];
-  states: { id: number; abbreviation: string; name: string }[];
-  statuses: { id: number; name: string; full_name: string }[];
-  types: { id: number; name: string; full_name: string }[];
+  countryies: { id: string; short_name: string; full_name: string }[];
+  states: { id: string; abbreviation: string; name: string }[];
+  statuses: { id: string; name: string; full_name: string }[];
+  types: { id: string; name: string; full_name: string }[];
 }
 
 const GlobalDataState = atom<IGloblData>({

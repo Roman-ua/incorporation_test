@@ -79,7 +79,7 @@ export function PhoneWithValidation({
 }: PhoneInputProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<Country>({
-    id: 99,
+    id: 'cc_e143ff71',
     full_name: 'United States',
     short_name: 'US',
     code: '+1',

@@ -62,9 +62,9 @@ export interface EinDocument {
   line3?: string;
   line4?: string;
   city: string;
-  state: number;
+  state: string;
   zip: string;
-  country: number;
+  country: string;
   uploaded_at: string;
 }
 
@@ -79,7 +79,7 @@ export interface EinDocumentCreate {
   line3?: string; // maxLength: 255
   line4?: string; // maxLength: 255
   city: string; // maxLength: 255, minLength: 1
-  state: number;
+  state: string;
   zip: string; // maxLength: 20, minLength: 1
-  country: number;
+  country: string;
 }

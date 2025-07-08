@@ -160,9 +160,9 @@ const AddEinModal = ({
         line3: address?.line3,
         line4: address?.line4,
         city: address?.city || '',
-        state: stateId || 1,
+        state: stateId || '',
         zip: address?.zip || '',
-        country: countryId || 1,
+        country: countryId || 'cc_e143ff71',
       });
       cleanUpHandler();
       setOpen();

@@ -102,7 +102,11 @@ const ConfirmPage = ({
               </span>
               <span>{addressData.zip}</span>
             </div>
-            <div>{addressData.country}</div>
+            <div>
+              {globalData.countryies.find(
+                (item) => item.id === addressData.country
+              )?.full_name || '-'}
+            </div>
           </>
         );
       default:
