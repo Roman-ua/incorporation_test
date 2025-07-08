@@ -175,7 +175,7 @@ const CompanyPage = () => {
               } else {
                 event.preventDefault();
                 navigate(
-                  `${ROUTES.EIN}/c_${workspacesState.current?.id}/ein_${einState.company.ein}`
+                  `${ROUTES.EIN}/${workspacesState.current?.id}/${einState.company.ein}`
                 );
               }
             }}

@@ -7,9 +7,10 @@ const useCompanyIdNumber = (): string | null => {
   const companyId = useMemo(() => {
     const parts = location.pathname.split('/');
 
-    const id = parts.at(-1);
-    if (id) {
-      return id;
+    const cPart = parts.find((part) => /^c_\d+$/.test(part));
+
+    if (cPart) {
+      return cPart;
     }
     return null;
   }, [location.pathname]);

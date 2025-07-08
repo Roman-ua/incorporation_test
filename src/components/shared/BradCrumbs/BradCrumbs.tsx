@@ -55,6 +55,7 @@ export default function Breadcrumbs() {
   const { current } = useRecoilValue(WorkspacesState);
 
   const path = location.pathname.split('/').filter(Boolean);
+  console.log(path, 'path');
 
   const label = path[path.length - 1] || 'dashboard';
   const Icon = iconHandler(path);
