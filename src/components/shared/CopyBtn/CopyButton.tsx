@@ -36,7 +36,7 @@ const CopyButton = ({ copied, wrapperClass, iconClass }: CopyButtonProps) => {
               className="absolute inset-0 opacity-0 group-hover:opacity-100"
             >
               <MdOutlineCopyAll
-                className={classNames('text-gray-900', iconClass)}
+                className={classNames('text-gray-700', iconClass)}
               />
             </motion.div>
           )}

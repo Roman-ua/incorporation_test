@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { MdOpenInNew, MdOutlineCopyAll } from 'react-icons/md';
+import { MdOpenInNew } from 'react-icons/md';
 import SectionHeading from '../company/components/SectionHeading';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/navigation/routes';
 
-import { IoMdCheckmark } from 'react-icons/io';
 import { copyToClipboard, formatDateToLongForm } from '../../utils/helpers';
 import AddEinModal from './components/modals/AddEinModal';
 import ActionUploadBlock from './components/ActionUploadBlock';
@@ -20,6 +19,7 @@ import ChangeEINStatus from './components/modals/ChangeEINStatus';
 import EinFilesSection from './components/FilesSection';
 import DeleteEinModal from './components/modals/DeleteEin';
 import { EIN_STATUSES } from '../../constants/ein/ein';
+import CopyButton from '../../components/shared/CopyBtn/CopyButton';
 
 const statusBadge = (status: string) => {
   console.log(status, 'status');
@@ -43,6 +43,7 @@ function classNames(...classes: (string | boolean)[]) {
 
 const Ein = () => {
   const [copied, setCopied] = React.useState('');
+  const [copiedId, setCopiedId] = useState('');
   const [open, setOpen] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [openUpdateEin, setOpenUpdateEin] = useState(false);
@@ -134,38 +135,48 @@ const Ein = () => {
         <span
           onClick={(event) => {
             event.stopPropagation();
-            setCopied('Copied!');
+            setCopied(data?.ein_number);
 
             const timer = setTimeout(() => {
               clearTimeout(timer);
               setCopied('');
             }, 700);
 
-            copyToClipboard('12-3456789');
+            copyToClipboard(data?.ein_number || '');
           }}
-          className="text-2xl font-bold text-gray-700 group hover:cursor-pointer flex items-center relative pr-7"
+          className="text-2xl font-bold text-gray-700 group hover:cursor-pointer flex items-center relative"
         >
           {data?.ein_number || ''}
-          <IoMdCheckmark
-            className={classNames(
-              'w-5 h-5 text-gray-500 group-hover:text-gray-500 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1.5',
-              copied ? 'opacity-100' : 'opacity-0'
-            )}
-          />
-          <MdOutlineCopyAll
-            className={classNames(
-              'w-5 h-5 text-gray-500 group-hover:text-gray-500 transition-all ease-in-out duration-150 ml-1 absolute right-0 top-1.5',
-              !copied ? 'opacity-0 group-hover:opacity-100' : 'opacity-0'
-            )}
+          <CopyButton
+            wrapperClass="opacity-0 group-hover:opacity-100 ml-2 w-5 h-5 transition-all ease-in-out duration-150"
+            iconClass="w-5 h-5 text-gray-700"
+            copied={copied === data?.ein_number}
           />
           <IconTrashX
             onClick={() => setOpenDeleteEin(true)}
             className="w-5 h-5 text-red-500 group-hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-150 ml-1 absolute -right-6 top-1"
           />
         </span>
-        <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-          ein_{data.company.ein}
-          <MdOutlineCopyAll className="text-base ml-2" />
+        <span
+          onClick={(event) => {
+            event.stopPropagation();
+            setCopiedId(data.company.ein.toString());
+
+            const timer = setTimeout(() => {
+              clearTimeout(timer);
+              setCopiedId('');
+            }, 700);
+
+            copyToClipboard(data.company.ein.toString());
+          }}
+          className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out"
+        >
+          {data.company.ein}
+          <CopyButton
+            wrapperClass="ml-1 w-4 h-4"
+            iconClass="w-4 h-4 text-gray-700"
+            copied={copiedId === data.company.ein.toString()}
+          />
         </span>
       </div>
       <dl className="w-full mt-4 mb-12 flex items-start justify-start overflow-x-scroll">
