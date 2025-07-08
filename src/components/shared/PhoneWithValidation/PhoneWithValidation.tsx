@@ -3,12 +3,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Country } from '../../../state/types/globalDataTypes';
 import {
   CountryCode,
+  getExampleNumber,
   isValidPhoneNumber,
   validatePhoneNumberLength,
 } from 'libphonenumber-js';
 import { classNames } from '../../../utils/helpers';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
+import examples from 'libphonenumber-js/examples.mobile.json';
 
 const countryCodesEn = [
   { full_name: 'United States', short_name: 'US', code: '+1' },
@@ -35,6 +37,14 @@ const getFlagCode = (item: Country) => {
 const getDisplayValue = (item: Country) => {
   if (!item) return;
   return item.full_name;
+};
+
+const getMaxPhoneLengthForCountry = (country: string) => {
+  const exampleNumber = getExampleNumber(country as CountryCode, examples);
+  if (!exampleNumber) return null;
+
+  const nationalNumber = exampleNumber.nationalNumber.toString(); // без +1
+  return nationalNumber.length;
 };
 
 const validateInternationalPhoneNumber = (
@@ -86,6 +96,7 @@ export function PhoneWithValidation({
   });
   const [phoneNumber, setPhoneNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [maxLength, setMaxLength] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [inputFocus, setInputFocus] = useState(false);
   const [query, setQuery] = useState('');
@@ -161,6 +172,9 @@ export function PhoneWithValidation({
       prevValue.current = fullNumber; // Запоминаем новое значение
       onChange(fullNumber);
     }
+    setMaxLength(
+      getMaxPhoneLengthForCountry(selectedCountry?.short_name as CountryCode)
+    );
   }, [selectedCountry, phoneNumber, onChange]);
 
   // When external value changes, update internal state
@@ -384,6 +398,7 @@ export function PhoneWithValidation({
           placeholder={placeholder}
           required={required}
           onBlur={onBlurHandler}
+          maxLength={maxLength || undefined}
           onFocus={() => setInputFocus(true)}
           disabled={!selectedCountry}
           className={classNames(
