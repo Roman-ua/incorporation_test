@@ -238,14 +238,18 @@ export function PhoneWithValidation({
               setIsOpen(!isOpen);
             }}
             className={classNames(
-              'relative flex items-center justify-between w-[120px] max-md:w-[100px] px-4 py-2.5 text-sm border rounded-l-md bg-white focus:outline-none',
+              'relative flex items-center justify-between w-[120px] max-md:w-[100px] px-4 py-2.5 text-sm border  rounded-l-md bg-white focus:outline-none',
               inputFocus && !error
-                ? 'ring-1 ring-blue-600  border-blue-600'
+                ? 'ring-1 ring-blue-600 border-blue-600'
                 : '',
               error ? 'ring-1 ring-red-400 border-red-400' : '',
               !inputFocus && !error && 'border-gray-200'
+              // 'ring-inset'
             )}
           >
+            {(inputFocus || error) && (
+              <div className="border-l border-gray-200 h-full absolute -right-1 top-0 w-[4px] bg-white" />
+            )}
             <div className="flex items-center">
               {selectedCountry && (
                 <img
