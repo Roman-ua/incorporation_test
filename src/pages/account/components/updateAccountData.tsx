@@ -11,6 +11,7 @@ import { AvatarUpload } from '../../company/components/AddPersonPhoto';
 import { validateEmail } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
+import { FiPhone } from 'react-icons/fi';
 
 import ButtonWithIcon from '../../../components/shared/ButtonWithIcon/ButtonWithIcon';
 import {
@@ -95,6 +96,8 @@ export function UpdateAccountData({
   const [isNotValidEmail, setIsNotValidEmail] = React.useState<boolean>(false);
   const [languageError, setLanguageError] = useState<boolean>(false);
   const [phoneError, setPhoneError] = React.useState<string>('');
+
+  const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
 
   const [showWhatsApp, setShowWhatsApp] = useState<boolean>(false);
   const [showTelegram, setShowTelegram] = useState<boolean>(false);
@@ -345,7 +348,12 @@ export function UpdateAccountData({
                   >
                     <PiWhatsappLogoLight className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
                     <input
-                      onChange={() => {}}
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          whatsapp: e.target.value,
+                        });
+                      }}
                       className={classNames(
                         'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
                       )}
@@ -354,8 +362,21 @@ export function UpdateAccountData({
                       data-1p-ignore={true}
                       value={formData?.whatsapp}
                     />
-                    <div className="text-xs text-gray-500">
-                      Provide related phone number.
+                    <div className="flex w-full justify-between items-center">
+                      <span className="text-xs text-gray-500">
+                        Provide related phone number.
+                      </span>
+                      <div
+                        onClick={() => {
+                          setFormData({
+                            ...formData,
+                            whatsapp: formData.phone,
+                          });
+                        }}
+                        className="text-xs text-gray-700 font-semibold hover:cursor-pointer"
+                      >
+                        Copy from phone field
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -372,17 +393,57 @@ export function UpdateAccountData({
                   >
                     <PiTelegramLogo className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
                     <input
-                      onChange={() => {}}
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          telegram: e.target.value,
+                        });
+                      }}
                       className={classNames(
                         'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
                       )}
                       type="text"
-                      placeholder="Telegram"
+                      placeholder={
+                        tgNickNameFlag ? 'Telegram Nickname' : 'Phone number'
+                      }
                       data-1p-ignore={true}
                       value={formData?.telegram}
                     />
-                    <div className="text-xs text-gray-500">
-                      Provide related phone number or your username.
+                    <div className="flex w-full justify-between items-center">
+                      <span className="text-xs text-gray-500">
+                        Provide related phone number or your username.
+                      </span>
+                      {!tgNickNameFlag && (
+                        <div
+                          onClick={() => {
+                            setFormData({
+                              ...formData,
+                              telegram: formData.phone,
+                            });
+                          }}
+                          className="text-xs text-gray-700 font-semibold hover:cursor-pointer"
+                        >
+                          Copy from phone field
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      onClick={() => {
+                        setTgNickNameFlag(!tgNickNameFlag);
+                        setFormData({
+                          ...formData,
+                          telegram: '',
+                        });
+                      }}
+                      className="absolute top-[18%] right-2 hover:cursor-pointer"
+                    >
+                      {!tgNickNameFlag ? (
+                        <div className=" flex items-center justify-center text-sm w-4 h-4 text-gray-700 font-bold">
+                          @
+                        </div>
+                      ) : (
+                        <FiPhone className="w-4 h-4 text-gray-700" />
+                      )}
                     </div>
                   </motion.div>
                 )}
