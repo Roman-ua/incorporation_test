@@ -435,7 +435,7 @@ export function UpdateAccountData({
                           telegram: '',
                         });
                       }}
-                      className="absolute top-[18%] right-2 hover:cursor-pointer"
+                      className="absolute top-[19%] right-2 hover:cursor-pointer"
                     >
                       {!tgNickNameFlag ? (
                         <div className=" flex items-center justify-center text-sm w-4 h-4 text-gray-700 font-bold">
