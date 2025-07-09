@@ -14,14 +14,12 @@ import { VALIDATORS } from '../../../constants/regexs';
 import { FiPhone } from 'react-icons/fi';
 
 import ButtonWithIcon from '../../../components/shared/ButtonWithIcon/ButtonWithIcon';
-import {
-  PiLinkedinLogo,
-  PiTelegramLogo,
-  PiWhatsappLogoLight,
-} from 'react-icons/pi';
+import { PiTelegramLogo, PiWhatsappLogoLight } from 'react-icons/pi';
 import { MdOutlineMail } from 'react-icons/md';
 import { PhoneWithValidation } from '../../../components/shared/PhoneWithValidation/PhoneWithValidation';
 import WarningMessage from '../../../components/shared/WarningMessage/WarningMessage';
+import { FaLinkedin, FaSquareXTwitter } from 'react-icons/fa6';
+import { FaFacebookSquare } from 'react-icons/fa';
 
 export interface Person {
   id: string;
@@ -69,6 +67,8 @@ const defaultPerson = {
   telegram: '',
   whatsapp: '',
   linkedin: '',
+  facebook: '',
+  twitter: '',
   titles: [] as string[],
   dateAdded: format(new Date(), 'yyyy-MM-dd'),
   addressType: 'US' as 'US' | 'Other',
@@ -101,6 +101,7 @@ export function UpdateAccountData({
 
   const [showWhatsApp, setShowWhatsApp] = useState<boolean>(false);
   const [showTelegram, setShowTelegram] = useState<boolean>(false);
+  const [showSocials, setShowSocials] = useState<boolean>(false);
 
   const cleanFormHandler = () => {
     setFormData(defaultPerson);
@@ -334,6 +335,23 @@ export function UpdateAccountData({
                     title="Telegram"
                     icon={<PiTelegramLogo className="w-4 h-4 shrink-0" />}
                   />
+                  <button
+                    className={classNames(
+                      'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 hover:opacity-100 [&_svg]:pointer-events-none outline-none border bg-background shadow-xs  hover:cursor-pointer h-7 rounded-md gap-1.5 px-2',
+                      showSocials ? 'opacity-100' : 'opacity-50'
+                    )}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowSocials(!showSocials);
+                    }}
+                  >
+                    <span>Socials</span>
+                    <div className="flex items-center justify-center ml-1">
+                      <FaSquareXTwitter className="w-4 h-4 shrink-0" />
+                      <FaFacebookSquare className="w-4 h-4 shrink-0" />
+                      <FaLinkedin className="w-4 h-4 shrink-0" />
+                    </div>
+                  </button>
                 </div>
               </div>
 
@@ -448,23 +466,103 @@ export function UpdateAccountData({
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div className="relative">
-                {/* <div className="mb-1 font-bold text-sm">LinkedIn</div> */}
-                <PiLinkedinLogo className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
-                <input
-                  onChange={() => {}}
-                  className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
-                  )}
-                  type="text"
-                  placeholder="LinkedIn"
-                  data-1p-ignore={true}
-                  value={formData?.linkedin}
-                />
-                <div className="text-xs text-gray-500">
-                  Provide link to your LinkedIn profile.
-                </div>
-              </div>
+
+              {/* Twitter */}
+              <AnimatePresence mode="wait">
+                {showSocials && (
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <FaSquareXTwitter className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
+                    <input
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          twitter: e.target.value,
+                        });
+                      }}
+                      className={classNames(
+                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                      )}
+                      type="text"
+                      placeholder="Twitter"
+                      data-1p-ignore={true}
+                      value={formData?.twitter}
+                    />
+                    <div className="text-xs text-gray-500">
+                      Provide link to your X profile.
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              {/* Facebook */}
+              <AnimatePresence mode="wait">
+                {showSocials && (
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <FaFacebookSquare className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
+                    <input
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          facebook: e.target.value,
+                        });
+                      }}
+                      className={classNames(
+                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                      )}
+                      type="text"
+                      placeholder="Facebook"
+                      data-1p-ignore={true}
+                      value={formData?.facebook}
+                    />
+                    <div className="text-xs text-gray-500">
+                      Provide link to your Facebook profile.
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              {/* LinkedIn */}
+              <AnimatePresence mode="wait">
+                {showSocials && (
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <FaLinkedin className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
+                    <input
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          linkedin: e.target.value,
+                        });
+                      }}
+                      className={classNames(
+                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                      )}
+                      type="text"
+                      placeholder="LinkedIn"
+                      data-1p-ignore={true}
+                      value={formData?.linkedin}
+                    />
+                    <div className="text-xs text-gray-500">
+                      Provide link to your LinkedIn profile.
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
