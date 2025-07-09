@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
@@ -334,44 +334,59 @@ export function UpdateAccountData({
                 </div>
               </div>
 
-              {showWhatsApp && (
-                <div className="relative">
-                  {/* <div className="mb-1 font-bold text-sm">Telegram</div> */}
-                  <PiWhatsappLogoLight className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
-                  <input
-                    onChange={() => {}}
-                    className={classNames(
-                      'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
-                    )}
-                    type="text"
-                    placeholder="WhatsApp"
-                    data-1p-ignore={true}
-                    value={formData?.whatsapp}
-                  />
-                  <div className="text-xs text-gray-500">
-                    Provide related phone number.
-                  </div>
-                </div>
-              )}
-              {showTelegram && (
-                <div className="relative">
-                  {/* <div className="mb-1 font-bold text-sm">Telegram</div> */}
-                  <PiTelegramLogo className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
-                  <input
-                    onChange={() => {}}
-                    className={classNames(
-                      'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
-                    )}
-                    type="text"
-                    placeholder="Telegram"
-                    data-1p-ignore={true}
-                    value={formData?.telegram}
-                  />
-                  <div className="text-xs text-gray-500">
-                    Provide related phone number or your username.
-                  </div>
-                </div>
-              )}
+              <AnimatePresence mode="wait">
+                {showWhatsApp && (
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <PiWhatsappLogoLight className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
+                    <input
+                      onChange={() => {}}
+                      className={classNames(
+                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
+                      )}
+                      type="text"
+                      placeholder="WhatsApp"
+                      data-1p-ignore={true}
+                      value={formData?.whatsapp}
+                    />
+                    <div className="text-xs text-gray-500">
+                      Provide related phone number.
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <AnimatePresence mode="wait">
+                {showTelegram && (
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <PiTelegramLogo className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
+                    <input
+                      onChange={() => {}}
+                      className={classNames(
+                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
+                      )}
+                      type="text"
+                      placeholder="Telegram"
+                      data-1p-ignore={true}
+                      value={formData?.telegram}
+                    />
+                    <div className="text-xs text-gray-500">
+                      Provide related phone number or your username.
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <div className="relative">
                 {/* <div className="mb-1 font-bold text-sm">LinkedIn</div> */}
                 <PiLinkedinLogo className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />

@@ -20,10 +20,8 @@ const ButtonWithIcon = ({
     <button
       disabled={disabled}
       className={classNames(
-        ' inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none outline-none border bg-background shadow-xs  hover:cursor-pointer h-8 rounded-md gap-1.5 px-3',
-        active
-          ? 'bg-gray-700 text-white hover:bg-gray-800 border-gray-700'
-          : 'text-gray-700 hover:bg-foregraund border-gray-200'
+        'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 hover:opacity-100 [&_svg]:pointer-events-none outline-none border bg-background shadow-xs  hover:cursor-pointer h-7 rounded-md gap-1.5 px-3',
+        active ? 'opacity-100' : 'opacity-50'
       )}
       onClick={(e) => {
         e.preventDefault();
