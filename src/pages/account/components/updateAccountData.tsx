@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
@@ -13,13 +13,12 @@ import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLa
 import { VALIDATORS } from '../../../constants/regexs';
 import { FiPhone } from 'react-icons/fi';
 
-import ButtonWithIcon from '../../../components/shared/ButtonWithIcon/ButtonWithIcon';
-import { PiTelegramLogo, PiWhatsappLogoLight } from 'react-icons/pi';
 import { MdOutlineMail } from 'react-icons/md';
 import { PhoneWithValidation } from '../../../components/shared/PhoneWithValidation/PhoneWithValidation';
 import WarningMessage from '../../../components/shared/WarningMessage/WarningMessage';
 import { FaLinkedin, FaSquareXTwitter } from 'react-icons/fa6';
 import { FaFacebookSquare } from 'react-icons/fa';
+import { BsTelegram } from 'react-icons/bs';
 
 export interface Person {
   id: string;
@@ -98,10 +97,6 @@ export function UpdateAccountData({
   const [phoneError, setPhoneError] = React.useState<string>('');
 
   const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
-
-  const [showWhatsApp, setShowWhatsApp] = useState<boolean>(false);
-  const [showTelegram, setShowTelegram] = useState<boolean>(false);
-  const [showSocials, setShowSocials] = useState<boolean>(false);
 
   const cleanFormHandler = () => {
     setFormData(defaultPerson);
@@ -231,14 +226,14 @@ export function UpdateAccountData({
 
         <form>
           <div className="flex gap-6 mb-6">
-            <div className="flex-1 space-y-5">
-              <div className="flex gap-4 items-start w-full">
+            <div className="flex-1 space-y-8">
+              <div className="flex gap-4 items-center w-full">
                 <AvatarUpload removeControles={true} />
                 <div className="relative w-full">
                   <input
                     onChange={fullNameHandler}
                     className={classNames(
-                      'mb-2 block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
+                      'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
                       fullNameError &&
                         'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
                       mandatoryError && !formData?.fullName
@@ -251,14 +246,11 @@ export function UpdateAccountData({
                     data-1p-ignore={true}
                     value={formData?.fullName}
                   />
-                  <div className="text-xs text-gray-500">
-                    Provide first and last name.
-                  </div>
                   {fullNameError && (
                     <WarningMessage
                       message={fullNameError}
                       onClose={() => setFullNameError('')}
-                      wrapperClass="absolute -bottom-1.5 right-0 w-[270px] text-xs"
+                      wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
                     />
                   )}
                 </div>
@@ -266,7 +258,7 @@ export function UpdateAccountData({
 
               <div className="relative">
                 {/* <div className="font-bold mb-1 text-sm">Email</div> */}
-                <MdOutlineMail className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
+                <MdOutlineMail className="w-4 h-4 text-gray-500 absolute top-[31%] left-2.5" />
                 <input
                   onChange={(e) => {
                     if (error) {
@@ -278,7 +270,7 @@ export function UpdateAccountData({
                   className={classNames(
                     isNotValidEmail &&
                       'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
-                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-2 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
+                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
                     mandatoryError && !formData?.email
                       ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
                       : 'focus:ring-mainBlue'
@@ -289,12 +281,11 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData.email}
                 />
-                <div className="text-xs text-gray-500">Provide your email.</div>
                 {error && (
                   <WarningMessage
                     message={error}
                     onClose={() => setError('')}
-                    wrapperClass="absolute -bottom-1.5 right-0 w-[270px] text-xs"
+                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
                   />
                 )}
               </div>
@@ -310,259 +301,103 @@ export function UpdateAccountData({
                   placeholder="Phone"
                   required={true}
                 />
-                <div className="flex gap-3 items-center">
-                  <ButtonWithIcon
-                    onClick={() => {
-                      setShowWhatsApp(!showWhatsApp);
-                      setFormData({
-                        ...formData,
-                        whatsapp: formData.whatsapp ? '' : formData.phone,
-                      });
-                    }}
-                    active={showWhatsApp}
-                    title="WhatsApp"
-                    icon={<PiWhatsappLogoLight className="w-4 h-4 shrink-0" />}
-                  />
-                  <ButtonWithIcon
-                    onClick={() => {
-                      setShowTelegram(!showTelegram);
-                      setFormData({
-                        ...formData,
-                        telegram: formData.telegram ? '' : formData.phone,
-                      });
-                    }}
-                    active={showTelegram}
-                    title="Telegram"
-                    icon={<PiTelegramLogo className="w-4 h-4 shrink-0" />}
-                  />
-                  <button
-                    className={classNames(
-                      'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 hover:opacity-100 [&_svg]:pointer-events-none outline-none border bg-background shadow-xs  hover:cursor-pointer h-7 rounded-md gap-1.5 px-2',
-                      showSocials ? 'opacity-100' : 'opacity-50'
-                    )}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowSocials(!showSocials);
-                    }}
-                  >
-                    <span>Socials</span>
-                    <div className="flex items-center justify-center ml-1">
-                      <FaSquareXTwitter className="w-4 h-4 shrink-0" />
-                      <FaFacebookSquare className="w-4 h-4 shrink-0" />
-                      <FaLinkedin className="w-4 h-4 shrink-0" />
+              </div>
+
+              {/* Telegram */}
+              <div className="relative">
+                <BsTelegram className="w-4 h-4 text-gray-500 absolute top-[31%] left-2.5" />
+                <input
+                  onChange={(e) => {
+                    setFormData({
+                      ...formData,
+                      telegram: e.target.value,
+                    });
+                  }}
+                  className={classNames(
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
+                  )}
+                  type="text"
+                  placeholder={'Telegram'}
+                  data-1p-ignore={true}
+                  value={formData?.telegram}
+                />
+                <div
+                  onClick={() => {
+                    setTgNickNameFlag(!tgNickNameFlag);
+                    setFormData({
+                      ...formData,
+                      telegram: '',
+                    });
+                  }}
+                  className="absolute top-[31%] right-2 hover:cursor-pointer"
+                >
+                  {!tgNickNameFlag ? (
+                    <div className=" flex items-center justify-center text-sm w-4 h-4 text-gray-700 font-bold">
+                      @
                     </div>
-                  </button>
+                  ) : (
+                    <FiPhone className="w-4 h-4 text-gray-700" />
+                  )}
                 </div>
               </div>
 
-              <AnimatePresence mode="wait">
-                {showWhatsApp && (
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <PiWhatsappLogoLight className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
-                    <input
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          whatsapp: e.target.value,
-                        });
-                      }}
-                      className={classNames(
-                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
-                      )}
-                      type="text"
-                      placeholder="WhatsApp"
-                      data-1p-ignore={true}
-                      value={formData?.whatsapp}
-                    />
-                    <div className="flex w-full justify-between items-center">
-                      <span className="text-xs text-gray-500">
-                        Provide related phone number.
-                      </span>
-                      <div
-                        onClick={() => {
-                          setFormData({
-                            ...formData,
-                            whatsapp: formData.phone,
-                          });
-                        }}
-                        className="text-xs text-gray-700 font-semibold hover:cursor-pointer"
-                      >
-                        Copy from phone field
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <AnimatePresence mode="wait">
-                {showTelegram && (
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <PiTelegramLogo className="w-4 h-4 text-gray-500 absolute top-[21%] left-2.5" />
-                    <input
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          telegram: e.target.value,
-                        });
-                      }}
-                      className={classNames(
-                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
-                      )}
-                      type="text"
-                      placeholder={
-                        tgNickNameFlag ? 'Telegram Nickname' : 'Phone number'
-                      }
-                      data-1p-ignore={true}
-                      value={formData?.telegram}
-                    />
-                    <div className="flex w-full justify-between items-center">
-                      <span className="text-xs text-gray-500">
-                        Provide related phone number or your username.
-                      </span>
-                      {!tgNickNameFlag && (
-                        <div
-                          onClick={() => {
-                            setFormData({
-                              ...formData,
-                              telegram: formData.phone,
-                            });
-                          }}
-                          className="text-xs text-gray-700 font-semibold hover:cursor-pointer"
-                        >
-                          Copy from phone field
-                        </div>
-                      )}
-                    </div>
-                    <div
-                      onClick={() => {
-                        setTgNickNameFlag(!tgNickNameFlag);
-                        setFormData({
-                          ...formData,
-                          telegram: '',
-                        });
-                      }}
-                      className="absolute top-[19%] right-2 hover:cursor-pointer"
-                    >
-                      {!tgNickNameFlag ? (
-                        <div className=" flex items-center justify-center text-sm w-4 h-4 text-gray-700 font-bold">
-                          @
-                        </div>
-                      ) : (
-                        <FiPhone className="w-4 h-4 text-gray-700" />
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
               {/* Twitter */}
-              <AnimatePresence mode="wait">
-                {showSocials && (
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <FaSquareXTwitter className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
-                    <input
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          twitter: e.target.value,
-                        });
-                      }}
-                      className={classNames(
-                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
-                      )}
-                      type="text"
-                      placeholder="Twitter"
-                      data-1p-ignore={true}
-                      value={formData?.twitter}
-                    />
-                    <div className="text-xs text-gray-500">
-                      Provide link to your X profile.
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div className="relative">
+                <FaSquareXTwitter className="w-4 h-4 text-gray-500 absolute top-[30%] left-2.5" />
+                <input
+                  onChange={(e) => {
+                    setFormData({
+                      ...formData,
+                      twitter: e.target.value,
+                    });
+                  }}
+                  className={classNames(
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                  )}
+                  type="text"
+                  placeholder="X"
+                  data-1p-ignore={true}
+                  value={formData?.twitter}
+                />
+              </div>
               {/* Facebook */}
-              <AnimatePresence mode="wait">
-                {showSocials && (
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <FaFacebookSquare className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
-                    <input
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          facebook: e.target.value,
-                        });
-                      }}
-                      className={classNames(
-                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
-                      )}
-                      type="text"
-                      placeholder="Facebook"
-                      data-1p-ignore={true}
-                      value={formData?.facebook}
-                    />
-                    <div className="text-xs text-gray-500">
-                      Provide link to your Facebook profile.
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div className="relative">
+                <FaFacebookSquare className="w-4 h-4 text-gray-500 absolute top-[30%] left-2.5" />
+                <input
+                  onChange={(e) => {
+                    setFormData({
+                      ...formData,
+                      facebook: e.target.value,
+                    });
+                  }}
+                  className={classNames(
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                  )}
+                  type="text"
+                  placeholder="Facebook"
+                  data-1p-ignore={true}
+                  value={formData?.facebook}
+                />
+              </div>
               {/* LinkedIn */}
-              <AnimatePresence mode="wait">
-                {showSocials && (
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <FaLinkedin className="w-4 h-4 text-gray-500 absolute top-[20%] left-2.5" />
-                    <input
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          linkedin: e.target.value,
-                        });
-                      }}
-                      className={classNames(
-                        'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
-                      )}
-                      type="text"
-                      placeholder="LinkedIn"
-                      data-1p-ignore={true}
-                      value={formData?.linkedin}
-                    />
-                    <div className="text-xs text-gray-500">
-                      Provide link to your LinkedIn profile.
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div className="relative">
+                <FaLinkedin className="w-4 h-4 text-gray-500 absolute top-[30%] left-2.5" />
+                <input
+                  onChange={(e) => {
+                    setFormData({
+                      ...formData,
+                      linkedin: e.target.value,
+                    });
+                  }}
+                  className={classNames(
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                  )}
+                  type="text"
+                  placeholder="LinkedIn"
+                  data-1p-ignore={true}
+                  value={formData?.linkedin}
+                />
+              </div>
             </div>
           </div>
 

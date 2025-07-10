@@ -242,7 +242,7 @@ export function PhoneWithValidation({
 
   return (
     <div
-      className={`space-y-1 ${className} flex flex-col items-start justify-start relative`}
+      className={`${className} flex flex-col items-start justify-start relative`}
     >
       <div className="flex relative w-full">
         {/* Country Code Dropdown */}
@@ -403,7 +403,7 @@ export function PhoneWithValidation({
           onFocus={() => setInputFocus(true)}
           disabled={!selectedCountry}
           className={classNames(
-            'block rounded-r-md border border-l-0 w-full border-gray-200 p-2 text-md mb-2 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
+            'block rounded-r-md border border-l-0 w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
             error
               ? 'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
               : ''
@@ -414,7 +414,7 @@ export function PhoneWithValidation({
         <WarningMessage
           message={error}
           onClose={() => setError?.('')}
-          wrapperClass="absolute -bottom-6 right-0 w-[270px] text-xs"
+          wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
         />
       )}
     </div>

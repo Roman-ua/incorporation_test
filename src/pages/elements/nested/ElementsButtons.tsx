@@ -3,6 +3,7 @@ import Buttons from '../components/Buttons';
 import CustomCheckBox from '../components/CustomCheckBox';
 import CheckBoxElem from '../components/CheckBoxElem';
 import SwitchElements from '../components/SwitchElements';
+import InputsButtons from '../components/InputsButtons';
 
 const ElementsButtons = () => {
   return (
@@ -11,6 +12,7 @@ const ElementsButtons = () => {
       <CustomCheckBox />
       <CheckBoxElem />
       <SwitchElements />
+      <InputsButtons />
     </div>
   );
 };
