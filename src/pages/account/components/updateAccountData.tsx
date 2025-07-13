@@ -96,6 +96,8 @@ export function UpdateAccountData({
   const [languageError, setLanguageError] = useState<boolean>(false);
   const [phoneError, setPhoneError] = React.useState<string>('');
 
+  const [focusedInput, setFocusedInput] = useState<string>('');
+
   const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
 
   const cleanFormHandler = () => {
@@ -314,12 +316,18 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer focus:placeholder:text-transparent'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer'
                   )}
                   type="text"
-                  placeholder={'Telegram'}
+                  placeholder={
+                    focusedInput === 'telegram' && tgNickNameFlag
+                      ? '@username'
+                      : 'Phone number'
+                  }
                   data-1p-ignore={true}
                   value={formData?.telegram}
+                  onFocus={() => setFocusedInput('telegram')}
+                  onBlur={() => setFocusedInput('')}
                 />
                 <div
                   onClick={() => {
@@ -352,12 +360,14 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                   )}
                   type="text"
-                  placeholder="X"
+                  placeholder={focusedInput === 'x' ? 'x.com/username' : 'X'}
                   data-1p-ignore={true}
                   value={formData?.twitter}
+                  onFocus={() => setFocusedInput('x')}
+                  onBlur={() => setFocusedInput('')}
                 />
               </div>
               {/* Facebook */}
@@ -371,12 +381,18 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                   )}
                   type="text"
-                  placeholder="Facebook"
+                  placeholder={
+                    focusedInput === 'facebook'
+                      ? 'facebook.com/username'
+                      : 'Facebook'
+                  }
                   data-1p-ignore={true}
                   value={formData?.facebook}
+                  onFocus={() => setFocusedInput('facebook')}
+                  onBlur={() => setFocusedInput('')}
                 />
               </div>
               {/* LinkedIn */}
@@ -390,12 +406,18 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
                   )}
                   type="text"
-                  placeholder="LinkedIn"
+                  placeholder={
+                    focusedInput === 'linkedin'
+                      ? 'linkedin.com/in/username'
+                      : 'LinkedIn'
+                  }
                   data-1p-ignore={true}
                   value={formData?.linkedin}
+                  onFocus={() => setFocusedInput('linkedin')}
+                  onBlur={() => setFocusedInput('')}
                 />
               </div>
             </div>
