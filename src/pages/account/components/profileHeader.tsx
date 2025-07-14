@@ -1,15 +1,14 @@
 import React, { useRef, useState } from 'react';
-import { classNames } from '../../../utils/helpers';
-import { MdOutlineCopyAll } from 'react-icons/md';
+import { classNames, copyToClipboard } from '../../../utils/helpers';
 import PersonAvatar from './personAvatar';
-import { PersonData } from './personProfile';
 import UserProfileState from '../../../state/atoms/UserProfile';
 import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
+import CopyButton from '../../../components/shared/CopyBtn/CopyButton';
 
 interface ProfileHeaderProps {
   picture: string;
   onAddEmail: () => void;
-  personDataForUpdate: PersonData;
   addPictureHandler: (data: string) => void;
   openEditModal: () => void;
 }
@@ -31,12 +30,13 @@ const statusBadge = (status: string) => {
 
 export function ProfileHeader({
   onAddEmail,
-  personDataForUpdate,
   addPictureHandler,
   openEditModal,
 }: ProfileHeaderProps) {
   const userData = useRecoilValue(UserProfileState);
+  const globalData = useRecoilValue(GlobalDataState);
 
+  const [copiedId, setCopiedId] = useState('');
   const [image, setImage] = useState<string | null>(
     userData.data?.image || null
   );
@@ -48,6 +48,10 @@ export function ProfileHeader({
     avatarInputRef.current?.click();
   };
 
+  const statusName = globalData.statuses.find(
+    (status) => status.id === userData.data?.status
+  )?.name;
+  console.log(userData.data, 'statusName');
   return (
     <div className="flex items-start flex-col justify-start gap-x-4 mb-12 ">
       <PersonAvatar
@@ -74,9 +78,26 @@ export function ProfileHeader({
             >
               Edit
             </button>
-            <span className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out">
-              p_{userData.data?.id}
-              <MdOutlineCopyAll className="text-base ml-2" />
+            <span
+              onClick={(event) => {
+                event.stopPropagation();
+                setCopiedId(userData.data?.id);
+
+                const timer = setTimeout(() => {
+                  clearTimeout(timer);
+                  setCopiedId('');
+                }, 700);
+
+                copyToClipboard(userData.data?.id);
+              }}
+              className="p-1 rounded flex items-center text-gray-600 text-sm hover:cursor-pointer hover:bg-gray-100 transition-all duration-150 ease-in-out"
+            >
+              {userData.data?.id}
+              <CopyButton
+                wrapperClass="ml-1 w-4 h-4"
+                iconClass="w-4 h-4 text-gray-700"
+                copied={copiedId === userData.data?.id}
+              />
             </span>
           </div>
         </div>
@@ -86,10 +107,10 @@ export function ProfileHeader({
             <span
               className={classNames(
                 'w-fit inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium  ring-1 ring-inset',
-                statusBadge(personDataForUpdate.status)
+                statusBadge(statusName || 'Active')
               )}
             >
-              {personDataForUpdate.status}
+              {statusName || 'Active'}
             </span>
           </div>
           <div className="flex flex-col gap-y-1 border-l px-6">

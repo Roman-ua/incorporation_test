@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { format } from 'date-fns';
 import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
 import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/SimpleAddressForm';
@@ -8,7 +7,12 @@ import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressForm
 import { AddressFields } from '../../../interfaces/interfaces';
 import XBtn from '../../../components/shared/buttons/XBtn';
 import { AvatarUpload } from '../../company/components/AddPersonPhoto';
-import { validateEmail } from '../../../utils/validators';
+import {
+  isValidFacebookUrl,
+  isValidLinkedinUrl,
+  isValidXUrl,
+  validateEmail,
+} from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
 import { FiPhone } from 'react-icons/fi';
@@ -19,6 +23,11 @@ import WarningMessage from '../../../components/shared/WarningMessage/WarningMes
 import { FaLinkedin, FaSquareXTwitter } from 'react-icons/fa6';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { BsTelegram } from 'react-icons/bs';
+import UseUserData from '../../../utils/hooks/UserData/UseUserData';
+import { IUpdateUserContactInfo } from '../../../state/types/user';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
+import { IUser } from '../../../state/atoms/UserProfile';
 
 export interface Person {
   id: string;
@@ -34,7 +43,7 @@ export interface Person {
 interface AddPersonModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (person: Person) => void;
+  userData: IUser;
 }
 
 const defaultUS = {
@@ -59,52 +68,64 @@ const defaultOther = {
   state: '',
 };
 
-const defaultPerson = {
-  fullName: '',
-  email: '',
-  phone: '',
-  telegram: '',
-  whatsapp: '',
-  linkedin: '',
-  facebook: '',
-  twitter: '',
-  titles: [] as string[],
-  dateAdded: format(new Date(), 'yyyy-MM-dd'),
-  addressType: 'US' as 'US' | 'Other',
-  status: 'Inactive',
-  street: '',
-  city: '',
-  state: '',
-  zipCode: '',
-  country: '',
-  picture: '',
-};
-
 export function UpdateAccountData({
   isOpen,
   onClose,
-  onAdd,
+  userData,
 }: AddPersonModalProps) {
+  const globalData = useRecoilValue(GlobalDataState);
+
+  const prevData = {
+    fullName: userData.full_name || '',
+    email: userData.email || '',
+    phone: userData.phone || '',
+    telegram: userData.telegram || '',
+    whatsapp: userData.whatsapp || '',
+    linkedin: userData.linkedin || '',
+    facebook: userData.facebook || '',
+    twitter: userData.twitter || '',
+  };
+
+  const prevAddressData = {
+    ...defaultUS,
+    country:
+      globalData.countryies.find((country) => country.id === userData.country)
+        ?.full_name || '',
+    line1: userData.line1 || '',
+    line2: userData.line2 || '',
+    line3: userData.line3 || '',
+    line4: userData.line4 || '',
+    city: userData.city || '',
+    zip: userData.zip || '',
+    state:
+      globalData.states.find((state) => state.id === userData.state)?.name ||
+      '',
+  };
+
   const [mandatoryError, setMandatoryError] = useState<boolean>(false);
   const [selected, setSelected] = useState<1 | 2>(1);
-  const [address, setAddress] = React.useState<AddressFields>(defaultUS);
-  const [formData, setFormData] = useState(defaultPerson);
+  const [address, setAddress] = React.useState<AddressFields>(prevAddressData);
+  const [formData, setFormData] = useState(prevData);
 
   const [error, setError] = React.useState<string>('');
   const [fullNameError, setFullNameError] = React.useState<string>('');
   const [isNotValidEmail, setIsNotValidEmail] = React.useState<boolean>(false);
   const [languageError, setLanguageError] = useState<boolean>(false);
   const [phoneError, setPhoneError] = React.useState<string>('');
+  const [linkedinError, setLinkedinError] = React.useState<string>('');
+  const [facebookError, setFacebookError] = React.useState<string>('');
+  const [xError, setXError] = React.useState<string>('');
 
   const [focusedInput, setFocusedInput] = useState<string>('');
-
   const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
 
+  const { updateUserData } = UseUserData();
+
   const cleanFormHandler = () => {
-    setFormData(defaultPerson);
+    setFormData(prevData);
     setError('');
     setPhoneError('');
-    setAddress(defaultUS);
+    setAddress(prevAddressData);
     setSelected(1);
     setMandatoryError(false);
     setIsNotValidEmail(false);
@@ -138,27 +159,33 @@ export function UpdateAccountData({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.fullName || !formData.titles.length || fullNameError) {
+    if (!formData.fullName || fullNameError) {
       setMandatoryError(true);
       return;
     }
 
-    const person: Person = {
-      id: crypto.randomUUID(),
-      fullName: formData.fullName,
-      email: formData.email,
-      titles: formData.titles,
-      dateAdded: formData.dateAdded,
-      status: formData.status,
-      address: address,
-      picture:
-        formData.picture ||
-        'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400',
+    const stateId = globalData.states.find(
+      (state) => state.name === address?.state
+    )?.id;
+
+    const person: IUpdateUserContactInfo = {
+      full_name: formData.fullName,
+      phone: formData.phone,
+      telegram: formData.telegram,
+      whatsapp: formData.whatsapp,
+      linkedin: formData.linkedin,
+      line1: address.line1,
+      line2: address.line2,
+      city: address.city,
+      zip: address.zip,
+      state: stateId || null,
+      is_report_signer: false,
     };
-    onAdd(person);
+
+    await updateUserData(person);
     cleanFormHandler();
     onClose();
   };
@@ -174,12 +201,7 @@ export function UpdateAccountData({
   };
 
   const disabledButtonFlag = () => {
-    return (
-      !formData.fullName ||
-      formData.titles.length <= 0 ||
-      fullNameError ||
-      phoneError
-    );
+    return !formData.fullName || fullNameError || phoneError;
   };
 
   const fullNameValidator = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,6 +221,33 @@ export function UpdateAccountData({
 
     if (fullNameError) {
       setFullNameError('');
+    }
+  };
+
+  const checkLinkedin = () => {
+    setFocusedInput('');
+    if (isValidLinkedinUrl(formData.linkedin)) {
+      setLinkedinError('');
+    } else {
+      setLinkedinError('Provide a valid LinkedIn URL.');
+    }
+  };
+
+  const checkFacebook = () => {
+    setFocusedInput('');
+    if (isValidFacebookUrl(formData.facebook)) {
+      setFacebookError('');
+    } else {
+      setFacebookError('Provide a valid Facebook URL.');
+    }
+  };
+
+  const checkX = () => {
+    setFocusedInput('');
+    if (isValidXUrl(formData.twitter)) {
+      setXError('');
+    } else {
+      setXError('Provide a valid X URL.');
     }
   };
 
@@ -354,6 +403,9 @@ export function UpdateAccountData({
                 <FaSquareXTwitter className="w-4 h-4 text-gray-500 absolute top-[30%] left-2.5" />
                 <input
                   onChange={(e) => {
+                    if (xError) {
+                      setXError('');
+                    }
                     setFormData({
                       ...formData,
                       twitter: e.target.value,
@@ -367,14 +419,24 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData?.twitter}
                   onFocus={() => setFocusedInput('x')}
-                  onBlur={() => setFocusedInput('')}
+                  onBlur={checkX}
                 />
+                {xError && (
+                  <WarningMessage
+                    message={xError}
+                    onClose={() => setXError('')}
+                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                  />
+                )}
               </div>
               {/* Facebook */}
               <div className="relative">
                 <FaFacebookSquare className="w-4 h-4 text-gray-500 absolute top-[30%] left-2.5" />
                 <input
                   onChange={(e) => {
+                    if (facebookError) {
+                      setFacebookError('');
+                    }
                     setFormData({
                       ...formData,
                       facebook: e.target.value,
@@ -392,14 +454,24 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData?.facebook}
                   onFocus={() => setFocusedInput('facebook')}
-                  onBlur={() => setFocusedInput('')}
+                  onBlur={checkFacebook}
                 />
+                {facebookError && (
+                  <WarningMessage
+                    message={facebookError}
+                    onClose={() => setFacebookError('')}
+                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                  />
+                )}
               </div>
               {/* LinkedIn */}
               <div className="relative">
                 <FaLinkedin className="w-4 h-4 text-gray-500 absolute top-[30%] left-2.5" />
                 <input
                   onChange={(e) => {
+                    if (linkedinError) {
+                      setLinkedinError('');
+                    }
                     setFormData({
                       ...formData,
                       linkedin: e.target.value,
@@ -417,8 +489,15 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData?.linkedin}
                   onFocus={() => setFocusedInput('linkedin')}
-                  onBlur={() => setFocusedInput('')}
+                  onBlur={checkLinkedin}
                 />
+                {linkedinError && (
+                  <WarningMessage
+                    message={linkedinError}
+                    onClose={() => setLinkedinError('')}
+                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                  />
+                )}
               </div>
             </div>
           </div>

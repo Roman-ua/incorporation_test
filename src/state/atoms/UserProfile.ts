@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
 export const defaultUser: IUser = {
-  id: 0,
+  id: '12',
   email: '',
   full_name: null,
   phone: null,
@@ -22,7 +22,7 @@ export const defaultUser: IUser = {
 };
 
 export interface IUser {
-  id: number; // readOnly
+  id: string; // readOnly
   email: string; // readOnly, minLength: 1
   full_name?: string | null; // nullable, min: 1, max: 255
   phone?: string | null; // nullable, max: 15
@@ -34,13 +34,21 @@ export interface IUser {
 
   line1?: string | null; // nullable, min: 1, max: 255
   line2?: string | null; // nullable, min: 1, max: 255
+  line3?: string | null; // nullable, min: 1, max: 255
+  line4?: string | null; // nullable, min: 1, max: 255
   city?: string | null; // nullable, min: 1, max: 255
   zip?: string | null; // nullable, min: 1, max: 255
-  state?: number | null; // nullable
-  county?: number | null; // nullable
+  state?: string | null; // nullable
+  county?: string | null; // nullable
+  country?: string | null; // nullable
+  status?: string | null; // nullable
+  facebook?: string | null; // nullable, URI, max: 200
+  twitter?: string | null; // nullable, URI, max: 200
+  x?: string | null; // nullable, URI, max: 200
   is_report_signer: boolean;
   image?: string | null; // nullable, URI, readOnly
   auth0_user_id?: string | null; // nullable, readOnly, minLength: 1
+  companies?: [];
 }
 
 export interface IUserProfile {

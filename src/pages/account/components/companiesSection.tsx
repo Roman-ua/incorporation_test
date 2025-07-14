@@ -5,6 +5,7 @@ import { ROUTES } from '../../../constants/navigation/routes';
 import { useNavigate } from 'react-router-dom';
 import SectionHeading from '../../company/components/SectionHeading';
 import { LuArrowUpRight } from 'react-icons/lu';
+import { EmptySection } from '../../../components/shared/EmptySection';
 interface Company {
   id: number;
   name: string;
@@ -39,40 +40,46 @@ export function CompaniesSection({ companies }: CompaniesSectionProps) {
     <>
       <SectionHeading title="Company List" removeMargin={true} />
       <div className="w-full overflow-hidden mb-12">
-        <div>
-          {companies.map((company, rowIndex) => (
-            <div
-              onClick={() => navigate(`${ROUTES.COMPANY}/${company.id}`)}
-              key={rowIndex}
-              className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
-            >
-              <div className="w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
-                {company.name}
-              </div>
-              <div className="w-[24%] px-2 flex items-center justify-start">
-                <span
-                  className={classNames(
-                    'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
-                    statusBadge(company.status)
-                  )}
-                >
-                  {company.status}
-                </span>
-              </div>
-              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
-                {company.registrationState}
-              </div>
-              <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
-                {company.titles.join(', ')}
-              </div>
-              <div className="pl-2 flex items-center justify-end ml-auto">
-                <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
-                  <LuArrowUpRight className="h-4 w-4" />
+        {companies.length > 0 ? (
+          <div>
+            {companies.map((company, rowIndex) => (
+              <div
+                onClick={() => navigate(`${ROUTES.COMPANY}/${company.id}`)}
+                key={rowIndex}
+                className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
+              >
+                <div className="w-[20%] pr-2 flex items-center justify-start font-bold text-gray-900">
+                  {company.name}
+                </div>
+                <div className="w-[24%] px-2 flex items-center justify-start">
+                  <span
+                    className={classNames(
+                      'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+                      statusBadge(company.status)
+                    )}
+                  >
+                    {company.status}
+                  </span>
+                </div>
+                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900">
+                  {company.registrationState}
+                </div>
+                <div className="w-[24%] px-2 flex items-center justify-start text-gray-900 justify-end">
+                  {company.titles.join(', ')}
+                </div>
+                <div className="pl-2 flex items-center justify-end ml-auto">
+                  <div className="p-1 rounded w-fit bg-gray-700 text-white hover:bg-gray-900 transition-all duration-150 ease-in-out hover:cursor-pointer opacity-0 group-hover:opacity-100">
+                    <LuArrowUpRight className="h-4 w-4" />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="w-full mt-4">
+            <EmptySection title="No Associated Company Found" />
+          </div>
+        )}
       </div>
     </>
   );

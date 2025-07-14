@@ -5,6 +5,8 @@ import { CompaniesSection } from './companiesSection';
 import { EmailModal } from './emailModal';
 import ContactsSection from './contactsSection';
 import { UpdateAccountData } from './updateAccountData';
+import { useRecoilState } from 'recoil';
+import UserProfileState from '../../../state/atoms/UserProfile';
 
 // Sample data - in a real app this would come from an API
 interface Company {
@@ -34,55 +36,18 @@ export interface PersonData {
   companies: Company[];
 }
 
-const personData: PersonData = {
-  id: 'P-12345',
-  name: 'John Doe',
-  status: 'Active',
-  email: '', // Empty to demonstrate the add email button
-  picture: '',
-  address: {
-    country: 'United States',
-    address0: '123 Main St',
-    address1: 'Apt 4B',
-    city: 'New York',
-    state: 'NY',
-    zip: '10001',
-  },
-  companies: [
-    {
-      id: 1,
-      name: 'Acme Corporation',
-      status: 'Active',
-      registrationState: 'Delaware',
-      titles: ['CEO', 'Founder'],
-    },
-    {
-      id: 2,
-      name: 'Tech Innovations LLC',
-      status: 'Inactive',
-      registrationState: 'California',
-      titles: ['Board Member'],
-    },
-    {
-      id: 3,
-      name: 'Global Enterprises',
-      status: 'Active',
-      registrationState: 'New York',
-      titles: ['Advisor'],
-    },
-  ],
-};
-
 export function PersonProfile() {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
-  const [personDataForUpdate, setPersonDataForUpdate] =
-    useState<PersonData>(personData);
+  const [userData, setUserData] = useRecoilState(UserProfileState);
 
   const handleAddEmail = (email: string, sendInvitation: boolean) => {
-    setPersonDataForUpdate((prev) => ({
+    setUserData((prev) => ({
       ...prev,
-      email: email,
+      data: {
+        ...prev.data,
+        email: email,
+      },
     }));
     setIsEmailModalOpen(false);
 
@@ -92,9 +57,12 @@ export function PersonProfile() {
     }
   };
   const addPictureHandler = (image: string) => {
-    setPersonDataForUpdate((prevState: PersonData) => ({
-      ...prevState,
-      picture: image,
+    setUserData((prev) => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        picture: image,
+      },
     }));
   };
 
@@ -102,14 +70,13 @@ export function PersonProfile() {
     <div>
       <UpdateAccountData
         isOpen={updateModalOpen}
+        userData={userData.data}
         onClose={() => setUpdateModalOpen(false)}
-        onAdd={() => {}}
       />
       <ProfileHeader
         openEditModal={() => setUpdateModalOpen(true)}
-        personDataForUpdate={personDataForUpdate}
         addPictureHandler={addPictureHandler}
-        picture={personData.picture}
+        picture={userData.data.image || ''}
         onAddEmail={() => setIsEmailModalOpen(true)}
       />
 
@@ -118,11 +85,11 @@ export function PersonProfile() {
           <ContactsSection />
         </div>
         <div className="w-1/2">
-          <AddressSection address={personData.address} />
+          <AddressSection data={userData.data} />
         </div>
       </div>
 
-      <CompaniesSection companies={personData.companies} />
+      <CompaniesSection companies={userData.data?.companies || []} />
 
       {isEmailModalOpen && (
         <EmailModal

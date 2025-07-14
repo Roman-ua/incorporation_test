@@ -17,3 +17,19 @@ export const isLatin = (text: string): boolean => {
   // eslint-disable-next-line no-control-regex
   return /^[\x00-\x7F]*$/.test(text);
 };
+
+export const isValidLinkedinUrl = (value: string): boolean => {
+  return value.startsWith('https://www.linkedin.com/in');
+};
+
+export const isValidFacebookUrl = (value: string): boolean => {
+  return value.startsWith('https://www.facebook.com');
+};
+
+export const isValidXUrl = (value: string): boolean => {
+  return value.startsWith('https://x.com');
+};
+
+// export const isValidTelegramUrl = (value: string): boolean => {
+//   return value.startsWith('https://t.me');
+// };

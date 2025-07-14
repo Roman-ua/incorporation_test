@@ -1,6 +1,7 @@
 import { useSetRecoilState } from 'recoil';
 import axiosInstance from '../../../api/axios';
 import UserProfileState, { IUser } from '../../../state/atoms/UserProfile';
+import { IUpdateUserContactInfo } from '../../../state/types/user';
 
 const UseUserData = () => {
   const setData = useSetRecoilState(UserProfileState);
@@ -8,6 +9,13 @@ const UseUserData = () => {
   const getUserData = async (): Promise<void> => {
     const respose = await axiosInstance.get<IUser>('/user/profile/');
 
+    setData({ data: respose.data });
+  };
+
+  const updateUserData = async (
+    data: IUpdateUserContactInfo
+  ): Promise<void> => {
+    const respose = await axiosInstance.patch<IUser>('/user/profile/', data);
     setData({ data: respose.data });
   };
 
@@ -22,7 +30,7 @@ const UseUserData = () => {
       window.location.replace(`${respose?.data?.auth0_logout_url}`);
     }
   };
-  return { getUserData, logout };
+  return { getUserData, logout, updateUserData };
 };
 
 export default UseUserData;

@@ -95,7 +95,7 @@ export function PhoneWithValidation({
     short_name: 'US',
     code: '+1',
   });
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(value || '');
   const [searchTerm, setSearchTerm] = useState('');
   const [maxLength, setMaxLength] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);

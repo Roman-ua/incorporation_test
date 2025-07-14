@@ -1,24 +1,10 @@
 import React from 'react';
 import SectionHeading from '../../company/components/SectionHeading';
-import { AddressFields } from '../../../interfaces/interfaces';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
-import UserProfileState from '../../../state/atoms/UserProfile';
+import { IUser } from '../../../state/atoms/UserProfile';
 
-interface AddressSectionProps {
-  address: {
-    address0?: string;
-    address1?: string;
-    address2?: string;
-    address3?: string;
-    city?: string;
-    state?: string;
-    zip?: string;
-    country?: string;
-  };
-}
-
-const RenderAddress = (address: AddressFields) => {
+const RenderAddress = (address: IUser) => {
   const globalData = useRecoilValue(GlobalDataState);
 
   return (
@@ -40,23 +26,22 @@ const RenderAddress = (address: AddressFields) => {
         <div>
           <span>{address.city}, </span>
           <span>
-            {globalData.states.find((item) => item.name === address.state)
+            {globalData.states.find((item) => item.id === address.state)
               ?.abbreviation || ''}{' '}
           </span>
           <span>{address.zip}</span>
         </div>
-        <div>{address.country}</div>
+        <div>{address?.country}</div>
       </>
     </div>
   );
 };
 
-export function AddressSection({ address }: AddressSectionProps) {
-  const userData = useRecoilValue(UserProfileState);
+export function AddressSection({ data }: { data: IUser }) {
   return (
     <div className="space-y-3 mb-12">
       <SectionHeading title="Address" />
-      <div>{userData.data.line1 ? RenderAddress(address) : '-'}</div>
+      <div>{data?.line1 ? RenderAddress(data) : '-'}</div>
     </div>
   );
 }

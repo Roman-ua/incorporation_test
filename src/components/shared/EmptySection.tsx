@@ -9,7 +9,7 @@ interface EmptySectionProps {
 
 export function EmptySection({
   title = 'No items found',
-  ctaText = 'Create new',
+  ctaText,
   onAction = () => {},
 }: EmptySectionProps) {
   return (
@@ -19,13 +19,14 @@ export function EmptySection({
           <FiPlusCircle className="h-8 w-8 text-gray-900" />
         </div>
         <h3 className="font-bold   mb-4">{title}</h3>
-
-        <div
-          className="px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"
-          onClick={onAction}
-        >
-          {ctaText}
-        </div>
+        {ctaText && (
+          <div
+            className="px-2.5 py-1 border rounded-md  text-sm font-medium text-gray-900 transition-all ease-in-out duration-150 hover:cursor-pointer"
+            onClick={onAction}
+          >
+            {ctaText}
+          </div>
+        )}
       </div>
     </div>
   );
