@@ -27,14 +27,14 @@ export const companyTypes = [
   { fullName: 'Non-profit', shortName: 'Non-profit' },
 ];
 
-const registrationStates = [
+export const registrationStates = [
   { fullName: 'State of Florida', shortName: 'FL', title: 'Florida' },
   { fullName: 'State of Delaware', shortName: 'DE', title: 'Delaware' },
   { fullName: 'State of Texas', shortName: 'TX', title: 'Texas' },
   { fullName: 'State of California', shortName: 'CA', title: 'California' },
 ];
 
-const status = [
+export const statuses = [
   'Active',
   'Inactive',
   'Dissolved',
@@ -238,7 +238,6 @@ const CreateCompany = () => {
   };
 
   const handleStepThreeSubmit: SubmitHandler<StepThreeData> = (data) => {
-    console.log(data, 'data');
     setStepThreeData(data);
     setCurrentStep(3);
 
@@ -410,7 +409,7 @@ const CreateCompany = () => {
                   render={({ field }) => (
                     <div className="mb-16">
                       <StateCards
-                        state={status}
+                        state={statuses}
                         title={'Company Status'}
                         value={field.value}
                         changeEvent={field.onChange}
