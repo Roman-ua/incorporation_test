@@ -13,6 +13,9 @@ import {
 } from '../../createCompany/CreateCompany';
 import { Checkbox } from '../../../components/shared/Checkboxes/CheckBoxSq';
 import DatePicker from '../../../components/shared/Modals/addCompanyFile/datePicker';
+import useCompany from '../../../utils/hooks/Company/useCompany';
+import { useRecoilValue } from 'recoil';
+import GlobalDataState from '../../../state/atoms/GlobalData';
 
 interface AddPersonModalProps {
   isOpen: boolean;
@@ -20,6 +23,7 @@ interface AddPersonModalProps {
 }
 
 export function QuickCreateCompany({ isOpen, onClose }: AddPersonModalProps) {
+  const globalData = useRecoilValue(GlobalDataState);
   const [mandatoryError, setMandatoryError] = useState<boolean>(false);
 
   const [companyName, setCompanyName] = useState<string>('');
@@ -30,35 +34,65 @@ export function QuickCreateCompany({ isOpen, onClose }: AddPersonModalProps) {
   const [companyType, setCompanyType] = useState<string>('');
   const [companyState, setCompanyState] = useState<string>('');
   const [companyStatus, setCompanyStatus] = useState<string>('');
-  //   const [error, setError] = React.useState<string>('');
-  //   const [isNotValidEmail, setIsNotValidEmail] = React.useState<boolean>(false);
-  //   const [phoneError, setPhoneError] = React.useState<string>('');
+
+  const { createCompanyHandler } = useCompany();
 
   const cleanFormHandler = () => {
-    // setError('');
-    // setPhoneError('');
     setMandatoryError(false);
-    // setIsNotValidEmail(false);
+    setCompanyName('');
+    setCompanyNameError('');
+    setRegistrationNumber('');
+    setRegistrationDate('');
+    setCompanyType('');
+    setCompanyState('');
+    setCompanyStatus('');
   };
-
+  console.log(globalData, 'globalData');
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!companyName || companyNameError) {
+    if (
+      !companyName ||
+      !companyType ||
+      !companyState ||
+      !registrationNumber ||
+      !registrationDate ||
+      !companyStatus
+    ) {
       setMandatoryError(true);
       return;
     }
 
+    const state = globalData?.states.find(
+      (item) => item.abbreviation === companyState
+    );
+    const type = globalData?.types.find((item) => item.name === companyType);
+    const status = globalData?.statuses.find(
+      (item) => item.name === companyStatus
+    );
+
+    await createCompanyHandler({
+      name: companyName,
+      type_name: type?.id || '',
+      state_name: state?.id || '',
+      registration_number: registrationNumber,
+      registration_date: registrationDate,
+      status_name: status?.id || '',
+    });
     cleanFormHandler();
     onClose();
   };
 
   const disabledButtonFlag = () => {
-    return !companyName || companyNameError;
+    return (
+      !companyName ||
+      !companyType ||
+      !companyState ||
+      !registrationNumber ||
+      !registrationDate ||
+      !companyStatus
+    );
   };
-
-  //   const inputCommonClasses =
-  //     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   return (
     <ModalWrapperLayout
@@ -81,7 +115,7 @@ export function QuickCreateCompany({ isOpen, onClose }: AddPersonModalProps) {
           </h2>
         </div>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex-1 space-y-8 mb-8">
             {/* Company Name */}
             <div className="relative w-full">

@@ -21,21 +21,21 @@ export interface ICompanyData {
 }
 
 export interface ICompanyDataForSave {
-  id: string;
+  id?: string;
   state_name: string;
   name: string;
   type_name: string;
   registration_date: string;
   registration_number: string;
-  taxId: string;
+  taxId?: string;
   status_name: string;
-  line1: string;
-  line2: string;
-  line3: string;
-  line4: string;
-  city: string;
-  state: '';
-  country: '';
-  zip: string;
+  line1?: string;
+  line2?: string;
+  line3?: string;
+  line4?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  zip?: string;
   logoUrl?: string;
 }

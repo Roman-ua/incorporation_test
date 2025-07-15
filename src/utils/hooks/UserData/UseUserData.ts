@@ -15,8 +15,21 @@ const UseUserData = () => {
   const updateUserData = async (
     data: IUpdateUserContactInfo
   ): Promise<void> => {
-    const respose = await axiosInstance.patch<IUser>('/user/profile/', data);
-    setData({ data: respose.data });
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined) {
+        formData.append(key, value);
+      }
+    });
+
+    await axiosInstance.patch<IUser>('/user/profile/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    await getUserData();
   };
 
   const logout = async () => {

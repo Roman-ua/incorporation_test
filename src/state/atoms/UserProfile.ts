@@ -48,6 +48,7 @@ export interface IUser {
   is_report_signer: boolean;
   image?: string | null; // nullable, URI, readOnly
   auth0_user_id?: string | null; // nullable, readOnly, minLength: 1
+  phone_country?: string | null; // nullable
   companies?: [];
 }
 

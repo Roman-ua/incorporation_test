@@ -12,11 +12,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import examples from 'libphonenumber-js/examples.mobile.json';
 import WarningMessage from '../WarningMessage/WarningMessage';
-
-const countryCodesEn = [
-  { full_name: 'United States', short_name: 'US', code: '+1' },
-  { full_name: 'Ukraine', short_name: 'UA', code: '+380' },
-];
+import GlobalDataState from '../../../state/atoms/GlobalData';
+import { useRecoilValue } from 'recoil';
 
 interface PhoneInputProps {
   value: string;
@@ -28,6 +25,8 @@ interface PhoneInputProps {
   className?: string;
   label?: string;
   setIso?: (val: string) => void;
+  setPhoneCountry?: (val: string) => void;
+  phoneCountry?: Country;
 }
 
 const getFlagCode = (item: Country) => {
@@ -81,19 +80,23 @@ const validateInternationalPhoneNumber = (
 export function PhoneWithValidation({
   value,
   onChange,
+  setPhoneCountry,
   error,
   setError,
   placeholder = 'Номер телефона',
   required = false,
   className = '',
   setIso,
+  phoneCountry,
 }: PhoneInputProps) {
+  const globalData = useRecoilValue(GlobalDataState);
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<Country>({
     id: 'cc_e143ff71',
     full_name: 'United States',
     short_name: 'US',
-    code: '+1',
+    dial_code: '+1',
   });
   const [phoneNumber, setPhoneNumber] = useState(value || '');
   const [searchTerm, setSearchTerm] = useState('');
@@ -105,8 +108,8 @@ export function PhoneWithValidation({
   const isInitialMount = useRef(true);
   const prevValue = useRef(value);
   const ref = useRef<HTMLDivElement>(null);
-
   const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     const mutableRef = ref as MutableRefObject<HTMLDivElement | null>;
 
@@ -133,12 +136,11 @@ export function PhoneWithValidation({
     }
   }, [isOpen, inputRef.current]);
 
-  const cntr = countryCodesEn as Country[];
+  const cntr = globalData.countryies as Country[];
 
   const onBlurHandler = () => {
-    console.log(selectedCountry, 'onBlurHandler');
     setInputFocus(false);
-    const numberResult = `${selectedCountry?.code}${phoneNumber}`;
+    const numberResult = `${selectedCountry?.dial_code}${phoneNumber}`;
     const validation = validateInternationalPhoneNumber(
       numberResult,
       selectedCountry?.short_name as CountryCode
@@ -156,7 +158,7 @@ export function PhoneWithValidation({
     ? cntr.filter(
         (country) =>
           country.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          country.code?.includes(searchTerm)
+          country.dial_code?.includes(searchTerm)
       )
     : cntr;
 
@@ -166,7 +168,7 @@ export function PhoneWithValidation({
       return;
     }
 
-    const fullNumber = selectedCountry?.code + phoneNumber;
+    const fullNumber = selectedCountry?.dial_code + phoneNumber;
 
     // Проверка, чтобы избежать лишних обновлений и зацикливания
     if (prevValue.current !== fullNumber) {
@@ -178,34 +180,20 @@ export function PhoneWithValidation({
     );
   }, [selectedCountry, phoneNumber, onChange]);
 
-  // When external value changes, update internal state
   useEffect(() => {
-    if (prevValue.current === value) return; // Предотвращаем повторное выполнение с тем же значением
+    if (phoneCountry) {
+      setSelectedCountry(phoneCountry);
 
-    prevValue.current = value;
-
-    if (value) {
-      const cntr = countryCodesEn;
-      const matchedCountry = cntr.find((country) =>
-        value.startsWith(country.code)
-      );
-
-      if (matchedCountry) {
-        setSelectedCountry(matchedCountry as Country);
-
-        const newPhoneNumber = value.substring(matchedCountry.code.length);
-        if (phoneNumber !== newPhoneNumber) {
-          setPhoneNumber(newPhoneNumber);
-        }
-      } else {
-        const newPhoneNumber = value.replace(/\D/g, '');
-        if (phoneNumber !== newPhoneNumber) {
-          setPhoneNumber(newPhoneNumber);
-        }
-      }
-    } else if (phoneNumber !== '') {
-      setPhoneNumber('');
+      const slicedNumber = value.startsWith(phoneCountry?.dial_code || '')
+        ? value.slice((phoneCountry?.dial_code || '').length)
+        : value;
+      setPhoneNumber(slicedNumber);
     }
+  }, [phoneCountry]);
+
+  useEffect(() => {
+    if (prevValue.current === value) return;
+    prevValue.current = value;
   }, [value]);
 
   // Close dropdown when clicking outside
@@ -230,7 +218,6 @@ export function PhoneWithValidation({
 
     // Only allow digits for the phone number part
     const sanitizedInput = input.replace(/\D/g, '');
-
     setPhoneNumber(sanitizedInput);
   };
 
@@ -274,7 +261,7 @@ export function PhoneWithValidation({
                 />
               )}
               <span className="truncate">
-                {selectedCountry?.code || 'Select code'}
+                {selectedCountry?.dial_code || 'Select code'}
               </span>
             </div>
             <svg
@@ -348,9 +335,11 @@ export function PhoneWithValidation({
                               id="listbox-option-0"
                               role="option"
                               onClick={() => {
+                                console.log(value, 'value');
                                 // onChange(getDisplayValue(value) || '');
                                 setQuery('');
                                 setIso?.(value.short_name);
+                                setPhoneCountry?.(value?.id || '');
                                 handleCountrySelect(value);
                               }}
                             >

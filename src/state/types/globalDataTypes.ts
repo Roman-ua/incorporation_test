@@ -1,7 +1,7 @@
 export type Country = {
   full_name: string;
   short_name: string;
-  code?: string;
+  dial_code?: string;
   id: string;
 };
 

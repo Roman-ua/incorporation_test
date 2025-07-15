@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
@@ -75,18 +75,9 @@ export function UpdateAccountData({
 }: AddPersonModalProps) {
   const globalData = useRecoilValue(GlobalDataState);
 
-  const prevData = {
-    fullName: userData.full_name || '',
-    email: userData.email || '',
-    phone: userData.phone || '',
-    telegram: userData.telegram || '',
-    whatsapp: userData.whatsapp || '',
-    linkedin: userData.linkedin || '',
-    facebook: userData.facebook || '',
-    twitter: userData.twitter || '',
-  };
-
-  const prevAddressData = {
+  const [mandatoryError, setMandatoryError] = useState<boolean>(false);
+  const [selected, setSelected] = useState<1 | 2>(1);
+  const [address, setAddress] = React.useState<AddressFields>({
     ...defaultUS,
     country:
       globalData.countryies.find((country) => country.id === userData.country)
@@ -100,12 +91,18 @@ export function UpdateAccountData({
     state:
       globalData.states.find((state) => state.id === userData.state)?.name ||
       '',
-  };
-
-  const [mandatoryError, setMandatoryError] = useState<boolean>(false);
-  const [selected, setSelected] = useState<1 | 2>(1);
-  const [address, setAddress] = React.useState<AddressFields>(prevAddressData);
-  const [formData, setFormData] = useState(prevData);
+  });
+  const [formData, setFormData] = useState({
+    fullName: userData.full_name || '',
+    email: userData.email || '',
+    phone: userData.phone || '',
+    telegram: userData.telegram || '',
+    whatsapp: userData.whatsapp || '',
+    linkedin: userData.linkedin || '',
+    facebook: userData.facebook || '',
+    twitter: userData.twitter || '',
+    phoneCountry: userData.phone_country || '',
+  });
 
   const [error, setError] = React.useState<string>('');
   const [fullNameError, setFullNameError] = React.useState<string>('');
@@ -118,14 +115,13 @@ export function UpdateAccountData({
 
   const [focusedInput, setFocusedInput] = useState<string>('');
   const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
+  const [phoneCountry, setPhoneCountry] = useState<string>('');
 
   const { updateUserData } = UseUserData();
 
   const cleanFormHandler = () => {
-    setFormData(prevData);
     setError('');
     setPhoneError('');
-    setAddress(prevAddressData);
     setSelected(1);
     setMandatoryError(false);
     setIsNotValidEmail(false);
@@ -183,6 +179,7 @@ export function UpdateAccountData({
       zip: address.zip,
       state: stateId || null,
       is_report_signer: false,
+      phone_country: phoneCountry,
     };
 
     await updateUserData(person);
@@ -250,6 +247,40 @@ export function UpdateAccountData({
       setXError('Provide a valid X URL.');
     }
   };
+
+  useEffect(() => {
+    const prevData = {
+      fullName: userData.full_name || '',
+      email: userData.email || '',
+      phone: userData.phone || '',
+      telegram: userData.telegram || '',
+      whatsapp: userData.whatsapp || '',
+      linkedin: userData.linkedin || '',
+      facebook: userData.facebook || '',
+      twitter: userData.twitter || '',
+      phoneCountry: userData.phone_country || '',
+    };
+
+    const prevAddressData = {
+      ...defaultUS,
+      country:
+        globalData.countryies.find((country) => country.id === userData.country)
+          ?.full_name || '',
+      line1: userData.line1 || '',
+      line2: userData.line2 || '',
+      line3: userData.line3 || '',
+      line4: userData.line4 || '',
+      city: userData.city || '',
+      zip: userData.zip || '',
+      state:
+        globalData.states.find((state) => state.id === userData.state)?.name ||
+        '',
+    };
+
+    setFormData(prevData);
+    setAddress(prevAddressData);
+    setPhoneCountry(userData.phone_country || '');
+  }, [userData]);
 
   const inputCommonClasses =
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
@@ -327,6 +358,7 @@ export function UpdateAccountData({
                       : 'focus:ring-mainBlue'
                   )}
                   type="text"
+                  disabled={true}
                   onBlur={handleBlurEmail}
                   placeholder="Email"
                   data-1p-ignore={true}
@@ -347,6 +379,10 @@ export function UpdateAccountData({
                   onChange={(value) => {
                     setFormData({ ...formData, phone: value });
                   }}
+                  phoneCountry={globalData.countryies.find(
+                    (country) => country.id === formData.phoneCountry
+                  )}
+                  setPhoneCountry={setPhoneCountry}
                   error={phoneError}
                   setError={setPhoneError}
                   placeholder="Phone"

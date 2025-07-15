@@ -12,5 +12,6 @@ export interface IUpdateUserContactInfo {
   zip?: string | null; // maxLength: 255, minLength: 1
   state?: string | null; // string
   county?: string | null; // string
+  phone_country?: string | null; // string
   is_report_signer: boolean; // required
 }
