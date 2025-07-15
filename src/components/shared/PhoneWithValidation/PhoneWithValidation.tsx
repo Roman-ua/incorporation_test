@@ -98,14 +98,13 @@ export function PhoneWithValidation({
     short_name: 'US',
     dial_code: '+1',
   });
-  const [phoneNumber, setPhoneNumber] = useState(value || '');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [maxLength, setMaxLength] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [inputFocus, setInputFocus] = useState(false);
   const [query, setQuery] = useState('');
 
-  const isInitialMount = useRef(true);
   const prevValue = useRef(value);
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -163,18 +162,6 @@ export function PhoneWithValidation({
     : cntr;
 
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-
-    const fullNumber = selectedCountry?.dial_code + phoneNumber;
-
-    // Проверка, чтобы избежать лишних обновлений и зацикливания
-    if (prevValue.current !== fullNumber) {
-      prevValue.current = fullNumber; // Запоминаем новое значение
-      onChange(fullNumber);
-    }
     setMaxLength(
       getMaxPhoneLengthForCountry(selectedCountry?.short_name as CountryCode)
     );
@@ -183,10 +170,12 @@ export function PhoneWithValidation({
   useEffect(() => {
     if (phoneCountry) {
       setSelectedCountry(phoneCountry);
-
+    }
+    if (!phoneNumber) {
+      console.log(value.startsWith(phoneCountry?.dial_code || ''), 'value');
       const slicedNumber = value.startsWith(phoneCountry?.dial_code || '')
         ? value.slice((phoneCountry?.dial_code || '').length)
-        : value;
+        : '';
       setPhoneNumber(slicedNumber);
     }
   }, [phoneCountry]);
@@ -215,14 +204,14 @@ export function PhoneWithValidation({
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
-
-    // Only allow digits for the phone number part
     const sanitizedInput = input.replace(/\D/g, '');
     setPhoneNumber(sanitizedInput);
+    onChange(selectedCountry?.dial_code + sanitizedInput);
   };
 
   const handleCountrySelect = (country: Country) => {
     setSelectedCountry(country);
+    setPhoneNumber('');
     setIsOpen(false);
     setSearchTerm('');
   };
