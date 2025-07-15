@@ -167,6 +167,10 @@ export function UpdateAccountData({
       (state) => state.name === address?.state
     )?.id;
 
+    const countryId = globalData.countryies.find(
+      (country) => country.full_name === address.country
+    )?.id;
+
     const person: IUpdateUserContactInfo = {
       full_name: formData.fullName,
       phone: formData.phone,
@@ -178,6 +182,7 @@ export function UpdateAccountData({
       city: address.city,
       zip: address.zip,
       state: stateId || null,
+      country: countryId,
       is_report_signer: false,
       phone_country: formData.phoneCountry,
     };
