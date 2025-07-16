@@ -7,7 +7,7 @@ import ReactCrop, {
   makeAspectCrop,
 } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { classNames } from '../../../utils/helpers';
+import { base64ToFile, classNames } from '../../../utils/helpers';
 import { IconX } from '@tabler/icons-react';
 
 interface PersonAvatarProps {
@@ -18,6 +18,7 @@ interface PersonAvatarProps {
   setCroppedImage: (image: string | null) => void;
   addPictureHandler: (data: string) => void;
   prevImage: string | null;
+  saveImageToServer?: (image: File) => void;
 }
 
 export default function PersonAvatar({
@@ -28,6 +29,7 @@ export default function PersonAvatar({
   setCroppedImage,
   addPictureHandler,
   prevImage,
+  saveImageToServer,
 }: PersonAvatarProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -121,8 +123,13 @@ export default function PersonAvatar({
       );
 
       const base64Image = canvas.toDataURL('image/jpeg');
+      const file = base64ToFile(base64Image, 'cropped.jpg');
+
       setCroppedImage(base64Image);
       addPictureHandler(base64Image);
+
+      saveImageToServer?.(file);
+
       setIsModalOpen(false);
       setImage(null);
     }

@@ -5,6 +5,7 @@ import UserProfileState from '../../../state/atoms/UserProfile';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import CopyButton from '../../../components/shared/CopyBtn/CopyButton';
+import UseUserData from '../../../utils/hooks/UserData/UseUserData';
 
 interface ProfileHeaderProps {
   picture: string;
@@ -44,6 +45,8 @@ export function ProfileHeader({
 
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
+  const { updateAvatar } = UseUserData();
+
   const triggerFileUpload = () => {
     avatarInputRef.current?.click();
   };
@@ -52,6 +55,11 @@ export function ProfileHeader({
     (status) => status.id === userData.data?.status
   )?.name;
   console.log(userData.data, 'statusName');
+
+  const saveAvatarToServer = (image: File) => {
+    updateAvatar(image);
+  };
+
   return (
     <div className="flex items-start flex-col justify-start gap-x-4 mb-12 ">
       <PersonAvatar
@@ -62,8 +70,9 @@ export function ProfileHeader({
         setCroppedImage={setCroppedImage}
         addPictureHandler={addPictureHandler}
         prevImage={userData.data?.image || null}
+        saveImageToServer={saveAvatarToServer}
       />
-      <div className="w-full">
+      <div className="w-full mt-4">
         <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
           <div className="text-2xl text-gray-700 flex items-center gap-x-2">
             <span className="text-xl font-bold text-gray-900">

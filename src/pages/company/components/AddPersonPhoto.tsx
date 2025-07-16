@@ -2,15 +2,17 @@ import React, { useState, useRef } from 'react';
 import { Camera } from 'lucide-react';
 
 interface AvatarUploadProps {
+  image?: string | null;
   onFileSelect?: (file: File) => void;
   removeControles?: boolean;
 }
 
 export function AvatarUpload({
+  image,
   onFileSelect,
   removeControles,
 }: AvatarUploadProps) {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(image || null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

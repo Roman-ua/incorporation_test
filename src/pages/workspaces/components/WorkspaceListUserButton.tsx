@@ -70,9 +70,17 @@ const WorkspaceListUserButton = () => {
             )}
           >
             <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <span className="text-xl font-bold">
-                {userData.data?.full_name?.[0] || 'U'}
-              </span>
+              {userData.data?.image ? (
+                <img
+                  src={userData.data?.image}
+                  alt="user"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-xl font-bold">
+                  {userData.data?.full_name?.[0] || 'U'}
+                </span>
+              )}
             </div>
             <div className="flex flex-col leading-none text-left min-w-0">
               <span className="font-semibold text-sm truncate">
@@ -99,9 +107,17 @@ const WorkspaceListUserButton = () => {
                   className="w-full flex items-center gap-2 p-2 border-b border-gray-100 transition-colors"
                 >
                   <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                    <span className="text-xl font-bold">
-                      {userData.data?.full_name?.[0] || 'U'}
-                    </span>
+                    {userData.data?.image ? (
+                      <img
+                        src={userData.data?.image}
+                        alt="user"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-xl font-bold">
+                        {userData.data?.full_name?.[0] || 'U'}
+                      </span>
+                    )}
                   </div>
                   <div
                     className={`flex flex-col leading-none text-left w-[255px] min-w-0`}

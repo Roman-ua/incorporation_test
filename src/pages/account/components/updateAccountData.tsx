@@ -75,6 +75,7 @@ export function UpdateAccountData({
 }: AddPersonModalProps) {
   const globalData = useRecoilValue(GlobalDataState);
 
+  const [avatar, setAvatar] = useState<File | null>(null);
   const [mandatoryError, setMandatoryError] = useState<boolean>(false);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>({
@@ -177,6 +178,8 @@ export function UpdateAccountData({
       telegram: formData.telegram,
       whatsapp: formData.whatsapp,
       linkedin: formData.linkedin,
+      facebook: formData.facebook,
+      twitter: formData.twitter,
       line1: address.line1,
       line2: address.line2,
       city: address.city,
@@ -186,6 +189,10 @@ export function UpdateAccountData({
       is_report_signer: false,
       phone_country: formData.phoneCountry,
     };
+
+    if (avatar) {
+      person.image = avatar;
+    }
 
     await updateUserData(person);
     cleanFormHandler();
@@ -252,7 +259,7 @@ export function UpdateAccountData({
       setXError('Provide a valid X URL.');
     }
   };
-
+  console.log(avatar, 'avatar');
   const inputCommonClasses =
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
@@ -281,7 +288,13 @@ export function UpdateAccountData({
           <div className="flex gap-6 mb-6">
             <div className="flex-1 space-y-8">
               <div className="flex gap-4 items-center w-full">
-                <AvatarUpload removeControles={true} />
+                <AvatarUpload
+                  image={userData.image}
+                  removeControles={true}
+                  onFileSelect={(file) => {
+                    setAvatar(file);
+                  }}
+                />
                 <div className="relative w-full">
                   <input
                     onChange={fullNameHandler}
