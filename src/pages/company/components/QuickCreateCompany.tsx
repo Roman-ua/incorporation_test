@@ -73,11 +73,11 @@ export function QuickCreateCompany({ isOpen, onClose }: AddPersonModalProps) {
 
     await createCompanyHandler({
       name: companyName,
-      type_name: type?.id || '',
-      state_name: state?.id || '',
+      type_name: type?.name || '',
+      state_name: state?.abbreviation || '',
       registration_number: registrationNumber,
       registration_date: registrationDate,
-      status_name: status?.id || '',
+      status_name: status?.name || '',
     });
     cleanFormHandler();
     onClose();

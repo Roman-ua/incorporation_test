@@ -78,7 +78,7 @@ const CompanyPage = () => {
   const triggerFileUpload = () => {
     fileInputRef.current?.click();
   };
-
+  console.log(workspacesState.current);
   return workspacesState.current?.name ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">
       {open && (
@@ -271,10 +271,10 @@ const CompanyPage = () => {
           <dd className="text-nowrap text-base flex items-center font-semibold   text-gray-700">
             <StateSolidIconHandler
               simpleIcon={true}
-              selectedState={workspacesState.current?.state_name || 'Florida'}
-              state={workspacesState.current?.state_name || 'Florida'}
+              selectedState={workspacesState.current?.state?.name || 'Florida'}
+              state={workspacesState.current?.state?.name || 'Florida'}
             />
-            {workspacesState.current?.state_name || 'Florida'}
+            {workspacesState.current?.state?.name || 'Florida'}
           </dd>
         </div>
         <div className="flex flex-col gap-y-1 border-l px-6">
@@ -318,36 +318,38 @@ const CompanyPage = () => {
       </dl>
       <SectionHeading title="Address" />
       <div className="mt-2 w-1/2 gap-4 mb-11 text-gray-700">
-        <>
-          <div className="text-sm text-gray-500 mb-1">Main</div>
-          <div>
-            <span>{workspacesState.current?.line1}, </span>
-            {workspacesState.current?.line2 && (
-              <span>{workspacesState.current?.line2}</span>
-            )}
-          </div>
-          <div>
-            {workspacesState.current?.line3 && (
-              <span>{workspacesState.current?.line3}</span>
-            )}
-            {workspacesState.current?.line3 && (
+        {workspacesState.current?.line1 && (
+          <>
+            <div className="text-sm text-gray-500 mb-1">Main</div>
+            <div>
+              <span>{workspacesState.current?.line1}, </span>
+              {workspacesState.current?.line2 && (
+                <span>{workspacesState.current?.line2}</span>
+              )}
+            </div>
+            <div>
+              {workspacesState.current?.line3 && (
+                <span>{workspacesState.current?.line3}</span>
+              )}
+              {workspacesState.current?.line3 && (
+                <span>
+                  {workspacesState.current?.line2 ? ',' : ''}{' '}
+                  {workspacesState.current?.line3}
+                </span>
+              )}
+            </div>
+            <div>
+              <span>{workspacesState.current?.city}, </span>
               <span>
-                {workspacesState.current?.line2 ? ',' : ''}{' '}
-                {workspacesState.current?.line3}
+                {globalData.states.find(
+                  (item) => item.name === workspacesState.current?.state.name
+                )?.abbreviation || ''}{' '}
               </span>
-            )}
-          </div>
-          <div>
-            <span>{workspacesState.current?.city}, </span>
-            <span>
-              {globalData.states.find(
-                (item) => item.name === workspacesState.current?.state.name
-              )?.abbreviation || ''}{' '}
-            </span>
-            <span>{workspacesState.current?.zip}</span>
-          </div>
-          <div>{workspacesState.current?.country?.full_name}</div>
-        </>
+              <span>{workspacesState.current?.zip}</span>
+            </div>
+            <div>{workspacesState.current?.country?.full_name}</div>
+          </>
+        )}
       </div>
       <RelatedPeopleList
         peopleState={peopleState}
