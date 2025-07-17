@@ -144,7 +144,7 @@ const CompanyPage = () => {
       <div
         className={classNames(
           'w-full flex items-center justify-between pb-2 pr-2 border-b',
-          croppedImage || image ? 'mt-5' : ''
+          croppedImage || image || workspacesState.current?.logo ? 'mt-5' : ''
         )}
       >
         <span className="text-2xl font-bold text-gray-700">
