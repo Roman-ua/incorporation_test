@@ -16,6 +16,6 @@ export const defaultCompanyItem = {
   state: { id: 0, abbreviation: '', name: '' },
   type: { id: 0, name: '', full_name: null },
   zip: '',
-  logoUrl: '',
+  logo: '',
   ein: null,
 };

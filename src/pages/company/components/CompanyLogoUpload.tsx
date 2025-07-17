@@ -7,7 +7,7 @@ import ReactCrop, {
   makeAspectCrop,
 } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { classNames } from '../../../utils/helpers';
+import { base64ToFile, classNames } from '../../../utils/helpers';
 import { IconX } from '@tabler/icons-react';
 
 interface CompanyLogoUploadProps {
@@ -17,7 +17,8 @@ interface CompanyLogoUploadProps {
   croppedImage: string | null;
   setCroppedImage: (image: string | null) => void;
   addPictureHandler: (data: string) => void;
-  prevImage: string | null;
+  saveImageToServer: (image: File) => void;
+  setPrevImageOnCancel: () => void;
 }
 
 export default function CompanyLogoUpload({
@@ -27,7 +28,8 @@ export default function CompanyLogoUpload({
   croppedImage,
   setCroppedImage,
   addPictureHandler,
-  prevImage,
+  saveImageToServer,
+  setPrevImageOnCancel,
 }: CompanyLogoUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -121,6 +123,10 @@ export default function CompanyLogoUpload({
       );
 
       const base64Image = canvas.toDataURL('image/jpeg');
+      const file = base64ToFile(base64Image, 'cropped.jpg');
+
+      saveImageToServer(file);
+
       setCroppedImage(base64Image);
       addPictureHandler(base64Image);
       setIsModalOpen(false);
@@ -157,10 +163,11 @@ export default function CompanyLogoUpload({
 
   const cancelModalHandler = () => {
     setIsModalOpen(false);
-    if (prevImage) {
-      setCroppedImage(prevImage);
-    }
-    setImage(null);
+    // if (prevImage) {
+    //   setCroppedImage(prevImage);
+    // }
+    // setImage(null);
+    setPrevImageOnCancel();
   };
 
   return (
@@ -245,7 +252,10 @@ export default function CompanyLogoUpload({
           >
             <div className="flex items-center justify-end w-full mb-2 px-4">
               <div
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setPrevImageOnCancel();
+                }}
                 className="flex items-center justify-center p-1.5 hover:cursor-pointer hover:bg-gray-100 transition-all ease-in-out duration-150 rounded-md"
               >
                 <IconX className="w-4 h-4 text-gray-700" />
@@ -303,6 +313,7 @@ export default function CompanyLogoUpload({
                       setCroppedImage(null);
                       setImage(null);
                       setIsModalOpen(false);
+                      setPrevImageOnCancel();
                     }}
                   >
                     Delete

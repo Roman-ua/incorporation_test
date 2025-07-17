@@ -26,6 +26,7 @@ import useEin from '../../utils/hooks/EIN/useEin';
 import GlobalDataState from '../../state/atoms/GlobalData';
 import EinState from '../../state/atoms/EIN';
 import CompanyLogoUpload from './components/CompanyLogoUpload';
+import useCompany from '../../utils/hooks/Company/useCompany';
 
 const statusBadge = (status: string) => {
   switch (status) {
@@ -64,7 +65,7 @@ const CompanyPage = () => {
   const globalData = useRecoilValue(GlobalDataState);
   const navigate = useNavigate();
   const { createEin } = useEin();
-  // const { getSpecificCompany } = useCompany();
+  const { updateCompanyLogo } = useCompany();
 
   const saveHandler = (einData: EinDocumentCreate) => {
     createEin(einData);
@@ -78,7 +79,12 @@ const CompanyPage = () => {
   const triggerFileUpload = () => {
     fileInputRef.current?.click();
   };
-  console.log(workspacesState.current);
+
+  const setPrevImageOnCancel = () => {
+    setImage(workspacesState.current?.logo || null);
+    setCroppedImage(null);
+  };
+
   return workspacesState.current?.name ? (
     <div className="container max-w-7xl mx-auto pl-10 pr-10 pb-8 pt-4 text-sm">
       {open && (
@@ -119,12 +125,15 @@ const CompanyPage = () => {
       />
       <CompanyLogoUpload
         fileInputRef={fileInputRef}
-        image={image}
+        image={image || workspacesState.current?.logo || null}
         setImage={setImage}
         croppedImage={croppedImage}
         setCroppedImage={setCroppedImage}
         addPictureHandler={() => {}}
-        prevImage={workspacesState.current?.logoUrl || null}
+        saveImageToServer={(image: File) => {
+          updateCompanyLogo(workspacesState.current?.id, image);
+        }}
+        setPrevImageOnCancel={setPrevImageOnCancel}
       />
       <AddReportProcess
         saveHandler={() => {}}

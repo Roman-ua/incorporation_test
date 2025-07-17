@@ -86,9 +86,9 @@ const DataTable = () => {
             : 'Loading workspace'
         }
         logo={
-          selectedWorkspace?.logoUrl ? (
+          selectedWorkspace?.logo ? (
             <img
-              src={selectedWorkspace?.logoUrl}
+              src={selectedWorkspace?.logo}
               alt={`${selectedWorkspace?.name} logo`}
               className="w-16 h-16 object-cover rounded-xl"
             />
@@ -131,9 +131,9 @@ const DataTable = () => {
             >
               {visibleColumns.includes('companyName') && (
                 <TableBodyCell additionalClasses="w-[27%]">
-                  {company?.logoUrl ? (
+                  {company?.logo ? (
                     <img
-                      src={company?.logoUrl}
+                      src={company?.logo}
                       alt={`${company?.name} logo`}
                       className="mr-2 w-7 h-7 object-cover rounded-lg"
                     />

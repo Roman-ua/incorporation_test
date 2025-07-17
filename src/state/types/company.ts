@@ -16,7 +16,7 @@ export interface ICompanyData {
   state: { abbreviation: string; id: number; name: string };
   country: { id: number; short_name: string; full_name: string };
   zip: string;
-  logoUrl?: string;
+  logo?: string;
   ein: number | null;
 }
 
@@ -37,5 +37,5 @@ export interface ICompanyDataForSave {
   state?: string;
   country?: string;
   zip?: string;
-  logoUrl?: string;
+  logo?: string;
 }

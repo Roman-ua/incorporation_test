@@ -21,7 +21,7 @@ export interface Company {
   city: string;
   country: Country;
   zip: string;
-  logoUrl: string;
+  logo: string;
   ein: number;
 }
 

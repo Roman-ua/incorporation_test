@@ -16,7 +16,6 @@ import { ErrorResponse } from '../../../state/types/errors';
 const useCompany = () => {
   const navigate = useNavigate();
   const id = useCompanyIdFromUrl();
-  console.log(id, 'id');
 
   const setCompaniesList = useSetRecoilState(WorkspacesState);
   const setEin = useSetRecoilState(EinState);
@@ -129,11 +128,44 @@ const useCompany = () => {
     }
   };
 
+  const updateCompanyLogo = async (id: string, logo: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('logo', logo);
+      formData.append('company_id', id.toString());
+
+      const response = await axiosInstance.patch(
+        `/company/${id}/logo/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      successHandler([response.data.message], response.data.titles || []);
+
+      setCompaniesList((prevState) => {
+        return {
+          ...prevState,
+          current: response.data.company_details,
+          list: prevState.list.map((company) =>
+            company.id === id ? response.data.company_details : company
+          ),
+        };
+      });
+    } catch (error) {
+      const errorResponse = error as ErrorResponse;
+      errorHandler(errorResponse);
+    }
+  };
+
   return {
     getCompaniesList,
     createCompanyHandler,
     getAllowedCompanyTypes,
     getSpecificCompany,
+    updateCompanyLogo,
   };
 };
 

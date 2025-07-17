@@ -71,7 +71,7 @@ const ChooseWorkspace = () => {
     setAllCompaniesLoading(false);
     navigate(ROUTES.WORKSPACES);
   };
-
+  console.log(workspacesState.list, 'workspacesState.current');
   return (
     <div className="p-2 bg-zinc-50">
       <Preloader
@@ -83,9 +83,9 @@ const ChooseWorkspace = () => {
             : 'Loading workspace'
         }
         logo={
-          selectedWorkspace?.logoUrl ? (
+          selectedWorkspace?.logo ? (
             <img
-              src={selectedWorkspace?.logoUrl}
+              src={selectedWorkspace?.logo}
               alt={`${selectedWorkspace?.name} logo`}
               className="w-16 h-16 object-cover rounded-xl"
             />
@@ -116,9 +116,9 @@ const ChooseWorkspace = () => {
             )}
           >
             <div className="flex-shrink-0 w-8 h-8 rounded-lg overflow-hidden">
-              {workspacesState?.current?.logoUrl ? (
+              {workspacesState?.current?.logo ? (
                 <img
-                  src={workspacesState?.current?.logoUrl}
+                  src={workspacesState?.current?.logo}
                   alt={`${workspacesState?.current?.name} logo`}
                   width={32}
                   height={32}
@@ -191,11 +191,11 @@ const ChooseWorkspace = () => {
                         )}
                       >
                         <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-md overflow-hidden border border-gray-100 dark:bg-gray-700">
-                          {!workspace.logoUrl ? (
+                          {!workspace.logo ? (
                             <IconBuildings className="h-4 w-4 text-gray-900" />
                           ) : (
                             <img
-                              src={workspace.logoUrl}
+                              src={workspace.logo}
                               alt={`${workspace.name} logo`}
                               width={22}
                               height={22}

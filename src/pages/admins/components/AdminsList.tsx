@@ -74,9 +74,9 @@ export function AdminsList() {
             : 'Loading workspace'
         }
         logo={
-          selectedWorkspace?.logoUrl ? (
+          selectedWorkspace?.logo ? (
             <img
-              src={selectedWorkspace?.logoUrl}
+              src={selectedWorkspace?.logo}
               alt={`${selectedWorkspace?.name} logo`}
               className="w-16 h-16 object-cover rounded-xl"
             />
@@ -116,9 +116,9 @@ export function AdminsList() {
                   className={`flex py-3 group hover:cursor-pointer transition-all ease-in-out duration-150 border-b border-gray-100`}
                 >
                   <div className="w-[27%] pr-2 flex items-center justify-start font-bold text-gray-900">
-                    {workspace?.logoUrl ? (
+                    {workspace?.logo ? (
                       <img
-                        src={workspace?.logoUrl}
+                        src={workspace?.logo}
                         alt={`${workspace?.name} logo`}
                         className="mr-2 w-7 h-7 object-cover rounded-lg"
                       />
