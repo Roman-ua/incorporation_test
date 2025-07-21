@@ -9,6 +9,7 @@ import UserProfileState from '../../../state/atoms/UserProfile';
 import { FaLinkedin, FaSquareXTwitter } from 'react-icons/fa6';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { BsTelegram } from 'react-icons/bs';
+import { LuArrowUpRight } from 'react-icons/lu';
 const ContactsSection = () => {
   const userData = useRecoilValue(UserProfileState);
 
@@ -54,8 +55,21 @@ const ContactsSection = () => {
                 <BsTelegram className="text-gray-500 mr-2" />
                 <span className="text-sm   text-gray-500">Telegram</span>
               </td>
+
               <td className="pl-8 text-sm   text-gray-900">
-                {userData.data?.telegram || '-'}
+                {userData.data?.telegram ? (
+                  <a
+                    href={`https://t.me/${userData.data?.telegram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center group"
+                  >
+                    {'@' + userData.data?.telegram}
+                    <LuArrowUpRight className="h-3 w-3 ml-1 mt-0.5 opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out" />
+                  </a>
+                ) : (
+                  <span className="text-sm   text-gray-900">-</span>
+                )}
               </td>
             </tr>
           )}

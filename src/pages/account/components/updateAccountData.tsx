@@ -189,6 +189,12 @@ export function UpdateAccountData({
       phone_country: formData.phoneCountry,
     };
 
+    const cleanedTg = formData.telegram.replace(/^@/, '');
+
+    if (cleanedTg) {
+      person.telegram = cleanedTg;
+    }
+
     if (avatar) {
       person.image = avatar;
     }
