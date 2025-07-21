@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { classNames, filterLatinOnly } from '../../../utils/helpers';
 import SwitchButton from '../../../components/shared/SwitchButton/SwitchButton';
@@ -10,6 +10,7 @@ import { AvatarUpload } from '../../company/components/AddPersonPhoto';
 import {
   isValidFacebookUrl,
   isValidLinkedinUrl,
+  isValidTwitterUrl,
   isValidXUrl,
   validateEmail,
 } from '../../../utils/validators';
@@ -28,6 +29,7 @@ import { IUpdateUserContactInfo } from '../../../state/types/user';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import { IUser } from '../../../state/atoms/UserProfile';
+import { LockKeyhole } from 'lucide-react';
 
 export interface Person {
   id: string;
@@ -76,7 +78,6 @@ export function UpdateAccountData({
   const globalData = useRecoilValue(GlobalDataState);
 
   const [avatar, setAvatar] = useState<File | null>(null);
-  const [mandatoryError, setMandatoryError] = useState<boolean>(false);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>({
     ...defaultUS,
@@ -105,7 +106,7 @@ export function UpdateAccountData({
     phoneCountry: userData.phone_country || '',
   });
 
-  const [error, setError] = React.useState<string>('');
+  const [emailError, setEmailError] = React.useState<string>('');
   const [fullNameError, setFullNameError] = React.useState<string>('');
   const [isNotValidEmail, setIsNotValidEmail] = React.useState<boolean>(false);
   const [languageError, setLanguageError] = useState<boolean>(false);
@@ -120,10 +121,9 @@ export function UpdateAccountData({
   const { updateUserData } = UseUserData();
 
   const cleanFormHandler = () => {
-    setError('');
+    // setEmailError('');
     setPhoneError('');
     setSelected(1);
-    setMandatoryError(false);
     setIsNotValidEmail(false);
     setFullNameError('');
   };
@@ -154,15 +154,14 @@ export function UpdateAccountData({
       setLanguageError(true);
     }
   };
-  console.log(formData, 'formData');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.fullName || fullNameError || !formData.phone) {
-      setMandatoryError(true);
-      return;
-    }
+    // if (!formData.fullName) {
+    //   setFullNameError('Provide first name and last name.');
+    //   return;
+    // }
 
     const stateId = globalData.states.find(
       (state) => state.name === address?.state
@@ -202,27 +201,34 @@ export function UpdateAccountData({
   const handleBlurEmail = () => {
     if (validateEmail(formData.email) || !formData.email) {
       setIsNotValidEmail(false);
-      setError('');
+      // setEmailError('');
     } else {
       setIsNotValidEmail(true);
-      setError('Provide a valid email.');
+      setEmailError('Provide a valid email.');
     }
-  };
-
-  const disabledButtonFlag = () => {
-    return !formData.fullName || fullNameError || phoneError || !formData.phone;
   };
 
   const fullNameValidator = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
 
-    const fullNameRegex = /^[A-Za-zА-Яа-яЁё]+(\s+[A-Za-zА-Яа-яЁё]+)+$/;
-
-    if (!value || fullNameRegex.test(value)) {
+    if (!value) {
       setFullNameError('');
-    } else {
-      setFullNameError('Provide first name and last name.');
+      return;
     }
+
+    const parts = value.split(/\s+/); // разбиваем по пробелам, убираем лишние
+    if (parts.length < 2) {
+      setFullNameError('Provide first name and last name.');
+      return;
+    }
+
+    const hasShortWord = parts.some((word) => word.length < 2);
+    if (hasShortWord) {
+      setFullNameError('Provide full first and last name.');
+      return;
+    }
+
+    setFullNameError('');
   };
 
   const fullNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -253,24 +259,34 @@ export function UpdateAccountData({
 
   const checkX = () => {
     setFocusedInput('');
-    if (isValidXUrl(formData.twitter)) {
+    if (isValidXUrl(formData.twitter) || isValidTwitterUrl(formData.twitter)) {
       setXError('');
     } else {
       setXError('Provide a valid link to X profile');
     }
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        fullName: userData.full_name || '',
+        email: userData.email || '',
+        phone: userData.phone || '',
+        telegram: userData.telegram || '',
+        whatsapp: userData.whatsapp || '',
+        linkedin: userData.linkedin || '',
+        facebook: userData.facebook || '',
+        twitter: userData.twitter || '',
+        phoneCountry: userData.phone_country || '',
+      });
+    }
+  }, [isOpen]);
+
   const inputCommonClasses =
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-400 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
-
+  console.log(emailError, 'emailError');
   return (
-    <ModalWrapperLayout
-      closeModal={() => {
-        cleanFormHandler();
-        onClose();
-      }}
-      isOpen={isOpen}
-    >
+    <ModalWrapperLayout closeModal={() => {}} isOpen={isOpen}>
       <div className="p-6">
         <div className="mb-6">
           <h2 className="text-xl font-medium  ">
@@ -302,9 +318,7 @@ export function UpdateAccountData({
                       'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer focus:placeholder:text-transparent',
                       fullNameError &&
                         'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
-                      mandatoryError && !formData?.fullName
-                        ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
-                        : 'focus:ring-mainBlue'
+                      'focus:ring-mainBlue'
                     )}
                     type="text"
                     placeholder="Full name"
@@ -323,23 +337,27 @@ export function UpdateAccountData({
               </div>
 
               <div className="relative">
-                {/* <div className="font-bold mb-1 text-sm">Email</div> */}
+                <div
+                  onClick={() => {
+                    console.log('clicked');
+                    setEmailError('If you wish to update your email, please');
+                  }}
+                  className="absolute top-0 left-0 w-full h-full z-50"
+                />
+
                 <MdOutlineMail className="w-4 h-4 text-gray-500 absolute top-[31%] left-2.5" />
                 <input
                   onChange={(e) => {
-                    if (error) {
+                    if (emailError) {
                       setIsNotValidEmail(false);
-                      setError('');
                     }
                     setFormData({ ...formData, email: e.target.value });
                   }}
                   className={classNames(
                     isNotValidEmail &&
                       'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
-                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:400  hover:cursor-pointer focus:placeholder:text-transparent',
-                    mandatoryError && !formData?.email
-                      ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
-                      : 'focus:ring-mainBlue'
+                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-4 text-gray-900 placeholder:400  hover:cursor-pointer focus:placeholder:text-transparent',
+                    'focus:ring-mainBlue'
                   )}
                   type="text"
                   disabled={true}
@@ -348,11 +366,14 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData.email}
                 />
-                {error && (
+                <LockKeyhole className="w-4 h-4 text-gray-500 absolute top-[31%] right-2.5" />
+                {emailError && (
                   <WarningMessage
-                    message={error}
-                    onClose={() => setError('')}
+                    message={emailError || 'qweqwe'}
+                    onClose={() => setEmailError('')}
                     wrapperClass="absolute -bottom-7 right-0 w-full text-xs"
+                    bgSettings="bg-gray-400/30"
+                    contacktLink="mailto:support@incorporatenow.com"
                   />
                 )}
               </div>
@@ -441,7 +462,7 @@ export function UpdateAccountData({
                   onFocus={() => setFocusedInput('x')}
                   onBlur={checkX}
                 />
-                {xError && (
+                {xError && formData.twitter && (
                   <WarningMessage
                     message={xError}
                     onClose={() => setXError('')}
@@ -476,7 +497,7 @@ export function UpdateAccountData({
                   onFocus={() => setFocusedInput('facebook')}
                   onBlur={checkFacebook}
                 />
-                {facebookError && (
+                {facebookError && formData.facebook && (
                   <WarningMessage
                     message={facebookError}
                     onClose={() => setFacebookError('')}
@@ -511,7 +532,7 @@ export function UpdateAccountData({
                   onFocus={() => setFocusedInput('linkedin')}
                   onBlur={checkLinkedin}
                 />
-                {linkedinError && (
+                {linkedinError && formData.linkedin && (
                   <WarningMessage
                     message={linkedinError}
                     onClose={() => setLinkedinError('')}
@@ -583,13 +604,11 @@ export function UpdateAccountData({
             <div
               onClick={handleSubmit}
               className={classNames(
-                !disabledButtonFlag()
-                  ? 'bg-mainBlue hover:bg-sideBarBlue '
-                  : 'bg-gray-500',
+                'bg-mainBlue hover:bg-sideBarBlue',
                 'block rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer'
               )}
             >
-              Submit
+              Save
             </div>
           </div>
         </form>

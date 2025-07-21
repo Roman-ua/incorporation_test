@@ -89,6 +89,7 @@ export function PhoneWithValidation({
   setIso,
   phoneCountry,
 }: PhoneInputProps) {
+  console.log(value, 'value');
   const globalData = useRecoilValue(GlobalDataState);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -105,7 +106,6 @@ export function PhoneWithValidation({
   const [inputFocus, setInputFocus] = useState(false);
   const [query, setQuery] = useState('');
 
-  const prevValue = useRef(value);
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -147,10 +147,16 @@ export function PhoneWithValidation({
 
     if (!validation.isValid) {
       if (validation.error === 'Number is not valid') {
-        setError?.('Provide a valid phone number');
+        setError?.('Provide a valid phone number.');
         return;
       }
-      setError?.(validation.error || 'Provide a valid phone number');
+
+      if (validation.error === 'Number is too short') {
+        setError?.('Phone number is too short.');
+        return;
+      }
+
+      setError?.(validation.error || 'Provide a valid phone number.');
       return;
     }
 
@@ -176,18 +182,12 @@ export function PhoneWithValidation({
       setSelectedCountry(phoneCountry);
     }
     if (!phoneNumber) {
-      console.log(value.startsWith(phoneCountry?.dial_code || ''), 'value');
       const slicedNumber = value.startsWith(phoneCountry?.dial_code || '')
         ? value.slice((phoneCountry?.dial_code || '').length)
         : '';
       setPhoneNumber(slicedNumber);
     }
   }, [phoneCountry]);
-
-  useEffect(() => {
-    if (prevValue.current === value) return;
-    prevValue.current = value;
-  }, [value]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -207,6 +207,7 @@ export function PhoneWithValidation({
   }, []);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError?.('');
     const input = e.target.value;
     const sanitizedInput = input.replace(/\D/g, '');
     setPhoneNumber(sanitizedInput);

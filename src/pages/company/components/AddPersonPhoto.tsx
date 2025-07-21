@@ -65,7 +65,7 @@ export function AvatarUpload({
     <div className="flex items-center jusify-start gap-4">
       <div
         className={`relative group cursor-pointer border border-dashed border-gray-200
-          ${preview ? 'w-12 h-12' : 'w-12 h-12'}
+          ${preview ? 'w-[42px] h-[42px]' : 'w-[42px] h-[42px]'}
           rounded-full overflow-hidden transition-all duration-500 ease-out
           ${isDragging ? 'scale-102 ring-2 ring-blue-500 ring-offset-4' : ''}
           hover:shadow-sm`}

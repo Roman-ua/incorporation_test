@@ -80,13 +80,6 @@ export function ProfileHeader({
             </span>
           </div>
           <div className="flex items-center">
-            <button
-              type="button"
-              onClick={openEditModal}
-              className="mr-2 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
-            >
-              Edit
-            </button>
             <span
               onClick={(event) => {
                 event.stopPropagation();
@@ -157,6 +150,13 @@ export function ProfileHeader({
                   Upload Picture
                 </button>
               )}
+              <button
+                type="button"
+                onClick={openEditModal}
+                className="ml-2 rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
+              >
+                Edit
+              </button>
             </dd>
           </div>
         </dl>

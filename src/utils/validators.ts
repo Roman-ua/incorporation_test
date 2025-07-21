@@ -30,6 +30,10 @@ export const isValidXUrl = (value: string): boolean => {
   return value.startsWith('https://x.com');
 };
 
+export const isValidTwitterUrl = (value: string): boolean => {
+  return value.startsWith('https://twitter.com');
+};
+
 // export const isValidTelegramUrl = (value: string): boolean => {
 //   return value.startsWith('https://t.me');
 // };

@@ -6,8 +6,8 @@ import { FiPhone } from 'react-icons/fi';
 import SectionHeading from '../../company/components/SectionHeading';
 import { useRecoilValue } from 'recoil';
 import UserProfileState from '../../../state/atoms/UserProfile';
-import { FaLinkedin, FaSquareXTwitter, FaWhatsapp } from 'react-icons/fa6';
-import { FaFacebookSquare, FaWhatsappSquare } from 'react-icons/fa';
+import { FaLinkedin, FaSquareXTwitter } from 'react-icons/fa6';
+import { FaFacebookSquare } from 'react-icons/fa';
 import { BsTelegram } from 'react-icons/bs';
 const ContactsSection = () => {
   const userData = useRecoilValue(UserProfileState);
@@ -30,12 +30,12 @@ const ContactsSection = () => {
                 <span className="text-sm   text-gray-900">
                   {userData.data?.phone || '-'}
                 </span>
-                {userData.data?.whatsapp && (
+                {/* {userData.data?.whatsapp && (
                   <FaWhatsapp className="w-4 inline ml-2" />
                 )}
                 {userData.data?.telegram && (
                   <BsTelegram className="w-4 inline ml-2" />
-                )}
+                )} */}
               </div>
             </td>
           </tr>
@@ -48,16 +48,18 @@ const ContactsSection = () => {
               {userData.data?.email || '-'}
             </td>
           </tr>
-          <tr>
-            <td className="flex items-center">
-              <BsTelegram className="text-gray-500 mr-2" />
-              <span className="text-sm   text-gray-500">Telegram</span>
-            </td>
-            <td className="pl-8 text-sm   text-gray-900">
-              {userData.data?.telegram || '-'}
-            </td>
-          </tr>
-          <tr>
+          {userData.data?.telegram && (
+            <tr>
+              <td className="flex items-center">
+                <BsTelegram className="text-gray-500 mr-2" />
+                <span className="text-sm   text-gray-500">Telegram</span>
+              </td>
+              <td className="pl-8 text-sm   text-gray-900">
+                {userData.data?.telegram || '-'}
+              </td>
+            </tr>
+          )}
+          {/* <tr>
             <td className="flex items-center">
               <FaWhatsappSquare className="text-gray-500 mr-2" />
               <span className="text-sm   text-gray-500">WhatsApp</span>
@@ -65,35 +67,40 @@ const ContactsSection = () => {
             <td className="pl-8 text-sm   text-gray-900">
               {userData.data?.whatsapp || '-'}
             </td>
-          </tr>
-          <tr>
-            <td className="flex items-center">
-              <FaSquareXTwitter className="text-gray-500 mr-2" />
-              <span className="text-sm   text-gray-500">Twitter</span>
-            </td>
-            <td className="pl-8 text-sm   text-gray-900">
-              {userData.data?.twitter || '-'}
-            </td>
-          </tr>
-
-          <tr>
-            <td className="flex items-center">
-              <FaFacebookSquare className="text-gray-500 mr-2" />
-              <span className="text-sm   text-gray-500">Facebook</span>
-            </td>
-            <td className="pl-8 text-sm   text-gray-900">
-              {userData.data?.facebook || '-'}
-            </td>
-          </tr>
-          <tr>
-            <td className="flex items-center">
-              <FaLinkedin className="text-gray-500 mr-2" />
-              <span className="text-sm   text-gray-500">LinkedIn</span>
-            </td>
-            <td className="pl-8 text-sm   text-gray-900">
-              {userData.data?.linkedin || '-'}
-            </td>
-          </tr>
+          </tr> */}
+          {userData.data?.twitter && (
+            <tr>
+              <td className="flex items-center">
+                <FaSquareXTwitter className="text-gray-500 mr-2" />
+                <span className="text-sm   text-gray-500">Twitter</span>
+              </td>
+              <td className="pl-8 text-sm   text-gray-900">
+                {userData.data?.twitter || '-'}
+              </td>
+            </tr>
+          )}
+          {userData.data?.facebook && (
+            <tr>
+              <td className="flex items-center">
+                <FaFacebookSquare className="text-gray-500 mr-2" />
+                <span className="text-sm   text-gray-500">Facebook</span>
+              </td>
+              <td className="pl-8 text-sm   text-gray-900">
+                {userData.data?.facebook || '-'}
+              </td>
+            </tr>
+          )}
+          {userData.data?.linkedin && (
+            <tr>
+              <td className="flex items-center">
+                <FaLinkedin className="text-gray-500 mr-2" />
+                <span className="text-sm   text-gray-500">LinkedIn</span>
+              </td>
+              <td className="pl-8 text-sm   text-gray-900">
+                {userData.data?.linkedin || '-'}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
