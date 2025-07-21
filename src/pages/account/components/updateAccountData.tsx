@@ -244,7 +244,7 @@ export function UpdateAccountData({
     if (isValidLinkedinUrl(formData.linkedin)) {
       setLinkedinError('');
     } else {
-      setLinkedinError('Provide a valid link to LinkedIn profile');
+      setLinkedinError('Provide a valid link to LinkedIn profile.');
     }
   };
 
@@ -253,7 +253,7 @@ export function UpdateAccountData({
     if (isValidFacebookUrl(formData.facebook)) {
       setFacebookError('');
     } else {
-      setFacebookError('Provide a valid link to Facebook profile');
+      setFacebookError('Provide a valid link to Facebook profile.');
     }
   };
 
@@ -262,7 +262,7 @@ export function UpdateAccountData({
     if (isValidXUrl(formData.twitter) || isValidTwitterUrl(formData.twitter)) {
       setXError('');
     } else {
-      setXError('Provide a valid link to X profile');
+      setXError('Provide a valid link to X profile.');
     }
   };
 
