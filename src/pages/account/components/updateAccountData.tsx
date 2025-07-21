@@ -15,7 +15,7 @@ import {
 } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
-import { FiPhone } from 'react-icons/fi';
+// import { FiPhone } from 'react-icons/fi';
 
 import { MdOutlineMail } from 'react-icons/md';
 import { PhoneWithValidation } from '../../../components/shared/PhoneWithValidation/PhoneWithValidation';
@@ -115,7 +115,7 @@ export function UpdateAccountData({
   const [xError, setXError] = React.useState<string>('');
 
   const [focusedInput, setFocusedInput] = useState<string>('');
-  const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
+  // const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
 
   const { updateUserData } = UseUserData();
 
@@ -238,7 +238,7 @@ export function UpdateAccountData({
     if (isValidLinkedinUrl(formData.linkedin)) {
       setLinkedinError('');
     } else {
-      setLinkedinError('Provide a valid LinkedIn URL.');
+      setLinkedinError('Provide a valid link to LinkedIn profile');
     }
   };
 
@@ -247,7 +247,7 @@ export function UpdateAccountData({
     if (isValidFacebookUrl(formData.facebook)) {
       setFacebookError('');
     } else {
-      setFacebookError('Provide a valid Facebook URL.');
+      setFacebookError('Provide a valid link to Facebook profile');
     }
   };
 
@@ -256,12 +256,12 @@ export function UpdateAccountData({
     if (isValidXUrl(formData.twitter)) {
       setXError('');
     } else {
-      setXError('Provide a valid X URL.');
+      setXError('Provide a valid link to X profile');
     }
   };
-  console.log(avatar, 'avatar');
+
   const inputCommonClasses =
-    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-500 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
+    'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-400 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
 
   return (
     <ModalWrapperLayout
@@ -286,7 +286,7 @@ export function UpdateAccountData({
 
         <form>
           <div className="flex gap-6 mb-6">
-            <div className="flex-1 space-y-8">
+            <div className="flex-1 space-y-9">
               <div className="flex gap-4 items-center w-full">
                 <AvatarUpload
                   image={userData.image}
@@ -299,7 +299,7 @@ export function UpdateAccountData({
                   <input
                     onChange={fullNameHandler}
                     className={classNames(
-                      'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
+                      'block rounded-md border w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer focus:placeholder:text-transparent',
                       fullNameError &&
                         'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
                       mandatoryError && !formData?.fullName
@@ -316,7 +316,7 @@ export function UpdateAccountData({
                     <WarningMessage
                       message={fullNameError}
                       onClose={() => setFullNameError('')}
-                      wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                      wrapperClass="absolute -bottom-7 right-0 w-full text-xs"
                     />
                   )}
                 </div>
@@ -336,7 +336,7 @@ export function UpdateAccountData({
                   className={classNames(
                     isNotValidEmail &&
                       'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400',
-                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
+                    'block rounded-md border w-full  border-gray-200 pl-8 p-2 text-md mb-4 text-gray-900 disabled:text-opacity-50 placeholder:400  hover:cursor-pointer focus:placeholder:text-transparent',
                     mandatoryError && !formData?.email
                       ? 'bg-red-50 focus:ring-red-400 focus:border-red-400'
                       : 'focus:ring-mainBlue'
@@ -352,7 +352,7 @@ export function UpdateAccountData({
                   <WarningMessage
                     message={error}
                     onClose={() => setError('')}
-                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                    wrapperClass="absolute -bottom-7 right-0 w-full text-xs"
                   />
                 )}
               </div>
@@ -361,7 +361,6 @@ export function UpdateAccountData({
                 <PhoneWithValidation
                   value={formData.phone}
                   onChange={(value) => {
-                    console.log(value, 'value');
                     setFormData({ ...formData, phone: value });
                   }}
                   phoneCountry={globalData.countryies.find(
@@ -388,20 +387,18 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500 hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400 hover:cursor-pointer'
                   )}
                   type="text"
                   placeholder={
-                    focusedInput === 'telegram' && tgNickNameFlag
-                      ? '@username'
-                      : 'Phone number'
+                    focusedInput === 'telegram' ? '@username' : 'Telegram'
                   }
                   data-1p-ignore={true}
                   value={formData?.telegram}
                   onFocus={() => setFocusedInput('telegram')}
                   onBlur={() => setFocusedInput('')}
                 />
-                <div
+                {/* <div
                   onClick={() => {
                     setTgNickNameFlag(!tgNickNameFlag);
                     setFormData({
@@ -418,7 +415,7 @@ export function UpdateAccountData({
                   ) : (
                     <FiPhone className="w-4 h-4 text-gray-700" />
                   )}
-                </div>
+                </div> */}
               </div>
 
               {/* Twitter */}
@@ -435,7 +432,7 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer'
                   )}
                   type="text"
                   placeholder={focusedInput === 'x' ? 'x.com/username' : 'X'}
@@ -448,7 +445,7 @@ export function UpdateAccountData({
                   <WarningMessage
                     message={xError}
                     onClose={() => setXError('')}
-                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                    wrapperClass="absolute -bottom-7 right-0 w-full text-xs"
                   />
                 )}
               </div>
@@ -466,7 +463,7 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer'
                   )}
                   type="text"
                   placeholder={
@@ -483,7 +480,7 @@ export function UpdateAccountData({
                   <WarningMessage
                     message={facebookError}
                     onClose={() => setFacebookError('')}
-                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                    wrapperClass="absolute -bottom-7 right-0 w-full text-xs"
                   />
                 )}
               </div>
@@ -501,7 +498,7 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer'
                   )}
                   type="text"
                   placeholder={
@@ -518,7 +515,7 @@ export function UpdateAccountData({
                   <WarningMessage
                     message={linkedinError}
                     onClose={() => setLinkedinError('')}
-                    wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+                    wrapperClass="absolute -bottom-7 right-0 w-full text-xs"
                   />
                 )}
               </div>
@@ -549,6 +546,9 @@ export function UpdateAccountData({
                   countryDisabled={true}
                   data={address}
                   setData={addressHandler}
+                  extraWrapperClass={
+                    'border border-sideBarBlue shadow-[0_0_0_1px_#0277ff]'
+                  }
                 />
               ) : (
                 <SimpleAddressFormNotUS

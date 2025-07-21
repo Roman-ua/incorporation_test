@@ -146,7 +146,11 @@ export function PhoneWithValidation({
     );
 
     if (!validation.isValid) {
-      setError?.(validation.error || 'Некорректный номер');
+      if (validation.error === 'Number is not valid') {
+        setError?.('Provide a valid phone number');
+        return;
+      }
+      setError?.(validation.error || 'Provide a valid phone number');
       return;
     }
 
@@ -233,7 +237,10 @@ export function PhoneWithValidation({
               inputFocus && !error
                 ? 'ring-1 ring-blue-600 border-blue-600'
                 : '',
-              error ? 'ring-1 ring-red-400 border-red-400' : '',
+              inputFocus && error && !phoneNumber
+                ? 'ring-1 ring-blue-600 border-blue-600'
+                : '',
+              error && phoneNumber ? 'ring-1 ring-red-400 border-red-400' : '',
               !inputFocus && !error && 'border-gray-200'
               // 'ring-inset'
             )}
@@ -381,18 +388,18 @@ export function PhoneWithValidation({
           onFocus={() => setInputFocus(true)}
           disabled={!selectedCountry}
           className={classNames(
-            'block rounded-r-md border border-l-0 w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-500  hover:cursor-pointer focus:placeholder:text-transparent',
-            error
+            'block rounded-r-md border border-l-0 w-full border-gray-200 p-2 text-md ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer focus:placeholder:text-transparent',
+            error && phoneNumber
               ? 'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
               : ''
           )}
         />
       </div>
-      {error && (
+      {error && phoneNumber && (
         <WarningMessage
           message={error}
           onClose={() => setError?.('')}
-          wrapperClass="absolute -bottom-7 right-0 w-[270px] text-xs"
+          wrapperClass="absolute -bottom-7 right-0 w-full text-xs"
         />
       )}
     </div>
