@@ -88,7 +88,7 @@ const ContactsSection = () => {
             <tr>
               <td className="flex items-center">
                 <FaSquareXTwitter className="text-gray-500 mr-2" />
-                <span className="text-sm   text-gray-500">Twitter</span>
+                <span className="text-sm   text-gray-500">X</span>
               </td>
               <td className="pl-8 text-sm   text-gray-900">
                 {userData.data?.twitter || '-'}

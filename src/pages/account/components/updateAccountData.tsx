@@ -28,7 +28,8 @@ import { IUpdateUserContactInfo } from '../../../state/types/user';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import { IUser } from '../../../state/atoms/UserProfile';
-import { LockKeyhole } from 'lucide-react';
+
+import { TbLockCog } from 'react-icons/tb';
 
 export interface Person {
   id: string;
@@ -379,7 +380,7 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData.email}
                 />
-                <LockKeyhole className="w-4 h-4 text-gray-500 absolute top-[31%] right-2.5" />
+                <TbLockCog className="w-5 h-5 text-gray-500 absolute top-[31%] right-2.5" />
                 {emailError && (
                   <WarningMessage
                     message={emailError || 'qweqwe'}
