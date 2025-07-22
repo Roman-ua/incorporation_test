@@ -137,7 +137,7 @@ export function ProfileHeader({
           <div className="flex flex-col gap-y-1 border-l px-6">
             <dt className="text-nowrap text-sm text-gray-500">Phone Number</dt>
             <dd className="text-base font-semibold   text-gray-700">
-              {userData.data?.phone || '-'}
+              {userData.data?.phone || ''}
             </dd>
           </div>
           <div className="flex flex-col gap-y-1 ml-auto">

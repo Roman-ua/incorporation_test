@@ -10,6 +10,8 @@ import { FaLinkedin, FaSquareXTwitter } from 'react-icons/fa6';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { BsTelegram } from 'react-icons/bs';
 import { LuArrowUpRight } from 'react-icons/lu';
+import { isValidUrl } from '../../../utils/validators';
+import { truncateString } from '../../../utils/helpers';
 const ContactsSection = () => {
   const userData = useRecoilValue(UserProfileState);
 
@@ -75,15 +77,6 @@ const ContactsSection = () => {
               </td>
             </tr>
           )}
-          {/* <tr>
-            <td className="flex items-center">
-              <FaWhatsappSquare className="text-gray-500 mr-2" />
-              <span className="text-sm   text-gray-500">WhatsApp</span>
-            </td>
-            <td className="pl-8 text-sm   text-gray-900">
-              {userData.data?.whatsapp || '-'}
-            </td>
-          </tr> */}
           {userData.data?.twitter && (
             <tr>
               <td className="flex items-center">
@@ -91,7 +84,19 @@ const ContactsSection = () => {
                 <span className="text-sm   text-gray-500">X</span>
               </td>
               <td className="pl-8 text-sm   text-gray-900">
-                {userData.data?.twitter || '-'}
+                <a
+                  href={
+                    isValidUrl(userData.data?.twitter)
+                      ? userData.data?.twitter
+                      : `https://${userData.data?.twitter}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center group"
+                >
+                  {truncateString(userData.data?.twitter, 55)}
+                  <LuArrowUpRight className="h-3 w-3 ml-1 mt-0.5 opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out" />
+                </a>
               </td>
             </tr>
           )}
@@ -102,7 +107,19 @@ const ContactsSection = () => {
                 <span className="text-sm   text-gray-500">Facebook</span>
               </td>
               <td className="pl-8 text-sm   text-gray-900">
-                {userData.data?.facebook || '-'}
+                <a
+                  href={
+                    isValidUrl(userData.data?.facebook)
+                      ? userData.data?.facebook
+                      : `https://www.${userData.data?.facebook}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center group"
+                >
+                  {truncateString(userData.data?.facebook, 55)}
+                  <LuArrowUpRight className="h-3 w-3 ml-1 mt-0.5 opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out" />
+                </a>
               </td>
             </tr>
           )}
@@ -113,7 +130,19 @@ const ContactsSection = () => {
                 <span className="text-sm   text-gray-500">LinkedIn</span>
               </td>
               <td className="pl-8 text-sm   text-gray-900">
-                {userData.data?.linkedin || '-'}
+                <a
+                  href={
+                    isValidUrl(userData.data?.linkedin)
+                      ? userData.data?.linkedin
+                      : `https://www.${userData.data?.linkedin}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center group"
+                >
+                  {truncateString(userData.data?.linkedin, 55)}
+                  <LuArrowUpRight className="h-3 w-3 ml-1 mt-0.5 opacity-0 group-hover:opacity-100 transition-all duration-150 ease-in-out" />
+                </a>
               </td>
             </tr>
           )}

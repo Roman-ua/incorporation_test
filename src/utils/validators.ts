@@ -19,19 +19,27 @@ export const isLatin = (text: string): boolean => {
 };
 
 export const isValidLinkedinUrl = (value: string): boolean => {
-  return value.startsWith('https://www.linkedin.com/in');
+  return /(^|\b)(linkedin\.com\/(in\/)?[a-zA-Z0-9-_]+)/i.test(value);
 };
 
 export const isValidFacebookUrl = (value: string): boolean => {
-  return value.startsWith('https://www.facebook.com');
+  return /(^|\b)(facebook\.com\/[a-zA-Z0-9.]+)/i.test(value);
 };
 
 export const isValidXUrl = (value: string): boolean => {
-  return value.startsWith('https://x.com');
+  return /(^|\b)(x\.com\/[a-zA-Z0-9_]+)/i.test(value);
 };
 
 export const isValidTwitterUrl = (value: string): boolean => {
-  return value.startsWith('https://twitter.com');
+  return /(^|\b)(twitter\.com\/[a-zA-Z0-9_]+)/i.test(value);
+};
+
+export const isValidUrl = (value: string): boolean => {
+  // return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
+  //   value
+  // );
+
+  return value.startsWith('https://') || value.startsWith('http://');
 };
 
 // export const isValidTelegramUrl = (value: string): boolean => {

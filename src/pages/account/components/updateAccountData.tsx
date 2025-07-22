@@ -166,7 +166,15 @@ export function UpdateAccountData({
       return;
     }
 
-    if (fullNameError) return;
+    if (
+      fullNameError ||
+      phoneError ||
+      linkedinError ||
+      facebookError ||
+      xError ||
+      languageError
+    )
+      return;
 
     const stateId = globalData.states.find(
       (state) => state.name === address?.state
@@ -254,6 +262,10 @@ export function UpdateAccountData({
   };
 
   const checkLinkedin = () => {
+    if (!formData.linkedin) {
+      setLinkedinError('');
+      return;
+    }
     setFocusedInput('');
     if (isValidLinkedinUrl(formData.linkedin)) {
       setLinkedinError('');
@@ -263,6 +275,10 @@ export function UpdateAccountData({
   };
 
   const checkFacebook = () => {
+    if (!formData.facebook) {
+      setFacebookError('');
+      return;
+    }
     setFocusedInput('');
     if (isValidFacebookUrl(formData.facebook)) {
       setFacebookError('');
@@ -272,6 +288,10 @@ export function UpdateAccountData({
   };
 
   const checkX = () => {
+    if (!formData.twitter) {
+      setXError('');
+      return;
+    }
     setFocusedInput('');
     if (isValidXUrl(formData.twitter) || isValidTwitterUrl(formData.twitter)) {
       setXError('');
@@ -467,7 +487,10 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4  text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer',
+                    xError
+                      ? 'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
+                      : 'ring-0'
                   )}
                   type="text"
                   placeholder={focusedInput === 'x' ? 'x.com/username' : 'X'}
@@ -498,7 +521,10 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4  text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer',
+                    facebookError
+                      ? 'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
+                      : 'ring-0'
                   )}
                   type="text"
                   placeholder={
@@ -533,7 +559,10 @@ export function UpdateAccountData({
                     });
                   }}
                   className={classNames(
-                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4 ring-0 text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer'
+                    'focus:ring-mainBlue block rounded-md border w-full border-gray-200 pl-8 p-2 text-md mb-4  text-gray-900 disabled:text-opacity-50 placeholder:text-gray-400  hover:cursor-pointer',
+                    linkedinError
+                      ? 'ring-1 ring-red-400 focus:ring-red-400 border-red-400 focus:border-red-400'
+                      : 'ring-0'
                   )}
                   type="text"
                   placeholder={
