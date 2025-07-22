@@ -21,25 +21,27 @@ const ContactsSection = () => {
         style={{ borderSpacing: '0 8px' }}
       >
         <tbody>
-          <tr>
-            <td className="flex items-center">
-              <FiPhone className="text-gray-500 mr-2" />
-              <span className="text-sm   text-gray-500">Phone</span>
-            </td>
-            <td>
-              <div className="pl-8 flex items-center">
-                <span className="text-sm   text-gray-900">
-                  {userData.data?.phone || '-'}
-                </span>
-                {/* {userData.data?.whatsapp && (
+          {userData.data?.phone && (
+            <tr>
+              <td className="flex items-center">
+                <FiPhone className="text-gray-500 mr-2" />
+                <span className="text-sm   text-gray-500">Phone</span>
+              </td>
+              <td>
+                <div className="pl-8 flex items-center">
+                  <span className="text-sm   text-gray-900">
+                    {userData.data?.phone || '-'}
+                  </span>
+                  {/* {userData.data?.whatsapp && (
                   <FaWhatsapp className="w-4 inline ml-2" />
                 )}
                 {userData.data?.telegram && (
                   <BsTelegram className="w-4 inline ml-2" />
                 )} */}
-              </div>
-            </td>
-          </tr>
+                </div>
+              </td>
+            </tr>
+          )}
           <tr>
             <td className="flex items-center">
               <MdOutlineMail className="text-gray-500 mr-2" />

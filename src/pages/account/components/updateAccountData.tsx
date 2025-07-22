@@ -16,7 +16,6 @@ import {
 } from '../../../utils/validators';
 import ModalWrapperLayout from '../../../components/shared/Modals/ModalWrapperLayout';
 import { VALIDATORS } from '../../../constants/regexs';
-// import { FiPhone } from 'react-icons/fi';
 
 import { MdOutlineMail } from 'react-icons/md';
 import { PhoneWithValidation } from '../../../components/shared/PhoneWithValidation/PhoneWithValidation';
@@ -116,16 +115,19 @@ export function UpdateAccountData({
   const [xError, setXError] = React.useState<string>('');
 
   const [focusedInput, setFocusedInput] = useState<string>('');
-  // const [tgNickNameFlag, setTgNickNameFlag] = useState<boolean>(false);
 
   const { updateUserData } = UseUserData();
 
   const cleanFormHandler = () => {
-    // setEmailError('');
     setPhoneError('');
     setSelected(1);
     setIsNotValidEmail(false);
     setFullNameError('');
+    setEmailError('');
+    setPhoneError('');
+    setLinkedinError('');
+    setFacebookError('');
+    setXError('');
   };
 
   const formTypeHandler = (value: 1 | 2) => {
@@ -158,10 +160,12 @@ export function UpdateAccountData({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // if (!formData.fullName) {
-    //   setFullNameError('Provide first name and last name.');
-    //   return;
-    // }
+    if (!formData.fullName) {
+      setFullNameError('Provide first name and last name.');
+      return;
+    }
+
+    if (fullNameError) return;
 
     const stateId = globalData.states.find(
       (state) => state.name === address?.state
@@ -191,6 +195,10 @@ export function UpdateAccountData({
 
     const cleanedTg = formData.telegram.replace(/^@/, '');
 
+    if (formData.phone.length < 5) {
+      person.phone = '';
+    }
+
     if (cleanedTg) {
       person.telegram = cleanedTg;
     }
@@ -207,7 +215,6 @@ export function UpdateAccountData({
   const handleBlurEmail = () => {
     if (validateEmail(formData.email) || !formData.email) {
       setIsNotValidEmail(false);
-      // setEmailError('');
     } else {
       setIsNotValidEmail(true);
       setEmailError('Provide a valid email.');
@@ -290,7 +297,7 @@ export function UpdateAccountData({
 
   const inputCommonClasses =
     'p-2 text-md border-b border-b-gray-200 placeholder:text-gray-400 hover:cursor-pointer focus:ring-0 focus:outline-none focus:border-gray-200';
-  console.log(emailError, 'emailError');
+
   return (
     <ModalWrapperLayout closeModal={() => {}} isOpen={isOpen}>
       <div className="p-6">
@@ -610,7 +617,10 @@ export function UpdateAccountData({
             <div
               onClick={handleSubmit}
               className={classNames(
-                'bg-mainBlue hover:bg-sideBarBlue',
+                formData.fullName && !fullNameError
+                  ? 'bg-mainBlue hover:bg-sideBarBlue'
+                  : 'bg-gray-500 hover:bg-gray-600',
+
                 'block rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-150 ease-in-out hover:cursor-pointer'
               )}
             >
