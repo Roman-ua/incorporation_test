@@ -36,6 +36,7 @@ export const ROUTES = {
   ALL_SERVICES: '/all/services',
   ALL_ORDERS: '/all/orders',
   ALL_INVOICES: '/all/invoices',
+  ALL_ACCOUNT: '/all/account',
 
   INTERNAL: '/internal',
   INTERNAL_COMPANIES: '/internal/companies',
@@ -45,4 +46,5 @@ export const ROUTES = {
   INTERNAL_SERVICES: '/internal/services',
   INTERNAL_ORDERS: '/internal/orders',
   INTERNAL_INVOICES: '/internal/invoices',
+  INTERNAL_ACCOUNT: '/internal/account',
 };

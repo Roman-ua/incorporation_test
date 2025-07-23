@@ -104,6 +104,10 @@ function App() {
               <Route path={ROUTES.INTERNAL_SERVICES} element={<Services />} />
               <Route path={ROUTES.INTERNAL_ORDERS} element={<Orders />} />
               <Route path={ROUTES.INTERNAL_INVOICES} element={<Invoices />} />
+              <Route
+                path={`${ROUTES.INTERNAL_ACCOUNT}/:id`}
+                element={<AccountPage />}
+              />
             </Route>
             <Route element={<SidebarLayoutWorkspaces />}>
               <Route path={ROUTES.WORKSPACES} element={<WorkspacesPage />} />
@@ -113,6 +117,10 @@ function App() {
               <Route path={ROUTES.ALL_SERVICES} element={<Services />} />
               <Route path={ROUTES.ALL_ORDERS} element={<Orders />} />
               <Route path={ROUTES.ALL_INVOICES} element={<Invoices />} />
+              <Route
+                path={`${ROUTES.ALL_ACCOUNT}/:id`}
+                element={<AccountPage />}
+              />
             </Route>
             <Route element={<ProtectedRoute />}>
               <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
