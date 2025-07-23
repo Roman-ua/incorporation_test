@@ -6,7 +6,7 @@ import SimpleAddressForm from '../../../components/shared/SimpleAddressForm/Simp
 import SimpleAddressFormNotUS from '../../../components/shared/SimpleAddressFormNotUS/SimpleAddressFormNotUS';
 import { AddressFields } from '../../../interfaces/interfaces';
 import XBtn from '../../../components/shared/buttons/XBtn';
-import { AvatarUpload } from '../../company/components/AddPersonPhoto';
+// import { AvatarUpload } from '../../company/components/AddPersonPhoto';
 import {
   isValidFacebookUrl,
   isValidLinkedinUrl,
@@ -77,7 +77,7 @@ export function UpdateAccountData({
 }: AddPersonModalProps) {
   const globalData = useRecoilValue(GlobalDataState);
 
-  const [avatar, setAvatar] = useState<File | null>(null);
+  // const [avatar, setAvatar] = useState<File | null>(null);
   const [selected, setSelected] = useState<1 | 2>(1);
   const [address, setAddress] = React.useState<AddressFields>({
     ...defaultUS,
@@ -212,9 +212,9 @@ export function UpdateAccountData({
       person.telegram = cleanedTg;
     }
 
-    if (avatar) {
-      person.image = avatar;
-    }
+    // if (avatar) {
+    //   person.image = avatar;
+    // }
 
     await updateUserData(person);
     cleanFormHandler();
@@ -338,13 +338,13 @@ export function UpdateAccountData({
           <div className="flex gap-6 mb-6">
             <div className="flex-1 space-y-9">
               <div className="flex gap-4 items-center w-full">
-                <AvatarUpload
+                {/* <AvatarUpload
                   image={userData.image}
                   removeControles={true}
                   onFileSelect={(file) => {
                     setAvatar(file);
                   }}
-                />
+                /> */}
                 <div className="relative w-full">
                   <input
                     onChange={fullNameHandler}
@@ -373,7 +373,6 @@ export function UpdateAccountData({
               <div className="relative">
                 <div
                   onClick={() => {
-                    console.log('clicked');
                     setEmailError('If you wish to update your email, please');
                   }}
                   className="absolute top-0 left-0 w-full h-full z-50"

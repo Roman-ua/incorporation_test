@@ -71,9 +71,10 @@ export function ProfileHeader({
         addPictureHandler={addPictureHandler}
         prevImage={userData.data?.image || null}
         saveImageToServer={saveAvatarToServer}
+        userId={userData.data?.id}
       />
       <div className="w-full mt-4">
-        <div className="w-full flex items-center justify-between pb-2 pr-2 border-b">
+        <div className="w-full flex items-center justify-between pb-2 border-b">
           <div className="text-2xl text-gray-700 flex items-center gap-x-2">
             <span className="text-xl font-bold text-gray-900">
               {userData.data?.full_name || '-'}
@@ -142,7 +143,7 @@ export function ProfileHeader({
           </div>
           <div className="flex flex-col gap-y-1 ml-auto">
             <dd className="text-base font-semibold   text-gray-700 overflow-visible">
-              {!croppedImage && (
+              {!image && (
                 <button
                   onClick={triggerFileUpload}
                   className="rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"

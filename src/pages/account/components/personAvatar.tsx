@@ -19,6 +19,7 @@ interface PersonAvatarProps {
   addPictureHandler: (data: string) => void;
   prevImage: string | null;
   saveImageToServer?: (image: File) => void;
+  userId?: string;
 }
 
 export default function PersonAvatar({
@@ -30,6 +31,7 @@ export default function PersonAvatar({
   addPictureHandler,
   prevImage,
   saveImageToServer,
+  userId,
 }: PersonAvatarProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -123,7 +125,7 @@ export default function PersonAvatar({
       );
 
       const base64Image = canvas.toDataURL('image/jpeg');
-      const file = base64ToFile(base64Image, 'cropped.jpg');
+      const file = base64ToFile(base64Image, `${userId || 'cropped'}.jpg`);
 
       setCroppedImage(base64Image);
       addPictureHandler(base64Image);
