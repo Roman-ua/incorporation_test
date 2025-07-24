@@ -44,6 +44,18 @@ const UseUserData = () => {
     await getUserData();
   };
 
+  const deleteAvatar = async () => {
+    const formData = new FormData();
+    formData.append('image', '');
+    await axiosInstance.patch<IUser>('/user/profile/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    await getUserData();
+  };
+
   const logout = async () => {
     const refresh_token = localStorage.getItem('refreshToken');
     const respose = await axiosInstance.post(
@@ -55,7 +67,7 @@ const UseUserData = () => {
       window.location.replace(`${respose?.data?.auth0_logout_url}`);
     }
   };
-  return { getUserData, logout, updateUserData, updateAvatar };
+  return { getUserData, logout, updateUserData, updateAvatar, deleteAvatar };
 };
 
 export default UseUserData;

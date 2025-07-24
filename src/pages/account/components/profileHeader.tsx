@@ -45,7 +45,7 @@ export function ProfileHeader({
 
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
-  const { updateAvatar } = UseUserData();
+  const { updateAvatar, deleteAvatar } = UseUserData();
 
   const triggerFileUpload = () => {
     avatarInputRef.current?.click();
@@ -54,12 +54,10 @@ export function ProfileHeader({
   const statusName = globalData.statuses.find(
     (status) => status.id === userData.data?.status
   )?.name;
-  console.log(userData.data, 'statusName');
 
   const saveAvatarToServer = (image: File) => {
     updateAvatar(image);
   };
-
   return (
     <div className="flex items-start flex-col justify-start gap-x-4 mb-12 ">
       <PersonAvatar
@@ -72,6 +70,7 @@ export function ProfileHeader({
         prevImage={userData.data?.image || null}
         saveImageToServer={saveAvatarToServer}
         userId={userData.data?.id}
+        deleteAvatar={deleteAvatar}
       />
       <div className="w-full mt-4">
         <div className="w-full flex items-center justify-between pb-2 border-b">

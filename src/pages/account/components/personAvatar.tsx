@@ -20,6 +20,7 @@ interface PersonAvatarProps {
   prevImage: string | null;
   saveImageToServer?: (image: File) => void;
   userId?: string;
+  deleteAvatar: () => void;
 }
 
 export default function PersonAvatar({
@@ -32,6 +33,7 @@ export default function PersonAvatar({
   prevImage,
   saveImageToServer,
   userId,
+  deleteAvatar,
 }: PersonAvatarProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -150,17 +152,8 @@ export default function PersonAvatar({
   // Trigger file input click programmatically
   const triggerFileInput = () => {
     if (fileInputRef.current) {
-      if (croppedImage) {
-        setImage(croppedImage);
-        setIsModalOpen(true);
-        return;
-      }
-
-      // если нет картинки — просто открываем выбор файла
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-        fileInputRef.current.click();
-      }
+      fileInputRef.current.value = '';
+      fileInputRef.current.click();
     }
   };
 
@@ -186,7 +179,7 @@ export default function PersonAvatar({
         onDrop={handleDrop}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
-        onClick={triggerFileInput} // Add click handler to the container
+        // Add click handler to the container
       >
         {/* Hidden file input */}
         <input
@@ -200,14 +193,32 @@ export default function PersonAvatar({
         {/* Upload interface - shown when no image or on hover over existing image */}
         {(!image && !croppedImage) || isHovering ? (
           <div
-            className={`absolute inset-0 w-full h-full z-10 ${
+            className={`absolute inset-0 w-full h-full z-50 ${
               image || croppedImage ? 'bg-black bg-opacity-50 rounded-md' : ''
             }`}
           >
             <div className="flex flex-col items-center justify-center h-full gap-2 text-center">
-              <div className="text-sm font-medium flex items-center justify-center">
-                <span className="text-gray-700 bg-gray-50 px-1 py-0.5 rounded-sm">
+              <div
+                onClick={triggerFileInput}
+                className="w-[59px] text-sm font-medium flex items-center justify-center"
+              >
+                <span className="w-full text-gray-700 bg-gray-50 px-1 py-0.5 rounded-sm">
                   Change
+                </span>
+              </div>
+              <div className="w-[59px] text-sm font-medium flex items-center justify-center">
+                <span
+                  onClick={() => {
+                    deleteAvatar();
+                    setImage(null);
+                    setCroppedImage(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
+                  }}
+                  className="w-full text-white bg-red-500 px-1 py-0.5 rounded-sm"
+                >
+                  Delete
                 </span>
               </div>
             </div>
