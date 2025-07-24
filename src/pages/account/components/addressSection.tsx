@@ -41,7 +41,7 @@ export function AddressSection({ data }: { data: IUser }) {
   return (
     <div className="space-y-3 mb-12">
       <SectionHeading title="Address" />
-      <div>{data?.line1 ? RenderAddress(data) : '-'}</div>
+      <div>{data?.line1 ? RenderAddress(data) : ''}</div>
     </div>
   );
 }

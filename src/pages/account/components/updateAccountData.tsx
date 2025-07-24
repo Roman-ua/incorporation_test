@@ -399,7 +399,7 @@ export function UpdateAccountData({
                   data-1p-ignore={true}
                   value={formData.email}
                 />
-                <TbLockCog className="w-5 h-5 text-gray-500 absolute top-[31%] right-2.5" />
+                <TbLockCog className="w-5 h-5 text-gray-500 absolute top-[26%] right-2.5" />
                 {emailError && (
                   <WarningMessage
                     message={emailError || 'qweqwe'}
