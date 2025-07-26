@@ -56,15 +56,6 @@ export function PersonProfile() {
       console.log(`Invitation sent to ${email}`);
     }
   };
-  const addPictureHandler = (image: string) => {
-    setUserData((prev) => ({
-      ...prev,
-      data: {
-        ...prev.data,
-        picture: image,
-      },
-    }));
-  };
 
   return (
     <div>
@@ -75,7 +66,6 @@ export function PersonProfile() {
       />
       <ProfileHeader
         openEditModal={() => setUpdateModalOpen(true)}
-        addPictureHandler={addPictureHandler}
         picture={userData.data.image || ''}
         onAddEmail={() => setIsEmailModalOpen(true)}
       />

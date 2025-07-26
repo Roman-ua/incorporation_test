@@ -1,16 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { classNames, copyToClipboard } from '../../../utils/helpers';
-import PersonAvatar from './personAvatar';
+
 import UserProfileState from '../../../state/atoms/UserProfile';
 import { useRecoilValue } from 'recoil';
 import GlobalDataState from '../../../state/atoms/GlobalData';
 import CopyButton from '../../../components/shared/CopyBtn/CopyButton';
 import UseUserData from '../../../utils/hooks/UserData/UseUserData';
+import UploadAvatar from './uploadAvatar';
 
 interface ProfileHeaderProps {
   picture: string;
   onAddEmail: () => void;
-  addPictureHandler: (data: string) => void;
+  // addPictureHandler: (data: string) => void;
   openEditModal: () => void;
 }
 
@@ -31,17 +32,13 @@ const statusBadge = (status: string) => {
 
 export function ProfileHeader({
   onAddEmail,
-  addPictureHandler,
+  // addPictureHandler,
   openEditModal,
 }: ProfileHeaderProps) {
   const userData = useRecoilValue(UserProfileState);
   const globalData = useRecoilValue(GlobalDataState);
 
   const [copiedId, setCopiedId] = useState('');
-  const [image, setImage] = useState<string | null>(
-    userData.data?.image || null
-  );
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
@@ -60,7 +57,7 @@ export function ProfileHeader({
   };
   return (
     <div className="flex items-start flex-col justify-start gap-x-4 mb-12 ">
-      <PersonAvatar
+      {/* <PersonAvatar
         fileInputRef={avatarInputRef}
         image={image}
         setImage={setImage}
@@ -71,6 +68,13 @@ export function ProfileHeader({
         saveImageToServer={saveAvatarToServer}
         userId={userData.data?.id}
         deleteAvatar={deleteAvatar}
+      /> */}
+      <UploadAvatar
+        fileInputRef={avatarInputRef}
+        uploadedImage={userData.data?.image || ''}
+        deleteAvatar={deleteAvatar}
+        userId={userData.data?.id}
+        saveImageToServer={saveAvatarToServer}
       />
       <div className="w-full mt-4">
         <div className="w-full flex items-center justify-between pb-2 border-b">
@@ -142,7 +146,7 @@ export function ProfileHeader({
           </div>
           <div className="flex flex-col gap-y-1 ml-auto">
             <dd className="text-base font-semibold   text-gray-700 overflow-visible">
-              {!image && (
+              {!userData.data?.image && (
                 <button
                   onClick={triggerFileUpload}
                   className="rounded-md bg-mainBackground px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all ease-in-out duration-150"
