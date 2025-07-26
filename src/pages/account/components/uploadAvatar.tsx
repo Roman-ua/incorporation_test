@@ -146,7 +146,7 @@ const UploadAvatar = ({
               className="w-[59px] text-sm font-medium flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             >
               <span className="w-full text-gray-700 bg-gray-50 px-1 py-0.5 rounded-sm">
-                Change
+                Edit
               </span>
             </div>
           </div>
