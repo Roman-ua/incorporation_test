@@ -163,7 +163,10 @@ const UploadAvatar = ({
   return (
     <div
       style={{ WebkitUserSelect: 'none', userSelect: 'none' }}
-      className="relative aspect-square w-[98px] h-[98px]rounded-md flex flex-col items-center justify-center transition-colors hover:cursor-pointer"
+      className={classNames(
+        'relative aspect-square rounded-md flex flex-col items-center justify-center transition-colors hover:cursor-pointer',
+        !uploadedImage ? 'w-0 h-0' : 'w-[98px] h-[98px]'
+      )}
     >
       <input
         ref={fileInputRef}
